@@ -1,4 +1,4 @@
-<html>
+<html xmlns:foaf="http://xmlns.com/foaf/0.1/">
 
 <head>
    <meta charset="utf-8" />
@@ -12,7 +12,12 @@
    <h2>Vr̥ṣasārasaṁgrahaḥ</h2>
    <h3>[ caturtho 'dhyāyaḥ ]</h3>
    <section>
-      <h4>anarthayajña uvāca</h4>
+      <h4>
+         <span data-bs-toggle="tooltip" data-bs-placement="top" property="foaf:Person" title="anarthayajña">
+            anarthayajña
+            uvāca
+         </span>
+      </h4>
       <p>
          <span class="fw-lighter f-xs me-2">1 </span>sadbhāvaḥ satyam ity āhur dr̥ṣṭapratyayam eva vā |<sup>
             <a data-bs-toggle="collapse" role="button" aria-expanded="false"
@@ -69,6 +74,13 @@
    </section>
    <script src="script/jquery/jquery.js"></script>
    <script src="script/bootstrap/js/bootstrap.bundle.min.js"></script>
+   <script src="script/bootstrap/js/popper.min.js"></script>
+   <script>
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+         return new bootstrap.Tooltip(tooltipTriggerEl)
+      })
+   </script>
 </body>
 
 </html>

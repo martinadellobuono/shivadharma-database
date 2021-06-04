@@ -4,7 +4,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" indent="yes"/>
 <xsl:template match="/">
   <xsl:for-each select="chapter">
-  <html>
+  <html xmlns:foaf="http://xmlns.com/foaf/0.1/">
     <!-- head -->
     <head>
       <meta charset="utf-8"></meta>
@@ -25,7 +25,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:for-each select="chaptercorpus/dialogline">
       <section>
         <!-- avuca -->  
-        <h4><xsl:value-of select="speaker"/></h4>
+        <h4>
+          <span data-bs-toggle="tooltip" data-bs-placement="top" property="foaf:Person">
+            <xsl:attribute name="title">
+              <xsl:value-of select="speaker/person"/>
+            </xsl:attribute>
+            <xsl:value-of select="speaker"/>
+          </span>
+        </h4>
         <!-- dialog line -->  
         <xsl:for-each select="line">
         <!-- verse -->  
@@ -38,7 +45,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
               <sup>
                 <a data-bs-toggle="collapse" role="button" aria-expanded="false">
                 <xsl:attribute name="href">
-                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())" />
+                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())"/>
                 </xsl:attribute>
                 <xsl:value-of select="position()"/> 
                 </a>
@@ -50,7 +57,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
               <sup>
                 <a data-bs-toggle="collapse" role="button" aria-expanded="false">
                 <xsl:attribute name="href">
-                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())" />
+                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())"/>
                 </xsl:attribute>
                 <xsl:value-of select="position()"/> 
                 </a>
@@ -61,7 +68,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         <!-- note -->
         <p class="collapse">
           <xsl:attribute name="id">
-            <xsl:value-of select="concat(replace(verse,'[^a-zA-Z]',''), '-', position())" />
+            <xsl:value-of select="concat(replace(verse,'[^a-zA-Z]',''), '-', position())"/>
           </xsl:attribute>
           <sup>
             <xsl:value-of select="concat(position(), ' ')"/>
@@ -74,6 +81,13 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <!-- script -->
       <script src="script/jquery/jquery.js"></script>
       <script src="script/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script src="script/bootstrap/js/popper.min.js"></script>
+      <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      </script>
     </body>
   </html>
   </xsl:for-each>

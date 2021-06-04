@@ -7,7 +7,10 @@
     </chapterheader>
     <chaptercorpus>
         <dialogline>
-            <speaker>anarthayajña uvāca</speaker>
+            <speaker>
+                <person>anarthayajña</person>
+                uvāca
+            </speaker>
             <line>
                 <verse>sadbhāvaḥ satyam ity āhur dr̥ṣṭapratyayam eva vā</verse>
                 <note>Note 1</note>
