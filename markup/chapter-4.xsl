@@ -26,9 +26,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <section>
         <!-- avuca -->  
         <h4>
-          <span data-bs-toggle="tooltip" data-bs-placement="top" property="foaf:Person">
+          <span data-bs-toggle="tooltip" data-bs-placement="top" instanceof="foaf:Person" property="foaf:name">
             <xsl:attribute name="title">
               <xsl:value-of select="speaker/person"/>
+            </xsl:attribute>
+            <xsl:attribute name="about">
+              <xsl:value-of select="concat('#', speaker/person)"/>
             </xsl:attribute>
             <xsl:value-of select="speaker"/>
           </span>
