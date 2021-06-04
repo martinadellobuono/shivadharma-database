@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="chapter-4.xsl"?> 
-<chapter>
+<chapter data-n="4">
     <chapterheader>
         <chaptertitle>Vr̥ṣasārasaṁgrahaḥ</chaptertitle>
         <chaptersubtitle>[ caturtho 'dhyāyaḥ ]</chaptersubtitle>
     </chapterheader>
     <chaptercorpus>
         <dialogline>
-            <speaker>anarthayajña uvāca |</speaker>
+            <speaker>anarthayajña uvāca</speaker>
             <line>
-                <verse>sadbhāvaḥ satyam ity āhur dr̥ṣṭapratyayam eva vā |</verse>
+                <verse>sadbhāvaḥ satyam ity āhur dr̥ṣṭapratyayam eva vā</verse>
                 <note>Note 1</note>
             </line>
             <line>
-                <verse>yathābhūtārthakathanaṁ tat satyakathanaṁ smr̥tam |</verse>
+                <verse>yathābhūtārthakathanaṁ tat satyakathanaṁ smr̥tam</verse>
                 <note>Note 2</note>
+            </line>
+            <line>
+                <verse>ākrośatāḍanādīni yaḥ saheta suduḥsaham</verse>
+                <note>Note 3</note>
+            </line>
+            <line>
+                <verse>kṣamate yo jitātmā tu sa ca satyam udāhr̥tam</verse>
+                <note>Note 4</note>
+            </line>
+            <line>
+                <verse>vadhārtham udyataḥ śastraṁ yadi pr̥ccheta karhicit</verse>
+                <note>Note 5</note>
+            </line>
+            <line>
+                <verse>na tatra satyaṁ vaktavyam anr̥taṁ satyam ucyate</verse>
+                <note>Note 6</note>
             </line>
         </dialogline>
     </chaptercorpus>

@@ -8,34 +8,55 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <!-- head -->
     <head>
       <meta charset="utf-8"></meta>
-      <title>Shivadharma database - <xsl:value-of select="chapterheader/chaptertitle"/></title>
+      <title>Shivadharma database - Chapter <xsl:value-of select="concat(' ', ./@data-n)"/><xsl:value-of select="concat(' ', chapterheader/chaptertitle)"/></title>
       <link rel="stylesheet" type="text/css" href="script/bootstrap/css/bootstrap.min.css"></link>
       <link rel="stylesheet" type="text/css" href="style/style.css"></link>
     </head>
     <!-- chapter -->  
     <body>
-      <!-- chapter header -->  
-      <h1><xsl:value-of select="chapterheader/chaptertitle"/></h1>
-      <h2><xsl:value-of select="chapterheader/chaptersubtitle"/></h2>
+      <!-- chapter header -->
+      <xsl:variable name="chaptern">
+        <xsl:value-of select="./@data-n"/>
+      </xsl:variable>
+      <h1>Chapter <xsl:value-of select="concat(' ', ./@data-n)"/></h1>  
+      <h2><xsl:value-of select="chapterheader/chaptertitle"/></h2>
+      <h3><xsl:value-of select="chapterheader/chaptersubtitle"/></h3>
       <!-- chapter corpus -->  
       <xsl:for-each select="chaptercorpus/dialogline">
       <section>
         <!-- avuca -->  
-        <h3><xsl:value-of select="speaker"/></h3>
+        <h4><xsl:value-of select="speaker"/></h4>
         <!-- dialog line -->  
         <xsl:for-each select="line">
         <!-- verse -->  
         <p>
           <span class="fw-lighter f-xs me-2"><xsl:value-of select="concat(position(), ' ')"/></span>
-          <xsl:value-of select="verse"/> 
-          <sup>
-            <a data-bs-toggle="collapse" role="button" aria-expanded="false">
-            <xsl:attribute name="href">
-              <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())" />
-            </xsl:attribute>
-            <xsl:value-of select="position()"/> 
-            </a>
-          </sup>
+          <xsl:choose>
+            <!-- if even verse -->          
+            <xsl:when test="(position() mod 2) != 1">
+              <xsl:value-of select="concat(verse, ' ||', $chaptern , '.', (position() div 2), '|| ')"/> 
+              <sup>
+                <a data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())" />
+                </xsl:attribute>
+                <xsl:value-of select="position()"/> 
+                </a>
+              </sup>
+            </xsl:when>
+            <!-- if odd verse -->          
+            <xsl:otherwise>
+              <xsl:value-of select="concat(verse, ' |')"/> 
+              <sup>
+                <a data-bs-toggle="collapse" role="button" aria-expanded="false">
+                <xsl:attribute name="href">
+                  <xsl:value-of select="concat('#', replace(verse,'[^a-zA-Z]',''), '-', position())" />
+                </xsl:attribute>
+                <xsl:value-of select="position()"/> 
+                </a>
+              </sup>
+            </xsl:otherwise>
+          </xsl:choose>
         </p>
         <!-- note -->
         <p class="collapse">
