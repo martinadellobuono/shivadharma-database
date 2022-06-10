@@ -7,7 +7,7 @@ const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "
 const router = express.Router();
 
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({extended:false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/addMetadata/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
@@ -17,22 +17,25 @@ router.get("/addMetadata/:id", async (req, res) => {
         const data = await session.readTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition), (editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition), (work:Work)-[w:WRITTEN_BY]->(author:Author) 
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} 
-                RETURN work.title, edition.title, author.name, editor.name
+                MATCH (edition:Edition), (editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition), (work:Work)-[w:WRITTEN_BY]->(author:Author)
+                OPTIONAL MATCH (edition:Edition)-[p:PUBLISHED_ON]->(date:Date) 
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                RETURN work.title, edition.title, author.name, editor.name, date.on
                 `
-            )                
+            )
         );
         const work = data.records[0]["_fields"][0];
         const title = data.records[0]["_fields"][1];
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
+        const date = data.records[0]["_fields"][4];
         res.render("addMetadata", {
             id: req.params.id,
             work: work,
             title: title,
             author: author,
-            editor: editor
+            editor: editor,
+            date: date
         });
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
@@ -52,12 +55,16 @@ router.post("/addMetadata/:id", async (req, res) => {
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition), (work:Work)-[w:WRITTEN_BY]->(author:Author) 
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} 
                 SET work.title = "${req.body.work}", edition.title = "${req.body.title}", author.name = "${req.body.author}", editor.name = "${req.body.editor}" 
+                
+                
                 MERGE (date:Date {on: $date})
                 MERGE (edition)-[p:PUBLISHED_ON]->(date)
+                
+
                 RETURN work.title, edition.title, editor.name, author.name, date.on
-                `, 
-                {date: req.body.date}
-            )              
+                `,
+                { date: req.body.date }
+            )
         );
         const work = data.records[0]["_fields"][0];
         const title = data.records[0]["_fields"][1];
