@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+<body>
+    <%- include ("partials/navbar") %>
+    
+    <div class="container-fluid pb-5 pt-5">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="h2">Create your edition | 1/4 Get started</h1>
+                </div>
+            </div>
+
+            <!-- error handling -->
+            <div class="row">
+                <div class="col-md-12">
+                    <% if (typeof errors !== "undefined") { %>
+                        <% errors.forEach((error) => { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <p>Please insert the <strong><%= error.msg %></strong>.</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <% }); %>
+                    <% }; %>
+                </div>
+            </div>
+
+            <!-- metadata -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <form method="post" action="/getstarted">
+                        <div class="mb-3">
+                            <label>Work</label>
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work">
+                        </div>
+                        <div class="mb-3">
+                            <label>Title of the edition</label>
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title">
+                        </div>
+                        <div class="mb-3">
+                            <label>Author of the edited work</label>
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author">
+                        </div>
+                        <div class="mb-3">
+                            <label>Editor</label>
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.editor %><% } %>" name="editor">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <%- include ("partials/footer") %>
+    <%- include ("partials/script") %>
+</body>
+</html>

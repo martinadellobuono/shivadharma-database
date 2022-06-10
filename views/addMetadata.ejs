@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+<body>
+    <%- include ("partials/navbar") %>
+
+    <div class="container-fluid pb-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="h2">Create your edition | 2/4 Add further metadata</h1>
+                </div>
+                <form method="post" action="/addMetadata/<%= id %>">
+                    <div class="mb-3">
+                        <label class="form-label">Work</label>
+                        <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= work %>" name="work">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Title of the edition</label>
+                        <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= title %>" name="title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Author of the edited work</label>
+                        <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= author %>" name="author">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Editor</label>
+                        <input type="text" class="form-control" aria-describedby="Editor" value="<%= editor %>" name="editor">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date of publication of the edition</label>
+                        <% if (typeof date !== "undefined") { %>
+                            <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
+                        <% } else { %>
+                            <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
+                        <% } %>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <%- include ("partials/footer") %>
+    <%- include ("partials/script") %>
+</body>
+</html>

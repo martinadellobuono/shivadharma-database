@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+<body>
+    <%- include ("partials/navbar") %>
+    
+    <div class="container-fluid pb-5 pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <% if (edition) { %>
+                        <% edition.forEach(function(item) { %>
+                            <h1 class="h2"><%= item[0] %>, <%= item[1] %></h1>
+                            <h2 class="h4 text-muted">Curated by <%= item[2] %></h2>
+                            <div class="txt">
+                                <% if (typeof file != 'undefined') { %>
+                                    <%- include (`../uploads/${file}`) %>
+                                <% }; %>
+                            </div>
+                        <% }); %>  
+                    <% }; %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ("partials/footer") %>
+    <%- include ("partials/script") %>
+</body>
+</html>

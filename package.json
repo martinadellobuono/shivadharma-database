@@ -1,0 +1,22 @@
+{
+  "name": "GraphAnnotator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "keywords": [],
+  "author": "MartinaDelloBuono",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "*",
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.3",
+    "ejs": ">=3.1.7",
+    "express": "*",
+    "express-validator": "*",
+    "formidable": "*",
+    "neo4j-driver": "*"
+  }
+}

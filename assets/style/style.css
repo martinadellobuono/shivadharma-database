@@ -1,0 +1,7 @@
+/* bootstrap */
+
+/* html */
+html {scroll-behavior: smooth; -webkit-font-smoothing: antialiased;}
+
+/* textarea */
+.text textarea {height: 70vh; width: 100%;}

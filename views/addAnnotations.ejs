@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+
+<body>
+  <%- include ("partials/navbar") %>
+
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- tools and text -->
+      <div class="col-md-10 pb-3 pt-3">
+        <h1 class="h3">Create your edition | 3/4 Add annotations</h1>
+        <div class="row">
+
+          <!-- tools -->
+          <div class="col-md-2">
+            <!-- alert -->
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <p>Highlight the string in the text you want to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after highlighting the string.</p>
+              <p class="fw-bold">These functionalities will coming soon!</p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- tools -->
+            <div class="tools">
+              <!-- text structure -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-primary btn-collapse" data-bs-toggle="collapse" href="#collapse-text-structure" role="button" aria-expanded="false" aria-controls="Tools annotate the text structure">Text structure</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-text-structure">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-primary" type="button" data-value="Title">Title</button>
+                    <button class="btn btn-outline-primary" type="button" data-value="Subtitle">Subtitle</button>
+                    <button class="btn btn-outline-primary" type="button" data-value="Chapter">Chapter</button>
+                    <button class="btn btn-outline-primary" type="button" data-value="Subchapter">Subchapter</button>
+                    <button class="btn btn-outline-primary" type="button" data-value="Line">Line</button>
+                    <button class="btn btn-outline-primary" type="button" data-value="Pāda">Pāda</button>
+                  </div>
+                </div>
+              </div>
+              <!-- apparatus -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-secondary btn-collapse" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="Tools to annotate the apparatus">Apparatus</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-apparatus">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-secondary btn-annotation" type="button" data-value="apparatus">Apparatus entry</button>
+                  </div>
+                </div>
+              </div>
+              <!-- notes -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-success btn-collapse" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="Tools to add the notes">Notes</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-notes">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-success" type="button" data-value="Philological note">Philological note</button>
+                    <button class="btn btn-outline-success" type="button" data-value="Historical note">Historical note</button>
+                    <button class="btn btn-outline-success" type="button" data-value="Literary note">Literary note</button>
+                  </div>
+                </div>
+              </div>
+              <!-- metre -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-warning btn-collapse" data-bs-toggle="collapse" href="#collapse-metre" role="button" aria-expanded="false" aria-controls="Tools to annotate the metre">Metre</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-metre">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-warning" type="button" data-value="">Anustubh</button>
+                    <button class="btn btn-outline-warning" type="button" data-value="">Vaṃśastha</button>
+                  </div>
+                </div>
+              </div>
+              <!-- transcription -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-info btn-collapse" data-bs-toggle="collapse" href="#collapse-transcription" role="button" aria-expanded="false" aria-controls="Tools to add the transcription">Transcription</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-transcription">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-info" type="button" data-value="Devanāgarī">Transcription in Devanāgarī</button>
+                    <button class="btn btn-outline-info" type="button" data-value="Roman">Transcription in Roman</button>
+                  </div>
+                </div>
+              </div>
+              <!-- translation -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-danger btn-collapse" data-bs-toggle="collapse" href="#collapse-translation" role="button" aria-expanded="false" aria-controls="Tools to add the translation">Translation</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-translation">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-danger" type="button" data-value="English">Translation in English</button>
+                    <button class="btn btn-outline-danger" type="button" data-value="Italian">Translation in Italian</button>
+                  </div>
+                </div>
+              </div>
+              <!-- witnesses -->
+              <div class="d-grid gap-2 mb-2">
+                <button class="btn btn-outline-dark btn-collapse" data-bs-toggle="collapse" href="#collapse-witnesses" role="button" aria-expanded="false" aria-controls="Tools to add the facsimiles of the witnesses">Facsimiles of the witnesses</button>
+              </div>
+              <div class="collapse mb-2" id="collapse-witnesses">
+                <div class="card card-body">
+                  <div class="collapse-el d-grid gap-2">
+                    <button class="btn btn-outline-dark" type="button" data-value="">Reference and link to witnesses facsimiles</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- text -->
+          <div class="col-md-10">
+            <div class="text">
+              <form action="/addFile/<%= id %>" enctype="multipart/form-data" accept="application/msword, text/plain" method="post">
+                <label class="text-muted">Upload the <span class="fw-bold">.txt file</span> of the text of your edition:</label>
+                <input type="file" name="upload">
+                <input type="submit" value="Submit">
+              </form>
+              <textarea class="mt-1">
+                                <% if (typeof file != 'undefined') { %>
+                                    <%- include (`../uploads/${file}`) %>
+                                <% }; %>
+                            </textarea>
+            </div>
+            <div class="save">
+              <% if (typeof file != "undefined") { %>
+              <a href="/edition/<%= id %>" class="btn btn-primary" title="Save the annotations">Publish</a>
+              <% }; %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- annotations -->
+      <div class="col-md-2 pb-5 pt-5 bg-light">
+        <h2 class="h5" id="selected-annotation-type"></h2>
+        <form class="form-annotations" id="apparatus" method="post" action="/addApparatus/<%= id %>"></form>
+      </div>
+
+    </div>
+  </div>
+
+
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
+</body>
+
+</html>
