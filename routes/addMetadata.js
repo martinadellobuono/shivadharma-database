@@ -17,8 +17,8 @@ router.get("/addMetadata/:id", async (req, res) => {
         const data = await session.readTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition), (editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition), (work:Work)-[w:WRITTEN_BY]->(author:Author)
-                OPTIONAL MATCH (edition:Edition)-[p:PUBLISHED_ON]->(date:Date) 
+                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
+                OPTIONAL MATCH (date:Date)-[p:PUBLISHED_ON]->(edition)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 RETURN work.title, edition.title, author.name, editor.name, date.on
                 `
@@ -29,6 +29,9 @@ router.get("/addMetadata/:id", async (req, res) => {
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
         const date = data.records[0]["_fields"][4];
+
+        console.log(date);
+
         res.render("addMetadata", {
             id: req.params.id,
             work: work,
@@ -52,26 +55,19 @@ router.post("/addMetadata/:id", async (req, res) => {
         const data = await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} 
-
-
+                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (date:Date)-[p:PUBLISHED_ON]->(edition)
                 ON CREATE 
                     SET date.on = "${req.body.date}"
                 ON MATCH 
-                    SET date.on = "${req.body.date}"                
-
-
-                RETURN date.on
+                    SET date.on = "${req.body.date}"
+                RETURN work.title, edition.title, author.name, editor.name, date.on
                 `,
                 { date: req.body.date }
             )
         );
-
-        console.log(data.records[0]["_fields"][0]);
-
-        /*const work = data.records[0]["_fields"][0];
+        const work = data.records[0]["_fields"][0];
         const title = data.records[0]["_fields"][1];
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
@@ -83,7 +79,7 @@ router.post("/addMetadata/:id", async (req, res) => {
             author: author,
             editor: editor,
             date: date
-        });*/
+        });
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
     } finally {
