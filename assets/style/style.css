@@ -1,7 +1,13 @@
-/* bootstrap */
-
 /* html */
 html {scroll-behavior: smooth; -webkit-font-smoothing: antialiased;}
+
+/* body */
+body {padding-top: 56px;}
+
+/* show/hide */
+.hide {display: none;}
+.show-block {display: block;}
+.show-inline {display: inline;}
 
 /* textarea */
 .text textarea {height: 70vh; width: 100%;}

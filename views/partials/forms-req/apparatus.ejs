@@ -1,0 +1,30 @@
+<h2 class="mt-3 h5">Create an apparatus entry</h2>
+<form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
+  <!-- selected string -->
+  <div class="mb-3">
+    <label class="form-label">Selected string</label>
+    <input id="selected-string" type="text" class="form-control" aria-describedby="Selected string" name="selectedString">
+  </div>
+  <!-- lemma -->
+  <div class="bg-white p-3 mb-3">
+    <label class="form-label">Lemma</label>
+    <input type="text" class="form-control" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+    <label class="form-label">Manuscript</label>
+    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscript-lemma">
+  </div>
+  <!-- variants -->
+  <div class="bg-white p-3 mb-3">
+    <label class="form-label">Variant</label>
+    <input type="text" class="form-control" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
+    <label class="form-label">Manuscript</label>
+    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscript-variant">
+  </div>
+  <!-- add variant -->
+  <div class="mb-3">
+    <button type="button" class="btn btn-primary">+</button>
+  </div>
+  <!-- submit -->
+  <div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>

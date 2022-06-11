@@ -3,10 +3,14 @@ const path = require("path");
 
 var app = express();
 
-app.set("views", path.join(__dirname, "views"));
+app.set("views", [
+    path.join(__dirname, "views"),
+    path.join(__dirname, "views/partials/forms-res/")
+]);
 app.set("view engine", "ejs");
 
 app.use("/assets", express.static("assets"));
+app.use("/node_modules", express.static("node_modules"));
 app.use("/views", express.static("views"));
 
 // index

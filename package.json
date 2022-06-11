@@ -17,6 +17,7 @@
     "express": "*",
     "express-validator": "*",
     "formidable": "*",
-    "neo4j-driver": "*"
+    "neo4j-driver": "*",
+    "tinymce": "^6.0.3"
   }
 }
