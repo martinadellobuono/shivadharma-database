@@ -52,21 +52,26 @@ router.post("/addMetadata/:id", async (req, res) => {
         const data = await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition), (work:Work)-[w:WRITTEN_BY]->(author:Author) 
+                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} 
-                SET work.title = "${req.body.work}", edition.title = "${req.body.title}", author.name = "${req.body.author}", editor.name = "${req.body.editor}" 
-                
-                
-                MERGE (date:Date {on: $date})
-                MERGE (edition)-[p:PUBLISHED_ON]->(date)
-                
 
-                RETURN work.title, edition.title, editor.name, author.name, date.on
+
+                MERGE (date:Date)-[p:PUBLISHED_ON]->(edition)
+                ON CREATE 
+                    SET date.on = "${req.body.date}"
+                ON MATCH 
+                    SET date.on = "${req.body.date}"                
+
+
+                RETURN date.on
                 `,
                 { date: req.body.date }
             )
         );
-        const work = data.records[0]["_fields"][0];
+
+        console.log(data.records[0]["_fields"][0]);
+
+        /*const work = data.records[0]["_fields"][0];
         const title = data.records[0]["_fields"][1];
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
@@ -78,7 +83,7 @@ router.post("/addMetadata/:id", async (req, res) => {
             author: author,
             editor: editor,
             date: date
-        });
+        });*/
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
     } finally {

@@ -17,7 +17,15 @@ router.post("/addApparatus/:id", async (req, res) => {
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
-            .run(`MATCH(edition:Edition)-[e:EDITED_BY]->(editor:Editor) WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} CREATE(selectedString:SelectedString {value: $selectedString}) CREATE(lemma:Lemma {value: $lemma}) CREATE(variant:Variant {value: $variant}) CREATE(edition)-[f:HAS_FRAGMENT]->(selectedString) CREATE(selectedString)-[l:HAS_LEMMA]->(lemma) CREATE(lemma)-[v:HAS_VARIANT]->(variant) RETURN selectedString, lemma, variant`, {selectedString: req.body.selectedString, lemma: req.body.lemma, variant: req.body.variant})
+            .run(
+                `
+                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                CREATE (selectedString:SelectedString {value: $selectedString}), (lemma:Lemma {value: $lemma}), (variant:Variant {value: $variant}), (edition)-[f:HAS_FRAGMENT]->(selectedString), (selectedString)-[l:HAS_LEMMA]->(lemma), (lemma)-[v:HAS_VARIANT]->(variant) 
+                RETURN selectedString, lemma, variant
+                `, 
+                {selectedString: req.body.selectedString, lemma: req.body.lemma, variant: req.body.variant}
+            )
             .subscribe({
                 onNext: record => {
                     res.redirect("/addMetadata/" + idEdition + "-" + idEditor);
