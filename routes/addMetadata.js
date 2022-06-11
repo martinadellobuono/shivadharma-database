@@ -18,8 +18,8 @@ router.get("/addMetadata/:id", async (req, res) => {
             .run(
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
-                OPTIONAL MATCH (date:Date)-[p:PUBLISHED_ON]->(edition)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
                 RETURN work.title, edition.title, author.name, editor.name, date.on
                 `
             )
@@ -29,9 +29,6 @@ router.get("/addMetadata/:id", async (req, res) => {
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
         const date = data.records[0]["_fields"][4];
-
-        console.log(date);
-
         res.render("addMetadata", {
             id: req.params.id,
             work: work,
@@ -57,12 +54,13 @@ router.post("/addMetadata/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (date:Date)-[p:PUBLISHED_ON]->(edition)
+                OPTIONAL MATCH (file:File)-[pr:PRODUCED_BY]->(editor)
+                MERGE (edition)-[p:PUBLISHED_ON]->(date:Date)
                 ON CREATE 
                     SET date.on = "${req.body.date}"
                 ON MATCH 
                     SET date.on = "${req.body.date}"
-                RETURN work.title, edition.title, author.name, editor.name, date.on
+                RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
                 `,
                 { date: req.body.date }
             )
@@ -72,13 +70,15 @@ router.post("/addMetadata/:id", async (req, res) => {
         const author = data.records[0]["_fields"][2];
         const editor = data.records[0]["_fields"][3];
         const date = data.records[0]["_fields"][4];
+        const file = data.records[0]["_fields"][5];
         res.render("addAnnotations", {
             id: req.params.id,
             work: work,
             title: title,
             author: author,
             editor: editor,
-            date: date
+            date: date,
+            file: file
         });
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
