@@ -20,25 +20,16 @@ router.post("/addApparatus/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                CREATE (edition)-[f:HAS_FRAGMENT]->(selectedString:SelectedString {value: $selectedString}), (selectedString)-[l:HAS_LEMMA]->(lemma:Lemma {value: $lemma}), (lemma)-[v:HAS_VARIANT]->(variant:Variant {value: $variant})
-                RETURN selectedString, lemma.value, variant.value
-                `,
-                { selectedString: req.body.selectedString, lemma: req.body.lemma, variant: req.body.variant }
+                MERGE (edition)-[f:HAS_FRAGMENT]->(selectedString:SelectedString)
+                MERGE (selectedString)-[l:HAS_LEMMA]->(lemma:Lemma)
+                MERGE (lemma)-[v:HAS_VARIANT]->(variant:Variant)
+                ON CREATE 
+                    SET selectedString.value = "${req.body.selectedString}", lemma.value = "${req.body.lemma}", variant.value = "${req.body.variant}"  
+                ON MATCH 
+                    SET selectedString.value = "${req.body.selectedString}", lemma.value = "${req.body.lemma}", variant.value = "${req.body.variant}"
+                RETURN lemma.value, variant.value
+                `
             )
-            .subscribe({
-                onNext: record => {
-                    res.render("apparatus", {
-                        lemma: record.get("lemma.value"),
-                        variant: record.get("variant.value")
-                    });
-                },
-                onCompleted: () => {
-                    console.log("Data added to the graph");
-                },
-                onError: err => {
-                    console.log("Error related to the upload to Neo4j: " + err)
-                }
-            })
         );
     } catch (err) {
         console.log("Error related to Neo4j in adding the apparatus: " + err);

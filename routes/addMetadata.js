@@ -61,8 +61,7 @@ router.post("/addMetadata/:id", async (req, res) => {
                 ON MATCH 
                     SET date.on = "${req.body.date}"
                 RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
-                `,
-                { date: req.body.date }
+                `
             )
         );
         const work = data.records[0]["_fields"][0];
