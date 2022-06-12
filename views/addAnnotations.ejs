@@ -155,6 +155,23 @@
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
+            <!-- error handling -->
+            <% if (typeof errors !== "undefined") { %>
+              <% if (errors.length == 0) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <p>Data saved!</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              <% } else { %>
+                <% errors.forEach((error) => { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <p>Please insert the <strong><%= error.msg %></strong>.</p>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                <% }); %>
+              <% }; %>
+            <% }; %>
+
             <!-- forms apparatus -->
             <div class="hide" id="apparatus">
               <%- include ("partials/forms-req/apparatus") %>
