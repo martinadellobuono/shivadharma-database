@@ -27,12 +27,14 @@ let annotations = () => {
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                document.getElementById("selected-string").value = tinymce.activeEditor.selection.getContent();
+                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
                     document.getElementById(el.dataset.value).classList.add("show-block");
+                } else {
+                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
-            };
+            }; 
         });
     });
 };

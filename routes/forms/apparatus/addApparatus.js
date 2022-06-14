@@ -10,10 +10,11 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
 const { body, validationResult } = require("express-validator");
+const { render } = require("ejs");
 
 router.post("/addApparatus/:id",
     /* error handling */
-    body("selectedString").isLength({ min: 1 }).withMessage("selected string"),
+    body("selectedFragment").isLength({ min: 1 }).withMessage("selected fragment"),
     body("lemma").isLength({ min: 1 }).withMessage("lemma"),
     body("variant").isLength({ min: 1 }).withMessage("variant"),
     async (req, res) => {
@@ -27,15 +28,19 @@ router.post("/addApparatus/:id",
                     `
                     MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (edition)-[p:PUBLISHED_ON]->(date:Date), (file:File)-[pr:PRODUCED_BY]->(editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                    MERGE (edition)-[f:HAS_FRAGMENT]->(selectedString:SelectedString {value: $selectedString})
-                    MERGE (selectedString)-[l:HAS_LEMMA]->(lemma:Lemma {value: $lemma})
-                    CREATE (lemma)-[v:HAS_VARIANT]->(variant:Variant {value: $variant})
-                    RETURN work.title, edition.title, author.name, editor.name, date.on, file.name, lemma.value, variant.value
+                    MERGE (edition)-[f:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: $selectedFragment})
+                    MERGE (selectedFragment)-[l:HAS_LEMMA]->(lemma:Lemma {value: $lemma})
+                    MERGE (lemma)-[v:HAS_VARIANT]->(variant:Variant {value: $variant})
+                    MERGE (lemma)-[at:ATTESTED_IN]->(manuscriptLemma:ManuscriptLemma {code: $manuscriptLemma})
+                    MERGE (variant)-[t:ATTESTED_IN]->(manuscriptVariant:ManuscriptVariant {code: $manuscriptVariant})
+                    RETURN work.title, edition.title, author.name, editor.name, date.on, file.name, lemma.value, manuscriptLemma.code, variant.value, manuscriptVariant.code
                     `, 
                     {
-                        selectedString: req.body.selectedString,
+                        selectedFragment: req.body.selectedFragment,
                         lemma: req.body.lemma,
-                        variant: req.body.variant
+                        manuscriptLemma: req.body.manuscriptLemma,
+                        variant: req.body.variant,
+                        manuscriptVariant: req.body.manuscriptVariant
                     }
                 )
                 .subscribe({
@@ -50,7 +55,9 @@ router.post("/addApparatus/:id",
                             date: record.get("date.on"),
                             file: record.get("file.name"),
                             lemma: record.get("lemma.value"),
-                            variant: record.get("variant.value")
+                            manuscriptLemma: record.get("manuscriptLemma.code"),
+                            variant: record.get("variant.value"),
+                            manuscriptVariant: record.get("manuscriptVariant.code")
                         });
                     },
                     onCompleted: () => {

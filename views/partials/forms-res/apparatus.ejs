@@ -1,2 +1,16 @@
-<%= lemma %>
-<%= variant %>
+<% if (typeof lemma != "undefined") { %>
+    <span><%= lemma %></span>
+    <span> &#x5d; </span>
+<% }; %>
+
+<% if (typeof manuscriptLemma != "undefined") { %>
+    <span class="me-3"><%= manuscriptLemma %></span>
+<% }; %>
+
+<% if (typeof variant != "undefined") { %>
+    <span><%= variant %></span>
+<% }; %>
+
+<% if (typeof manuscriptVariant != "undefined") { %>
+    <span class="me-3"><%= manuscriptVariant %></span>
+<% }; %>

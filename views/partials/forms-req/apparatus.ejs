@@ -1,23 +1,23 @@
 <h2 class="mt-3 h5">Create an apparatus entry</h2>
 <form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
-  <!-- selected string -->
+  <!-- selected fragment -->
   <div class="mb-3">
-    <label class="form-label">Selected string</label>
-    <input id="selected-string" type="text" class="form-control" aria-describedby="Selected string" name="selectedString">
+    <label class="form-label">Selected fragment</label>
+    <input id="selected-fragment" type="text" class="form-control" aria-describedby="Selected fragment" name="selectedFragment">
   </div>
   <!-- lemma -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Lemma</label>
     <input type="text" class="form-control" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
     <label class="form-label">Manuscript</label>
-    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscript-lemma">
+    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscriptLemma">
   </div>
   <!-- variants -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Variant</label>
     <input type="text" class="form-control" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Manuscript</label>
-    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscript-variant">
+    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscriptVariant">
   </div>
   <!-- add variant -->
   <div class="mb-3">
