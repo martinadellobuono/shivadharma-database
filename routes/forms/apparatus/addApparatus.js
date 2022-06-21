@@ -45,7 +45,7 @@ router.post("/addApparatus/:id",
                 )
                 .subscribe({
                     onNext: record => {
-                        res.render("addAnnotations", {
+                        res.render("edit", {
                             id: req.params.id,
                             errors: errors.array(),
                             work: record.get("work.title"),

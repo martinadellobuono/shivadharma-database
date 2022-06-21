@@ -14,7 +14,7 @@ router.get("/edit/:id", async (req, res) => {
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
     try {
-        const data = await session.readTransaction(tx => tx
+        await session.readTransaction(tx => tx
             .run(
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
@@ -23,20 +23,25 @@ router.get("/edit/:id", async (req, res) => {
                 RETURN work.title, edition.title, author.name, editor.name, date.on
                 `
             )
+            .subscribe({
+                onNext: record => {
+                    res.render("edit", {
+                        id: req.params.id,
+                        work: record.get("work.title"),
+                        title: record.get("edition.title"),
+                        author: record.get("author.name"),
+                        editor: record.get("editor.name"),
+                        date: record.get("date.on")
+                    });
+                },
+                onCompleted: () => {
+                    console.log("Data added to the graph");
+                },
+                onError: err => {
+                    console.log("Error related to the upload to Neo4j: " + err)
+                }
+            })
         );
-        const work = data.records[0]["_fields"][0];
-        const title = data.records[0]["_fields"][1];
-        const author = data.records[0]["_fields"][2];
-        const editor = data.records[0]["_fields"][3];
-        const date = data.records[0]["_fields"][4];
-        res.render("edit", {
-            id: req.params.id,
-            work: work,
-            title: title,
-            author: author,
-            editor: editor,
-            date: date
-        });
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
     } finally {
@@ -49,7 +54,7 @@ router.post("/edit/:id", async (req, res) => {
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
     try {
-        const data = await session.writeTransaction(tx => tx
+        await session.writeTransaction(tx => tx
             .run(
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author) 
@@ -63,22 +68,26 @@ router.post("/edit/:id", async (req, res) => {
                 RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
                 `
             )
+            .subscribe({
+                onNext: record => {
+                    res.render("edit", {
+                        id: req.params.id,
+                        work: record.get("work.title"),
+                        title: record.get("edition.title"),
+                        author: record.get("author.name"),
+                        editor: record.get("editor.name"),
+                        date: record.get("date.on"),
+                        file: record.get("file.name")
+                    });
+                },
+                onCompleted: () => {
+                    console.log("Data added to the graph");
+                },
+                onError: err => {
+                    console.log("Error related to the upload to Neo4j: " + err)
+                }
+            })
         );
-        const work = data.records[0]["_fields"][0];
-        const title = data.records[0]["_fields"][1];
-        const author = data.records[0]["_fields"][2];
-        const editor = data.records[0]["_fields"][3];
-        const date = data.records[0]["_fields"][4];
-        const file = data.records[0]["_fields"][5];
-        res.render("edit", {
-            id: req.params.id,
-            work: work,
-            title: title,
-            author: author,
-            editor: editor,
-            date: date,
-            file: file
-        });
     } catch (err) {
         console.log("Error related to Neo4j: " + err);
     } finally {
