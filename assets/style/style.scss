@@ -1,10 +1,23 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 /* html */
-html {scroll-behavior: smooth; -webkit-font-smoothing: antialiased;}
+html {
+    scroll-behavior: $enable-smooth-scroll;
+    -webkit-font-smoothing: antialiased;
+}
 
 /* body */
-body {padding-top: 56px;}
+body {
+    padding-top: 56px;
+}
 
-/* textarea */
-.text textarea {height: 70vh; width: 100%;}
+/* layout */
+.edition-container, .edition-container .row {
+    height: 77vh;
+}
+
+.scroll-tab {
+    height: 70vh;
+    overflow-x: hidden;
+    overflow-y: visible;
+}

@@ -11,6 +11,10 @@ router.use(bodyParser.urlencoded({extended:false}));
 
 const { body, validationResult } = require("express-validator");
 
+router.get("/getstarted", (req, res) => {
+    res.render("getstarted");
+});
+
 router.post("/getstarted",
     /* error handling */
     body("work").isLength({min: 1}).withMessage("title of the work"),
@@ -33,7 +37,7 @@ router.post("/getstarted",
                     .run("MERGE (work:Work {title: $work}) MERGE (edition:Edition {title: $title}) MERGE (author:Author {name: $author}) MERGE (editor:Editor {name: $editor}) MERGE (work)-[h:HAS_MANIFESTATION]->(edition) MERGE (work)-[w:WRITTEN_BY]->(author) MERGE (edition)-[e:EDITED_BY]->(editor) RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name", {work: req.body.work, title: req.body.title, author: req.body.author, editor: req.body.editor})
                     .subscribe({
                         onNext: record => {
-                            res.redirect("addMetadata/" + record.get("ID(edition)") + "-" + record.get("ID(editor)"));
+                            res.redirect("edit/" + record.get("ID(edition)") + "-" + record.get("ID(editor)"));
                         },
                         onCompleted: () => {
                             console.log("Data added to the graph");

@@ -9,9 +9,9 @@ const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "
 const router = express.Router();
 
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({extended:false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 
-router.post("/addFile/:id", async (req, res) => {    
+router.post("/addFile/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     var form = formidable();
@@ -22,17 +22,36 @@ router.post("/addFile/:id", async (req, res) => {
     form.on("file", async (name, file) => {
         const session = driver.session();
         try {
-            const data = await session.writeTransaction(tx => tx
-                .run(`MATCH (editor:Editor) WHERE id(editor) = ${idEditor} MERGE (file:File {name: $file}) MERGE (file)-[p:PRODUCED_BY]->(editor) RETURN file.name`, {file: file.name})                
+            await session.writeTransaction(tx => tx
+                .run(
+                    `
+                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
+                    WHERE id(editor) = ${idEditor} AND id(editor) = ${idEditor}
+                    OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                    MERGE (file:File {name: $file})
+                    MERGE (file)-[pr:PRODUCED_BY]->(editor)
+                    RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
+                    `, { file: file.name })
+                .subscribe({
+                    onNext: record => {
+                        res.render("edit", {
+                            id: req.params.id,
+                            work: record.get("work.title"),
+                            title: record.get("edition.title"),
+                            author: record.get("author.name"),
+                            editor: record.get("editor.name"),
+                            date: record.get("date.on"),
+                            file: record.get("file.name")
+                        });
+                    },
+                    onCompleted: () => {
+                        console.log("Data added to the graph");
+                    },
+                    onError: err => {
+                        console.log("Error related to the upload to Neo4j: " + err)
+                    }
+                })
             );
-            const results = data.records.map(row => {
-                const file = row["_fields"];
-                return file;
-            });
-            res.render("addAnnotations", {
-                id: req.params.id,
-                file: results
-            });
         } catch (err) {
             console.log("Error related to Neo4j: " + err);
         } finally {

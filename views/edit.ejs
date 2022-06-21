@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+
+<body>
+  <%- include ("partials/navbar") %>
+
+  <!-- header -->
+  <div class="container-fluid bg-light p-2">
+    <div class="row">
+      <!-- title -->
+      <div class="col-md-7">
+        <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></button>
+        <% if (typeof title !== "undefined") { %>
+        <h1 class="h4 d-inline"><%= title %><span>, </span><%= author %></h1>
+        <h2 class="d-inline h5 text-secondary">Curated by <%= editor %></h2>
+        <% }; %>
+      </div>
+      <!-- metadata / publish / save as draft -->
+      <div class="col-md-5 text-end">
+        <button type="button" class="btn btn-secondary me-3" data-bs-toggle="modal" data-bs-target="#add-metadata">Add metadata</button>
+        <!-- metadata modal -->
+        <div class="modal fade" id="add-metadata" tabindex="-1" aria-labelledby="add-metadata" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add metadata</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post" action="/edit/<%= id %>">
+                  <div class="mb-3">
+                    <label class="form-label">Work</label>
+                    <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= work %>" name="work">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Title of the edition</label>
+                    <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= title %>" name="title">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Author of the edited work</label>
+                    <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= author %>" name="author">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Editor</label>
+                    <input type="text" class="form-control" aria-describedby="Editor" value="<%= editor %>" name="editor">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Date of publication of the edition</label>
+                    <% if (typeof date !== "undefined") { %>
+                    <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
+                    <% } else { %>
+                    <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
+                    <% } %>
+                  </div>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary">Publish</button>
+        <button type="button" class="btn btn-light border">Save as draft</button>
+        <button type="button" class="btn btn-light border"><i class="bi bi-question-lg"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- edition -->
+  <div class="container-fluid bg-white edition-container">
+    <div class="row">
+      <!-- textus constitutus -->
+      <div class="col-md-6 border p-3">
+        <h3 class="h6">Textus constitutus</h3>
+        <form action="/addFile/<%= id %>" enctype="multipart/form-data" accept="application/msword, text/plain" method="post">
+          <label class="text-muted">Upload a <span class="fw-bold">.txt file</span>:</label>
+          <input type="file" name="upload">
+          <input class="btn btn-sm btn-light border" type="submit" value="Submit">
+        </form>
+        <textarea class="mt-1" placeholder="Insert the text of your edition..." id="base-text">
+            <% if (typeof file !== "undefined") { %>
+                <%- include (`../uploads/${file}`) %>
+            <% }; %>
+          </textarea>
+      </div>
+      <div class="col-md-3 bg-light border p-3">
+        <!-- apparatus -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#annotate" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#check" type="button" role="tab" aria-controls="check" aria-selected="false">Check</button>
+          </li>
+        </ul>
+        <div class="tab-content scroll-tab" id="myTabContent">
+          <div class="tab-pane fade show active" id="annotate" role="tabpanel" aria-labelledby="annotate-tab">
+            <!-- default alerts -->
+            <div id="annotation-warning"></div>
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <p>Highlight the fragment in the text you want to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after clicking the button.</p>
+              <p class="fw-bold">These functionalities will coming soon!</p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <!-- error handling -->
+            <% if (typeof errors !== "undefined") { %>
+            <% if (errors.length == 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <p>Data saved!</p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } else { %>
+            <% errors.forEach((error) => { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <p>Please insert the <strong><%= error.msg %></strong>.</p>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% }); %>
+            <% }; %>
+            <% }; %>
+            <!-- forms apparatus -->
+            <div class="d-none" id="apparatus">
+              <%- include ("partials/forms-req/apparatus") %>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="check" role="tabpanel" aria-labelledby="check-tab">
+            <h2 class="mt-3 h5" id="check-annotation"></h2>
+            <!-- results apparatus -->
+            <div id="apparatus-res">
+              <%- include ("partials/forms-res/apparatus") %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1 border p-3">
+        <h3 class="h6">Parallels</h3>
+        <button type="button" class="btn btn-sm btn-secondary">Insert parallel</button>
+      </div>
+      <div class="col-md-1 border p-3">
+        <h3 class="h6">Citations</h3>
+        <button type="button" class="btn btn-sm btn-dark">Insert citation</button>
+      </div>
+      <div class="col-md-1 border p-3">
+        <h3 class="h6">Translations</h3>
+        <button type="button" class="btn btn-sm btn-secondary">Insert translation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- annotation buttons -->
+  <div class="container-fluid bg-light p-2">
+    <div class="row">
+      <div class="col-md-12">
+        <span>Insert: </span>
+        <!-- text structure -->
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Text structure
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Chapter</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Stanza</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Pāda a</a></li>
+            <li><a class="dropdown-item" href="#">Pāda a</a></li>
+            <li><a class="dropdown-item" href="#">Pāda b</a></li>
+            <li><a class="dropdown-item" href="#">Pāda c</a></li>
+          </ul>
+        </div>
+        <!-- apparatus entry -->
+        <button type="button" class="btn btn-sm btn-dark btn-annotation" data-value="apparatus">Apparatus entry</button>
+        <!-- notes -->
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Note
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Philological note</a></li>
+            <li><a class="dropdown-item" href="#">Literary note</a></li>
+            <li><a class="dropdown-item" href="#">Historical note</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
+</body>
+
+</html>

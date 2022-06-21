@@ -17,7 +17,10 @@ let alerts = () => {
 /* textarea */
 let textarea = () => {
     tinymce.init({
-        selector: "#base-text"
+        selector: "#base-text",
+        resize: false,
+        height: "65vh",
+        width: "100%"
     });
 };
 
@@ -30,7 +33,7 @@ let annotations = () => {
                 document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
-                    document.getElementById(el.dataset.value).classList.add("d-block");
+                    document.getElementById(el.dataset.value).classList.remove("d-none");
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };

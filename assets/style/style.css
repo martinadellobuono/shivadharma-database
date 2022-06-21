@@ -11959,7 +11959,7 @@ fieldset:disabled .btn {
 
 /* html */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: true;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -11968,9 +11968,14 @@ body {
   padding-top: 56px;
 }
 
-/* textarea */
-.text textarea {
+/* layout */
+.edition-container, .edition-container .row {
+  height: 77vh;
+}
+
+.scroll-tab {
   height: 70vh;
-  width: 100%;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 /*# sourceMappingURL=style.css.map */

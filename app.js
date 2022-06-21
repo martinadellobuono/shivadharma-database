@@ -18,17 +18,13 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-// initialize the edition
-const initializeEdition = require("./routes/initializeEdition");
-app.use("/", initializeEdition);
-
 // get started
 const getStarted = require("./routes/getStarted");
 app.use("/", getStarted);
 
-// add metadata
-const addMetadata = require("./routes/addMetadata");
-app.use("/", addMetadata);
+// edit
+const edit = require("./routes/edit");
+app.use("/", edit);
 
 // add file
 const addFile = require("./routes/addFile");

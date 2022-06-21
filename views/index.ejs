@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
 <%- include ("partials/head") %>
+
 <body>
-    <%- include ("partials/navbar") %>
-    <div class="container-fluid pb-5 pt-5">
-        <!-- alert -->
-        <div class="alert alert-warning alert-dismissible fade" role="alert">
-            <span>The web application is under development. New contents and functionalities are coming soon!</span></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <div class="container text-center">
-            <h1>Śivadharma Database</h1>
-        </div>
+  <%- include ("partials/navbar") %>
+  <div class="container-fluid pb-5 pt-5">
+    <!-- alert -->
+    <div class="alert alert-warning alert-dismissible fade" role="alert">
+      <span>The web application is under development. New contents and functionalities are coming soon!</span></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div class="container-fluid bg-light pb-5 pt-5">
-        <div class="container">
-            A Scholarly Digital Critical Edition is a conceptually and structurally sophisticated entity, not only because the text is “constrained by its sequential presentation”, but also because it is characterized by a multidimensional complexity. Editions of South Asian texts, in particular, contain a series of phenomena difficult to manage formally, such as the overlapping, which requires establishing the data structure best suited to represent this complexity. The present paper focuses on exploring a case study from the Śivadharma Database, an upcoming digital library of L’Orientale University of Naples, the École française d’Extrême-Orient, and the /DH.arc Research Centre of Alma Mater Studiorum University of Bologna. The results show that a tree structure is insufficient to handle the non-linearity of the readings of a text in South Asian languages, while the graph database Neo4j, used for a CRUD web application, is a better solution to structure and store data to create, publish, store, catalog, update, visualize, and browse Scholarly Digital Critical Editions. 
-        </div>
+    <div class="container text-center">
+      <i class="bi bi-bricks"></i>
+      <h1>Śivadharma Database</h1>
     </div>
-    <%- include ("partials/footer") %>
-    <%- include ("partials/script") %>
+  </div>
+  <div class="container-fluid bg-light pb-5 pt-5">
+    <div class="container">
+      A Scholarly Digital Critical Edition is a conceptually and structurally sophisticated entity, not only because the text is “constrained by its sequential presentation”, but also because it is characterized by a multidimensional complexity. Editions of South Asian texts, in particular, contain a series of phenomena difficult to manage formally, such as the overlapping, which requires establishing the data structure best suited to represent this complexity. The present paper focuses on exploring a case study from the Śivadharma Database, an upcoming digital library of L’Orientale University of Naples, the École française d’Extrême-Orient, and the /DH.arc Research Centre of Alma Mater Studiorum University of Bologna. The results show that a tree structure is insufficient to handle the non-linearity of the readings of a text in South Asian languages, while the graph database Neo4j, used for a CRUD web application, is a better solution to structure and store data to create, publish, store, catalog, update, visualize, and browse Scholarly Digital Critical Editions.
+    </div>
+  </div>
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
 </body>
+
 </html>
