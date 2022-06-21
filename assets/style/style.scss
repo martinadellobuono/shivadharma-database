@@ -1,0 +1,10 @@
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+/* html */
+html {scroll-behavior: smooth; -webkit-font-smoothing: antialiased;}
+
+/* body */
+body {padding-top: 56px;}
+
+/* textarea */
+.text textarea {height: 70vh; width: 100%;}
