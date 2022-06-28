@@ -59,21 +59,14 @@ router.post("/edit/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[h:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)  
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-
-
                 OPTIONAL MATCH (file:File)-[pr:PRODUCED_BY]->(editor)
-                
-
-
-                MERGE (edition)-[p:PUBLISHED_ON]->(date:Date)
+                MERGE (date:Date)
+                MERGE (edition)-[p:PUBLISHED_ON]->(date)
                 ON CREATE
                     SET edition.title = "${req.body.title}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
                 ON MATCH 
                     SET edition.title = "${req.body.title}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
-                
-                
                 RETURN edition.title, date.on, editor.name, work.title, author.name, file.name
-                
                 `
             )
             .subscribe({

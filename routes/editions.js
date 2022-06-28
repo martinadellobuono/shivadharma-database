@@ -13,11 +13,17 @@ router.get("/editions", async (req, res) => {
     const session = driver.session();
     try {
         const data = await session.readTransaction(tx => tx
-            .run("MATCH (work:Work)-[w:WRITTEN_BY]->(author:Author) MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor) MATCH (file:File)-[p:PRODUCED_BY]->(editor:Editor) RETURN edition.title, author.name, editor.name, ID(edition), ID(editor), file.name ORDER BY edition.title, editor.name")
-        );
+            .run(
+                `
+                MATCH item=(edition:Edition)-[r:EDITED_BY]->(editor:Editor)
+                RETURN item
+                ORDER BY edition.title, editor.name
+                `
+            )
+        );        
         res.render("editions", {
             editions: data.records.map(row => {
-                const results = row["_fields"];
+                const results = row.get("item");
                 return results;
             })
         });

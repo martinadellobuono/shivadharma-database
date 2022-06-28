@@ -79,10 +79,12 @@
           <input class="btn btn-sm btn-light border" type="submit" value="Submit">
         </form>
         <textarea class="mt-1" placeholder="Insert the text of your edition..." id="base-text">
-            <% if (typeof file !== "undefined") { %>
-                <%- include (`../uploads/${file}`) %>
-            <% }; %>
-          </textarea>
+          <% if (typeof file !== "undefined") { %>
+              <% if (file) { %>
+                  <%- include (`../uploads/${file}`) %>
+              <% }; %>
+          <% }; %>
+        </textarea>
       </div>
       <div class="col-md-3 bg-light border p-3">
         <!-- apparatus -->

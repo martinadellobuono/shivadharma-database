@@ -15,11 +15,13 @@
             <!-- list of editions -->
             <% if (editions) { %>
                 <% editions.forEach(function(edition) { %>
+                    
                     <li class="p-2">
-                        <span class="fw-bold"><%= edition[0] %></span>, <span><%= edition[1] %></span> <span class="text-muted">curated by <%= edition[2] %></span>
-                        <a href="/edition/<%= edition[3] %>-<%= edition[4] %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                        <a href="/edit/<%= edition[3] %>-<%= edition[4] %>" class="btn btn-light btn-sm" title="Modify the edition">Modify the edition</a>
+                        <span class="fw-bold"><%= edition %></span>, <span></span> <span class="text-muted">curated by <%= edition %></span>
+                        <a href="/edition/" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+                        <a href="/edit/" class="btn btn-light btn-sm" title="Modify the edition">Modify the edition</a>
                     </li>
+
                 <% }); %>  
             <% }; %>
         </div>
