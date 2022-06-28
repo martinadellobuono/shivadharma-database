@@ -26,15 +26,17 @@ router.post("/addApparatus/:id",
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (edition)-[p:PUBLISHED_ON]->(date:Date), (file:File)-[pr:PRODUCED_BY]->(editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
+                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                    OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                    OPTIONAL MATCH (file:File)-[pr:PRODUCED_BY]->(editor)
                     MERGE (edition)-[f:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: $selectedFragment})
                     MERGE (selectedFragment)-[l:HAS_LEMMA]->(lemma:Lemma {value: $lemma})
                     MERGE (lemma)-[v:HAS_VARIANT]->(variant:Variant {value: $variant})
                     MERGE (lemma)-[at:ATTESTED_IN]->(manuscriptLemma:ManuscriptLemma {code: $manuscriptLemma})
                     MERGE (variant)-[t:ATTESTED_IN]->(manuscriptVariant:ManuscriptVariant {code: $manuscriptVariant})
                     RETURN work.title, edition.title, author.name, editor.name, date.on, file.name, lemma.value, manuscriptLemma.code, variant.value, manuscriptVariant.code
-                    `, 
+                    `,
                     {
                         selectedFragment: req.body.selectedFragment,
                         lemma: req.body.lemma,
@@ -47,7 +49,6 @@ router.post("/addApparatus/:id",
                     onNext: record => {
                         res.render("edit", {
                             id: req.params.id,
-                            errors: errors.array(),
                             work: record.get("work.title"),
                             title: record.get("edition.title"),
                             author: record.get("author.name"),
@@ -58,7 +59,7 @@ router.post("/addApparatus/:id",
                             manuscriptLemma: record.get("manuscriptLemma.code"),
                             variant: record.get("variant.value"),
                             manuscriptVariant: record.get("manuscriptVariant.code")
-                        });
+                        })
                     },
                     onCompleted: () => {
                         console.log("Data added to the graph");
