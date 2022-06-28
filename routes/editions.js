@@ -15,16 +15,15 @@ router.get("/editions", async (req, res) => {
         const data = await session.readTransaction(tx => tx
             .run(
                 `
-                MATCH item=(edition:Edition)-[r:EDITED_BY]->(editor:Editor)
-                RETURN item
-                ORDER BY edition.title, editor.name
+                MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[h:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                RETURN author.name, edition.title, editor.name
+                ORDER BY edition.title, author.name, editor.name
                 `
             )
-        );        
+        );
         res.render("editions", {
             editions: data.records.map(row => {
-                const results = row.get("item");
-                return results;
+                return row;
             })
         });
     } catch (err) {
