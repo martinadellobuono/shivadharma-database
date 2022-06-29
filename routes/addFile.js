@@ -22,7 +22,6 @@ router.post("/addFile/:id", async (req, res) => {
         file.path = `${__dirname}/../uploads/${file.name}`;
     });
     form.on("file", async (name, file) => {
-
         /* convert docx to html */
         if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
             mammoth.convertToHtml({ path: file.path })
@@ -36,6 +35,13 @@ router.post("/addFile/:id", async (req, res) => {
                                     console.log("The file has been overwritten");
                                 };
                             });
+                            fs.rename(file.path, file.path + ".html", (err) => {
+                                if (err) {
+                                    console.log("Error related to renaming the file: " + err);
+                                } else {
+                                    console.log("The file has been renamed: " + file.name);
+                                };
+                            });
                         });
                     } catch (error) {
                         console.log("Error in converting the file: " + error);
@@ -43,7 +49,8 @@ router.post("/addFile/:id", async (req, res) => {
                 })
                 .done();
         };
-
+        /* post the file */
+        var fileNewName = file.name + ".html";
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
@@ -55,7 +62,7 @@ router.post("/addFile/:id", async (req, res) => {
                     MERGE (file:File {name: $file})
                     MERGE (file)-[pr:PRODUCED_BY]->(editor)
                     RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
-                    `, { file: file.name })
+                    `, { file: fileNewName })
                 .subscribe({
                     onNext: record => {
                         res.render("edit", {
@@ -81,8 +88,6 @@ router.post("/addFile/:id", async (req, res) => {
         } finally {
             await session.close();
         };
-
-
     });
     form.on("error", (err) => {
         console.log(err);
