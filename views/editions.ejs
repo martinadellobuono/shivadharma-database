@@ -17,8 +17,8 @@
                 <% editions.forEach(function(edition) { %>
                     <li class="p-2">
                         <span class="fw-bold"><%= edition.get("edition.title") %></span>, <span><%= edition.get("author.name") %></span> <span class="text-muted">curated by <%= edition.get("editor.name") %></span>
-                        <a href="/edition/" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                        <a href="/edit/" class="btn btn-light btn-sm" title="Modify the edition">Modify the edition</a>
+                        <a href="/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+                        <a href="/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Modify the edition">Modify the edition</a>
                     </li>
                 <% }); %>  
             <% }; %>
