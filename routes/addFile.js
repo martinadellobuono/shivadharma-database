@@ -2,6 +2,8 @@ const express = require("express");
 const path = require("path");
 const formidable = require("formidable");
 const bodyParser = require("body-parser");
+const mammoth = require("mammoth");
+const fs = require("fs");
 
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
@@ -20,12 +22,34 @@ router.post("/addFile/:id", async (req, res) => {
         file.path = `${__dirname}/../uploads/${file.name}`;
     });
     form.on("file", async (name, file) => {
+
+        /* convert docx to html */
+        if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            mammoth.convertToHtml({ path: file.path })
+                .then((result) => {
+                    try {
+                        fs.access(file.path, fs.F_OK, () => {
+                            fs.writeFile(file.path, result.value, "utf8", (err) => {
+                                if (err) {
+                                    console.log("Error related to rewriting the file: " + err);
+                                } else {
+                                    console.log("The file has been overwritten");
+                                };
+                            });
+                        });
+                    } catch (error) {
+                        console.log("Error in converting the file: " + error);
+                    };
+                })
+                .done();
+        };
+
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
+                    MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
                     WHERE id(editor) = ${idEditor} AND id(editor) = ${idEditor}
                     OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
                     MERGE (file:File {name: $file})
@@ -57,6 +81,8 @@ router.post("/addFile/:id", async (req, res) => {
         } finally {
             await session.close();
         };
+
+
     });
     form.on("error", (err) => {
         console.log(err);

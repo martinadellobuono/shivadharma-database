@@ -1,5 +1,5 @@
 {
-  "name": "GraphAnnotator",
+  "name": "shivadharma",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -7,7 +7,7 @@
     "start": "nodemon"
   },
   "keywords": [],
-  "author": "MartinaDelloBuono",
+  "author": "Martina Dello Buono",
   "license": "ISC",
   "dependencies": {
     "body-parser": "*",
@@ -17,7 +17,9 @@
     "express": "*",
     "express-validator": "*",
     "formidable": "*",
+    "mammoth": "^1.4.21",
     "neo4j-driver": "*",
+    "npm": "^8.13.1",
     "tinymce": "^6.0.3"
   }
 }
