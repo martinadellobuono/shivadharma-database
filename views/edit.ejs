@@ -9,7 +9,7 @@
   <div class="container-fluid bg-light p-2">
     <div class="row">
       <!-- title -->
-      <div class="col-md-7">
+      <div class="col-md-8">
         <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></button>
         <% if (typeof title !== "undefined") { %>
         <h1 class="h4 d-inline"><%= title %><span>, </span><%= author %></h1>
@@ -17,7 +17,7 @@
         <% }; %>
       </div>
       <!-- metadata / publish / save as draft -->
-      <div class="col-md-5 text-end">
+      <div class="col-md-4 text-end">
         <button type="button" class="btn btn-secondary me-3" data-bs-toggle="modal" data-bs-target="#add-metadata">Add metadata</button>
         <!-- metadata modal -->
         <div class="modal fade text-start" id="add-metadata" tabindex="-1" aria-labelledby="add-metadata" aria-hidden="true">
@@ -74,7 +74,7 @@
       <div class="col-md-6 border p-3">
         <h3 class="h6">Textus constitutus</h3>
         <form action="/addFile/<%= id %>" enctype="multipart/form-data" method="post">
-          <label class="text-muted">Upload a <span class="fw-bold">.docx</span> file:</label>
+          <label class="text-muted">Upload a <span class="fw-bold">.docx</span> or <span class="fw-bold">.txt</span> file:</label>
           <input type="file" name="upload">
           <input class="btn btn-sm btn-light border" type="submit" value="Submit">
         </form>
