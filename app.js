@@ -34,6 +34,10 @@ app.use("/", addFile);
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
 app.use("/", addApparatus);
 
+// publish
+const publish = require("./routes/publish");
+app.use("/", publish);
+
 // get the edition
 const edition = require("./routes/edition");
 app.use("/", edition);

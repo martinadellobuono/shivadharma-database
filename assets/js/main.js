@@ -18,7 +18,7 @@ let alerts = () => {
 let textarea = () => {
     var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     tinymce.init({
-        selector: "#base-text",
+        selector: "#base-text > textarea",
         resize: false,
         width: "100%",
         plugins: "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons",

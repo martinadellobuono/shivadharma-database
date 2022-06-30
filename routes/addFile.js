@@ -13,8 +13,6 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-const { body, validationResult } = require("express-validator");
-
 router.post("/addFile/:id",
     async (req, res) => {
         var idEdition = req.params.id.split("/").pop().split("-")[0];
@@ -27,6 +25,8 @@ router.post("/addFile/:id",
         form.on("file", async (name, file) => {
             /* convert to html */
             /* docx > html */
+            var url = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
+            var fileName = `${idEdition}-${idEditor}.html`
             if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
                 mammoth.convertToHtml({ path: file.path })
                     .then((result) => {
@@ -39,11 +39,11 @@ router.post("/addFile/:id",
                                         console.log("The file has been overwritten");
                                     };
                                 });
-                                fs.rename(file.path, file.path + ".html", (err) => {
+                                fs.rename(file.path, url, (err) => {
                                     if (err) {
                                         console.log("Error related to renaming the file: " + err);
                                     } else {
-                                        console.log("The file has been renamed: " + file.name);
+                                        console.log("The file has been renamed: " + `${idEdition}-${idEditor}.html`);
                                     };
                                 });
                             });
@@ -54,7 +54,7 @@ router.post("/addFile/:id",
                     .done();
             /* any format > html */
             } else {
-                fs.rename(file.path, file.path + ".html", (err) => {
+                fs.rename(file.path, url, (err) => {
                     if (err) {
                         console.log("Error related to renaming the file: " + err);
                     } else {
@@ -63,7 +63,6 @@ router.post("/addFile/:id",
                 });
             };
             /* post the file */
-            var fileNewName = file.name + ".html";
             const session = driver.session();
             try {
                 await session.writeTransaction(tx => tx
@@ -75,7 +74,7 @@ router.post("/addFile/:id",
                         MERGE (file:File {name: $file})
                         MERGE (file)-[pr:PRODUCED_BY]->(editor)
                         RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
-                        `, { file: fileNewName })
+                        `, { file: fileName })
                     .subscribe({
                         onNext: record => {
                             res.render("edit", {

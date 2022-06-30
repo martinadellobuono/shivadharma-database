@@ -17,10 +17,10 @@ router.get("/getstarted", (req, res) => {
 
 router.post("/getstarted",
     /* error handling */
-    body("work").isLength({min: 1}).withMessage("title of the work"),
-    body("title").isLength({min: 1}).withMessage("title of the edition"),
-    body("author").isLength({min: 1}).withMessage("author of the edited text"),
-    body("editor").isLength({min: 1}).withMessage("editor of the edition"),
+    body("work").trim().isLength({min: 1}).escape().withMessage("title of the work"),
+    body("title").trim().isLength({min: 1}).escape().withMessage("title of the edition"),
+    body("author").trim().isLength({min: 1}).escape().withMessage("author of the edited text"),
+    body("editor").trim().isLength({min: 1}).escape().withMessage("editor of the edition"),
     async (req, res) => {
         const errors = validationResult(req);
         /* error handling */
