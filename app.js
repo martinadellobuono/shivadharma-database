@@ -13,6 +13,11 @@ app.use("/assets", express.static("assets"));
 app.use("/node_modules", express.static("node_modules"));
 app.use("/views", express.static("views"));
 
+// body parsing limits
+const bodyParser = require("body-parser");
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000}));
+
 // index
 app.get("/", (req, res) => {
     res.render("index");
