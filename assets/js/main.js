@@ -86,7 +86,7 @@ let annotations = () => {
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent();
+                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({format: 'text'}).trim();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
                     document.getElementById(el.dataset.value).classList.remove("d-none");
