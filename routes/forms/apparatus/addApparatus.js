@@ -22,6 +22,7 @@ router.post("/addApparatus/:id",
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
+        var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
         /* save data */
         const session = driver.session();
         try {
@@ -59,7 +60,7 @@ router.post("/addApparatus/:id",
                             date: record.get("date.on"),
                             file: idEdition + "-" + idEditor + ".html",
                             stanza: record.get("selectedFragment.stanza"),
-                            pada: record.get("selectedFragment.pada"),
+                            pada: JSON.stringify(record.get("selectedFragment.pada")).replace(/[\[\]\{\}\,\"]+/g, ""),
                             lemma: record.get("lemma.value"),
                             manuscriptLemma: record.get("manuscriptLemma.code"),
                             variant: record.get("variant.value"),
