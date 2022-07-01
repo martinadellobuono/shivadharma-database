@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const fs = require("fs");
 
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
@@ -12,6 +13,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.get("/edit/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
+    var file = `${idEdition}-${idEditor}.html`;
+    var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -25,14 +28,32 @@ router.get("/edit/:id", async (req, res) => {
             )
             .subscribe({
                 onNext: record => {
-                    res.render("edit", {
-                        id: req.params.id,
-                        work: record.get("work.title"),
-                        title: record.get("edition.title"),
-                        author: record.get("author.name"),
-                        editor: record.get("editor.name"),
-                        date: record.get("date.on")
-                    });
+                    /* check if the file exists */
+                    /* file */
+                    if (fs.existsSync(path)) {
+                        /* get data */
+                        res.render("edit", {
+                            id: req.params.id,
+                            work: record.get("work.title"),
+                            title: record.get("edition.title"),
+                            author: record.get("author.name"),
+                            editor: record.get("editor.name"),
+                            date: record.get("date.on"),
+                            file: file
+                        });
+                    } else {
+                        /* no file */
+                        /* get data */
+                        res.render("edit", {
+                            id: req.params.id,
+                            work: record.get("work.title"),
+                            title: record.get("edition.title"),
+                            author: record.get("author.name"),
+                            editor: record.get("editor.name"),
+                            date: record.get("date.on"),
+                            file: false
+                        });
+                    };
                 },
                 onCompleted: () => {
                     console.log("Data added to the graph");

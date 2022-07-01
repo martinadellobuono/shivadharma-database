@@ -84,10 +84,8 @@
         <!-- file -->
         <form id="base-text" method="post" action="/publish/<%= id %>">
           <textarea class="mt-1" placeholder="Insert the text of your edition..." name="fileBaseTxt">
-            <% if (typeof file !== "undefined") { %>
-                <% if (file) { %>
-                    <%- include (`../uploads/${file}`) %>
-                <% }; %>
+            <% if (file) { %>
+                <%- include (`../uploads/${file}`) %>
             <% }; %>
           </textarea>
         </form>
