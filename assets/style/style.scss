@@ -11,13 +11,33 @@ body {
     padding-top: 56px;
 }
 
+/* margin */
+.mt-20 {
+    margin-top: 20px;
+}
+
 /* layout */
-.edition-container, .edition-container .row {
+.edition-container,
+.edition-container .row {
     height: 77vh;
 }
 
+/* tabs */
 .scroll-tab {
     height: 70vh;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+.scroll-tab::-webkit-scrollbar {
+    width: 10px;
+}
+
+.scroll-tab::-webkit-scrollbar-track {
+    background: $light;
+}
+
+.scroll-tab::-webkit-scrollbar-thumb {
+    background-color: $secondary;
+    border-radius: 10px;
 }

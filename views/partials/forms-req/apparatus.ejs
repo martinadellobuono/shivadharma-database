@@ -5,17 +5,39 @@
     <label class="form-label">Selected fragment</label>
     <input id="selected-fragment" type="text" class="form-control" aria-describedby="Selected fragment" name="selectedFragment">
   </div>
+  <!-- stanza / pada -->
+  <div class="bg-white p-3 mb-3">
+    <label class="form-label">Stanza</label>
+    <input type="number" class="form-control mb-3" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanza">
+    <label class="form-label">Pāda</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" value="a" name="pada">
+      <label class="form-check-label">a</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" value="b" name="pada">
+      <label class="form-check-label">b</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" value="c" name="pada">
+      <label class="form-check-label">c</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" value="d" name="pada">
+      <label class="form-check-label">d</label>
+    </div>
+  </div>
   <!-- lemma -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Lemma</label>
-    <input type="text" class="form-control" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+    <input type="text" class="form-control mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
     <label class="form-label">Manuscript</label>
     <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscriptLemma">
   </div>
   <!-- variants -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Variant</label>
-    <input type="text" class="form-control" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
+    <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Manuscript</label>
     <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscriptVariant">
   </div>

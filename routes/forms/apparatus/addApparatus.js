@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const fs = require("fs");
 
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
@@ -21,24 +22,26 @@ router.post("/addApparatus/:id",
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
+        /* save data */
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[r:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                    OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
-                    OPTIONAL MATCH (file:File)-[pr:PRODUCED_BY]->(editor)
-                    MERGE (edition)-[f:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: $selectedFragment})
-                    MERGE (selectedFragment)-[l:HAS_LEMMA]->(lemma:Lemma {value: $lemma})
-                    MERGE (lemma)-[v:HAS_VARIANT]->(variant:Variant {value: $variant})
-                    MERGE (lemma)-[at:ATTESTED_IN]->(manuscriptLemma:ManuscriptLemma {code: $manuscriptLemma})
-                    MERGE (variant)-[t:ATTESTED_IN]->(manuscriptVariant:ManuscriptVariant {code: $manuscriptVariant})
-                    RETURN work.title, edition.title, author.name, editor.name, date.on, file.name, lemma.value, manuscriptLemma.code, variant.value, manuscriptVariant.code
+                    OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
+                    MERGE (manuscriptLemma:ManuscriptLemma {code: $manuscriptLemma})
+                    MERGE (manuscriptVariant:ManuscriptVariant {code: $manuscriptVariant})
+                    MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: $selectedFragment, stanza: $stanza, pada: $pada})-[:HAS_LEMMA]->(lemma:Lemma {value: $lemma})-[:HAS_VARIANT]->(variant:Variant {value: $variant})
+                    MERGE (lemma)-[:ATTESTED_IN]->(manuscriptLemma)
+                    MERGE (variant)-[:ATTESTED_IN]->(manuscriptVariant)
+                    RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, manuscriptLemma.code, variant.value, manuscriptVariant.code
                     `,
                     {
                         selectedFragment: req.body.selectedFragment,
+                        stanza: req.body.stanza,
+                        pada: req.body.pada,
                         lemma: req.body.lemma,
                         manuscriptLemma: req.body.manuscriptLemma,
                         variant: req.body.variant,
@@ -54,7 +57,9 @@ router.post("/addApparatus/:id",
                             author: record.get("author.name"),
                             editor: record.get("editor.name"),
                             date: record.get("date.on"),
-                            file: record.get("file.name"),
+                            file: idEdition + "-" + idEditor + ".html",
+                            stanza: record.get("selectedFragment.stanza"),
+                            pada: record.get("selectedFragment.pada"),
                             lemma: record.get("lemma.value"),
                             manuscriptLemma: record.get("manuscriptLemma.code"),
                             variant: record.get("variant.value"),
