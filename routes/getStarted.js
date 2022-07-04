@@ -30,7 +30,7 @@ router.post("/getstarted",
                 errors: errors.array()
             });
         } else {
-            /* post */
+            /* post data */
             const session = driver.session();
             try {
                 await session.writeTransaction(tx => tx

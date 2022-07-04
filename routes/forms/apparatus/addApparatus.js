@@ -23,8 +23,6 @@ router.post("/addApparatus/:id",
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    
-        
         /* save data */
         const session = driver.session();
         try {
@@ -82,9 +80,6 @@ router.post("/addApparatus/:id",
         } finally {
             await session.close();
         };
-
-
-
     });
 
 module.exports = router;

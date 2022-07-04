@@ -35,6 +35,10 @@ app.use("/", edit);
 const addFile = require("./routes/addFile");
 app.use("/", addFile);
 
+// add witnesses
+const addWitnesses = require("./routes/forms/metadata/addWitnesses");
+app.use("/", addWitnesses);
+
 // add apparatus
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
 app.use("/", addApparatus);

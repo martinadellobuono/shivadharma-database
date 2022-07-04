@@ -7,8 +7,8 @@ const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "
 
 const router = express.Router();
 
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: false }));
+router.use(bodyParser.json({limit: "50mb"}));
+router.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000}));
 
 router.get("/edit/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];

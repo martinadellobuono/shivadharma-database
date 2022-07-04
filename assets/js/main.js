@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alerts();
     annotations();
     textarea();
+    flexdatalist();
 });
 
 /* alerts */
@@ -95,5 +96,13 @@ let annotations = () => {
                 };
             };
         });
+    });
+};
+
+/* flexdatalist */
+let flexdatalist = () => {
+    $(".flexdatalist").flexdatalist({
+        minLength: 0,
+        searchContain: true
     });
 };

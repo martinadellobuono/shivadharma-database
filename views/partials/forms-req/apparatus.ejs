@@ -39,14 +39,22 @@
     <label class="form-label">Variant</label>
     <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Manuscript</label>
-    <input type="text" class="form-control" placeholder="Insert manuscript" aria-describedby="Insert manuscript" name="manuscriptVariant">
+
+    <!-- try -->
+    <input type="text" class="flexdatalist form-control" data-min-length="0" placeholder="Insert a siglum..." aria-describedby="Insert a siglum" data-min-length="1" multiple="multiple" list="manuscriptVariantList" name="manuscriptVariant">
+
+    <datalist id="manuscriptVariantList">
+      <option value="manuscript">manuscript</option>
+    </datalist>
+    <!-- / try -->
+
   </div>
   <!-- add variant -->
   <div class="mb-3">
-    <button type="button" class="btn btn-primary">+</button>
+    <button type="button" class="btn btn-primary">&#x2b;</button>
   </div>
   <!-- submit -->
   <div>
-    <button type="submit" class="btn btn-primary" form="form-annotations">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 </form>

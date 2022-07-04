@@ -69,12 +69,13 @@ router.post("/addFile/:id",
                     .run(
                         `
                         MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                        WHERE id(editor) = ${idEditor} AND id(editor) = ${idEditor}
+                        WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                         OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
                         MERGE (file:File {name: $file})
                         MERGE (file)-[pr:PRODUCED_BY]->(editor)
                         RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
-                        `, { file: fileName })
+                        `, { file: fileName }
+                    )
                     .subscribe({
                         onNext: record => {
                             res.render("edit", {

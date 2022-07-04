@@ -1,0 +1,84 @@
+<!-- metadata modal -->
+<button type="button" class="btn btn-secondary me-3" data-bs-toggle="modal" data-bs-target="#add-metadata">Add metadata</button>
+<!-- metadata modal -->
+<div class="modal fade text-start" id="add-metadata" tabindex="-1" aria-labelledby="add-metadata" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add metadata</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#meta-title" type="button" role="tab" aria-controls="home" aria-selected="true">Title and responsibility</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#meta-witnesses" type="button" role="tab" aria-controls="profile" aria-selected="false">Witnesses</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <!-- title and responsibility -->
+          <div class="tab-pane mb-3 mt-3 fade show active" id="meta-title" role="tabpanel" aria-labelledby="meta-title">
+            <form method="post" action="/edit/<%= id %>">
+              <div class="mb-3">
+                <label class="form-label">Work</label>
+                <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= work %>" name="work">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Title of the edition</label>
+                <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= title %>" name="title">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Author of the edited work</label>
+                <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= author %>" name="author">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Editor</label>
+                <input type="text" class="form-control" aria-describedby="Editor" value="<%= editor %>" name="editor">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date of publication of the edition</label>
+                <% if (typeof date !== "undefined") { %>
+                <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
+                <% } else { %>
+                <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
+                <% } %>
+              </div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+
+
+          <!-- witnesses -->
+          <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
+
+            <!-- siglum -->
+            <div class="bg-light mb-3 p-3">
+              <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
+                <div class="mb-3">
+                  <label class="form-label">Siglum</label>
+                  <input type="text" class="form-control" aria-describedby="Siglum" name="witnessSiglum">
+                </div>
+              </form>
+            </div>
+
+            <!-- add witness -->
+            <div class="mb-3">
+              <button type="button" class="btn btn-primary">&#x2b;</button>
+            </div>
+
+            <!-- submit -->
+            <div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" form="addWitnesses">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
