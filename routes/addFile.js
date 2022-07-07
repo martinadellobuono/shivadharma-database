@@ -52,7 +52,7 @@ router.post("/addFile/:id",
                         };
                     })
                     .done();
-            /* any format > html */
+                /* any format > html */
             } else {
                 fs.rename(file.path, url, (err) => {
                     if (err) {
@@ -71,28 +71,21 @@ router.post("/addFile/:id",
                         MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                         OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                        OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
                         MERGE (file:File {name: $file})
                         MERGE (file)-[pr:PRODUCED_BY]->(editor)
-                        RETURN work.title, edition.title, author.name, editor.name, date.on, file.name
+                        RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
                         `, { file: fileName }
                     )
                     .subscribe({
-                        onNext: record => {
-                            res.render("edit", {
-                                id: req.params.id,
-                                work: record.get("work.title"),
-                                title: record.get("edition.title"),
-                                author: record.get("author.name"),
-                                editor: record.get("editor.name"),
-                                date: record.get("date.on"),
-                                file: record.get("file.name")
-                            });
+                        onNext: () => {
+                            res.redirect("/edit/" + idEdition + "-" + idEditor);
                         },
                         onCompleted: () => {
-                            console.log("Data added to the graph");
+                            console.log("Data added to the database")
                         },
                         onError: err => {
-                            console.log("Error related to the upload to Neo4j: " + err)
+                            console.log("Error related to Neo4j action /addFile/:id: " + err)
                         }
                     })
                 );

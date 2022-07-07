@@ -50,7 +50,12 @@ router.post("/addApparatus/:id",
                     }
                 )
                 .subscribe({
+
                     onNext: record => {
+                        res.redirect("../edit/" + idEdition + "-" + idEditor);
+                    },
+
+                    /*onNext: record => {
                         res.render("edit", {
                             id: req.params.id,
                             work: record.get("work.title"),
@@ -66,7 +71,7 @@ router.post("/addApparatus/:id",
                             variant: record.get("variant.value"),
                             manuscriptVariant: record.get("manuscriptVariant.code")
                         })
-                    },
+                    },*/
                     onCompleted: () => {
                         console.log("Data added to the graph");
                     },

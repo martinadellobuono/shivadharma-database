@@ -18,19 +18,20 @@ router.post("/addWitnesses/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)  
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 MERGE (witness:Witness {siglum: $siglum})
                 MERGE (edition)<-[:USED_IN]-(witness)
-                RETURN witness.siglum
+                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on
                 `, { siglum: req.body.witnessSiglum }
             )
             .subscribe({
-                onNext: record => {
-                    res.status(204).send();
+                onNext: () => {
+                    res.redirect("../edit/" + idEdition + "-" + idEditor);
                 },
                 onCompleted: () => {
-                    console.log("Witnesses added to the graph");
+                    console.log("Data added to the database")
                 },
                 onError: err => {
                     console.log("Error related to Neo4j action /addWitnesses/:id: " + err)
