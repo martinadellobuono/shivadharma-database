@@ -69,11 +69,6 @@ router.get("/edit/:id", async (req, res) => {
 
                 },
                 onCompleted: () => {
-
-
-                    console.log("I lemmi sono: " + app_entry);
-
-
                     if (fs.existsSync(path)) {
                         res.render("edit", {
                             id: req.params.id,

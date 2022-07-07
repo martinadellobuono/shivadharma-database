@@ -28,7 +28,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
             )
             .subscribe({
                 onNext: () => {
-                    res.redirect("../edit/" + idEdition + "-" + idEditor);
+                    res.redirect(`../edit/${idEdition}-${idEditor}`);
                 },
                 onCompleted: () => {
                     console.log("Data added to the database")

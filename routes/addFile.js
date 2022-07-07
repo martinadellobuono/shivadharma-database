@@ -23,8 +23,6 @@ router.post("/addFile/:id",
             file.path = `${__dirname}/../uploads/${file.name}`;
         });
         form.on("file", async (name, file) => {
-            /* convert to html */
-            /* docx > html */
             var url = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
             var fileName = `${idEdition}-${idEditor}.html`
             if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -52,7 +50,6 @@ router.post("/addFile/:id",
                         };
                     })
                     .done();
-                /* any format > html */
             } else {
                 fs.rename(file.path, url, (err) => {
                     if (err) {
@@ -62,7 +59,6 @@ router.post("/addFile/:id",
                     };
                 });
             };
-            /* post the file */
             const session = driver.session();
             try {
                 await session.writeTransaction(tx => tx

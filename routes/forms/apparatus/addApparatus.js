@@ -32,27 +32,28 @@ router.post("/addApparatus/:id",
                     MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                     OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                    MERGE (manuscriptLemma:ManuscriptLemma {code: $manuscriptLemma})
-                    MERGE (manuscriptVariant:ManuscriptVariant {code: $manuscriptVariant})
-                    MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: $selectedFragment, stanza: $stanza, pada: $pada})-[:HAS_LEMMA]->(lemma:Lemma {value: $lemma})-[:HAS_VARIANT]->(variant:Variant {value: $variant})
-                    MERGE (lemma)-[:ATTESTED_IN]->(manuscriptLemma)
-                    MERGE (variant)-[:ATTESTED_IN]->(manuscriptVariant)
-                    RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, manuscriptLemma.code, variant.value, manuscriptVariant.code
-                    `,
-                    {
-                        selectedFragment: req.body.selectedFragment,
-                        stanza: req.body.stanza,
-                        pada: req.body.pada,
-                        lemma: req.body.lemma,
-                        manuscriptLemma: req.body.manuscriptLemma,
-                        variant: req.body.variant,
-                        manuscriptVariant: req.body.manuscriptVariant
-                    }
+
+
+                    OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
+                    WHERE witness.siglum = "${req.body.manuscriptLemma}"
+
+
+                    MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})-[:HAS_LEMMA]->(lemma:Lemma {value: "${req.body.lemma}"})-[:HAS_VARIANT]->(variant:Variant {value: "${req.body.variant}"})
+                    
+                    MERGE (lemma)-[:ATTESTED_IN]->(witness)
+                
+                    
+                    RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, variant.value
+                    `
                 )
                 .subscribe({
 
-                    onNext: record => {
-                        res.redirect("../edit/" + idEdition + "-" + idEditor);
+                    onNext: () => {
+                        res.redirect(`../edit/${idEdition}-${idEditor}`);
+                    },
+
+                    onCompleted: (record) => {
+                        console.log("The apparatus entry is: " + record.get("editor.name"));
                     },
 
                     /*onNext: record => {
