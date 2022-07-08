@@ -22,11 +22,6 @@ router.get("/edit/:id", async (req, res) => {
     var ed_temp = [];
     var date_temp = [];
     var wit_temp = [];
-
-
-    var app_entry;
-
-
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -36,9 +31,7 @@ router.get("/edit/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(SelectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
-
                 RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, lemma.value, variant.value
                 `
             )
