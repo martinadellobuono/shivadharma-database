@@ -32,24 +32,16 @@ router.post("/addApparatus/:id",
                     MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                     OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-
-
-                    OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-                    WHERE witness.siglum = "${req.body.manuscriptLemma}"
-                    
-                    
                     MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
                     MERGE (lemma:Lemma {value: "${req.body.lemma}"})
                     MERGE (variant:Variant {value: "${req.body.variant}"})
                     MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                     MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
                     MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                    
-
-                    MERGE (lemma)-[:ATTESTED_IN]->(witness)
-
-                
-                    
+                    MERGE (witnessLemma:Witness {siglum: "${req.body.manuscriptLemma}"})
+                    MERGE (witnessVariant:Witness {siglum: "${req.body.manuscriptVariant}"})
+                    MERGE (lemma)-[:ATTESTED_IN]->(witnessLemma)
+                    MERGE (variant)-[:ATTESTED_IN]->(witnessVariant)    
                     RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, variant.value
                     `
                 )
