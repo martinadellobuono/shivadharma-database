@@ -36,11 +36,18 @@ router.post("/addApparatus/:id",
 
                     OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
                     WHERE witness.siglum = "${req.body.manuscriptLemma}"
-
-
-                    MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})-[:HAS_LEMMA]->(lemma:Lemma {value: "${req.body.lemma}"})-[:HAS_VARIANT]->(variant:Variant {value: "${req.body.variant}"})
                     
+                    
+                    MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
+                    MERGE (lemma:Lemma {value: "${req.body.lemma}"})
+                    MERGE (variant:Variant {value: "${req.body.variant}"})
+                    MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
+                    MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+                    MERGE (lemma)-[:HAS_VARIANT]->(variant)
+                    
+
                     MERGE (lemma)-[:ATTESTED_IN]->(witness)
+
                 
                     
                     RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, variant.value
