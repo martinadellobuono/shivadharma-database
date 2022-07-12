@@ -42,7 +42,7 @@
     </datalist>
   </div>
   <!-- variants -->
-  <div class="bg-white p-3 mb-3">
+  <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
     <label class="form-label">Variant</label>
     <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Manuscript</label>
@@ -55,9 +55,13 @@
       <% }; %>
     </datalist>
   </div>
+
+  <div id="variant">
+  </div>
+
   <!-- add variant -->
   <div class="mb-3">
-    <button type="button" class="btn btn-primary">&#x2b;</button>
+    <button type="button" class="btn btn-primary" data-clone="variant">&#x2b;</button>
   </div>
   <!-- submit -->
   <div>

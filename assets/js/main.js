@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     annotations();
     textarea();
     flexdatalist();
+    cloneEl();
 });
 
 /* alerts */
@@ -105,5 +106,24 @@ let flexdatalist = () => {
         minLength: 0,
         searchContain: true,
         valuesSeparator: "|"
+    });
+};
+
+/* clone elements */
+let cloneEl = () => {
+    [].forEach.call(document.querySelectorAll("[data-clone]"), (el) => {
+        el.addEventListener("click", () => {
+            var cloneVal = el.getAttribute("data-clone");
+            var toClone = document.querySelectorAll("[data-cloned='" + cloneVal + "']");
+            var cloned = toClone[0].cloneNode(true);
+            /* add the close button */
+            var closeDiv = document.createElement("span");
+            closeDiv.className = "add-close";
+            closeDiv.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+            cloned.insertBefore(closeDiv, cloned.firstChild);
+            /* print the clone */
+            var appendClone = document.getElementById(cloneVal);
+            appendClone.appendChild(cloned);
+        });
     });
 };
