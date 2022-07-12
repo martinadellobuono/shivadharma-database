@@ -121,6 +121,20 @@ let cloneEl = () => {
             closeDiv.className = "add-close";
             closeDiv.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
             cloned.insertBefore(closeDiv, cloned.firstChild);
+
+            /* empty the forms */
+            var forms = cloned.querySelectorAll("input");
+            forms.forEach((el) => {
+                //if (el.classList.contains("flexdatalist")) {
+
+                    /* try */
+                    flexdatalist();
+                    
+                //} else {
+                    el.value = "";
+                //};
+            });
+
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
