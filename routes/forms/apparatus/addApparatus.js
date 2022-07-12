@@ -22,6 +22,7 @@ router.post("/addApparatus/:id",
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
+
         /* save data */
         const session = driver.session();
         try {
@@ -31,18 +32,20 @@ router.post("/addApparatus/:id",
                     MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                     OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
+                                        
                     MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
                     MERGE (lemma:Lemma {value: "${req.body.lemma}"})
                     MERGE (variant:Variant {value: "${req.body.variant}"})
                     MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                     MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
                     MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                    MERGE (witnessLemma:Witness {siglum: "${req.body.manuscriptLemma}"})
-                    MERGE (witnessLemma)-[:USED_IN]->(edition)
-                    MERGE (witnessVariant:Witness {siglum: "${req.body.manuscriptVariant}"})
-                    MERGE (witnessVariant)-[:USED_IN]->(edition)
-                    MERGE (lemma)-[:ATTESTED_IN]->(witnessLemma)
-                    MERGE (variant)-[:ATTESTED_IN]->(witnessVariant)    
+                    
+
+                    FOREACH (wit IN split("${req.body.manuscriptLemma}", "|") |
+                        MERGE (witLemma {siglum: wit})
+                    )
+                
+                    
                     RETURN work.title, edition.title, author.name, editor.name, date.on, selectedFragment.stanza, selectedFragment.pada, lemma.value, variant.value
                     `
                 )

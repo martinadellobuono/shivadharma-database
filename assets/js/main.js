@@ -103,6 +103,7 @@ let annotations = () => {
 let flexdatalist = () => {
     $(".flexdatalist").flexdatalist({
         minLength: 0,
-        searchContain: true
+        searchContain: true,
+        valuesSeparator: "|"
     });
 };
