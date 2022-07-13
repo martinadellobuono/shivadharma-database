@@ -84,7 +84,9 @@ let textarea = () => {
 /* autocomplete */
 let autocomplete = () => {
     var i = 0;
-    [].forEach.call(document.querySelectorAll("[data-list]"), (el) => {
+    [].forEach.call(document.querySelectorAll("[data-list]:not(.no-autocomplete-duplicates)"), (el) => {
+        /* remove duplicates */
+        el.classList.add("no-autocomplete-duplicates");
         /* create the autocomplete */
         var dataType = el.getAttribute("data-type");
         var dataList = el.getAttribute("data-list");
@@ -98,9 +100,7 @@ let autocomplete = () => {
                 cache: true,
             },
             resultsList: {
-
                 id: "autoComplete_list_" + i,
-
                 element: (list, data) => {
                     if (!data.results.length) {
                         // no results message element
@@ -174,9 +174,10 @@ let cloneEl = () => {
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
-            /* run autocomplete */
-            autocomplete();
             i++;
+            /* remove duplicates */
+            cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
+            autocomplete();
         });
     });
 };
