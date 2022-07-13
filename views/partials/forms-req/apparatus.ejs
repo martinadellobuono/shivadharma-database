@@ -31,29 +31,40 @@
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Lemma</label>
     <input type="text" class="form-control mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
-    <label class="form-label">Manuscript</label>
-    <input type="text" class="flexdatalist form-control" data-min-length="0" placeholder="Insert a siglum..." aria-describedby="Insert a siglum" data-min-length="1" multiple="multiple" list="manuscriptLemmaList" name="manuscriptLemma">
-    <datalist id="manuscriptLemmaList">
-      <% if (sigla) { %>
+    <label class="form-label">Witness&#x28;es&#x29;</label>
+
+
+
+    <!-- witnesses -->
+    <% if (sigla) { %>
+      <% var wits = []; %>
       <% sigla.forEach((siglum) => { %>
-      <option value="<% siglum %>"><%= siglum %></option>
+        <% if (wits.includes(siglum) === false) { %>
+          <% wits.push(siglum) %>
+        <% }; %>
       <% }); %>
-      <% }; %>
-    </datalist>
+      <input class="form-control" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+    <% }; %>
+
+
+
   </div>
   <!-- variants -->
   <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
     <label class="form-label">Variant</label>
     <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
-    <label class="form-label">Manuscript</label>
-    <input type="text" class="form-control" data-min-length="0" placeholder="Insert a siglum..." aria-describedby="Insert a siglum" data-min-length="1" multiple="multiple" list="manuscriptVariantList" name="manuscriptVariant">
+    <label class="form-label">Witness&#x28;es&#x29;</label>
+
+
+
+    <!--<input type="text" class="form-control" data-min-length="0" placeholder="Insert a siglum..." aria-describedby="Insert a siglum" data-min-length="1" multiple="multiple" list="manuscriptVariantList" name="manuscriptVariant">
     <datalist id="manuscriptVariantList">
       <% if (sigla) { %>
       <% sigla.forEach((siglum) => { %>
       <option value="<% siglum %>"><%= siglum %></option>
       <% }); %>
       <% }; %>
-    </datalist>
+    </datalist>-->
   </div>
   <div id="variant">
   </div>

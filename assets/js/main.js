@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     alerts();
-    annotations();
     textarea();
+    autocomplete();
     cloneEl();
+    annotations();
 });
 
 /* alerts */
@@ -80,23 +81,121 @@ let textarea = () => {
     });
 };
 
-/* annotations */
-let annotations = () => {
-    [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
-        el.addEventListener("click", () => {
-            /* get selected text */
-            if (document.getSelection) {
-                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: 'text' }).trim();
-                /* show forms */
-                if (tinymce.activeEditor.selection.getContent() !== "") {
-                    document.getElementById(el.dataset.value).classList.remove("d-none");
-                } else {
-                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-                };
-            };
+/* autocomplete */
+let autocomplete = () => {
+    [].forEach.call(document.querySelectorAll("[data-list]"), (el) => {
+        var dataType = el.getAttribute("data-type");
+        var dataList = el.getAttribute("data-list");
+        var jsonList = JSON.parse(dataList);
+        const autoCompleteJS = new autoComplete({
+            selector: "[data-list='" + dataList + "']",
+            placeHolder: "Search for " + dataType + "...",
+            data: {
+                src: jsonList,
+                cache: true,
+            },
+            resultsList: {
+                element: (list, data) => {
+                    if (!data.results.length) {
+                        // no results message element
+                        const message = document.createElement("div");
+                        // add class to the created element
+                        message.setAttribute("class", "no_result");
+                        // add message text content
+                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                        // append message element to the results list
+                        list.prepend(message);
+                    }
+                },
+                noResults: true,
+            },
+            resultItem: {
+                highlight: true
+            },
+            query: (query) => {
+                // split query into array
+                const querySplit = query.split("|");
+                // get last query value index
+                const lastQuery = querySplit.length - 1;
+                // trim new query
+                const newQuery = querySplit[lastQuery].trim();
+                return newQuery;
+            },
+            events: {
+                input: {
+                    selection(event) {
+                        const feedback = event.detail;
+                        const input = autoCompleteJS.input;
+                        // trim selected value
+                        const selection = feedback.selection.value.trim();
+                        // split query into array and trim each value
+                        const query = input.value.split("|").map(item => item.trim());
+                        // remove last query
+                        query.pop();
+                        // add selected value
+                        query.push(selection);
+                        // replace input value with the new query
+                        input.value = query.join(" | ") + " | ";
+                    }
+                }
+            }
         });
     });
 };
+
+/*const autoCompleteJS = new autoComplete({
+            selector: "ciao",
+            placeHolder: "Search for witness...",
+            data: {
+                src: el.getAttribute("data-list"),
+                cache: true,
+            },
+            resultsList: {
+                element: (list, data) => {
+                    if (!data.results.length) {
+                        // no results message element
+                        const message = document.createElement("div");
+                        // add class to the created element
+                        message.setAttribute("class", "no_result");
+                        // add message text content
+                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                        // append message element to the results list
+                        list.prepend(message);
+                    }
+                },
+                noResults: true,
+            },
+            resultItem: {
+                highlight: true
+            },
+            query: (query) => {
+                // split query into array
+                const querySplit = query.split("|");
+                // get last query value index
+                const lastQuery = querySplit.length - 1;
+                // trim new query
+                const newQuery = querySplit[lastQuery].trim();
+                return newQuery;
+            },
+            events: {
+                input: {
+                    selection(event) {
+                        const feedback = event.detail;
+                        const input = autoCompleteJS.input;
+                        // trim selected value
+                        const selection = feedback.selection.value.trim();
+                        // split query into array and trim each value
+                        const query = input.value.split("|").map(item => item.trim());
+                        // remove last query
+                        query.pop();
+                        // add selected value
+                        query.push(selection);
+                        // replace input value with the new query
+                        input.value = query.join(" | ") + " | ";
+                    }
+                }
+            }
+        });*/
 
 /* clone elements */
 let cloneEl = () => {
@@ -116,13 +215,31 @@ let cloneEl = () => {
             forms.forEach((el) => {
                 //if (el.classList.contains("flexdatalist")) {
                 //} else {
-                    el.value = "";
+                el.value = "";
                 //};
             });
 
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
+        });
+    });
+};
+
+/* annotations */
+let annotations = () => {
+    [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
+        el.addEventListener("click", () => {
+            /* get selected text */
+            if (document.getSelection) {
+                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: 'text' }).trim();
+                /* show forms */
+                if (tinymce.activeEditor.selection.getContent() !== "") {
+                    document.getElementById(el.dataset.value).classList.remove("d-none");
+                } else {
+                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                };
+            };
         });
     });
 };
