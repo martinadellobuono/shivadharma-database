@@ -102,16 +102,17 @@ let autocomplete = () => {
             resultsList: {
                 id: "autoComplete_list_" + i,
                 element: (list, data) => {
+                    // no results
                     if (!data.results.length) {
                         // no results message element
                         const message = document.createElement("div");
                         // add class to the created element
                         message.setAttribute("class", "no_result");
                         // add message text content
-                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                        message.innerHTML = `<span>Found no results for "${data.query}".<br><span class="fw-bold">Insert it in the metadata.</span></span>`;
                         // append message element to the results list
                         list.prepend(message);
-                    }
+                    };
                 },
                 noResults: true,
             },
@@ -188,13 +189,54 @@ let annotations = () => {
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: 'text' }).trim();
+                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
                     document.getElementById(el.dataset.value).classList.remove("d-none");
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
+            };
+            /* live check */
+            /* apparatus */
+            if (el.getAttribute("data-value") == "apparatus") {
+                /* stanza */
+                var inputStanza = document.querySelectorAll("[name='stanza']")[0];
+                "change keyup".split(" ").forEach((e) => {
+                    inputStanza.addEventListener(e, () => {
+                        document.getElementById("live-stanza").innerHTML = inputStanza.value;
+                    });
+                });
+                /* pada */
+                var inputPada = document.querySelectorAll("[name='pada']");
+                var checkedArr = [];
+                inputPada.forEach((el) => {
+                    el.addEventListener("change", () => {
+                        inputPada.forEach((el) => {
+                            if (el.checked === true) {
+                                if (checkedArr.includes(el.value) === false) {
+                                    checkedArr.push(el.value);
+                                };
+                            };
+                            if (el.checked === false) {
+                                if (checkedArr.includes(el.value) === true) {
+                                    checkedArr.pop(el.value);
+                                };
+                            };
+                        });
+                        document.getElementById("live-pada").innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+                    });
+                });
+                /* lemma */
+                var inputLemma = document.querySelectorAll("[name='lemma']")[0];
+                inputLemma.addEventListener("keyup", () => {
+                    document.getElementById("live-lemma").innerHTML = " " + inputLemma.value + " &#x5d; ";
+                });
+                /* lemma witnesses */
+                var inputLemmaWits = document.querySelectorAll("[name='manuscriptLemma']")[0];
+                inputLemmaWits.addEventListener("keyup", () => {
+                    document.getElementById("live-lemma-wits").innerHTML = inputLemmaWits.value.replace(" | ", " ");
+                });
             };
         });
     });

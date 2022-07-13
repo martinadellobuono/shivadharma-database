@@ -11970,18 +11970,18 @@ body {
 
 /* margin */
 .mt-20 {
-  margin-top: 20px;
+  margin-top: 34px;
 }
 
 /* layout */
 .edition-container,
 .edition-container .row {
-  height: 77vh;
+  height: 75vh;
 }
 
 /* tabs */
 .scroll-tab {
-  height: 70vh;
+  height: 60vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }

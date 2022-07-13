@@ -32,8 +32,6 @@
     <label class="form-label">Lemma</label>
     <input type="text" class="form-control mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
     <label class="form-label">Witness&#x28;es&#x29;</label>
-    
-
     <!-- witnesses -->
     <% if (sigla) { %>
       <% var wits = []; %>
@@ -44,17 +42,12 @@
       <% }); %>
       <input class="form-control" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
     <% }; %>
-
-
   </div>
   <!-- variants -->
   <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
     <label class="form-label">Variant</label>
     <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Witness&#x28;es&#x29;</label>
-
-
-
     <!-- witnesses -->
     <% if (sigla) { %>
       <% var wits = []; %>
@@ -65,9 +58,6 @@
       <% }); %>
       <input class="form-control" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
     <% }; %>
-
-
-
   </div>
   <div id="variant">
   </div>
