@@ -11998,4 +11998,11 @@ body {
   background-color: #6c757d;
   border-radius: 10px;
 }
+
+/* autocomplete */
+[role="listbox"] {
+  border: 1px solid #f8f9fa;
+  list-style: none;
+  padding: 1rem;
+}
 /*# sourceMappingURL=style.css.map */

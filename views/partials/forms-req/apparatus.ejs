@@ -32,8 +32,7 @@
     <label class="form-label">Lemma</label>
     <input type="text" class="form-control mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
     <label class="form-label">Witness&#x28;es&#x29;</label>
-
-
+    
 
     <!-- witnesses -->
     <% if (sigla) { %>
@@ -43,9 +42,8 @@
           <% wits.push(siglum) %>
         <% }; %>
       <% }); %>
-      <input class="form-control" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+      <input class="form-control" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
     <% }; %>
-
 
 
   </div>
@@ -57,14 +55,19 @@
 
 
 
-    <!--<input type="text" class="form-control" data-min-length="0" placeholder="Insert a siglum..." aria-describedby="Insert a siglum" data-min-length="1" multiple="multiple" list="manuscriptVariantList" name="manuscriptVariant">
-    <datalist id="manuscriptVariantList">
-      <% if (sigla) { %>
+    <!-- witnesses -->
+    <% if (sigla) { %>
+      <% var wits = []; %>
       <% sigla.forEach((siglum) => { %>
-      <option value="<% siglum %>"><%= siglum %></option>
+        <% if (wits.includes(siglum) === false) { %>
+          <% wits.push(siglum) %>
+        <% }; %>
       <% }); %>
-      <% }; %>
-    </datalist>-->
+      <input class="form-control" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+    <% }; %>
+
+
+
   </div>
   <div id="variant">
   </div>

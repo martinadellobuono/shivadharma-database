@@ -83,18 +83,24 @@ let textarea = () => {
 
 /* autocomplete */
 let autocomplete = () => {
+    var i = 0;
     [].forEach.call(document.querySelectorAll("[data-list]"), (el) => {
+        /* create the autocomplete */
         var dataType = el.getAttribute("data-type");
         var dataList = el.getAttribute("data-list");
+        var idList = el.getAttribute("id");
         var jsonList = JSON.parse(dataList);
         const autoCompleteJS = new autoComplete({
-            selector: "[data-list='" + dataList + "']",
+            selector: "#" + idList,
             placeHolder: "Search for " + dataType + "...",
             data: {
                 src: jsonList,
                 cache: true,
             },
             resultsList: {
+
+                id: "autoComplete_list_" + i,
+
                 element: (list, data) => {
                     if (!data.results.length) {
                         // no results message element
@@ -140,65 +146,13 @@ let autocomplete = () => {
                 }
             }
         });
+        i++;
     });
 };
 
-/*const autoCompleteJS = new autoComplete({
-            selector: "ciao",
-            placeHolder: "Search for witness...",
-            data: {
-                src: el.getAttribute("data-list"),
-                cache: true,
-            },
-            resultsList: {
-                element: (list, data) => {
-                    if (!data.results.length) {
-                        // no results message element
-                        const message = document.createElement("div");
-                        // add class to the created element
-                        message.setAttribute("class", "no_result");
-                        // add message text content
-                        message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
-                        // append message element to the results list
-                        list.prepend(message);
-                    }
-                },
-                noResults: true,
-            },
-            resultItem: {
-                highlight: true
-            },
-            query: (query) => {
-                // split query into array
-                const querySplit = query.split("|");
-                // get last query value index
-                const lastQuery = querySplit.length - 1;
-                // trim new query
-                const newQuery = querySplit[lastQuery].trim();
-                return newQuery;
-            },
-            events: {
-                input: {
-                    selection(event) {
-                        const feedback = event.detail;
-                        const input = autoCompleteJS.input;
-                        // trim selected value
-                        const selection = feedback.selection.value.trim();
-                        // split query into array and trim each value
-                        const query = input.value.split("|").map(item => item.trim());
-                        // remove last query
-                        query.pop();
-                        // add selected value
-                        query.push(selection);
-                        // replace input value with the new query
-                        input.value = query.join(" | ") + " | ";
-                    }
-                }
-            }
-        });*/
-
 /* clone elements */
 let cloneEl = () => {
+    var i = 0;
     [].forEach.call(document.querySelectorAll("[data-clone]"), (el) => {
         el.addEventListener("click", () => {
             var cloneVal = el.getAttribute("data-clone");
@@ -209,19 +163,20 @@ let cloneEl = () => {
             closeDiv.className = "add-close";
             closeDiv.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
             cloned.insertBefore(closeDiv, cloned.firstChild);
-
             /* empty the forms */
             var forms = cloned.querySelectorAll("input");
             forms.forEach((el) => {
-                //if (el.classList.contains("flexdatalist")) {
-                //} else {
                 el.value = "";
-                //};
             });
-
+            /* change the id of the autocomplete cloned */
+            var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
+            cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
+            /* run autocomplete */
+            autocomplete();
+            i++;
         });
     });
 };

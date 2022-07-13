@@ -41,3 +41,10 @@ body {
     background-color: $secondary;
     border-radius: 10px;
 }
+
+/* autocomplete */
+[role="listbox"] {
+    border: 1px solid $light;
+    list-style: none;
+    padding: $spacer;
+}
