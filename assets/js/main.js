@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alerts();
     annotations();
     textarea();
-    flexdatalist();
     cloneEl();
 });
 
@@ -23,8 +22,7 @@ let textarea = () => {
         selector: "#base-text > textarea",
         resize: false,
         width: "100%",
-        plugins: "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons",
-        imagetools_cors_hosts: ["picsum.photos"],
+        plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
         menubar: "file edit view insert format tools table help",
         toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
         toolbar_sticky: true,
@@ -75,7 +73,7 @@ let textarea = () => {
         quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
         noneditable_noneditable_class: "mceNonEditable",
         toolbar_mode: "sliding",
-        contextmenu: "link image imagetools table",
+        contextmenu: "link image table",
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }"
@@ -100,15 +98,6 @@ let annotations = () => {
     });
 };
 
-/* flexdatalist */
-let flexdatalist = () => {
-    $(".flexdatalist").flexdatalist({
-        minLength: 0,
-        searchContain: true,
-        valuesSeparator: "|"
-    });
-};
-
 /* clone elements */
 let cloneEl = () => {
     [].forEach.call(document.querySelectorAll("[data-clone]"), (el) => {
@@ -126,10 +115,6 @@ let cloneEl = () => {
             var forms = cloned.querySelectorAll("input");
             forms.forEach((el) => {
                 //if (el.classList.contains("flexdatalist")) {
-
-                    /* try */
-                    flexdatalist();
-                    
                 //} else {
                     el.value = "";
                 //};

@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const fs = require("fs");
 
 const neo4j = require("neo4j-driver");
-const { map } = require("jquery");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
 
 const router = express.Router();
