@@ -51,7 +51,6 @@
       </div>
       <!-- annotations -->
       <div class="col-md-3 bg-light border p-3">
-
         <div class="row">
           <!-- forms -->
           <div class="col-md-12">
@@ -90,7 +89,7 @@
                 <% }; %>
                 <% }; %>
                 <!-- forms apparatus -->
-                <div class="d-none" id="apparatus">
+                <div class="apparatus d-none"> <!-- id="apparatus" -->
                   <%- include ("partials/forms-req/apparatus") %>
                 </div>
               </div>
@@ -104,14 +103,11 @@
             </div>
           </div>
           <!-- live check -->
-          <div class="col-md-12 bg-white border p-2">
+          <div class="apparatus bg-white border col-md-12 d-none p-2">
             <!-- live check apparatus -->
             <%- include ("partials/forms-live-check/apparatus") %>
           </div>
         </div>
-
-
-
       </div>
       <div class="col-md-1 border p-3">
         <h3 class="h6">Parallels</h3>

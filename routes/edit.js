@@ -54,11 +54,6 @@ router.get("/edit/:id", async (req, res) => {
                     if (!date_temp.includes(record.get("date.on"))) {
                         date_temp.push(record.get("date.on"));
                     };
-
-                    // try
-                    
-                    // / try
-
                 },
                 onCompleted: () => {
                     if (fs.existsSync(path)) {

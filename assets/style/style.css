@@ -12005,4 +12005,24 @@ body {
   list-style: none;
   padding: 1rem;
 }
+
+/* live check */
+.live-check-container {
+  height: 5vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.live-check-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.live-check-container::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.live-check-container::-webkit-scrollbar-thumb {
+  background-color: #6c757d;
+  border-radius: 10px;
+}
 /*# sourceMappingURL=style.css.map */

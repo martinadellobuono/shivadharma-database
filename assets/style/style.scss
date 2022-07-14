@@ -48,3 +48,23 @@ body {
     list-style: none;
     padding: $spacer;
 }
+
+/* live check */
+.live-check-container {
+    height: 5vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.live-check-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.live-check-container::-webkit-scrollbar-track {
+    background: $light;
+}
+
+.live-check-container::-webkit-scrollbar-thumb {
+    background-color: $secondary;
+    border-radius: 10px;
+}

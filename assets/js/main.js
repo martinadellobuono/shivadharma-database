@@ -215,7 +215,14 @@ let annotations = () => {
                 document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
-                    document.getElementById(el.dataset.value).classList.remove("d-none");
+                    //document.getElementById(el.dataset.value).classList.remove("d-none");
+                    
+                    var forms = document.querySelectorAll("." + el.dataset.value);
+                    forms.forEach((el) => {
+                        el.classList.remove("d-none");
+                    });
+                    
+
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
@@ -277,7 +284,6 @@ let liveCheckCloned = () => {
             });
         });
     });
-
     /* remove the clone */
     var alerts = document.querySelectorAll(".cloned-el");
     alerts.forEach((el) => {
@@ -285,5 +291,4 @@ let liveCheckCloned = () => {
             document.querySelector("[data-ref='" + el.id + "']").remove();
         });
     });
-
 };
