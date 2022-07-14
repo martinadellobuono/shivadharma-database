@@ -8,29 +8,29 @@
   <!-- stanza / pada -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Stanza</label>
-    <input type="number" min="1" class="form-control mb-3" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanza">
+    <input type="number" min="1" class="form-control live-check mb-3" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanza">
     <label class="form-label">Pāda</label>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" value="a" name="pada">
+      <input class="form-check-input live-check" type="checkbox" value="a" name="pada">
       <label class="form-check-label">a</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" value="b" name="pada">
+      <input class="form-check-input live-check" type="checkbox" value="b" name="pada">
       <label class="form-check-label">b</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" value="c" name="pada">
+      <input class="form-check-input live-check" type="checkbox" value="c" name="pada">
       <label class="form-check-label">c</label>
     </div>
     <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" value="d" name="pada">
+      <input class="form-check-input live-check" type="checkbox" value="d" name="pada">
       <label class="form-check-label">d</label>
     </div>
   </div>
   <!-- lemma -->
   <div class="bg-white p-3 mb-3">
     <label class="form-label">Lemma</label>
-    <input type="text" class="form-control mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+    <input type="text" class="form-control live-check mb-3" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
     <label class="form-label">Witness&#x28;es&#x29;</label>
     <!-- witnesses -->
     <% if (sigla) { %>
@@ -40,13 +40,13 @@
           <% wits.push(siglum) %>
         <% }; %>
       <% }); %>
-      <input class="form-control" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+      <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
     <% }; %>
   </div>
   <!-- variants -->
   <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
     <label class="form-label">Variant</label>
-    <input type="text" class="form-control mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
+    <input type="text" class="form-control live-check mb-3" placeholder="Insert variant" aria-describedby="Insert lemma" name="variant">
     <label class="form-label">Witness&#x28;es&#x29;</label>
     <!-- witnesses -->
     <% if (sigla) { %>
@@ -56,7 +56,7 @@
           <% wits.push(siglum) %>
         <% }; %>
       <% }); %>
-      <input class="form-control" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+      <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant">
     <% }; %>
   </div>
   <div id="variant">

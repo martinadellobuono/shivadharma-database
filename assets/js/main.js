@@ -198,46 +198,37 @@ let annotations = () => {
                 };
             };
             /* live check */
-            /* apparatus */
-            if (el.getAttribute("data-value") == "apparatus") {
-                /* stanza */
-                var inputStanza = document.querySelectorAll("[name='stanza']")[0];
+            var input = document.querySelectorAll(".live-check");
+            var checkedArr = [];
+            input.forEach((el) => {
                 "change keyup".split(" ").forEach((e) => {
-                    inputStanza.addEventListener(e, () => {
-                        document.getElementById("live-stanza").innerHTML = inputStanza.value;
-                    });
-                });
-                /* pada */
-                var inputPada = document.querySelectorAll("[name='pada']");
-                var checkedArr = [];
-                inputPada.forEach((el) => {
-                    el.addEventListener("change", () => {
-                        inputPada.forEach((el) => {
+                    el.addEventListener(e, () => {
+                        /* lemma bracket */
+                        if (el.getAttribute("name") == "lemma") {
+                            document.getElementById("lemma-bracket").classList.remove("d-none");
+                        };
+                        /* checkbox */
+                        if (el.getAttribute("type") == "checkbox") {
                             if (el.checked === true) {
                                 if (checkedArr.includes(el.value) === false) {
                                     checkedArr.push(el.value);
                                 };
-                            };
-                            if (el.checked === false) {
+                            } else {
                                 if (checkedArr.includes(el.value) === true) {
-                                    checkedArr.pop(el.value);
+                                    var index = checkedArr.indexOf(el.value);
+                                    if (index !== -1) {
+                                        checkedArr.splice(index, 1);
+                                    };
                                 };
                             };
-                        });
-                        document.getElementById("live-pada").innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+                        } else {
+                            /* other elements */
+                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(" | ", " ");
+                        };
                     });
                 });
-                /* lemma */
-                var inputLemma = document.querySelectorAll("[name='lemma']")[0];
-                inputLemma.addEventListener("keyup", () => {
-                    document.getElementById("live-lemma").innerHTML = " " + inputLemma.value + " &#x5d; ";
-                });
-                /* lemma witnesses */
-                var inputLemmaWits = document.querySelectorAll("[name='manuscriptLemma']")[0];
-                inputLemmaWits.addEventListener("keyup", () => {
-                    document.getElementById("live-lemma-wits").innerHTML = inputLemmaWits.value.replace(" | ", " ");
-                });
-            };
+            });
         });
     });
 };
