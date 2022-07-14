@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     cloneEl();
     annotations();
+    liveCheck();
 });
 
 /* alerts */
@@ -161,6 +162,7 @@ let cloneEl = () => {
         el.addEventListener("click", () => {
             var cloneVal = el.getAttribute("data-clone");
             var toClone = document.querySelectorAll("[data-cloned='" + cloneVal + "']");
+            /* clone the element */
             var cloned = toClone[0].cloneNode(true);
             /* add the close button */
             var closeDiv = document.createElement("span");
@@ -178,10 +180,28 @@ let cloneEl = () => {
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
+            /* assign a specific class */
+            cloned.classList.add("cloned-el");
+            /* clone live check */
+            var toCloneLiveCheck = document.getElementById("live-clone-" + el.getAttribute("data-clone"));
+            var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
+            document.getElementById("add-live-clone-" + el.getAttribute("data-clone")).appendChild(clonedLiveCheck);
+            /* assign a specific id */
+            cloned.id = cloneVal + "-" + i;
+            clonedLiveCheck.setAttribute("data-ref", cloneVal + "-" + i);
+            /* empty the live check spans */
+            var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
+            formsLiveCheck.forEach((el) => {
+                el.innerHTML = "prova";
+            });
+            /* i */
             i++;
             /* remove duplicates */
             cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
+            /* autocomplete */
             autocomplete();
+            /* live check */
+            liveCheckCloned();
         });
     });
 };
@@ -200,38 +220,61 @@ let annotations = () => {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
             };
-            /* live check */
-            var input = document.querySelectorAll(".live-check");
-            var checkedArr = [];
-            input.forEach((el) => {
-                "change keyup".split(" ").forEach((e) => {
-                    el.addEventListener(e, () => {
-                        /* lemma bracket */
-                        if (el.getAttribute("name") == "lemma") {
-                            document.getElementById("lemma-bracket").classList.remove("d-none");
+        });
+    });
+};
+
+/* live check */
+let liveCheck = () => {
+    var input = document.querySelectorAll(".live-check");
+    var checkedArr = [];
+    input.forEach((el) => {
+        "change keyup".split(" ").forEach((e) => {
+            el.addEventListener(e, () => {
+                /* lemma bracket */
+                if (el.getAttribute("name") == "lemma") {
+                    document.getElementById("lemma-bracket").classList.remove("d-none");
+                };
+                /* checkbox */
+                if (el.getAttribute("type") == "checkbox") {
+                    if (el.checked === true) {
+                        if (checkedArr.includes(el.value) === false) {
+                            checkedArr.push(el.value);
                         };
-                        /* checkbox */
-                        if (el.getAttribute("type") == "checkbox") {
-                            if (el.checked === true) {
-                                if (checkedArr.includes(el.value) === false) {
-                                    checkedArr.push(el.value);
-                                };
-                            } else {
-                                if (checkedArr.includes(el.value) === true) {
-                                    var index = checkedArr.indexOf(el.value);
-                                    if (index !== -1) {
-                                        checkedArr.splice(index, 1);
-                                    };
-                                };
+                    } else {
+                        if (checkedArr.includes(el.value) === true) {
+                            var index = checkedArr.indexOf(el.value);
+                            if (index !== -1) {
+                                checkedArr.splice(index, 1);
                             };
-                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
-                        } else {
-                            /* other elements */
-                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
                         };
-                    });
+                    };
+                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+                } else {
+                    /* other elements */
+                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
+                };
+            });
+        });
+    });
+};
+
+/* live check cloned */
+let liveCheckCloned = () => {
+    var cloned = document.querySelectorAll(".cloned-el");
+    cloned.forEach((el) => {
+        var id = el.id;
+        var input = el.querySelectorAll(".live-check");
+        input.forEach((el) => {
+            "change keyup".split(" ").forEach((e) => {
+                el.addEventListener(e, () => {
+                    var elType = el.getAttribute("name");
+                    var span = document.querySelectorAll("[data-ref='" + id + "']")[0];
+                    var specSpan = span.querySelector("#live-" + elType);
+                    specSpan.innerHTML = el.value;
                 });
             });
         });
+
     });
 };
