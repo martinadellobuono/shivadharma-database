@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cloneEl();
     annotations();
     liveCheck();
+    liveCheckAutocomplete();
 });
 
 /* alerts */
@@ -98,10 +99,11 @@ let autocomplete = () => {
             placeHolder: "Search for " + dataType + "...",
             data: {
                 src: jsonList,
-                cache: true,
+                cache: true
             },
             resultsList: {
                 id: "autoComplete_list_" + i,
+                class: "results_list",
                 element: (list, data) => {
                     // no results
                     if (!data.results.length) {
@@ -216,12 +218,12 @@ let annotations = () => {
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
                     //document.getElementById(el.dataset.value).classList.remove("d-none");
-                    
+
                     var forms = document.querySelectorAll("." + el.dataset.value);
                     forms.forEach((el) => {
                         el.classList.remove("d-none");
                     });
-                    
+
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
@@ -289,6 +291,19 @@ let liveCheckCloned = () => {
     alerts.forEach((el) => {
         el.addEventListener("closed.bs.alert", () => {
             document.querySelector("[data-ref='" + el.id + "']").remove();
+        });
+    });
+};
+
+/* live check autocomplete */
+let liveCheckAutocomplete = () => {
+    var list = document.querySelectorAll(".results_list");
+    list.forEach((el) => {
+        el.addEventListener("click", () => {
+            var id = el.getAttribute("id");
+            var input = document.querySelector("[aria-controls='" + id + "']");
+            var val = document.querySelector("[aria-controls='" + id + "']").value;
+            document.getElementById("live-" + input.getAttribute("name")).innerHTML = val.replace(/[|]/g, " ");
         });
     });
 };
