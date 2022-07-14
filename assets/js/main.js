@@ -192,7 +192,7 @@ let cloneEl = () => {
             /* empty the live check spans */
             var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
             formsLiveCheck.forEach((el) => {
-                el.innerHTML = "prova";
+                el.innerHTML = "";
             });
             /* i */
             i++;
@@ -261,6 +261,7 @@ let liveCheck = () => {
 
 /* live check cloned */
 let liveCheckCloned = () => {
+    /* create the clone */
     var cloned = document.querySelectorAll(".cloned-el");
     cloned.forEach((el) => {
         var id = el.id;
@@ -275,6 +276,14 @@ let liveCheckCloned = () => {
                 });
             });
         });
-
     });
+
+    /* remove the clone */
+    var alerts = document.querySelectorAll(".cloned-el");
+    alerts.forEach((el) => {
+        el.addEventListener("closed.bs.alert", () => {
+            document.querySelector("[data-ref='" + el.id + "']").remove();
+        });
+    });
+
 };
