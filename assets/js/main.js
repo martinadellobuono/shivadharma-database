@@ -130,6 +130,9 @@ let autocomplete = () => {
             },
             events: {
                 input: {
+                    focus: (event) => {
+                        //autoCompleteJS.open(jsonList);
+                    },
                     selection(event) {
                         const feedback = event.detail;
                         const input = autoCompleteJS.input;
@@ -224,7 +227,7 @@ let annotations = () => {
                             document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                         } else {
                             /* other elements */
-                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(" | ", " ");
+                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
                         };
                     });
                 });
