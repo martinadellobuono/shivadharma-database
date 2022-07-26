@@ -11979,6 +11979,11 @@ body {
   height: 75vh;
 }
 
+.edition-container > .row > div {
+  overflow: hidden;
+  resize: horizontal;
+}
+
 /* tabs */
 .scroll-tab {
   height: 60vh;

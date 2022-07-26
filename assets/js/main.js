@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cloneEl();
     annotations();
     liveCheck();
-    liveCheckAutocomplete();
 });
 
 /* alerts */
@@ -22,7 +21,7 @@ let alerts = () => {
 let textarea = () => {
     var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     tinymce.init({
-        selector: "#base-text > textarea",
+        selector: ".textarea-container textarea",
         resize: false,
         width: "100%",
         plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
@@ -198,6 +197,11 @@ let cloneEl = () => {
             });
             /* i */
             i++;
+
+            /* try */
+            /* modify name manuscriptVariant */
+            //cloned.querySelector("[data-list]").setAttribute("name", "manuscriptVariant" + i); 
+
             /* remove duplicates */
             cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
             /* autocomplete */
@@ -214,17 +218,22 @@ let annotations = () => {
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                document.getElementById("selected-fragment").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+                /* selected fragment form */
+                var category = el.getAttribute("data-value");
+                document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
                 /* show forms */
                 if (tinymce.activeEditor.selection.getContent() !== "") {
-                    //document.getElementById(el.dataset.value).classList.remove("d-none");
-
-                    var forms = document.querySelectorAll("." + el.dataset.value);
+                    /* hide the non clicked form */
+                    var forms = document.querySelectorAll(".annotation-form");
                     forms.forEach((el) => {
-                        el.classList.remove("d-none");
+                        /* show the clicked form */
+                        if (el.classList.contains(category) === true) {
+                            el.classList.remove("d-none");
+                        } else {
+                            /* hide the clicked form */
+                            el.classList.add("d-none");
+                        };
                     });
-
-
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
@@ -266,6 +275,7 @@ let liveCheck = () => {
             });
         });
     });
+    liveCheckAutocomplete();
 };
 
 /* live check cloned */
@@ -286,6 +296,10 @@ let liveCheckCloned = () => {
             });
         });
     });
+
+    /* try */
+    liveCheckAutocomplete();
+
     /* remove the clone */
     var alerts = document.querySelectorAll(".cloned-el");
     alerts.forEach((el) => {
@@ -302,7 +316,7 @@ let liveCheckAutocomplete = () => {
         el.addEventListener("click", () => {
             var id = el.getAttribute("id");
             var input = document.querySelector("[aria-controls='" + id + "']");
-            var val = document.querySelector("[aria-controls='" + id + "']").value;
+            var val = input.value;
             document.getElementById("live-" + input.getAttribute("name")).innerHTML = val.replace(/[|]/g, " ");
         });
     });

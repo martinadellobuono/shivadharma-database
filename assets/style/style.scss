@@ -19,7 +19,12 @@ body {
 /* layout */
 .edition-container,
 .edition-container .row {
-    height: 75vh;
+    height: 75vh;    
+}
+
+.edition-container > .row > div {
+    overflow: hidden;
+    resize: horizontal;
 }
 
 /* tabs */

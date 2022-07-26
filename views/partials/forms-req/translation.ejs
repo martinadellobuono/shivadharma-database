@@ -1,0 +1,16 @@
+<h2 class="mt-3 h5">Add translation</h2>
+<form class="form-annotations textarea-container" id="translation-req" method="post" action="/addTranslation/<%= id %>">
+  <!-- selected fragment -->
+  <div class="mb-3">
+    <label class="form-label">Selected fragment</label>
+    <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="translation" name="selectedFragment">
+  </div>
+  <!-- translation -->
+  <div class="bg-white p-3 mb-3">
+    <textarea placeholder="Insert the translation..." name="translation"></textarea>
+  </div>
+  <!-- submit -->
+  <div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
