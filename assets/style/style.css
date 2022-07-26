@@ -11968,11 +11968,6 @@ body {
   padding-top: 56px;
 }
 
-/* margin */
-.mt-20 {
-  margin-top: 34px;
-}
-
 /* white space */
 .nowrap {
   white-space: nowrap;
@@ -11982,16 +11977,17 @@ body {
 /* edit */
 .edition-container,
 .edition-container .row {
-  height: 75vh;
+  height: 80vh;
 }
 
 .edition-container > .row > div {
+  height: -webkit-fill-available;
   overflow: hidden;
   resize: horizontal;
 }
 
 /* read */
-.edition-containe-visr,
+.edition-containe-vis,
 .edition-container-vis .row {
   height: 80vh;
 }
