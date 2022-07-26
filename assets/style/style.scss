@@ -16,7 +16,13 @@ body {
     margin-top: 34px;
 }
 
+/* white space */
+.nowrap {
+    white-space: nowrap;
+}
+
 /* layout */
+/* edit */
 .edition-container,
 .edition-container .row {
     height: 75vh;    
@@ -24,6 +30,19 @@ body {
 
 .edition-container > .row > div {
     overflow: hidden;
+    resize: horizontal;
+}
+
+/* read */
+.edition-containe-visr,
+.edition-container-vis .row {
+    height: 80vh;
+}
+
+.edition-container-vis > .row > div {
+    height: -webkit-fill-available;
+    overflow-x: hidden;
+    overflow-y: scroll;
     resize: horizontal;
 }
 

@@ -13,13 +13,16 @@ router.post("/addTranslation/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
+
+    console.log(req.body.translation);
+
     try {
         await session.writeTransaction(tx => tx
             .run(
                 `
                 MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (selectedFragment:SelectedFragment)
+                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (translation:Translation {value: "${req.body.translation}"})
                 MERGE (selectedFragment)-[:HAS_TRANSLATION]->(translation)

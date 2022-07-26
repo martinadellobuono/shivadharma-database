@@ -4,7 +4,6 @@
 
 <body>
   <%- include ("partials/navbar") %>
-
   <!-- header -->
   <div class="container-fluid bg-light p-2">
     <div class="row">
@@ -28,7 +27,6 @@
       </div>
     </div>
   </div>
-
   <!-- edition -->
   <div class="container-fluid bg-white edition-container">
     <div class="row">
@@ -109,25 +107,26 @@
           </div>
         </div>
       </div>
+        <!-- translation -->
       <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6">Parallels</h3>
-        <button type="button" class="btn btn-sm btn-secondary">Insert parallel</button>
-      </div>
-      <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6">Citations</h3>
-        <button type="button" class="btn btn-sm btn-dark">Insert citation</button>
-      </div>
-      <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6">Translations</h3>
+        <h3 class="h6">Translation</h3>
         <button type="button" class="btn btn-sm btn-secondary btn-annotation" data-value="translation">Insert translation</button>
-        <!-- translation form -->
         <div class="annotation-form translation d-none">
           <%- include ("partials/forms-req/translation") %>
         </div>
       </div>
+      <!-- parallels -->
+      <div class="col-md-1 border p-3 enlarge-col">
+        <h3 class="h6">Parallels</h3>
+        <button type="button" class="btn btn-sm btn-dark">Insert parallel</button>
+      </div>
+      <!-- citations -->
+      <div class="col-md-1 border p-3 enlarge-col">
+        <h3 class="h6">Citations</h3>
+        <button type="button" class="btn btn-sm btn-secondary">Insert citation</button>
+      </div>
     </div>
   </div>
-
   <!-- annotation buttons -->
   <div class="container-fluid bg-light p-2 mt-20">
     <div class="row">
@@ -169,7 +168,6 @@
       </div>
     </div>
   </div>
-
   <%- include ("partials/script") %>
 </body>
 

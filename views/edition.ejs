@@ -1,30 +1,76 @@
 <!DOCTYPE html>
 <html>
 <%- include ("partials/head") %>
-<body>
-    <%- include ("partials/navbar") %>
-    
-    <div class="container-fluid pb-5 pt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <% if (edition) { %>
-                        <% edition.forEach(function(item) { %>
-                            <h1 class="h2"><%= item[0] %>, <%= item[1] %></h1>
-                            <h2 class="h4 text-muted">Curated by <%= item[2] %></h2>
-                            <div class="txt">
-                                <% if (typeof file != 'undefined') { %>
-                                    <%- include (`../uploads/${file}`) %>
-                                <% }; %>
-                            </div>
-                        <% }); %>  
-                    <% }; %>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <%- include ("partials/footer") %>
-    <%- include ("partials/script") %>
+<body>
+  <%- include ("partials/navbar") %>
+  <!-- header -->
+  <div class="container-fluid bg-light p-2">
+    <div class="row">
+      <!-- title -->
+      <div class="col-md-8">
+        <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></button>
+        <% if (typeof title !== "undefined") { %>
+        <h1 class="h4 d-inline"><%= title %><span>, </span><%= author %></h1>
+        <h2 class="d-inline h5 text-secondary">Curated by <%= editor %></h2>
+        <% }; %>
+      </div>
+      <div class="col-md-4 text-end">
+        <!-- download -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Download
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">LateX</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">PDF</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">XML/TEI</a></li>
+          </ul>
+        </div>
+        <!-- tutorial -->
+        <button type="button" class="btn btn-light border"><i class="bi bi-question-lg"></i></button>
+      </div>
+    </div>
+  </div>
+  <!-- edition -->
+  <div class="container-fluid bg-white edition-container-vis">
+    <div class="row">
+      <!-- textus constitutus -->
+      <div class="col-md-5 border p-3 enlarge-col">
+        <h3 class="h6 nowrap"><i class="bi bi-x-lg"></i> Textus constitutus</h3>
+        <% if (file) { %>
+        <%- include (`../uploads/${file}`) %>
+        <% }; %>
+      </div>
+      <div class="col-md-5 border p-3 enlarge-col">
+        <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
+        <%- translation %>
+      </div>
+      <div class="col-md-1 border p-3 enlarge-col">
+        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Parallels</h3>
+      </div>
+      <div class="col-md-1 border p-3 enlarge-col">
+        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Citations</h3>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid bg-light p-2">
+    <div class="row">
+      <div class="col-md-12">        
+        <!-- apparatus entry -->
+        <button type="button" class="btn btn-sm btn-dark">Apparatus entry</button>
+        <!-- notes -->
+        <button type="button" class="btn btn-sm btn-secondary">Notes</button>
+      </div>
+    </div>
+  </div>
+  <%- include ("partials/script") %>
 </body>
+
 </html>
