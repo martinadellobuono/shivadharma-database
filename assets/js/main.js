@@ -218,6 +218,35 @@ let annotations = () => {
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
+                /* top annotations resize */
+                if (el.parentNode.classList.contains("enlarge-col") === true) {
+                    var bigger = el.parentNode;
+                    var toHide = document.querySelector(".annotations-box-below");
+                    toHide.classList.add("d-none");
+                    toHide.classList.remove("d-block");
+                    bigger.classList.remove("col-md-1");
+                    bigger.classList.add("col-md-4");
+                    bigger.classList.add("bg-light");
+                    /* hide the button to add annotations */
+                    el.classList.add("top-btn");
+                    el.classList.add("d-none");
+                    el.classList.remove("d-block");
+                } else {
+                    /* below annotations resize */
+                    var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
+                    var toShow = document.querySelector(".annotations-box-below");
+                    toShow.classList.add("d-block");
+                    toShow.classList.remove("d-none");
+                    if (smaller.length > 0) {
+                        smaller.forEach((el) => {
+                            el.classList.add("col-md-1");
+                            el.classList.remove("col-md-4");
+                            el.classList.remove("bg-light");
+                            /* hide the button to add annotations */
+                            el.querySelector(".top-btn").classList.remove("d-none");
+                        });
+                    };
+                };
                 /* selected fragment form */
                 var category = el.getAttribute("data-value");
                 document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
