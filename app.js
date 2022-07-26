@@ -43,6 +43,10 @@ app.use("/", addWitnesses);
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
 app.use("/", addApparatus);
 
+// add translation
+const addTranslation = require("./routes/forms/translation/addTranslation");
+app.use("/", addTranslation);
+
 // publish
 const publish = require("./routes/publish");
 app.use("/", publish);

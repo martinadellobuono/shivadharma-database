@@ -1,15 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
-
 const router = express.Router();
-
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
-
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
@@ -31,13 +27,15 @@ router.post("/addApparatus/:id",
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                        MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                        MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                        OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)          
+                        
                         MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
                         MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                         MERGE (lemma:Lemma {value: "${req.body.lemma}"})
                         MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+
+
                         FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
                             MERGE (witLemma:Witness {siglum: wit})
                             MERGE (lemma)-[:ATTESTED_IN]->(witLemma)
@@ -62,10 +60,6 @@ router.post("/addApparatus/:id",
                     onNext: () => {
                         res.redirect(`../edit/${idEdition}-${idEditor}`);
                     },
-
-                    onCompleted: (record) => {
-                        console.log("The apparatus entry is: " + record.get("editor.name"));
-                    },
                     onCompleted: () => {
                         console.log("Data added to the graph");
                     },
@@ -74,9 +68,6 @@ router.post("/addApparatus/:id",
                     }
                 })
             );
-
-
-
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
