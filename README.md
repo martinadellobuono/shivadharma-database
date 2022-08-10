@@ -1,6 +1,6 @@
 # Śivadharma Database Project
 
-**Śivadharma Database** is a [Neo4j](https://neo4j.com/) web application built with [Node.js](https://nodejs.org/en/). 
+**Śivadharma Database** is a [Neo4j](https://neo4j.com/) web application built in [Node.js](https://nodejs.org/en/). 
 The project is ongoing and under development.
 
 ## Quick start
