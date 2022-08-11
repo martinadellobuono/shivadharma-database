@@ -50,7 +50,13 @@
       </div>
       <div class="col-md-5 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
-        <%- translation %>
+        <% if (typeof translation !== "undefined") { %>
+        <% translation.forEach((el) => { %>
+        <div class="p-3">
+          <%- el %>
+        </div>
+        <% }); %>
+        <% }; %>
       </div>
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Parallels</h3>
@@ -62,9 +68,13 @@
   </div>
   <div class="container-fluid bg-light p-2">
     <div class="row">
-      <div class="col-md-12">        
-        <!-- apparatus entry -->
-        <button type="button" class="btn btn-sm btn-dark">Apparatus entry</button>
+      <div class="col-md-12">
+        <!-- apparatus -->
+        <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Apparatus</button>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            2c skandam &#x5d; NC45 NK28 NK82 NKO77 P E skadanam N015 </div>
+        </div>
         <!-- notes -->
         <button type="button" class="btn btn-sm btn-secondary">Notes</button>
       </div>

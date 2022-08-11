@@ -25,6 +25,13 @@
       </div>
     </form>
   </div>
-  <div class="tab-pane fade show active" id="check-transl" role="tabpanel" aria-labelledby="check-tab">
+  <div class="tab-pane fade" id="check-transl" role="tabpanel" aria-labelledby="check-tab">
+    <% if (typeof translation !== "undefined") { %>
+    <% translation.forEach((el) => { %>
+    <div class="p-3">
+      <%- el %>
+    </div>
+    <% }); %>
+    <% }; %>
   </div>
 </div>

@@ -13,9 +13,6 @@ router.post("/addTranslation/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
-
-    console.log(req.body.translation);
-
     try {
         await session.writeTransaction(tx => tx
             .run(

@@ -47,6 +47,7 @@ router.get("/edition/:id", async (req, res) => {
                             transl_temp.push(record.get("translation.value"));
                         };
                     };
+                    transl_temp = transl_temp.reverse();
                 },
                 onCompleted: () => {
                     if (fs.existsSync(path)) {

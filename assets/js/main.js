@@ -213,43 +213,52 @@ let cloneEl = () => {
 /* annotations */
 let annotations = () => {
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
+
+        /* CLICCO SU UN BOTTONE PER AGGIUNGERE ANNOTAZIONI */
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                /* top annotations resize */
-                if (el.parentNode.classList.contains("enlarge-col") === true) {
-                    var bigger = el.parentNode;
-                    var toHide = document.querySelector(".annotations-box-below");
-                    toHide.classList.add("d-none");
-                    toHide.classList.remove("d-block");
-                    bigger.classList.remove("col-md-1");
-                    bigger.classList.add("col-md-4");
-                    bigger.classList.add("bg-light");
-                    /* hide the button to add annotations */
-                    el.classList.add("top-btn");
-                    el.classList.add("d-none");
-                    el.classList.remove("d-block");
-                } else {
-                    /* below annotations resize */
-                    var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
-                    var toShow = document.querySelector(".annotations-box-below");
-                    toShow.classList.add("d-block");
-                    toShow.classList.remove("d-none");
-                    if (smaller.length > 0) {
-                        smaller.forEach((el) => {
-                            el.classList.add("col-md-1");
-                            el.classList.remove("col-md-4");
-                            el.classList.remove("bg-light");
-                            /* hide the button to add annotations */
-                            el.querySelector(".top-btn").classList.remove("d-none");
-                        });
-                    };
-                };
-                /* selected fragment form */
-                var category = el.getAttribute("data-value");
-                document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
-                /* show forms */
+                
                 if (tinymce.activeEditor.selection.getContent() !== "") {
+
+                    /* APRO IL BOX */
+                    /* top annotations resize */
+                    if (el.parentNode.classList.contains("enlarge-col") === true) {
+                        var bigger = el.parentNode;
+                        var toHide = document.querySelector(".annotations-box-below");
+                        toHide.classList.add("d-none");
+                        toHide.classList.remove("d-block");
+                        bigger.classList.remove("col-md-1");
+                        bigger.classList.add("col-md-4");
+                        bigger.classList.add("bg-light");
+                        /* hide the button to add annotations */
+                        el.classList.add("top-btn");
+                        el.classList.add("d-none");
+                        el.classList.remove("d-block");
+                    } else {
+                        /* below annotations resize */
+                        var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
+                        var toShow = document.querySelector(".annotations-box-below");
+                        toShow.classList.add("d-block");
+                        toShow.classList.remove("d-none");
+                        if (smaller.length > 0) {
+                            smaller.forEach((el) => {
+                                el.classList.add("col-md-1");
+                                el.classList.remove("col-md-4");
+                                el.classList.remove("bg-light");
+                                /* hide the button to add annotations */
+                                el.querySelector(".top-btn").classList.remove("d-none");
+                            });
+                        };
+                    };
+                    /* selected fragment form */
+                    var category = el.getAttribute("data-value");
+                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+
+
+
+                    /* MOSTRO I FORM */
+                    /* show forms */
                     /* hide the non clicked form */
                     var forms = document.querySelectorAll(".annotation-form");
                     forms.forEach((el) => {
@@ -264,8 +273,12 @@ let annotations = () => {
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
+
+
             };
         });
+
+
     });
 };
 
