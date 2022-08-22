@@ -77,8 +77,8 @@ let textarea = () => {
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
-            ".ann-apparatus {border-bottom: 3px solid #FFC107; padding: 0;}" +
-            ".ann-translation {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"
+            ".annotation[data-subtype='apparatus'] {border-bottom: 3px solid #FFC107; padding: 0;}" +
+            ".annotation[data-subtype='translation'] {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"
     });
 };
 
@@ -291,7 +291,8 @@ let annotations = () => {
                     var str = document.createElement("span");
                     str.innerHTML = content;
                     str.classList.add("annotation");
-                    str.classList.add("ann-" + annType);
+                    str.setAttribute("data-type", "annotation-object");
+                    str.setAttribute("data-subtype", annType);
                     sel.setNode(str);
 
                     /* create the end milestone */
