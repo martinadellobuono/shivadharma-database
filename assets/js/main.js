@@ -214,14 +214,14 @@ let cloneEl = () => {
 let annotations = () => {
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
 
-        /* CLICCO SU UN BOTTONE PER AGGIUNGERE ANNOTAZIONI */
+        /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
         el.addEventListener("click", () => {
             /* get selected text */
             if (document.getSelection) {
-                
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
-                    /* APRO IL BOX */
+
+                    /* OPEN THE BOX */
                     /* top annotations resize */
                     if (el.parentNode.classList.contains("enlarge-col") === true) {
                         var bigger = el.parentNode;
@@ -251,14 +251,11 @@ let annotations = () => {
                             });
                         };
                     };
+
+                    /* SHOW THE FORMS */
                     /* selected fragment form */
                     var category = el.getAttribute("data-value");
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
-
-
-
-                    /* MOSTRO I FORM */
-                    /* show forms */
                     /* hide the non clicked form */
                     var forms = document.querySelectorAll(".annotation-form");
                     forms.forEach((el) => {
@@ -270,6 +267,26 @@ let annotations = () => {
                             el.classList.add("d-none");
                         };
                     });
+
+
+                    /* PRINT MILESTONES IN THE TEXT */
+                    /* selected string */
+                    var sel = tinymce.activeEditor.selection;
+
+                    /* display the string object of annotation */
+                    /*var str = sel.getContent();
+                    var strNode = document.createElement("span");
+                    strNode.innerHTML = str;
+                    sel.setNode(strNode);*/
+
+                    /* create the milestone */
+                    var milestone = document.createElement("span");
+                    milestone.id = "try";
+                    sel.setNode(milestone);
+
+
+
+
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
