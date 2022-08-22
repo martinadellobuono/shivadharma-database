@@ -78,7 +78,7 @@ let textarea = () => {
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
             ".annotation[data-subtype='apparatus'] {border-bottom: 3px solid #FFC107; padding: 0;}" +
-            ".annotation[data-subtype='translation'] {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"
+            ".annotation[data-subtype='translation'] {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"        
     });
 };
 
@@ -277,7 +277,8 @@ let annotations = () => {
                     /* PRINT MILESTONES IN THE TEXT */
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
-                    var content = sel.getContent();
+
+                    var content = sel.getContent({format: "text"});
 
                     /* create the start milestone */
                     var milestoneStart = document.createElement("span");
@@ -285,7 +286,7 @@ let annotations = () => {
                     milestoneStart.setAttribute("data-subtype", annType);
                     milestoneStart.setAttribute("data-start", "start");
                     milestoneStart.id = "try"; // try
-                    sel.setNode(milestoneStart);
+                    sel.setNode(milestoneStart); 
 
                     /* display the string object of annotation */
                     var str = document.createElement("span");
@@ -302,7 +303,6 @@ let annotations = () => {
                     milestoneEnd.setAttribute("data-end", "end");
                     milestoneEnd.id = "try"; // try
                     sel.setNode(milestoneEnd);
-
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'

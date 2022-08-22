@@ -65,9 +65,9 @@
               <div class="tab-pane fade show active" id="annotate" role="tabpanel" aria-labelledby="annotate-tab">
                 <!-- default alerts -->
                 <div id="annotation-warning"></div>
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                  <p>Highlight the fragment in the text you want to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after clicking the button.</p>
-                  <p class="fw-bold">These functionalities will coming soon!</p>
+                <div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+                  <p class="fw-bold">How the annotator works<br><span class="fw-bolder">Insert annotations</span></p>
+                  <p>Highlight the fragment in the text you would like to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after clicking the button.</p>
                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <!-- error handling -->
@@ -93,6 +93,11 @@
               </div>
               <div class="tab-pane fade" id="check" role="tabpanel" aria-labelledby="check-tab">
                 <h2 class="mt-3 h5" id="check-annotation"></h2>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                  <p class="fw-bold">How the annotator works<br><span class="fw-bolder">Check the annotations</span></p>
+                  <p>After annotating the selected fragment in the text, check the specific information you added via forms.</p>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <!-- results apparatus -->
                 <div id="apparatus-res">
                   <%- include ("partials/forms-res/apparatus") %>
@@ -110,7 +115,7 @@
       <!-- translation -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Translation</h3>
-        <button type="button" class="btn btn-sm btn-annotation bg-teal" title="Insert/check a translation" data-value="translation">Translation</button>
+        <button type="button" class="btn btn-sm btn-annotation bg-teal mb-2 w-100" title="Insert/check a translation" data-value="translation">Translation</button>
         <div class="annotation-form translation d-none">
           <%- include ("partials/forms-req/translation") %>
         </div>
@@ -118,12 +123,12 @@
       <!-- parallels -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Parallels</h3>
-        <button type="button" class="btn btn-sm btn-dark" data-value="parallel">Parallel</button>
+        <button type="button" class="btn btn-sm btn-dark w-100" data-value="parallel">Parallel</button>
       </div>
       <!-- citations -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Citations</h3>
-        <button type="button" class="btn btn-sm btn-secondary" data-value="citation">Citation</button>
+        <button type="button" class="btn btn-sm btn-secondary w-100" data-value="citation">Citation</button>
       </div>
     </div>
   </div>
