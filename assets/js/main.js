@@ -272,20 +272,27 @@ let annotations = () => {
                     /* PRINT MILESTONES IN THE TEXT */
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
+                    var content = sel.getContent();
+
+                    /* create the start milestone */
+                    var milestoneStart = document.createElement("span");
+                    milestoneStart.setAttribute("data-type", "milestone");
+                    milestoneStart.setAttribute("data-start", "start");
+                    milestoneStart.id = "try";
+                    sel.setNode(milestoneStart);
 
                     /* display the string object of annotation */
-                    /*var str = sel.getContent();
-                    var strNode = document.createElement("span");
-                    strNode.innerHTML = str;
-                    sel.setNode(strNode);*/
+                    var str = document.createElement("span");
+                    str.innerHTML = content;
+                    str.style.color = "red";
+                    sel.setNode(str);
 
-                    /* create the milestone */
-                    var milestone = document.createElement("span");
-                    milestone.id = "try";
-                    sel.setNode(milestone);
-
-
-
+                    /* create the end milestone */
+                    var milestoneEnd = document.createElement("span");
+                    milestoneEnd.setAttribute("data-type", "milestone");
+                    milestoneEnd.setAttribute("data-end", "end");
+                    milestoneEnd.id = "try";
+                    sel.setNode(milestoneEnd);
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
