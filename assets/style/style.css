@@ -11992,7 +11992,6 @@ body {
 .edition-container > .row > div {
   height: -webkit-fill-available;
   overflow: hidden;
-  resize: horizontal;
 }
 
 /* read */
@@ -12005,7 +12004,6 @@ body {
   height: -webkit-fill-available;
   overflow-x: hidden;
   overflow-y: scroll;
-  resize: horizontal;
 }
 
 /* tabs */

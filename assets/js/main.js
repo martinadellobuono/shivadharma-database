@@ -21,7 +21,7 @@ let alerts = () => {
 let textarea = () => {
     var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     tinymce.init({
-        selector: ".textarea-container textarea",        
+        selector: ".textarea-container textarea",
         resize: false,
         width: "100%",
         plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
@@ -76,9 +76,9 @@ let textarea = () => {
         contextmenu: "link image table",
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
-        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" + 
-        ".ann-translation {text-decoration: 3px solid underline; text-decoration-color: #79DFC1;}" +
-        ".ann-apparatus {text-decoration: 3px solid underline; text-decoration-color: #FFC107;}"
+        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
+            ".ann-apparatus {border-bottom: 3px solid #FFC107; padding: 0;}" +
+            ".ann-translation {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"
     });
 };
 
@@ -282,6 +282,7 @@ let annotations = () => {
                     /* create the start milestone */
                     var milestoneStart = document.createElement("span");
                     milestoneStart.setAttribute("data-type", "milestone");
+                    milestoneStart.setAttribute("data-subtype", annType);
                     milestoneStart.setAttribute("data-start", "start");
                     milestoneStart.id = "try"; // try
                     sel.setNode(milestoneStart);
@@ -289,12 +290,14 @@ let annotations = () => {
                     /* display the string object of annotation */
                     var str = document.createElement("span");
                     str.innerHTML = content;
+                    str.classList.add("annotation");
                     str.classList.add("ann-" + annType);
                     sel.setNode(str);
 
                     /* create the end milestone */
                     var milestoneEnd = document.createElement("span");
                     milestoneEnd.setAttribute("data-type", "milestone");
+                    milestoneEnd.setAttribute("data-subtype", annType);
                     milestoneEnd.setAttribute("data-end", "end");
                     milestoneEnd.id = "try"; // try
                     sel.setNode(milestoneEnd);
