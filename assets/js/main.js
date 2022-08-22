@@ -21,7 +21,7 @@ let alerts = () => {
 let textarea = () => {
     var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     tinymce.init({
-        selector: ".textarea-container textarea",
+        selector: ".textarea-container textarea",        
         resize: false,
         width: "100%",
         plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
@@ -76,7 +76,9 @@ let textarea = () => {
         contextmenu: "link image table",
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
-        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }"
+        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" + 
+        ".ann-translation {text-decoration: 3px solid underline; text-decoration-color: #79DFC1;}" +
+        ".ann-apparatus {text-decoration: 3px solid underline; text-decoration-color: #FFC107;}"
     });
 };
 
@@ -214,6 +216,9 @@ let cloneEl = () => {
 let annotations = () => {
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
 
+        /* annotation type */
+        var annType = el.getAttribute("data-value");
+
         /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
         el.addEventListener("click", () => {
             /* get selected text */
@@ -278,21 +283,22 @@ let annotations = () => {
                     var milestoneStart = document.createElement("span");
                     milestoneStart.setAttribute("data-type", "milestone");
                     milestoneStart.setAttribute("data-start", "start");
-                    milestoneStart.id = "try";
+                    milestoneStart.id = "try"; // try
                     sel.setNode(milestoneStart);
 
                     /* display the string object of annotation */
                     var str = document.createElement("span");
                     str.innerHTML = content;
-                    str.style.color = "red";
+                    str.classList.add("ann-" + annType);
                     sel.setNode(str);
 
                     /* create the end milestone */
                     var milestoneEnd = document.createElement("span");
                     milestoneEnd.setAttribute("data-type", "milestone");
                     milestoneEnd.setAttribute("data-end", "end");
-                    milestoneEnd.id = "try";
+                    milestoneEnd.id = "try"; // try
                     sel.setNode(milestoneEnd);
+
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'

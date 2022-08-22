@@ -16,14 +16,23 @@ body {
     white-space: nowrap;
 }
 
+/* background */
+.bg-teal {
+    background-color: $teal-300;
+}
+
+.bg-yellow {
+    background-color: $yellow;
+}
+
 /* layout */
 /* edit */
 .edition-container,
 .edition-container .row {
-    height: 80vh;    
+    height: 80vh;
 }
 
-.edition-container > .row > div {
+.edition-container>.row>div {
     height: -webkit-fill-available;
     overflow: hidden;
     resize: horizontal;
@@ -35,7 +44,7 @@ body {
     height: 80vh;
 }
 
-.edition-container-vis > .row > div {
+.edition-container-vis>.row>div {
     height: -webkit-fill-available;
     overflow-x: hidden;
     overflow-y: scroll;

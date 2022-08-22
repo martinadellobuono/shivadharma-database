@@ -11973,6 +11973,15 @@ body {
   white-space: nowrap;
 }
 
+/* background */
+.bg-teal {
+  background-color: #79dfc1;
+}
+
+.bg-yellow {
+  background-color: #ffc107;
+}
+
 /* layout */
 /* edit */
 .edition-container,
