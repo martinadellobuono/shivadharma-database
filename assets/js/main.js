@@ -77,8 +77,9 @@ let textarea = () => {
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
-            ".annotation[data-subtype='apparatus'] {border-bottom: 3px solid #FFC107; padding: 0;}" +
-            ".annotation[data-subtype='translation'] {border-bottom: 3px solid #79DFC1; padding: 3px 0;}"
+            "div[data-type='annotation-object'] {display: inline;}" +
+            "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
+            "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}"
     });
 };
 
@@ -197,11 +198,6 @@ let cloneEl = () => {
             });
             /* i */
             i++;
-
-            /* try */
-            /* modify name manuscriptVariant */
-            //cloned.querySelector("[data-list]").setAttribute("name", "manuscriptVariant" + i); 
-
             /* remove duplicates */
             cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
             /* autocomplete */
@@ -284,25 +280,22 @@ let annotations = () => {
                     milestoneStart.setAttribute("data-type", "milestone");
                     milestoneStart.setAttribute("data-subtype", annType);
                     milestoneStart.setAttribute("data-start", "start");
-                    milestoneStart.innerHTML = "START";
-                    sel.setNode(milestoneStart);
-
-                    /* display the string object of annotation */
-                    var annotation = document.createElement("span");
-                    annotation.setAttribute("data-type", "annotation-object");
-                    annotation.setAttribute("data-subtype", annType);
-                    var str = document.createElement("span");
-                    str.textContent = content;
-                    annotation.insertBefore(str, annotation.nextSibling);
-                    sel.setNode(annotation);
 
                     /* create the end milestone */
                     var milestoneEnd = document.createElement("span");
                     milestoneEnd.setAttribute("data-type", "milestone");
                     milestoneEnd.setAttribute("data-subtype", annType);
                     milestoneEnd.setAttribute("data-end", "end");
-                    milestoneEnd.innerHTML = "END";
-                    sel.setNode(milestoneEnd);
+
+                    /* display the string object of annotation */
+                    var annotation = document.createElement("div");
+                    annotation.setAttribute("data-type", "annotation-object");
+                    annotation.setAttribute("data-subtype", annType);
+                    annotation.innerHTML = content;
+                    annotation.insertBefore(milestoneStart, annotation.firstChild);
+                    annotation.appendChild(milestoneEnd);
+                    sel.setNode(annotation);
+
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
