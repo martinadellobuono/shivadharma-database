@@ -60,7 +60,7 @@
               <li class="nav-item" role="presentation">
                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
               </li>
-            </ul>
+            </ul>  
             <div class="tab-content scroll-tab">
               <div class="tab-pane fade show active" id="annotate" role="tabpanel" aria-labelledby="annotate-tab">
                 <!-- default alerts -->
@@ -115,7 +115,7 @@
       <!-- translation -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Translation</h3>
-        <button type="button" class="btn btn-sm btn-annotation bg-teal mb-2 w-100" title="Insert/check a translation" data-value="translation">Translation</button>
+        <button type="button" class="btn btn-sm btn-annotation bg-teal mb-2 w-100" title="Insert/check a translation" data-value="translation"><i class="bi bi-pencil-fill"></i><br>Translation</button>
         <div class="annotation-form translation d-none">
           <%- include ("partials/forms-req/translation") %>
         </div>
@@ -123,12 +123,12 @@
       <!-- parallels -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Parallels</h3>
-        <button type="button" class="btn btn-sm btn-dark w-100" data-value="parallel">Parallel</button>
+        <button type="button" class="btn btn-sm btn-dark w-100" data-value="parallel"><i class="bi bi-pencil-fill"></i><br>Parallel</button>
       </div>
       <!-- citations -->
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6">Citations</h3>
-        <button type="button" class="btn btn-sm btn-secondary w-100" data-value="citation">Citation</button>
+        <button type="button" class="btn btn-sm btn-secondary w-100" data-value="citation"><i class="bi bi-pencil-fill"></i><br>Citation</button>
       </div>
     </div>
   </div>
@@ -140,7 +140,7 @@
         <!-- text structure -->
         <div class="btn-group dropup">
           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Text structure
+            <i class="bi bi-pencil-fill"></i> Text structure
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item" href="#">Chapter</a></li>
@@ -158,11 +158,11 @@
           </ul>
         </div>
         <!-- apparatus entry -->
-        <button type="button" class="btn btn-sm btn-annotation bg-yellow" data-value="apparatus">Apparatus entry</button>
+        <button type="button" class="btn btn-sm btn-annotation bg-yellow" data-value="apparatus"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
         <!-- notes -->
         <div class="btn-group dropup">
           <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Note
+            <i class="bi bi-pencil-fill"></i> Note
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item" href="#">Philological note</a></li>

@@ -11982,6 +11982,12 @@ body {
   background-color: #ffc107;
 }
 
+/* buttons */
+.btn-pink {
+  background-color: #ea868f;
+  color: #f8f9fa;
+}
+
 /* layout */
 /* edit */
 .edition-container,

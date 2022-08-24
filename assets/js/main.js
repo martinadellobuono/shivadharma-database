@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     cloneEl();
     annotations();
+    deleteAnnotations();
     liveCheck();
 });
 
@@ -221,7 +222,6 @@ let annotations = () => {
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
-
                     /* OPEN THE BOX */
                     /* top annotations resize */
                     if (el.parentNode.classList.contains("enlarge-col") === true) {
@@ -269,7 +269,6 @@ let annotations = () => {
                         };
                     });
 
-
                     /* PRINT MILESTONES IN THE TEXT */
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
@@ -296,16 +295,25 @@ let annotations = () => {
                     annotation.appendChild(milestoneEnd);
                     sel.setNode(annotation);
 
-
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
 
-
             };
         });
 
+    });
+};
 
+/* delete annotations */
+let deleteAnnotations = () => {
+    const deleteAnnotation = document.querySelectorAll("button[data-type='cancel-annotation']");
+    deleteAnnotation.forEach((el) => {
+        el.addEventListener("click", () => {
+
+            console.log("Cancel the annotation!");
+
+        });
     });
 };
 
