@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     cloneEl();
     annotations();
-    deleteAnnotations();
+    cancelAnnotations();
     liveCheck();
 });
 
@@ -305,16 +305,35 @@ let annotations = () => {
     });
 };
 
-/* delete annotations */
-let deleteAnnotations = () => {
-    const deleteAnnotation = document.querySelectorAll("button[data-type='cancel-annotation']");
-    deleteAnnotation.forEach((el) => {
-        el.addEventListener("click", () => {
+/* cancel annotations */
+let cancelAnnotations = () => {
 
-            console.log("Cancel the annotation!");
+    var modal = document.getElementById("cancel-annotation");
 
+    /* when the modal is opened */
+    modal.addEventListener("shown.bs.modal", () => {
+        /* check the value of the input */
+        var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
+        safeDeletion.forEach((el) => {
+            el.addEventListener("keyup", () => {
+                if (el.value == "martinadellobuono") {
+                    document.querySelector("button[data-role='safe-deletion-btn']").removeAttribute("disabled");
+                };
+            });
         });
     });
+
+    /* when the modal is closed */
+    modal.addEventListener("hidden.bs.modal", () => {
+        /* disable the button to delete the annotation */
+        document.querySelector("button[data-role='safe-deletion-btn']").setAttribute("disabled", "disabled");
+        /* empty the input */
+        var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
+        safeDeletion.forEach((el) => {
+            el.value = "";
+        });
+    });
+
 };
 
 /* live check */
