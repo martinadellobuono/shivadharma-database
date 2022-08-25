@@ -324,11 +324,11 @@ let cancelAnnotations = () => {
                         saveChangesBtn.removeAttribute("disabled");
                         /* save changes */
                         saveChangesBtn.addEventListener("click", () => {
-
-
+                            /* close the modal */
+                            let modalToClose = bootstrap.Modal.getInstance(modal);
+                            modalToClose.hide();
+                            /* reset the layout */
                             closeAnnotationBox();
-
-
                         });
                     } else {
                         /* disable the save changes button */
@@ -354,7 +354,26 @@ let cancelAnnotations = () => {
 
 /* close annotation box */
 let closeAnnotationBox = () => {
-    console.log("I've to close the box!");
+
+    /* reset the empty annotation box */
+    var defaultAnnotationBox = document.querySelector(".annotations-box-below");
+    defaultAnnotationBox.classList.remove("d-none");
+    defaultAnnotationBox.classList.add("d-block");
+
+    /* annotation box > default col */
+    var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
+    if (smaller.length > 0) {
+        smaller.forEach((el) => {
+            /* reset the col */
+            el.classList.add("col-md-1");
+            el.classList.remove("col-md-4");
+            el.classList.remove("bg-light");
+            el.querySelector(".top-btn").classList.remove("d-none");
+            /* hide the forms */
+            el.querySelector(".annotation-form").classList.add("d-none");
+        });
+    };
+
 };
 
 /* live check */
