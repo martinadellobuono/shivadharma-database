@@ -316,20 +316,23 @@ let cancelAnnotations = () => {
         modal.addEventListener("shown.bs.modal", () => {
             /* check the value of the input */
             var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
+            var saveChangesBtn = document.querySelector("button[data-role='safe-deletion-btn']");
             safeDeletion.forEach((el) => {
                 el.addEventListener("keyup", () => {
                     if (el.value == "martinadellobuono") {
-                        var saveChangesBtn = document.querySelector("button[data-role='safe-deletion-btn']");
+                        /* enable the save changes button */
                         saveChangesBtn.removeAttribute("disabled");
                         /* save changes */
                         saveChangesBtn.addEventListener("click", () => {
-                
-                            
+
+
                             closeAnnotationBox();
 
 
                         });
-
+                    } else {
+                        /* disable the save changes button */
+                        saveChangesBtn.setAttribute("disabled", "disabled");
                     };
                 });
             });

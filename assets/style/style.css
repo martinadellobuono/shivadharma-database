@@ -11988,6 +11988,11 @@ body {
   color: #f8f9fa;
 }
 
+/* cursor */
+.cursor-not-allowed:hover {
+  cursor: not-allowed;
+}
+
 /* layout */
 /* edit */
 .edition-container,
