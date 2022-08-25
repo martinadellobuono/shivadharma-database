@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cloneEl();
     annotations();
     cancelAnnotations();
+    closeBtn();
     liveCheck();
 });
 
@@ -218,6 +219,7 @@ let annotations = () => {
 
         /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
         el.addEventListener("click", () => {
+
             /* get selected text */
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
@@ -353,7 +355,7 @@ let cancelAnnotations = () => {
 
 };
 
-/* close annotation box */
+/* close annotation box when clicking on another annotation button */
 let closeAnnotationBox = () => {
 
     /* reset the empty annotation box */
@@ -361,22 +363,48 @@ let closeAnnotationBox = () => {
     defaultAnnotationBox.classList.remove("d-none");
     defaultAnnotationBox.classList.add("d-block");
 
+    /* hide default settings */
+    var defaultSettings = document.querySelector(".default-settings");
+    defaultSettings.classList.add("d-none");
+
     /* annotation box > default col */
     var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
     if (smaller.length > 0) {
-        smaller.forEach((el) => {
-            /* reset the col */
-            el.classList.add("col-md-1");
-            el.classList.remove("col-md-4");
-            el.classList.remove("bg-light");
-            el.querySelector(".top-btn").classList.remove("d-none");
-            /* hide the forms */
-            el.querySelector(".annotation-form").classList.add("d-none");
-            /* hide the close button */
-            el.querySelector(".btn-close").classList.add("d-none");
-        });
+        if (smaller.length > 0) {
+            smaller.forEach((el) => {
+                /* reset the col */
+                el.classList.add("col-md-1");
+                el.classList.remove("col-md-4");
+                el.classList.remove("bg-light");
+                el.querySelector(".top-btn").classList.remove("d-none");
+                /* hide the forms */
+                el.querySelector(".annotation-form").classList.add("d-none");
+                /* hide the close button */
+                el.querySelector(".btn-close").classList.add("d-none");
+            });
+        };
+    } else {
+        /* hide the forms */
+        document.querySelector(".annotation-form").classList.add("d-none");
     };
 
+};
+
+/* close annotation box when clicking on another annotation button */
+let closeBtn = () => {
+    var closeBtn = document.querySelectorAll(".btn-close.float-end");
+    closeBtn.forEach((el) => {
+        el.addEventListener("click", () => {
+
+            /* reset the layout */
+            closeAnnotationBox();
+
+            /* show the default settings */
+            var defaultSettings = document.querySelector(".default-settings");
+            defaultSettings.classList.remove("d-none");
+
+        });
+    });
 };
 
 /* live check */
