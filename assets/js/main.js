@@ -236,6 +236,9 @@ let annotations = () => {
                         el.classList.add("top-btn");
                         el.classList.add("d-none");
                         el.classList.remove("d-block");
+                        /* hide the close button */
+                        bigger.querySelector(".btn-close").classList.remove("d-none");
+
                     } else {
                         /* below annotations resize */
                         var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
@@ -371,6 +374,8 @@ let closeAnnotationBox = () => {
             el.querySelector(".top-btn").classList.remove("d-none");
             /* hide the forms */
             el.querySelector(".annotation-form").classList.add("d-none");
+            /* hide the close button */
+            el.querySelector(".btn-close").classList.add("d-none");
         });
     };
 
