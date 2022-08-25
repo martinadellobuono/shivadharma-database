@@ -123,8 +123,12 @@
       </div>
       <!-- parallels -->
       <div class="col-md-1 border p-3 enlarge-col">
+        <button type="button" class="btn-close float-end d-none" aria-label="Close" onclick="closeAnnotationBox();"></button>
         <h3 class="h6">Parallels</h3>
-        <button type="button" class="btn btn-sm btn-dark w-100" data-value="parallel"><i class="bi bi-pencil-fill"></i><br>Parallel</button>
+        <button type="button" class="btn btn-sm btn-secondary btn-annotation mb-2 w-100" title="Insert/check a parallel" data-value="parallel"><i class="bi bi-pencil-fill"></i><br>Parallel</button>
+        <div class="annotation-form parallel d-none">
+          <%- include ("partials/forms-req/parallel") %>
+        </div>
       </div>
       <!-- citations -->
       <div class="col-md-1 border p-3 enlarge-col">

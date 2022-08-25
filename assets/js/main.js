@@ -313,43 +313,39 @@ let cancelAnnotations = () => {
 
     /* modal */
     var modals = document.querySelectorAll("div[data-role='cancel-annotation']");
-
     modals.forEach((modal) => {
-        /* when the modal is opened */
+        var safeDeletionInput = modal.querySelector("input[data-role='safe-deletion']");
+        var saveChangesBtn = modal.querySelector("button[data-role='safe-deletion-btn']");
+        /* open the modal */
         modal.addEventListener("shown.bs.modal", () => {
-            /* check the value of the input */
-            var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
-            var saveChangesBtn = document.querySelector("button[data-role='safe-deletion-btn']");
-            safeDeletion.forEach((el) => {
-                el.addEventListener("keyup", () => {
-                    if (el.value == "martinadellobuono") {
-                        /* enable the save changes button */
-                        saveChangesBtn.removeAttribute("disabled");
-                        /* save changes */
-                        saveChangesBtn.addEventListener("click", () => {
-                            /* close the modal */
-                            let modalToClose = bootstrap.Modal.getInstance(modal);
-                            modalToClose.hide();
-                            /* reset the layout */
-                            closeAnnotationBox();
-                        });
-                    } else {
-                        /* disable the save changes button */
-                        saveChangesBtn.setAttribute("disabled", "disabled");
-                    };
-                });
+            /* typing in the input */
+            safeDeletionInput.addEventListener("keyup", () => {
+                /* check the value of the input */
+                if (safeDeletionInput.value == "martinadellobuono") {
+                    /* enable the save changes button */
+                    saveChangesBtn.removeAttribute("disabled");
+                    /* save changes */
+                    saveChangesBtn.addEventListener("click", () => {
+                        /* close the modal */
+                        let modalToClose = bootstrap.Modal.getInstance(modal);
+                        modalToClose.hide();
+                        /* reset the layout */
+                        closeAnnotationBox();
+                    });
+                } else {
+                    /* disable the save changes button */
+                    saveChangesBtn.setAttribute("disabled", "disabled");
+                };
             });
-        });
 
-        /* when the modal is closed */
-        modal.addEventListener("hidden.bs.modal", () => {
-            /* disable the button to delete the annotation */
-            document.querySelector("button[data-role='safe-deletion-btn']").setAttribute("disabled", "disabled");
-            /* empty the input */
-            var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
-            safeDeletion.forEach((el) => {
-                el.value = "";
+            /* when the modal is closed */
+            modal.addEventListener("hidden.bs.modal", () => {
+                /* disable the button to delete the annotation */
+                saveChangesBtn.setAttribute("disabled", "disabled");
+                /* empty the input */
+                safeDeletionInput.value = "";
             });
+
         });
     });
 
