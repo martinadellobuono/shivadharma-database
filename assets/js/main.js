@@ -308,32 +308,50 @@ let annotations = () => {
 /* cancel annotations */
 let cancelAnnotations = () => {
 
-    var modal = document.getElementById("cancel-annotation");
+    /* modal */
+    var modals = document.querySelectorAll("div[data-role='cancel-annotation']");
 
-    /* when the modal is opened */
-    modal.addEventListener("shown.bs.modal", () => {
-        /* check the value of the input */
-        var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
-        safeDeletion.forEach((el) => {
-            el.addEventListener("keyup", () => {
-                if (el.value == "martinadellobuono") {
-                    document.querySelector("button[data-role='safe-deletion-btn']").removeAttribute("disabled");
-                };
+    modals.forEach((modal) => {
+        /* when the modal is opened */
+        modal.addEventListener("shown.bs.modal", () => {
+            /* check the value of the input */
+            var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
+            safeDeletion.forEach((el) => {
+                el.addEventListener("keyup", () => {
+                    if (el.value == "martinadellobuono") {
+                        var saveChangesBtn = document.querySelector("button[data-role='safe-deletion-btn']");
+                        saveChangesBtn.removeAttribute("disabled");
+                        /* save changes */
+                        saveChangesBtn.addEventListener("click", () => {
+                
+                            
+                            closeAnnotationBox();
+
+
+                        });
+
+                    };
+                });
+            });
+        });
+
+        /* when the modal is closed */
+        modal.addEventListener("hidden.bs.modal", () => {
+            /* disable the button to delete the annotation */
+            document.querySelector("button[data-role='safe-deletion-btn']").setAttribute("disabled", "disabled");
+            /* empty the input */
+            var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
+            safeDeletion.forEach((el) => {
+                el.value = "";
             });
         });
     });
 
-    /* when the modal is closed */
-    modal.addEventListener("hidden.bs.modal", () => {
-        /* disable the button to delete the annotation */
-        document.querySelector("button[data-role='safe-deletion-btn']").setAttribute("disabled", "disabled");
-        /* empty the input */
-        var safeDeletion = document.querySelectorAll("input[data-role='safe-deletion']");
-        safeDeletion.forEach((el) => {
-            el.value = "";
-        });
-    });
+};
 
+/* close annotation box */
+let closeAnnotationBox = () => {
+    console.log("I've to close the box!");
 };
 
 /* live check */
