@@ -223,6 +223,8 @@ let annotations = () => {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
                     /* OPEN THE BOX */
+                    /* close the open box */
+                    closeAnnotationBox();
                     /* top annotations resize */
                     if (el.parentNode.classList.contains("enlarge-col") === true) {
                         var bigger = el.parentNode;
