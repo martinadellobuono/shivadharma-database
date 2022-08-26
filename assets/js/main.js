@@ -81,7 +81,8 @@ let textarea = () => {
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
             "div[data-type='annotation-object'] {display: inline;}" +
             "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
-            "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}"
+            "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
+        verify_html: false
     });
 };
 
@@ -212,6 +213,10 @@ let cloneEl = () => {
 
 /* annotations */
 let annotations = () => {
+
+    /* n to create an id for the annotations */
+    var n = 0;
+
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
 
         /* annotation type */
@@ -281,26 +286,43 @@ let annotations = () => {
                     var sel = tinymce.activeEditor.selection;
                     var content = sel.getContent();
 
+                    /* n to create an id for the annotations */
+                    n += 1;
+
                     /* create the start milestone */
                     var milestoneStart = document.createElement("span");
                     milestoneStart.setAttribute("data-type", "milestone");
                     milestoneStart.setAttribute("data-subtype", annType);
                     milestoneStart.setAttribute("data-start", "start");
+                    /* assign an id to the annotation */
+                    milestoneStart.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
 
                     /* create the end milestone */
                     var milestoneEnd = document.createElement("span");
                     milestoneEnd.setAttribute("data-type", "milestone");
                     milestoneEnd.setAttribute("data-subtype", annType);
                     milestoneEnd.setAttribute("data-end", "end");
+                    /* assign an id to the annotation */
+                    milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
 
                     /* display the string object of annotation */
                     var annotation = document.createElement("div");
                     annotation.setAttribute("data-type", "annotation-object");
                     annotation.setAttribute("data-subtype", annType);
+                    /* assign an id to the annotation */
+                    annotation.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
                     annotation.innerHTML = content;
                     annotation.insertBefore(milestoneStart, annotation.firstChild);
                     annotation.appendChild(milestoneEnd);
                     sel.setNode(annotation);
+
+                    /* assign the same id to the cancel button */
+                    var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
+                    var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
+                    safeCancelBtn.setAttribute("data-cancel", "annotation-" + n);
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
@@ -330,11 +352,24 @@ let cancelAnnotations = () => {
                     saveChangesBtn.removeAttribute("disabled");
                     /* save changes */
                     saveChangesBtn.addEventListener("click", () => {
+
+                        /* CANCEL THE ANNOTATION */
+                        var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
+                        var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
+                        var annotationId = safeCancelBtn.getAttribute("data-cancel");
+                        /* search all elements with the annotation id */
+                        var annotations = tinymce.activeEditor.dom.select('[data-annotation="' + annotationId + '"]');
+                        annotations.forEach((el) => {
+                            console.log("Elemento di annotazione: " + el);
+                        });
+
                         /* close the modal */
                         let modalToClose = bootstrap.Modal.getInstance(modal);
                         modalToClose.hide();
                         /* reset the layout */
                         closeAnnotationBox();
+                        var defaultSettings = document.querySelector(".default-settings");
+                        defaultSettings.classList.remove("d-none");
                     });
                 } else {
                     /* disable the save changes button */
