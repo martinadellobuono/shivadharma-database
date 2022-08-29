@@ -359,28 +359,25 @@ let cancelAnnotations = () => {
                         var annotationId = safeCancelBtn.getAttribute("data-cancel");
                         /* search all elements with the annotation id */
                         var annotationDiv = tinymce.activeEditor.dom.select('div[data-annotation="' + annotationId + '"]');
-
-
-                        /* try */
+                        /* reinsert the original content without annotation tags */
                         var newContent = "";
-
                         annotationDiv.forEach((annotation) => {
                             var annotationChildren = annotation.childNodes;                 
                             annotationChildren.forEach((el) => {
                                 if (el.tagName == "SPAN") {
-                                    //newContent = newContent + el.outerHTML;
+                                    /* it will be automatically removed */
                                 } else if (el.tagName == "P") {
                                     newContent = newContent + el.outerHTML;
                                 } else {
                                     var txt = el.textContent
                                     annotation.outerHTML = "" + txt;
+                                    newContent = "";
                                 };
                             });
-                            annotation.outerHTML = newContent;
+                            if (newContent !== "") {
+                                annotation.outerHTML = newContent;
+                            };
                         });
-                        /* / */
-
-
                         /* close the modal */
                         let modalToClose = bootstrap.Modal.getInstance(modal);
                         modalToClose.hide();
@@ -388,6 +385,7 @@ let cancelAnnotations = () => {
                         closeAnnotationBox();
                         var defaultSettings = document.querySelector(".default-settings");
                         defaultSettings.classList.remove("d-none");
+
                     });
                 } else {
                     /* disable the save changes button */
