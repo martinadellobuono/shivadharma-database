@@ -80,6 +80,7 @@ let textarea = () => {
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
             "div[data-type='annotation-object'] {display: inline;}" +
+            "div[data-type='annotation-object']::before {content: '\u270E';}" +
             "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
             "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
         verify_html: false
@@ -281,7 +282,7 @@ let annotations = () => {
                         };
                     });
 
-                    /* PRINT MILESTONES IN THE TEXT */
+                    /* PRINT MILESTONES AND CONTENT IN THE TEXT */
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
                     var content = sel.getContent();
@@ -323,6 +324,11 @@ let annotations = () => {
                     var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
                     var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
                     safeCancelBtn.setAttribute("data-cancel", "annotation-" + n);
+
+                    /* REMOVE EMPTY PARAGRAPH ELEMENTS */
+                    /* try */
+
+                    /* / */
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
