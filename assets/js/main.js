@@ -368,16 +368,15 @@ let cancelAnnotations = () => {
                             var annotationChildren = annotation.childNodes;                 
                             annotationChildren.forEach((el) => {
                                 if (el.tagName == "SPAN") {
-                                    console.log("È uno span");
                                     //newContent = newContent + el.outerHTML;
                                 } else if (el.tagName == "P") {
-                                    console.log("È un paragrafo");
+                                    newContent = newContent + el.outerHTML;
                                 } else {
                                     var txt = el.textContent
                                     annotation.outerHTML = "" + txt;
                                 };
                             });
-                            /*annotation.innerHTML = newContent;*/
+                            annotation.outerHTML = newContent;
                         });
                         /* / */
 
