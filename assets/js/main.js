@@ -358,10 +358,29 @@ let cancelAnnotations = () => {
                         var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
                         var annotationId = safeCancelBtn.getAttribute("data-cancel");
                         /* search all elements with the annotation id */
-                        var annotations = tinymce.activeEditor.dom.select('[data-annotation="' + annotationId + '"]');
-                        annotations.forEach((el) => {
-                            console.log("Elemento di annotazione: " + el);
+                        var annotationDiv = tinymce.activeEditor.dom.select('div[data-annotation="' + annotationId + '"]');
+
+
+                        /* try */
+                        var newContent = "";
+
+                        annotationDiv.forEach((annotation) => {
+                            var annotationChildren = annotation.childNodes;                 
+                            annotationChildren.forEach((el) => {
+                                if (el.tagName == "SPAN") {
+                                    console.log("È uno span");
+                                    //newContent = newContent + el.outerHTML;
+                                } else if (el.tagName == "P") {
+                                    console.log("È un paragrafo");
+                                } else {
+                                    var txt = el.textContent
+                                    annotation.outerHTML = "" + txt;
+                                };
+                            });
+                            /*annotation.innerHTML = newContent;*/
                         });
+                        /* / */
+
 
                         /* close the modal */
                         let modalToClose = bootstrap.Modal.getInstance(modal);
