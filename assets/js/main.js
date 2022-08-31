@@ -349,6 +349,10 @@ let annotations = () => {
     });
 };
 
+/* try */
+
+/* / */
+
 /* cancel annotations */
 let cancelAnnotations = () => {
 
@@ -438,20 +442,26 @@ let closeAnnotationBox = () => {
     if (smaller.length > 0) {
         if (smaller.length > 0) {
             smaller.forEach((el) => {
+
                 /* reset the col */
                 el.classList.add("col-md-1");
                 el.classList.remove("col-md-4");
                 el.classList.remove("bg-light");
                 el.querySelector(".top-btn").classList.remove("d-none");
+                
                 /* hide the forms */
                 el.querySelector(".annotation-form").classList.add("d-none");
+
                 /* hide the close button */
                 el.querySelector(".btn-close").classList.add("d-none");
+
             });
         };
     } else {
+
         /* hide the forms */
         document.querySelector(".annotation-form").classList.add("d-none");
+
     };
 
 };
@@ -462,8 +472,8 @@ let closeBtn = () => {
     closeBtn.forEach((el) => {
         el.addEventListener("click", () => {
 
-            /* reset the layout */
-            closeAnnotationBox();
+            /* remove highlight in the text */
+            cancelAnnotations();
 
             /* show the default settings */
             var defaultSettings = document.querySelector(".default-settings");
