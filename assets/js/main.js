@@ -320,15 +320,24 @@ let annotations = () => {
                     annotation.appendChild(milestoneEnd);
                     sel.setNode(annotation);
 
+                    /* REMOVE EMPTY PARAGRAPH ELEMENTS */
+                    var selNode = sel.getNode();
+                    /* block selected */
+                    if (selNode.tagName == "BODY") {
+                        var children = selNode.querySelectorAll("p");
+                        children.forEach((el) => {
+                            if (el.textContent == "") {
+                                el.outerHTML = "";
+                            };
+                        });
+                    };
+                    /* / */
+
+                    /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
                     var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
                     var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
                     safeCancelBtn.setAttribute("data-cancel", "annotation-" + n);
-
-                    /* REMOVE EMPTY PARAGRAPH ELEMENTS */
-                    /* try */
-
-                    /* / */
 
                 } else {
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
@@ -368,7 +377,7 @@ let cancelAnnotations = () => {
                         /* reinsert the original content without annotation tags */
                         var newContent = "";
                         annotationDiv.forEach((annotation) => {
-                            var annotationChildren = annotation.childNodes;                 
+                            var annotationChildren = annotation.childNodes;
                             annotationChildren.forEach((el) => {
                                 if (el.tagName == "SPAN") {
                                     /* it will be automatically removed */
