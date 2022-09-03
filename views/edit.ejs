@@ -40,6 +40,24 @@
         </form>
         <!-- file -->
         <form class="textarea-container" id="base-text" method="post" action="/publish/<%= id %>">
+          <!-- check modifications -->
+          <div class="modal show d-none" id="check-modifications" tabindex="-1" aria-labelledby="check-modifications" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content border border-2 border-warning">
+                <div class="modal-header">
+                  <h5 class="modal-title">You are going to modify an annotated fragment. </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>What would you like to do?</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-role="add-annotation">Add a new annotation</button>
+                  <button type="button" class="btn btn-primary" data-role="modify-annotation">Modify the annotated fragment</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <textarea class="mt-1" placeholder="Insert the text of your edition..." name="fileBaseTxt">
             <% if (file) { %>
                 <%- include (`../uploads/${file}`) %>

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     alerts();
+    popovers();
     textarea();
     autocomplete();
     cloneEl();
@@ -7,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelAnnotations();
     closeBtn();
     liveCheck();
+    checkAnnotatedFragments();
 });
 
 /* alerts */
@@ -17,6 +19,14 @@ let alerts = () => {
         });
     };
     setTimeout(showAlert, 300);
+};
+
+/* popovers */
+let popovers = () => {
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
 };
 
 /* textarea */
@@ -83,7 +93,60 @@ let textarea = () => {
             "div[data-type='annotation-object']::before {content: '\u270E';}" +
             "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
             "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
-        verify_html: false
+        verify_html: false,
+
+        /* check the annotated fragments */
+        setup: (ed) => {
+
+            /* MODAL */
+            var alert = document.getElementById("check-modifications");
+            /* open modal */
+            let openModal = () => {
+                alert.classList.remove("d-none");
+                alert.classList.add("d-block");
+            };
+            /* close modal */
+            let closeModal = () => {
+                alert.classList.remove("d-block");
+                alert.classList.add("d-none");
+            };
+
+            /* MOUSEDOWN */
+            ed.on("mousedown", (e) => {
+                var parent = e.target.parentNode.parentNode;
+
+                if (parent.tagName == "DIV") {
+
+                    let check = () => {
+                        if (parent.getAttribute("data-type") == "annotation-object") {
+                            
+                            /* open modal */
+                            openModal();
+
+                            // try
+                            /* add a new annotation */
+                            var newBtn = alert.querySelector("[data-role='add-annotation']");
+                            newBtn.addEventListener("click", () => {
+                                closeModal();
+                            });
+                            // /
+
+                        };
+                    };
+                    check();
+
+                } else if (parent.tagName == "BODY") {
+                    parent = e.target.parentNode;
+                    check();
+                };
+
+            });
+
+            /*ed.on("keydown", (e) => {
+                console.log(e.target);
+            });*/
+        }
+
     });
 };
 
@@ -349,10 +412,6 @@ let annotations = () => {
     });
 };
 
-/* try */
-
-/* / */
-
 /* cancel annotations */
 let cancelAnnotations = () => {
 
@@ -448,7 +507,7 @@ let closeAnnotationBox = () => {
                 el.classList.remove("col-md-4");
                 el.classList.remove("bg-light");
                 el.querySelector(".top-btn").classList.remove("d-none");
-                
+
                 /* hide the forms */
                 el.querySelector(".annotation-form").classList.add("d-none");
 
@@ -561,4 +620,17 @@ let liveCheckAutocomplete = () => {
             document.getElementById("live-" + input.getAttribute("name")).innerHTML = val.replace(/[|]/g, " ");
         });
     });
+};
+
+/* check the annotated fragments */
+let checkAnnotatedFragments = () => {
+
+    /* MODAL */
+    /* close the modal */
+    var modal = document.getElementById("check-modifications");
+    var closeBtn = modal.querySelector(".btn-close");
+    closeBtn.addEventListener("click", () => {
+        modal.classList.remove("d-block");
+    });
+
 };
