@@ -9,11 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     closeBtn();
     liveCheck();
     checkAnnotatedFragments();
-
-    // try 
-    modalProof();
-    // / 
-
 });
 
 /* alerts */
@@ -98,50 +93,24 @@ let textarea = () => {
             "div[data-type='annotation-object']::before {content: '\u270E';}" +
             "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
             "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
-        verify_html: false
-        // try
-        /* check the annotated fragments */
-        /*setup: (ed) => {
-            var alert = document.getElementById("check-modifications");
-            let openModal = () => {
-                alert.classList.remove("d-none");
-                alert.classList.add("d-block");
-            };
-            let closeModal = () => {
-                alert.classList.remove("d-block");
-                alert.classList.add("d-none");
-            };
+        verify_html: false,
+
+        /* CHECK THE ANNOTATED FRAGMENTS */
+        setup: (ed) => {
+            /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
-                var parent = e.target.parentNode.parentNode;
-                if (parent.tagName == "DIV") {
-                    let check = () => {
-                        if (parent.getAttribute("data-type") == "annotation-object") {                            
-                            openModal();
-                            var newBtn = alert.querySelector("[data-role='add-annotation']");
-                            newBtn.addEventListener("click", () => {
-                                closeModal();
-                            });
-                        };
-                    };
-                    check();
-                } else if (parent.tagName == "BODY") {
-                    parent = e.target.parentNode;
-                    check();
+                /* open the modal */
+                var annotation = e.target.closest("[data-type='annotation-object']");
+                if (annotation !== null) {
+                    var modal = document.querySelector("#check-modifications");
+                    modal = bootstrap.Modal.getOrCreateInstance(modal);
+                    modal.show();
                 };
             });
-        }*/
-        // /
+        }
+        
     });
 };
-
-// try
-let modalProof = () => {
-    var modal = document.querySelector("#check-modifications");
-    modal = bootstrap.Modal.getOrCreateInstance(modal);
-    modal.show();
-};
-
-// /
 
 /* autocomplete */
 let autocomplete = () => {
