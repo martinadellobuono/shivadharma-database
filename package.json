@@ -18,7 +18,7 @@
     "express": "*",
     "express-validator": "*",
     "formidable": "*",
-    "mammoth": "^1.4.21",
+    "mammoth": "^1.5.1",
     "neo4j-driver": "*",
     "npm": "^8.13.1",
     "tinymce": "^6.0.3"

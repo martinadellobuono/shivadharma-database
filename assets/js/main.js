@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     closeBtn();
     liveCheck();
     checkAnnotatedFragments();
+
+    // try 
+    modalProof();
+    // / 
+
 });
 
 /* alerts */
@@ -93,62 +98,50 @@ let textarea = () => {
             "div[data-type='annotation-object']::before {content: '\u270E';}" +
             "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
             "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
-        verify_html: false,
-
+        verify_html: false
+        // try
         /* check the annotated fragments */
-        setup: (ed) => {
-
-            /* MODAL */
+        /*setup: (ed) => {
             var alert = document.getElementById("check-modifications");
-            /* open modal */
             let openModal = () => {
                 alert.classList.remove("d-none");
                 alert.classList.add("d-block");
             };
-            /* close modal */
             let closeModal = () => {
                 alert.classList.remove("d-block");
                 alert.classList.add("d-none");
             };
-
-            /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
                 var parent = e.target.parentNode.parentNode;
-
                 if (parent.tagName == "DIV") {
-
                     let check = () => {
-                        if (parent.getAttribute("data-type") == "annotation-object") {
-                            
-                            /* open modal */
+                        if (parent.getAttribute("data-type") == "annotation-object") {                            
                             openModal();
-
-                            // try
-                            /* add a new annotation */
                             var newBtn = alert.querySelector("[data-role='add-annotation']");
                             newBtn.addEventListener("click", () => {
                                 closeModal();
                             });
-                            // /
-
                         };
                     };
                     check();
-
                 } else if (parent.tagName == "BODY") {
                     parent = e.target.parentNode;
                     check();
                 };
-
             });
-
-            /*ed.on("keydown", (e) => {
-                console.log(e.target);
-            });*/
-        }
-
+        }*/
+        // /
     });
 };
+
+// try
+let modalProof = () => {
+    var modal = document.querySelector("#check-modifications");
+    modal = bootstrap.Modal.getOrCreateInstance(modal);
+    modal.show();
+};
+
+// /
 
 /* autocomplete */
 let autocomplete = () => {
