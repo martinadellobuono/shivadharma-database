@@ -492,14 +492,8 @@ let closeBtn = () => {
     var closeBtn = document.querySelectorAll(".btn-close.float-end");
     closeBtn.forEach((el) => {
         el.addEventListener("click", () => {
-
             /* remove highlight in the text */
             cancelAnnotations();
-
-            /* show the default settings */
-            var defaultSettings = document.querySelector(".default-settings");
-            defaultSettings.classList.remove("d-none");
-
         });
     });
 };
