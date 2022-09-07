@@ -99,40 +99,50 @@ let textarea = () => {
         setup: (ed) => {
 
             /* MOUSEDOWN */
-            let checkAnnotation = () => {
-                ed.on("mousedown", (e) => {
-                    /* open the modal */
-                    var annotation = e.target.closest("[data-type='annotation-object']");
-                    var annotationId = annotation.getAttribute("data-annotation");
+            //let checkAnnotation = () => {
+            ed.on("mousedown", (e) => {
+                /* open the modal */
+                var annotation = e.target.closest("[data-type='annotation-object']");
+                var annotationId = annotation.getAttribute("data-annotation");
 
-                    if (annotation !== null) {
-                        var modalContainer = document.querySelector("#check-modifications");
-                        var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
-                        modal.show();
+                if (annotation !== null) {
+                    var modalContainer = document.querySelector("#check-modifications");
+                    var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
+                    modal.show();
 
-                        // try
-                        /* add a new annotation */
-                        var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
-                        addAnnotation.addEventListener("click", () => {
+                    // try
+                    /* ADD A NEW ANNOTATION */
+                    var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
+                    addAnnotation.addEventListener("click", () => {
 
-                            /* close the modal */
+                        /* close the modal */
+                        modal.hide();
+                        modalContainer.addEventListener("show.bs.modal", (e) => {
+                            e.preventDefault();
                             modal.hide();
-
-                            /* click in the textarea */
-                            modalContainer.addEventListener("show.bs.modal", (e) => {
-                                e.preventDefault();
-                                modal.hide();
-                            });
-
-
                         });
-                        // /
 
-                    };
-                });
-            };
+                        /* click in the textarea again */
+                        ed.on("mousedown", (e) => {
+                            var el = e.target.closest("[data-type='annotation-object']");
+                            var elId = el.getAttribute("data-annotation");
+                            /* click on the previously clicked element */
+                            if (annotationId == elId) {
+                                console.log("equal");
+                            } else {
+                                console.log("different");
+                                console.log(modal);
+                            };
+                        });
 
-            checkAnnotation();
+                    });
+                    // /
+
+                };
+            });
+            //};
+
+            //checkAnnotation();
         }
 
     });
