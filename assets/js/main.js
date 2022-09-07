@@ -97,18 +97,44 @@ let textarea = () => {
 
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
+
             /* MOUSEDOWN */
-            ed.on("mousedown", (e) => {
-                /* open the modal */
-                var annotation = e.target.closest("[data-type='annotation-object']");
-                if (annotation !== null) {
-                    var modal = document.querySelector("#check-modifications");
-                    modal = bootstrap.Modal.getOrCreateInstance(modal);
-                    modal.show();
-                };
-            });
+            let checkAnnotation = () => {
+                ed.on("mousedown", (e) => {
+                    /* open the modal */
+                    var annotation = e.target.closest("[data-type='annotation-object']");
+                    var annotationId = annotation.getAttribute("data-annotation");
+
+                    if (annotation !== null) {
+                        var modalContainer = document.querySelector("#check-modifications");
+                        var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
+                        modal.show();
+
+                        // try
+                        /* add a new annotation */
+                        var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
+                        addAnnotation.addEventListener("click", () => {
+
+                            /* close the modal */
+                            modal.hide();
+
+                            /* click in the textarea */
+                            modalContainer.addEventListener("show.bs.modal", (e) => {
+                                e.preventDefault();
+                                modal.hide();
+                            });
+
+
+                        });
+                        // /
+
+                    };
+                });
+            };
+
+            checkAnnotation();
         }
-        
+
     });
 };
 
