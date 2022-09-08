@@ -99,7 +99,6 @@ let textarea = () => {
         setup: (ed) => {
 
             /* MOUSEDOWN */
-            //let checkAnnotation = () => {
             ed.on("mousedown", (e) => {
                 /* open the modal */
                 var annotation = e.target.closest("[data-type='annotation-object']");
@@ -110,16 +109,19 @@ let textarea = () => {
                     var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
                     modal.show();
 
-                    // try
                     /* ADD A NEW ANNOTATION */
                     var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
                     addAnnotation.addEventListener("click", () => {
 
                         /* close the modal */
                         modal.hide();
+                        var allowOpenModal = false;
                         modalContainer.addEventListener("show.bs.modal", (e) => {
-                            e.preventDefault();
-                            modal.hide();
+                            if (!allowOpenModal) {
+                                e.preventDefault();
+                                modal.hide();
+                                allowOpenModal = true;
+                            };
                         });
 
                         /* click in the textarea again */
@@ -127,22 +129,16 @@ let textarea = () => {
                             var el = e.target.closest("[data-type='annotation-object']");
                             var elId = el.getAttribute("data-annotation");
                             /* click on the previously clicked element */
-                            if (annotationId == elId) {
-                                console.log("equal");
-                            } else {
-                                console.log("different");
-                                console.log(modal);
+                            if (annotationId !== elId) {
+                                modal.show();
                             };
                         });
 
                     });
-                    // /
 
                 };
             });
-            //};
 
-            //checkAnnotation();
         }
 
     });
