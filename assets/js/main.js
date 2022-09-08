@@ -358,7 +358,9 @@ let annotations = () => {
                     /* PRINT MILESTONES AND CONTENT IN THE TEXT */
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
-                    var content = sel.getContent();
+
+                    /* selected range */
+                    var rng = sel.getRng();
 
                     /* n to create an id for the annotations */
                     n += 1;
@@ -381,19 +383,34 @@ let annotations = () => {
                     milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
                     /* / */
 
-                    /* display the string object of annotation */
-                    var annotation = document.createElement("div");
-                    annotation.setAttribute("data-type", "annotation-object");
-                    annotation.setAttribute("data-subtype", annType);
-                    /* assign an id to the annotation */
-                    annotation.setAttribute("data-annotation", "annotation-" + n);
-                    /* / */
-                    annotation.innerHTML = content;
+                    /* print milestones in the right position */
+                    var tagName = sel.getNode().tagName;
 
-                    /* print the annotation start milestone + content + end milestone */
-                    sel.setNode(milestoneStart);
-                    sel.setNode(annotation);
-                    sel.setNode(milestoneEnd);
+                    if (tagName == "BODY") {
+
+                        /* start and end selected lines */
+                        var startLine = sel.getStart();
+                        var endLine = sel.getEnd();
+
+                        /* insert the start milestone */
+                        startLine.parentNode.insertBefore(milestoneStart, startLine);
+
+                        /* insert the end milestone */
+                        endLine.parentNode.insertBefore(milestoneEnd.cloneNode(true), endLine.nextSibling);
+
+                    } else {
+            
+                        /* insert the start milestone */
+                        var startRng = rng.cloneRange();
+                        startRng.collapse(true);
+                        startRng.insertNode(milestoneStart);
+
+                        /* insert the end milestone */
+                        var endRng = rng.cloneRange();
+                        endRng.collapse(false);
+                        endRng.insertNode(milestoneEnd);
+
+                    };
 
                     /* REMOVE EMPTY PARAGRAPH ELEMENTS */
                     var selNode = sel.getNode();
