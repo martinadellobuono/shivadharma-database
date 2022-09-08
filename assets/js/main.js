@@ -99,8 +99,6 @@ let textarea = () => {
         setup: (ed) => {
 
             /* MOUSEDOWN */
-
-            // try
             ed.on("mousedown", (e) => {
 
                 /* open the modal */
@@ -141,16 +139,14 @@ let textarea = () => {
                                 allowOpenModal = true;
                                 modal.show();
                                 annotationId = elId;
+                                allowOpenModal = false;
                             } else {
-                                console.log("HIDE");
+                                /* click on the previously clicked element */
                                 allowOpenModal = false;
                                 modalContainer.addEventListener("show.bs.modal", (e) => {
                                     if (!allowOpenModal) {
                                         e.preventDefault();
                                         modal.hide();
-
-                                        //allowOpenModal = true;
-
                                     };
                                 });
                             };
@@ -162,9 +158,7 @@ let textarea = () => {
 
                 };
             });
-
-            // /
-
+            
         }
 
     });
