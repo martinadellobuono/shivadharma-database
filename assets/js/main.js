@@ -127,12 +127,8 @@ let textarea = () => {
 
                         /* click in the textarea again */
                         ed.on("mousedown", (e) => {
-
                             var el = e.target.closest("[data-type='annotation-object']");
                             var elId = el.getAttribute("data-annotation");
-
-                            console.log("Old annotation: " + annotationId);
-                            console.log("New annotation: " + elId);
 
                             /* click not on the previously clicked element */
                             if (annotationId !== elId) {
@@ -158,7 +154,7 @@ let textarea = () => {
 
                 };
             });
-            
+
         }
 
     });
@@ -393,9 +389,11 @@ let annotations = () => {
                     annotation.setAttribute("data-annotation", "annotation-" + n);
                     /* / */
                     annotation.innerHTML = content;
-                    annotation.insertBefore(milestoneStart, annotation.firstChild);
-                    annotation.appendChild(milestoneEnd);
+
+                    /* print the annotation start milestone + content + end milestone */
+                    sel.setNode(milestoneStart);
                     sel.setNode(annotation);
+                    sel.setNode(milestoneEnd);
 
                     /* REMOVE EMPTY PARAGRAPH ELEMENTS */
                     var selNode = sel.getNode();
