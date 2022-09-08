@@ -102,11 +102,10 @@ let textarea = () => {
 
             // try
             ed.on("mousedown", (e) => {
+
                 /* open the modal */
                 var annotation = e.target.closest("[data-type='annotation-object']");
                 var annotationId = annotation.getAttribute("data-annotation");
-
-                console.log("Inizio prima funzione: " + annotationId);
 
                 if (annotation !== null) {
                     var modalContainer = document.querySelector("#check-modifications");
@@ -114,38 +113,52 @@ let textarea = () => {
                     modal.show();
 
                     /* ADD A NEW ANNOTATION */
-                    let addAnnotation = () => {
-                        var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
-                        addAnnotation.addEventListener("click", () => {
+                    var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
+                    addAnnotation.addEventListener("click", () => {
 
-                            /* close the modal */
-                            modal.hide();
-                            var allowOpenModal = false;
-                            modalContainer.addEventListener("show.bs.modal", (e) => {
-                                if (!allowOpenModal) {
-                                    e.preventDefault();
-                                    modal.hide();
-                                    allowOpenModal = true;
-                                };
-                            });
+                        /* close the modal */
+                        modal.hide();
+                        var allowOpenModal = false;
+                        modalContainer.addEventListener("show.bs.modal", (e) => {
+                            if (!allowOpenModal) {
+                                e.preventDefault();
+                                modal.hide();
+                                allowOpenModal = true;
+                            };
+                        });
 
-                            /* click in the textarea again */
-                            ed.on("mousedown", (e) => {
-                                var el = e.target.closest("[data-type='annotation-object']");
-                                var elId = el.getAttribute("data-annotation");
-                                /* click not on the previously clicked element */
-                                if (annotationId !== elId) {
-                                    modal.show();
-                                    annotationId = elId;
-                                    addAnnotation();
-                                };
+                        /* click in the textarea again */
+                        ed.on("mousedown", (e) => {
 
-                            });
+                            var el = e.target.closest("[data-type='annotation-object']");
+                            var elId = el.getAttribute("data-annotation");
+
+                            console.log("Old annotation: " + annotationId);
+                            console.log("New annotation: " + elId);
+
+                            /* click not on the previously clicked element */
+                            if (annotationId !== elId) {
+                                allowOpenModal = true;
+                                modal.show();
+                                annotationId = elId;
+                            } else {
+                                console.log("HIDE");
+                                allowOpenModal = false;
+                                modalContainer.addEventListener("show.bs.modal", (e) => {
+                                    if (!allowOpenModal) {
+                                        e.preventDefault();
+                                        modal.hide();
+
+                                        //allowOpenModal = true;
+
+                                    };
+                                });
+                            };
 
                         });
-                    };
 
-                    addAnnotation();
+                    });
+
 
                 };
             });
