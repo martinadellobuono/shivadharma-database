@@ -366,69 +366,33 @@ let annotations = () => {
                     n += 1;
 
                     /* print milestones in the right position */
-                    var tagName = sel.getNode().tagName;
+                    /* create the start milestone */
+                    var milestoneStart = document.createElement("span");
+                    milestoneStart.setAttribute("data-type", "milestone");
+                    milestoneStart.setAttribute("data-subtype", annType);
+                    milestoneStart.setAttribute("data-start", "start");
+                    /* assign an id to the annotation */
+                    milestoneStart.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
 
-                    if (tagName == "BODY") {
+                    /* create the end milestone */
+                    var milestoneEnd = document.createElement("span");
+                    milestoneEnd.setAttribute("data-type", "milestone");
+                    milestoneEnd.setAttribute("data-subtype", annType);
+                    milestoneEnd.setAttribute("data-end", "end");
+                    /* assign an id to the annotation */
+                    milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
 
-                        /* create the start milestone */
-                        var milestoneStart = document.createElement("p");
-                        milestoneStart.setAttribute("data-type", "milestone");
-                        milestoneStart.setAttribute("data-subtype", annType);
-                        milestoneStart.setAttribute("data-start", "start");
-                        /* assign an id to the annotation */
-                        milestoneStart.setAttribute("data-annotation", "annotation-" + n);
-                        /* / */
+                    /* insert the start milestone */
+                    var startRng = rng.cloneRange();
+                    startRng.collapse(true);
+                    startRng.insertNode(milestoneStart);
 
-                        /* create the end milestone */
-                        var milestoneEnd = document.createElement("p");
-                        milestoneEnd.setAttribute("data-type", "milestone");
-                        milestoneEnd.setAttribute("data-subtype", annType);
-                        milestoneEnd.setAttribute("data-end", "end");
-                        /* assign an id to the annotation */
-                        milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
-                        /* / */
-
-                        /* start and end selected lines */
-                        var startLine = sel.getStart();
-                        var endLine = sel.getEnd();
-
-                        /* insert the start milestone */
-                        startLine.parentNode.insertBefore(milestoneStart, startLine);
-
-                        /* insert the end milestone */
-                        endLine.parentNode.insertBefore(milestoneEnd, endLine.nextSibling);
-
-                    } else {
-
-                        /* create the start milestone */
-                        var milestoneStart = document.createElement("span");
-                        milestoneStart.setAttribute("data-type", "milestone");
-                        milestoneStart.setAttribute("data-subtype", annType);
-                        milestoneStart.setAttribute("data-start", "start");
-                        /* assign an id to the annotation */
-                        milestoneStart.setAttribute("data-annotation", "annotation-" + n);
-                        /* / */
-
-                        /* create the end milestone */
-                        var milestoneEnd = document.createElement("span");
-                        milestoneEnd.setAttribute("data-type", "milestone");
-                        milestoneEnd.setAttribute("data-subtype", annType);
-                        milestoneEnd.setAttribute("data-end", "end");
-                        /* assign an id to the annotation */
-                        milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
-                        /* / */
-
-                        /* insert the start milestone */
-                        var startRng = rng.cloneRange();
-                        startRng.collapse(true);
-                        startRng.insertNode(milestoneStart);
-
-                        /* insert the end milestone */
-                        var endRng = rng.cloneRange();
-                        endRng.collapse(false);
-                        endRng.insertNode(milestoneEnd);
-
-                    };
+                    /* insert the end milestone */
+                    var endRng = rng.cloneRange();
+                    endRng.collapse(false);
+                    endRng.insertNode(milestoneEnd);
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
