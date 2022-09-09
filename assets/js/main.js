@@ -394,6 +394,31 @@ let annotations = () => {
                     endRng.collapse(false);
                     endRng.insertNode(milestoneEnd);
 
+                    /* COLOR TO ANNOTATIONS */
+                    /* string after the start milestone */
+                    var startString = milestoneStart.nextSibling;
+                    var startStringContent = startString.textContent;
+                    var annotationStart = document.createElement("span");
+                    annotationStart.setAttribute("data-type", "annotation-object");
+                    annotationStart.setAttribute("data-subtype", annType);
+                    /* assign an id to the annotation */
+                    annotationStart.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
+                    annotationStart.innerHTML = startStringContent;
+                    startString.replaceWith(annotationStart);
+                    
+                    /* string before the end milestone */
+                    var endString = milestoneEnd.previousSibling;
+                    var endStringContent = endString.textContent;
+                    var annotationEnd = document.createElement("span");
+                    annotationEnd.setAttribute("data-type", "annotation-object");
+                    annotationEnd.setAttribute("data-subtype", annType);
+                    /* assign an id to the annotation */
+                    annotationEnd.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
+                    annotationEnd.innerHTML = endStringContent;
+                    endString.replaceWith(annotationEnd);
+
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
                     var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
