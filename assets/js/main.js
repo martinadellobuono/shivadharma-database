@@ -89,10 +89,10 @@ let textarea = () => {
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
-            "div[data-type='annotation-object'] {display: inline;}" +
-            "div[data-type='annotation-object']::before {content: '\u270E';}" +
-            "div[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
-            "div[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
+            "[data-type='annotation-object'] {display: inline;}" +
+            "[data-type='annotation-object']::before {content: '\u270E';}" +
+            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
+            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
         verify_html: false,
 
         /* CHECK THE ANNOTATED FRAGMENTS */
@@ -365,28 +365,28 @@ let annotations = () => {
                     /* n to create an id for the annotations */
                     n += 1;
 
-                    /* create the start milestone */
-                    var milestoneStart = document.createElement("span");
-                    milestoneStart.setAttribute("data-type", "milestone");
-                    milestoneStart.setAttribute("data-subtype", annType);
-                    milestoneStart.setAttribute("data-start", "start");
-                    /* assign an id to the annotation */
-                    milestoneStart.setAttribute("data-annotation", "annotation-" + n);
-                    /* / */
-
-                    /* create the end milestone */
-                    var milestoneEnd = document.createElement("span");
-                    milestoneEnd.setAttribute("data-type", "milestone");
-                    milestoneEnd.setAttribute("data-subtype", annType);
-                    milestoneEnd.setAttribute("data-end", "end");
-                    /* assign an id to the annotation */
-                    milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
-                    /* / */
-
                     /* print milestones in the right position */
                     var tagName = sel.getNode().tagName;
 
                     if (tagName == "BODY") {
+
+                        /* create the start milestone */
+                        var milestoneStart = document.createElement("p");
+                        milestoneStart.setAttribute("data-type", "milestone");
+                        milestoneStart.setAttribute("data-subtype", annType);
+                        milestoneStart.setAttribute("data-start", "start");
+                        /* assign an id to the annotation */
+                        milestoneStart.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
+
+                        /* create the end milestone */
+                        var milestoneEnd = document.createElement("p");
+                        milestoneEnd.setAttribute("data-type", "milestone");
+                        milestoneEnd.setAttribute("data-subtype", annType);
+                        milestoneEnd.setAttribute("data-end", "end");
+                        /* assign an id to the annotation */
+                        milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
 
                         /* start and end selected lines */
                         var startLine = sel.getStart();
@@ -396,10 +396,28 @@ let annotations = () => {
                         startLine.parentNode.insertBefore(milestoneStart, startLine);
 
                         /* insert the end milestone */
-                        endLine.parentNode.insertBefore(milestoneEnd.cloneNode(true), endLine.nextSibling);
+                        endLine.parentNode.insertBefore(milestoneEnd, endLine.nextSibling);
 
                     } else {
-            
+
+                        /* create the start milestone */
+                        var milestoneStart = document.createElement("span");
+                        milestoneStart.setAttribute("data-type", "milestone");
+                        milestoneStart.setAttribute("data-subtype", annType);
+                        milestoneStart.setAttribute("data-start", "start");
+                        /* assign an id to the annotation */
+                        milestoneStart.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
+
+                        /* create the end milestone */
+                        var milestoneEnd = document.createElement("span");
+                        milestoneEnd.setAttribute("data-type", "milestone");
+                        milestoneEnd.setAttribute("data-subtype", annType);
+                        milestoneEnd.setAttribute("data-end", "end");
+                        /* assign an id to the annotation */
+                        milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
+
                         /* insert the start milestone */
                         var startRng = rng.cloneRange();
                         startRng.collapse(true);
@@ -411,19 +429,6 @@ let annotations = () => {
                         endRng.insertNode(milestoneEnd);
 
                     };
-
-                    /* REMOVE EMPTY PARAGRAPH ELEMENTS */
-                    var selNode = sel.getNode();
-                    /* block selected */
-                    if (selNode.tagName == "BODY") {
-                        var children = selNode.querySelectorAll("p");
-                        children.forEach((el) => {
-                            if (el.textContent == "") {
-                                el.outerHTML = "";
-                            };
-                        });
-                    };
-                    /* / */
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
