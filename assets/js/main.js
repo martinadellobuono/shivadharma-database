@@ -90,9 +90,9 @@ let textarea = () => {
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
             "[data-type='annotation-object'] {display: inline;}" +
-            "[data-type='annotation-object']::before {content: '\u270E';}" +
-            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 0;}" +
-            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 3px;}",
+            "[data-type='milestone'][data-start='start']::before {content: '\u270E';}" +
+            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 3px;}" +
+            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 6px;}",
         verify_html: false,
 
         /* CHECK THE ANNOTATED FRAGMENTS */
@@ -406,7 +406,7 @@ let annotations = () => {
                     /* / */
                     annotationStart.innerHTML = startStringContent;
                     startString.replaceWith(annotationStart);
-                    
+
                     /* string before the end milestone */
                     var endString = milestoneEnd.previousSibling;
                     var endStringContent = endString.textContent;
@@ -418,6 +418,25 @@ let annotations = () => {
                     /* / */
                     annotationEnd.innerHTML = endStringContent;
                     endString.replaceWith(annotationEnd);
+
+                    /* in between elements */
+                    var parentStart = milestoneStart.parentNode;
+                    while (parentStart = parentStart.nextElementSibling) {
+                        /* mark as annotations the elements between the start and the end milestones */
+                        if (parentStart.contains(milestoneEnd) == false) {
+                            var contentBtw = parentStart.textContent;
+                            var annotationBtw = document.createElement("span");
+                            annotationBtw.setAttribute("data-type", "annotation-object");
+                            annotationBtw.setAttribute("data-subtype", annType);
+                            /* assign an id to the annotation */
+                            annotationBtw.setAttribute("data-annotation", "annotation-" + n);
+                            /* / */
+                            annotationBtw.innerHTML = contentBtw;
+                            parentStart.innerHTML = annotationBtw.outerHTML;
+                        } else {
+                            return false;
+                        };
+                    };
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
