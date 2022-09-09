@@ -419,22 +419,25 @@ let annotations = () => {
                     annotationEnd.innerHTML = endStringContent;
                     endString.replaceWith(annotationEnd);
 
-                    /* in between elements */
-                    var parentStart = milestoneStart.parentNode;
-                    while (parentStart = parentStart.nextElementSibling) {
-                        /* mark as annotations the elements between the start and the end milestones */
-                        if (parentStart.contains(milestoneEnd) == false) {
-                            var contentBtw = parentStart.textContent;
-                            var annotationBtw = document.createElement("span");
-                            annotationBtw.setAttribute("data-type", "annotation-object");
-                            annotationBtw.setAttribute("data-subtype", annType);
-                            /* assign an id to the annotation */
-                            annotationBtw.setAttribute("data-annotation", "annotation-" + n);
-                            /* / */
-                            annotationBtw.innerHTML = contentBtw;
-                            parentStart.innerHTML = annotationBtw.outerHTML;
-                        } else {
-                            return false;
+                    /* elements in between annotation blocks */
+                    var selNode = sel.getNode();
+                    if (selNode.tagName == "BODY") {
+                        var parentStart = milestoneStart.parentNode;
+                        while (parentStart = parentStart.nextElementSibling) {
+                            /* mark as annotations the elements between the start and the end milestones */
+                            if (parentStart.contains(milestoneEnd) == false) {
+                                var contentBtw = parentStart.textContent;
+                                var annotationBtw = document.createElement("span");
+                                annotationBtw.setAttribute("data-type", "annotation-object");
+                                annotationBtw.setAttribute("data-subtype", annType);
+                                /* assign an id to the annotation */
+                                annotationBtw.setAttribute("data-annotation", "annotation-" + n);
+                                /* / */
+                                annotationBtw.innerHTML = contentBtw;
+                                parentStart.innerHTML = annotationBtw.outerHTML;
+                            } else {
+                                return false;
+                            };
                         };
                     };
 
