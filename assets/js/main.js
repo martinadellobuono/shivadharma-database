@@ -359,13 +359,15 @@ let annotations = () => {
                     /* selected string */
                     var sel = tinymce.activeEditor.selection;
 
+                    /* selected node */
+                    var selNode = sel.getNode();
+
                     /* selected range */
                     var rng = sel.getRng();
 
                     /* n to create an id for the annotations */
                     n += 1;
 
-                    /* print milestones in the right position */
                     /* create the start milestone */
                     var milestoneStart = document.createElement("span");
                     milestoneStart.setAttribute("data-type", "milestone");
@@ -384,62 +386,93 @@ let annotations = () => {
                     milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
                     /* / */
 
-                    /* insert the start milestone */
-                    var startRng = rng.cloneRange();
-                    startRng.collapse(true);
-                    startRng.insertNode(milestoneStart);
+                    /* BLOCKS */
+                    if (selNode.tagName == "BODY") {
 
-                    /* insert the end milestone */
-                    var endRng = rng.cloneRange();
-                    endRng.collapse(false);
-                    endRng.insertNode(milestoneEnd);
+                        /* create the annotation container */
+                        var annotation = document.createElement("div");
+                        annotation.setAttribute("data-type", "annotation-object");
+                        annotation.setAttribute("data-subtype", annType);
+                        /* assign an id to the annotation */
+                        annotation.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
 
-                    /* COLOR TO ANNOTATIONS */
-                    /* string after the start milestone */
-                    var startString = milestoneStart.nextSibling;
-                    var startStringContent = startString.textContent;
-                    var annotationStart = document.createElement("span");
-                    annotationStart.setAttribute("data-type", "annotation-object");
-                    annotationStart.setAttribute("data-subtype", annType);
-                    /* assign an id to the annotation */
-                    annotationStart.setAttribute("data-annotation", "annotation-" + n);
-                    /* / */
-                    annotationStart.innerHTML = startStringContent;
-                    startString.replaceWith(annotationStart);
+                        /* print the content */
+                        annotation.innerHTML = sel.getContent();
 
-                    /* string before the end milestone */
-                    var endString = milestoneEnd.previousSibling;
-                    var endStringContent = endString.textContent;
-                    var annotationEnd = document.createElement("span");
-                    annotationEnd.setAttribute("data-type", "annotation-object");
-                    annotationEnd.setAttribute("data-subtype", annType);
-                    /* assign an id to the annotation */
-                    annotationEnd.setAttribute("data-annotation", "annotation-" + n);
-                    /* / */
-                    annotationEnd.innerHTML = endStringContent;
-                    endString.replaceWith(annotationEnd);
+                        /* insert the start milestone as first child */
+                        annotation.insertBefore(milestoneStart, annotation.firstChild);
+
+                        /* insert the start milestone as last child */
+                        annotation.appendChild(milestoneEnd);
+
+                        /* replace the node */
+                        sel.setNode(annotation);
+
+                        console.log("Annotation: " + annotation.outerHTML);
+
+                    } else {
+                        /* STRINGS */
+                        /* insert the start milestone */
+                        var startRng = rng.cloneRange();
+                        startRng.collapse(true);
+                        startRng.insertNode(milestoneStart);
+
+                        /* insert the end milestone */
+                        var endRng = rng.cloneRange();
+                        endRng.collapse(false);
+                        endRng.insertNode(milestoneEnd);
+
+                        /* COLOR TO ANNOTATIONS */
+                        /* string after the start milestone */
+                        var startString = milestoneStart.nextSibling;
+                        var startStringContent = startString.textContent;
+                        var annotationStart = document.createElement("span");
+                        annotationStart.setAttribute("data-type", "annotation-object");
+                        annotationStart.setAttribute("data-subtype", annType);
+                        /* assign an id to the annotation */
+                        annotationStart.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
+                        annotationStart.innerHTML = startStringContent;
+                        startString.replaceWith(annotationStart);
+
+                        /* string before the end milestone */
+                        var endString = milestoneEnd.previousSibling;
+                        var endStringContent = endString.textContent;
+                        var annotationEnd = document.createElement("span");
+                        annotationEnd.setAttribute("data-type", "annotation-object");
+                        annotationEnd.setAttribute("data-subtype", annType);
+                        /* assign an id to the annotation */
+                        annotationEnd.setAttribute("data-annotation", "annotation-" + n);
+                        /* / */
+                        annotationEnd.innerHTML = endStringContent;
+                        endString.replaceWith(annotationEnd);
+                    };
+
 
                     /* elements in between annotation blocks */
-                    var selNode = sel.getNode();
+                    /*var selNode = sel.getNode();
                     if (selNode.tagName == "BODY") {
+                        var parent = milestoneStart.closest("p");
                         var parentStart = milestoneStart.parentNode;
                         while (parentStart = parentStart.nextElementSibling) {
-                            /* mark as annotations the elements between the start and the end milestones */
                             if (parentStart.contains(milestoneEnd) == false) {
-                                var contentBtw = parentStart.textContent;
-                                var annotationBtw = document.createElement("span");
-                                annotationBtw.setAttribute("data-type", "annotation-object");
-                                annotationBtw.setAttribute("data-subtype", annType);
-                                /* assign an id to the annotation */
-                                annotationBtw.setAttribute("data-annotation", "annotation-" + n);
-                                /* / */
-                                annotationBtw.innerHTML = contentBtw;
-                                parentStart.innerHTML = annotationBtw.outerHTML;
+                                if (parentStart.getAttribute("data-type") == "milestone") {
+                                    console.log("Milestone as sibling: " + parentStart);
+                                } else {
+                                    var contentBtw = parentStart.textContent;
+                                    var annotationBtw = document.createElement("span");
+                                    annotationBtw.setAttribute("data-type", "annotation-object");
+                                    annotationBtw.setAttribute("data-subtype", annType);
+                                    annotationBtw.setAttribute("data-annotation", "annotation-" + n);
+                                    annotationBtw.innerHTML = contentBtw;
+                                    parentStart.innerHTML = annotationBtw.outerHTML;
+                                };
                             } else {
                                 return false;
                             };
                         };
-                    };
+                    };*/
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
