@@ -389,6 +389,11 @@ let annotations = () => {
                     /* BLOCKS */
                     if (selNode.tagName == "BODY") {
 
+                        console.log("The parent is BODY");
+                        var startRng = rng.cloneRange();
+                        startRng.collapse(true);
+                        console.log(startRng);
+
                         /* create the annotation container */
                         var annotation = document.createElement("div");
                         annotation.setAttribute("data-type", "annotation-object");
@@ -409,7 +414,14 @@ let annotations = () => {
                         /* replace the node */
                         sel.setNode(annotation);
 
-                        console.log("Annotation: " + annotation.outerHTML);
+                        /* remove empty paragraph elements */
+                        var children = selNode.querySelectorAll("p");
+                        children.forEach((el) => {
+                            if (el.textContent == "") {
+                                el.outerHTML = "";
+                            };
+                        });
+                        /* / */
 
                     } else {
                         /* STRINGS */
@@ -448,31 +460,6 @@ let annotations = () => {
                         annotationEnd.innerHTML = endStringContent;
                         endString.replaceWith(annotationEnd);
                     };
-
-
-                    /* elements in between annotation blocks */
-                    /*var selNode = sel.getNode();
-                    if (selNode.tagName == "BODY") {
-                        var parent = milestoneStart.closest("p");
-                        var parentStart = milestoneStart.parentNode;
-                        while (parentStart = parentStart.nextElementSibling) {
-                            if (parentStart.contains(milestoneEnd) == false) {
-                                if (parentStart.getAttribute("data-type") == "milestone") {
-                                    console.log("Milestone as sibling: " + parentStart);
-                                } else {
-                                    var contentBtw = parentStart.textContent;
-                                    var annotationBtw = document.createElement("span");
-                                    annotationBtw.setAttribute("data-type", "annotation-object");
-                                    annotationBtw.setAttribute("data-subtype", annType);
-                                    annotationBtw.setAttribute("data-annotation", "annotation-" + n);
-                                    annotationBtw.innerHTML = contentBtw;
-                                    parentStart.innerHTML = annotationBtw.outerHTML;
-                                };
-                            } else {
-                                return false;
-                            };
-                        };
-                    };*/
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
