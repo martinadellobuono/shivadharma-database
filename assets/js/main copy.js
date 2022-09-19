@@ -90,6 +90,7 @@ let textarea = () => {
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
             "[data-type='annotation-object'] {display: inline;}" +
+            "[data-type='milestone'][data-start='start']::before {content: '\u270E';}" +
             "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 3px;}" +
             "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 6px;}",
         verify_html: false,
@@ -393,35 +394,54 @@ let annotations = () => {
                     endRng.insertNode(milestoneEnd);
 
                     /* COLOR TO ANNOTATIONS */
-
-                    /* START MILESTONE */
-                    /* first sibling of the start milestone */
-                    var startSibling = milestoneStart.nextSibling;
-                    var startContent = startSibling.textContent;
-                    var startAnnotation = document.createElement("span");
-                    startAnnotation.setAttribute("data-type", "annotation-object");
-                    startAnnotation.setAttribute("data-subtype", annType);
-                    /* assign an id to the sibling */
-                    startAnnotation.setAttribute("data-annotation", "annotation-" + n);
+                    /* string after the start milestone */
+                    var startString = milestoneStart.nextSibling;
+                    var startStringContent = startString.textContent;
+                    var annotationStart = document.createElement("span");
+                    annotationStart.setAttribute("data-type", "annotation-object");
+                    annotationStart.setAttribute("data-subtype", annType);
+                    /* assign an id to the annotation */
+                    annotationStart.setAttribute("data-annotation", "annotation-" + n);
                     /* / */
-                    startAnnotation.innerHTML = startContent;
-                    startSibling.replaceWith(startAnnotation);
+                    annotationStart.innerHTML = startStringContent;
+                    startString.replaceWith(annotationStart);
 
-                    /* FIRST LINE OF A BLOCK */
-                    /* color other siblings if any */
-                    while (startAnnotation = startAnnotation.nextSibling) {
-                        if (startAnnotation !== milestoneEnd) {
-                            if (startAnnotation.nodeName == "#text") {
-                                var annotation = document.createElement("span");
-                                annotation.innerHTML = startAnnotation.textContent;
-                                startAnnotation.replaceWith(annotation);
+                    /* string before the end milestone */
+                    var endString = milestoneEnd.previousSibling;
+                    var endStringContent = endString.textContent;
+                    var annotationEnd = document.createElement("span");
+                    annotationEnd.setAttribute("data-type", "annotation-object");
+                    annotationEnd.setAttribute("data-subtype", annType);
+                    /* assign an id to the annotation */
+                    annotationEnd.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
+                    annotationEnd.innerHTML = endStringContent;
+                    endString.replaceWith(annotationEnd);
+
+                    /* elements in between annotation blocks */
+                    var selNode = sel.getNode();
+                    if (selNode.tagName == "BODY") {
+                        var parentStart = milestoneStart.parentNode;
+                        while (parentStart = parentStart.nextElementSibling) {
+                            /* mark as annotations the elements between the start and the end milestones */
+                            if (parentStart.contains(milestoneEnd) == false) {
+                                var contentBtw = parentStart.textContent;
+                                var annotationBtw = document.createElement("span");
+                                annotationBtw.setAttribute("data-type", "annotation-object");
+                                annotationBtw.setAttribute("data-subtype", annType);
+                                /* assign an id to the annotation */
+                                annotationBtw.setAttribute("data-annotation", "annotation-" + n);
+                                /* / */
+                                annotationBtw.innerHTML = contentBtw;
+                                parentStart.innerHTML = annotationBtw.outerHTML;
+
                             } else {
-                                if (startAnnotation.innerHTML !== "") {
-                                    startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>";
-                                };
+                                return false;
                             };
                         };
+
                     };
+                    // /
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
