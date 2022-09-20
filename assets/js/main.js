@@ -361,6 +361,9 @@ let annotations = () => {
                     /* selected range */
                     var rng = sel.getRng();
 
+                    /* selected content */
+                    var selection = sel.getContent({ format: "text" });
+
                     /* n to create an id for the annotations */
                     n += 1;
 
@@ -393,7 +396,6 @@ let annotations = () => {
                     endRng.insertNode(milestoneEnd);
 
                     /* COLOR TO ANNOTATIONS */
-
                     /* START MILESTONE */
                     /* first sibling of the start milestone */
                     var startSibling = milestoneStart.nextSibling;
@@ -409,18 +411,25 @@ let annotations = () => {
 
                     /* FIRST LINE OF A BLOCK */
                     /* color other siblings if any */
-                    while (startAnnotation = startAnnotation.nextSibling) {
-                        if (startAnnotation !== milestoneEnd) {
-                            if (startAnnotation.nodeName == "#text") {
-                                var annotation = document.createElement("span");
-                                annotation.innerHTML = startAnnotation.textContent;
-                                startAnnotation.replaceWith(annotation);
-                            } else {
-                                if (startAnnotation.innerHTML !== "") {
+                    /* if selection === parent */
+                    if (selection == startAnnotation.parentNode.textContent) {
+                        while (startAnnotation = startAnnotation.nextSibling) {
+                            if (startAnnotation !== milestoneEnd && startAnnotation.innerHTML !== "") {
+                                if (startAnnotation.nodeName == "#text") {
+                                    var annotation = document.createElement("span");
+                                    annotation.innerHTML = startAnnotation.textContent;
+                                    annotation.setAttribute("data-type", "annotation-object");
+                                    annotation.setAttribute("data-subtype", annType);
+                                    /* assign an id to the sibling */
+                                    annotation.setAttribute("data-annotation", "annotation-" + n);
+                                    /* / */
+                                    startAnnotation.replaceWith(annotation);
+                                } else {
                                     startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>";
                                 };
                             };
                         };
+
                     };
 
                     /* CANCEL BUTTON */
