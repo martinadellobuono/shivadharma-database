@@ -432,11 +432,6 @@ let annotations = () => {
                     };
 
                     // try
-
-                    /* PARAGRAPHS IN THE MIDDLE */
-                    //console.log(milestoneEnd.parentNode.outerHTML);
-
-
                     /* END MILESTONE */
                     /* first previous sibling of the milestone end */
                     var endSibling = milestoneEnd.previousSibling;
@@ -472,6 +467,26 @@ let annotations = () => {
                             };
                         } else {
                             return false;
+                        };
+                    };
+
+                    /* PARAGRAPHS IN THE MIDDLE OF THE BLOCK */
+                    var startParent = milestoneStart.parentNode;
+                    var endParent = milestoneEnd.parentNode;
+                    if (startParent !== endParent) {
+                        while (startParent = startParent.nextSibling) {
+                            if (startParent !== endParent) {
+                                var annotation = document.createElement("span");
+                                annotation.innerHTML = startParent.innerHTML;
+                                annotation.setAttribute("data-type", "annotation-object");
+                                annotation.setAttribute("data-subtype", annType);
+                                /* assign an id to the sibling */
+                                annotation.setAttribute("data-annotation", "annotation-" + n);
+                                /* / */
+                                startParent.innerHTML = annotation.outerHTML;
+                            } else {
+                                return false;
+                            };
                         };
                     };
                     // /
