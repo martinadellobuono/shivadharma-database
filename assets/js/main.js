@@ -431,6 +431,52 @@ let annotations = () => {
                         };
                     };
 
+                    // try
+
+                    /* PARAGRAPHS IN THE MIDDLE */
+                    //console.log(milestoneEnd.parentNode.outerHTML);
+
+
+                    /* END MILESTONE */
+                    /* first previous sibling of the milestone end */
+                    var endSibling = milestoneEnd.previousSibling;
+                    var endContent = endSibling.textContent;
+                    var endAnnotation = document.createElement("span");
+                    endAnnotation.setAttribute("data-type", "annotation-object");
+                    endAnnotation.setAttribute("data-subtype", annType);
+                    /* assign an id to the sibling */
+                    endAnnotation.setAttribute("data-annotation", "annotation-" + n);
+                    /* / */
+                    endAnnotation.innerHTML = endContent;
+                    endSibling.replaceWith(endAnnotation);
+
+                    /* END LINE OF A BLOCK */
+                    /* color other siblings if any */
+                    while (endAnnotation = endAnnotation.previousSibling) {
+                        if (endAnnotation !== milestoneStart) {
+                            if (endAnnotation.innerHTML !== "") {
+                                /* strings */
+                                if (endAnnotation.nodeName == "#text") {
+                                    var annotation = document.createElement("span");
+                                    annotation.innerHTML = endAnnotation.textContent;
+                                    annotation.setAttribute("data-type", "annotation-object");
+                                    annotation.setAttribute("data-subtype", annType);
+                                    /* assign an id to the sibling */
+                                    annotation.setAttribute("data-annotation", "annotation-" + n);
+                                    /* / */
+                                    endAnnotation.replaceWith(annotation);
+                                } else {
+                                    /* already available annotations */
+                                    endAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + endAnnotation.innerHTML + "</span>";
+                                };
+                            };
+                        } else {
+                            return false;
+                        };
+                    };
+                    // /
+
+
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
                     var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
