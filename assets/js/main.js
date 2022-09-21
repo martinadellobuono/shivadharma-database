@@ -361,9 +361,6 @@ let annotations = () => {
                     /* selected range */
                     var rng = sel.getRng();
 
-                    /* selected content */
-                    var selection = sel.getContent({ format: "text" });
-
                     /* n to create an id for the annotations */
                     n += 1;
 
@@ -411,10 +408,10 @@ let annotations = () => {
 
                     /* FIRST LINE OF A BLOCK */
                     /* color other siblings if any */
-                    /* if selection === parent */
-                    if (selection == startAnnotation.parentNode.textContent) {
-                        while (startAnnotation = startAnnotation.nextSibling) {
-                            if (startAnnotation !== milestoneEnd && startAnnotation.innerHTML !== "") {
+                    while (startAnnotation = startAnnotation.nextSibling) {
+                        if (startAnnotation !== milestoneEnd) {
+                            if (startAnnotation.innerHTML !== "") {
+                                /* strings */
                                 if (startAnnotation.nodeName == "#text") {
                                     var annotation = document.createElement("span");
                                     annotation.innerHTML = startAnnotation.textContent;
@@ -425,11 +422,13 @@ let annotations = () => {
                                     /* / */
                                     startAnnotation.replaceWith(annotation);
                                 } else {
+                                    /* already available annotations */
                                     startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>";
                                 };
                             };
+                        } else {
+                            return false;
                         };
-
                     };
 
                     /* CANCEL BUTTON */
