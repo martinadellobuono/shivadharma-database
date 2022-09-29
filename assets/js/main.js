@@ -88,7 +88,7 @@ let textarea = () => {
         contextmenu: "link image table",
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
-        content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }" +
+        content_style: "body {font-family:Helvetica,Arial,sans-serif; font-size:16px}" +
             "[data-type='annotation-object'] {display: inline;}" +
             "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 3px;}" +
             "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 6px;}",
@@ -411,27 +411,27 @@ let annotations = () => {
                     while (startAnnotation = startAnnotation.nextSibling) {
                         if (startAnnotation !== milestoneEnd) {
                             if (startAnnotation.innerHTML !== "") {
-                                /* strings */
-                                if (startAnnotation.nodeName == "#text") {
+
+                                if (startAnnotation.nodeName !== "#text") {
+                                    /* already available annotations */
+                                    startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
+                                } else {
+                                    /* strings */
                                     var annotation = document.createElement("span");
-                                    annotation.innerHTML = startAnnotation.textContent;
                                     annotation.setAttribute("data-type", "annotation-object");
                                     annotation.setAttribute("data-subtype", annType);
-                                    /* assign an id to the sibling */
-                                    annotation.setAttribute("data-annotation", "annotation-" + n);
-                                    /* / */
-                                    startAnnotation.replaceWith(annotation);
-                                } else {
-                                    /* already available annotations */
-                                    startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>";
+                                    annotation.innerHTML = startAnnotation.textContent;
+                                    var previousSibling = startAnnotation.previousSibling;
+                                    previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                    startAnnotation.textContent = "";
                                 };
+
                             };
                         } else {
                             return false;
                         };
                     };
 
-                    // try
                     /* END MILESTONE */
                     /* first previous sibling of the milestone end */
                     var endSibling = milestoneEnd.previousSibling;
@@ -490,7 +490,6 @@ let annotations = () => {
                         };
                     };
                     // /
-
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
