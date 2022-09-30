@@ -450,19 +450,26 @@ let annotations = () => {
                     while (endAnnotation = endAnnotation.previousSibling) {
                         if (endAnnotation !== milestoneStart) {
                             if (endAnnotation.innerHTML !== "") {
-                                /* strings */
-                                if (endAnnotation.nodeName == "#text") {
-                                    var annotation = document.createElement("span");
-                                    annotation.innerHTML = endAnnotation.textContent;
-                                    annotation.setAttribute("data-type", "annotation-object");
-                                    annotation.setAttribute("data-subtype", annType);
-                                    /* assign an id to the sibling */
-                                    annotation.setAttribute("data-annotation", "annotation-" + n);
-                                    /* / */
-                                    endAnnotation.replaceWith(annotation);
-                                } else {
+                                if (endAnnotation.nodeName !== "#text") {
                                     /* already available annotations */
                                     endAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + endAnnotation.innerHTML + "</span>";
+                                } else {
+                                    /* strings */
+                                    var annotation = document.createElement("span");
+                                    annotation.setAttribute("data-type", "annotation-object");
+                                    annotation.setAttribute("data-subtype", annType);
+                                    annotation.innerHTML = endAnnotation.textContent;
+                                    var previousSibling = endAnnotation.previousSibling;
+                                    if (previousSibling !== null) {
+                                        /* insert the annotation after the previous sibling */
+                                        previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                        endAnnotation.textContent = "";
+                                    } else {
+                                        /* insert the annotation as first child */
+                                        var parentNode = endAnnotation.parentNode;
+                                        parentNode.insertBefore(annotation, parentNode.firstChild);
+                                        endAnnotation.textContent = "";
+                                    };
                                 };
                             };
                         } else {
