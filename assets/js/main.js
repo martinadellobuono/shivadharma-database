@@ -411,7 +411,6 @@ let annotations = () => {
                     while (startAnnotation = startAnnotation.nextSibling) {
                         if (startAnnotation !== milestoneEnd) {
                             if (startAnnotation.innerHTML !== "") {
-
                                 if (startAnnotation.nodeName !== "#text") {
                                     /* already available annotations */
                                     startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
@@ -422,10 +421,17 @@ let annotations = () => {
                                     annotation.setAttribute("data-subtype", annType);
                                     annotation.innerHTML = startAnnotation.textContent;
                                     var previousSibling = startAnnotation.previousSibling;
-                                    previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
-                                    startAnnotation.textContent = "";
+                                    if (previousSibling !== null) {
+                                        /* insert the annotation after the previous sibling */
+                                        previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                        startAnnotation.textContent = "";
+                                    } else {
+                                        /* insert the annotation as first child */
+                                        var parentNode = startAnnotation.parentNode;
+                                        parentNode.insertBefore(annotation, parentNode.firstChild);
+                                        startAnnotation.textContent = "";
+                                    };
                                 };
-
                             };
                         } else {
                             return false;
