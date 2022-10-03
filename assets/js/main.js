@@ -407,35 +407,70 @@ let annotations = () => {
                     startAnnotation.innerHTML = startContent;
                     startSibling.replaceWith(startAnnotation);
 
-                    /* FIRST LINE OF A BLOCK */
-                    /* color other siblings if any */
-                    while (startAnnotation = startAnnotation.nextSibling) {
-                        if (startAnnotation !== milestoneEnd) {
-                            if (startAnnotation.innerHTML !== "") {
-                                if (startAnnotation.nodeName !== "#text") {
-                                    /* already available annotations */
-                                    startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
-                                } else {
-                                    /* strings */
-                                    var annotation = document.createElement("span");
-                                    annotation.setAttribute("data-type", "annotation-object");
-                                    annotation.setAttribute("data-subtype", annType);
-                                    annotation.innerHTML = startAnnotation.textContent;
-                                    var previousSibling = startAnnotation.previousSibling;
-                                    if (previousSibling !== null) {
-                                        /* insert the annotation after the previous sibling */
-                                        previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
-                                        startAnnotation.textContent = "";
+                    if (startAnnotation.parentNode.nodeName == "SPAN") {
+                        startAnnotation = startAnnotation.parentNode;
+                        while (startAnnotation = startAnnotation.nextSibling) {
+                            /* FIRST LINE OF A BLOCK */
+                            /* color other siblings if any */
+                            if (startAnnotation !== milestoneEnd) {
+                                if (startAnnotation.innerHTML !== "") {
+                                    if (startAnnotation.nodeName !== "#text") {
+                                        /* already available annotations */
+                                        startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
                                     } else {
-                                        /* insert the annotation as first child */
-                                        var parentNode = startAnnotation.parentNode;
-                                        parentNode.insertBefore(annotation, parentNode.firstChild);
-                                        startAnnotation.textContent = "";
+                                        /* strings */
+                                        var annotation = document.createElement("span");
+                                        annotation.setAttribute("data-type", "annotation-object");
+                                        annotation.setAttribute("data-subtype", annType);
+                                        annotation.innerHTML = startAnnotation.textContent;
+                                        var previousSibling = startAnnotation.previousSibling;
+                                        if (previousSibling !== null) {
+                                            /* insert the annotation after the previous sibling */
+                                            previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                            startAnnotation.textContent = "";
+                                        } else {
+                                            /* insert the annotation as first child */
+                                            var parentNode = startAnnotation.closest("p");
+                                            parentNode.insertBefore(annotation, parentNode.firstChild);
+                                            startAnnotation.textContent = "";
+                                        };
                                     };
                                 };
+                            } else {
+                                return false;
                             };
-                        } else {
-                            return false;
+                        };
+                    } else {
+                        while (startAnnotation = startAnnotation.nextSibling) {
+                            /* FIRST LINE OF A BLOCK */
+                            /* color other siblings if any */
+                            if (startAnnotation !== milestoneEnd) {
+                                if (startAnnotation.innerHTML !== "") {
+                                    if (startAnnotation.nodeName !== "#text") {
+                                        /* already available annotations */
+                                        startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
+                                    } else {
+                                        /* strings */
+                                        var annotation = document.createElement("span");
+                                        annotation.setAttribute("data-type", "annotation-object");
+                                        annotation.setAttribute("data-subtype", annType);
+                                        annotation.innerHTML = startAnnotation.textContent;
+                                        var previousSibling = startAnnotation.previousSibling;
+                                        if (previousSibling !== null) {
+                                            /* insert the annotation after the previous sibling */
+                                            previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                            startAnnotation.textContent = "";
+                                        } else {
+                                            /* insert the annotation as first child */
+                                            var parentNode = startAnnotation.closest("p");
+                                            parentNode.insertBefore(annotation, parentNode.firstChild);
+                                            startAnnotation.textContent = "";
+                                        };
+                                    };
+                                };
+                            } else {
+                                return false;
+                            };
                         };
                     };
 
@@ -487,7 +522,6 @@ let annotations = () => {
                     /* PARAGRAPHS IN THE MIDDLE OF THE BLOCK */
                     var startParent = milestoneStart.closest("p");
                     var endParent = milestoneEnd.closest("p");
-                    
                     if (startParent !== endParent) {
                         while (startParent = startParent.nextSibling) {
                             if (startParent !== endParent) {
