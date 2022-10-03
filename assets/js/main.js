@@ -89,6 +89,7 @@ let textarea = () => {
         skin: useDarkMode ? "oxide-dark" : "oxide",
         content_css: useDarkMode ? "dark" : "default",
         content_style: "body {font-family:Helvetica,Arial,sans-serif; font-size:16px}" +
+            "[data-type='milestone'][data-start='start']::before {content: '\u270E';}" +
             "[data-type='annotation-object'] {display: inline;}" +
             "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 3px;}" +
             "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 6px;}",
@@ -484,8 +485,9 @@ let annotations = () => {
                     };
 
                     /* PARAGRAPHS IN THE MIDDLE OF THE BLOCK */
-                    var startParent = milestoneStart.parentNode;
-                    var endParent = milestoneEnd.parentNode;
+                    var startParent = milestoneStart.closest("p");
+                    var endParent = milestoneEnd.closest("p");
+                    
                     if (startParent !== endParent) {
                         while (startParent = startParent.nextSibling) {
                             if (startParent !== endParent) {
