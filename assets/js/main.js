@@ -236,7 +236,7 @@ let autocomplete = () => {
 
 /* clone elements */
 let cloneEl = () => {
-    var i = 0;
+    var i = 1;
     [].forEach.call(document.querySelectorAll("[data-clone]"), (el) => {
         el.addEventListener("click", () => {
             var cloneVal = el.getAttribute("data-clone");
@@ -256,6 +256,9 @@ let cloneEl = () => {
             /* change the id of the autocomplete cloned */
             var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
             cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
+            /* change the name of the cloned input */
+            cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
+            cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);

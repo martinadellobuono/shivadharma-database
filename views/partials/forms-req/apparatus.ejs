@@ -107,7 +107,7 @@
           <!-- variants -->
           <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
             <label class="form-label">Variant</label>
-            <input type="text" class="form-control live-check mb-3" placeholder="Insert variant" aria-describedby="Insert variant" name="variant">
+            <input type="text" class="form-control live-check mb-3" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
             <label class="form-label">Witness&#x28;es&#x29;</label>
             <!-- witnesses -->
             <% if (sigla) { %>
@@ -117,7 +117,7 @@
             <% wits.push(siglum) %>
             <% }; %>
             <% }); %>
-            <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant">
+            <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
             <% }; %>
           </div>
           <div id="variant">
