@@ -1,1 +1,23 @@
-Risultati dell'apparato;
+<% if (typeof app_entry !== "null") { %>
+
+<% for (var i = 0; i < app_entry.length; i++) { %>
+
+<% var obj = app_entry[i]; %>
+<div class="mt-3">
+
+  <!-- stanza / pada -->
+  <span data-type="apparatus" data-subtype="stanza"><%= obj["start"]["properties"]["stanza"]; %></span>
+  <span data-type="apparatus" data-subtype="pada"><%= obj["start"]["properties"]["pada"]; %></span>
+
+  <!-- lemma -->
+  <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= obj["segments"][0]["end"]["properties"]["value"]; %></span>
+
+  <!-- variant -->
+  <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= obj["end"]["properties"]["value"]; %></span>
+
+</div>
+
+<% }; %>
+
+
+<% }; %>

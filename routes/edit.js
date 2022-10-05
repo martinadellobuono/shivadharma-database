@@ -19,6 +19,8 @@ router.get("/edit/:id", async (req, res) => {
     var date_temp = [];
     var wit_temp = [];
     var transl_temp = [];
+    var app_entry = [];
+
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -28,9 +30,13 @@ router.get("/edit/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(SelectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
+
+
+                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
+
+
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, lemma.value, variant.value, translation.value
+                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, lemma.value, variant.value, translation.value, app_entry
                 `
             )
             .subscribe({
@@ -59,6 +65,12 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
                     transl_temp = transl_temp.reverse();
+
+                    /* apparatus entry */
+                    if (!app_entry.includes(record.get("app_entry"))) {
+                        app_entry.push(record.get("app_entry"));
+                    };
+                    
                 },
                 onCompleted: () => {
                     if (fs.existsSync(path)) {
@@ -71,7 +83,8 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: file,
-                            translation: transl_temp
+                            translation: transl_temp,
+                            app_entry: app_entry
                         });
                     } else {
                         res.render("edit", {
@@ -83,7 +96,8 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: false,
-                            translation: transl_temp
+                            translation: transl_temp,
+                            app_entry: app_entry
                         });
                     };
                 },

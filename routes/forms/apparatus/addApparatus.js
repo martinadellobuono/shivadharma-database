@@ -21,7 +21,7 @@ router.post("/addApparatus/:id",
 
         var i = 0;
 
-        // try
+        /* variants and manuscripts to complete with i */
         var variant;
         var manuscriptVariant;
 
