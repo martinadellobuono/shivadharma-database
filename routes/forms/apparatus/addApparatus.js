@@ -24,6 +24,15 @@ router.post("/addApparatus/:id",
         // try
         var variant = "variant" + i;
         var manuscriptVariant = "manuscriptVariant" + i;
+
+        let keys = Object.keys(req.body);
+        var variants = [];
+        keys.forEach((el) => {
+            if (el.indexOf("variant") > -1) {
+                variants.push(el);
+            };
+        });
+        console.log(variants);
         // /
 
         /* save data */
