@@ -20,7 +20,7 @@ router.post("/addApparatus/:id",
         var idEditor = req.params.id.split("/").pop().split("-")[1];
 
         var i = 0;
-        
+
         // try
         var variant = "variant" + i;
         var manuscriptVariant = "manuscriptVariant" + i;
@@ -28,7 +28,7 @@ router.post("/addApparatus/:id",
 
         /* save data */
         const session = driver.session();
-        try { 
+        try {
             await session.writeTransaction(tx => tx
                 .run(
                     `
@@ -46,15 +46,14 @@ router.post("/addApparatus/:id",
                             MERGE (lemma)-[:ATTESTED_IN]->(witLemma)
                         )
     
-                        FOREACH (v IN split("${req.body[variant]}", ",") |
-                            MERGE (variant:Variant {value: v})
-                            MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                            FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
+                        
+                        MERGE (variant:Variant {value: "${req.body[variant]}"})
+                        MERGE (lemma)-[:HAS_VARIANT]->(variant)
+                        FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
                                 MERGE (witVariant:Witness {siglum: wit})
                                 MERGE (variant)-[:ATTESTED_IN]->(witVariant)
-                            )
                         )
-
+                        
                         RETURN *
                         `
                 )
