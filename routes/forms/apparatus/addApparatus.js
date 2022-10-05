@@ -70,9 +70,6 @@ router.post("/addApparatus/:id",
                             `
                     )
                         .subscribe({
-                            onNext: () => {
-                                //res.redirect(`../edit/${idEdition}-${idEditor}`);
-                            },
                             onCompleted: () => {
                                 console.log("Data added to the graph");
                             },
@@ -86,6 +83,7 @@ router.post("/addApparatus/:id",
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
+            res.redirect(`../edit/${idEdition}-${idEditor}`);
             await session.close();
         };
     });
