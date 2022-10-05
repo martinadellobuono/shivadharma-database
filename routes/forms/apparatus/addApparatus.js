@@ -42,16 +42,16 @@ router.post("/addApparatus/:id",
 
 
                         FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
-                            MERGE (witLemma:Witness {siglum: wit})
-                            MERGE (lemma)-[:ATTESTED_IN]->(witLemma)
+                            MERGE (witness:Witness {siglum: wit})
+                            MERGE (lemma)-[:ATTESTED_IN]->(witness)
                         )
     
                         
                         MERGE (variant:Variant {value: "${req.body[variant]}"})
                         MERGE (lemma)-[:HAS_VARIANT]->(variant)
                         FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
-                                MERGE (witVariant:Witness {siglum: wit})
-                                MERGE (variant)-[:ATTESTED_IN]->(witVariant)
+                                MERGE (witness:Witness {siglum: wit})
+                                MERGE (variant)-[:ATTESTED_IN]->(witness)
                         )
                         
                         RETURN *
