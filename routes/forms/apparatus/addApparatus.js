@@ -22,9 +22,10 @@ router.post("/addApparatus/:id",
         var i = 0;
 
         // try
-        var variant = "variant" + i;
-        var manuscriptVariant = "manuscriptVariant" + i;
+        var variant;
+        var manuscriptVariant;
 
+        /* array of the variants */
         let keys = Object.keys(req.body);
         var variants = [];
         keys.forEach((el) => {
@@ -32,52 +33,56 @@ router.post("/addApparatus/:id",
                 variants.push(el);
             };
         });
-        console.log(variants);
         // /
 
         /* save data */
         const session = driver.session();
         try {
-            await session.writeTransaction(tx => tx
-                .run(
-                    `
-                        MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
-                        WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                        
-                        MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
-                        MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                        MERGE (lemma:Lemma {value: "${req.body.lemma}"})
-                        MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
-
-
-                        FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
-                            MERGE (witness:Witness {siglum: wit})
-                            MERGE (lemma)-[:ATTESTED_IN]->(witness)
-                        )
-    
-                        
-                        MERGE (variant:Variant {value: "${req.body[variant]}"})
-                        MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                        FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
-                                MERGE (witness:Witness {siglum: wit})
-                                MERGE (variant)-[:ATTESTED_IN]->(witness)
-                        )
-                        
-                        RETURN *
+            await session.writeTransaction((tx) => {
+                variants.forEach(() => {
+                    variant = "variant" + i;
+                    manuscriptVariant = "manuscriptVariant" + i;
+                    tx.run(
                         `
-                )
-                .subscribe({
-                    onNext: () => {
-                        res.redirect(`../edit/${idEdition}-${idEditor}`);
-                    },
-                    onCompleted: () => {
-                        console.log("Data added to the graph");
-                    },
-                    onError: err => {
-                        console.log("Error related to the upload to Neo4j: " + err)
-                    }
-                })
-            );
+                            MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                            WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                            
+                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
+                            MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
+                            MERGE (lemma:Lemma {value: "${req.body.lemma}"})
+                            MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+    
+    
+                            FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
+                                MERGE (witness:Witness {siglum: wit})
+                                MERGE (lemma)-[:ATTESTED_IN]->(witness)
+                            )
+        
+                            
+                            MERGE (variant:Variant {value: "${req.body[variant]}"})
+                            MERGE (lemma)-[:HAS_VARIANT]->(variant)
+                            FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
+                                    MERGE (witness:Witness {siglum: wit})
+                                    MERGE (variant)-[:ATTESTED_IN]->(witness)
+                            )
+                            
+                            RETURN *
+                            `
+                    )
+                        .subscribe({
+                            onNext: () => {
+                                //res.redirect(`../edit/${idEdition}-${idEditor}`);
+                            },
+                            onCompleted: () => {
+                                console.log("Data added to the graph");
+                            },
+                            onError: err => {
+                                console.log("Error related to the upload to Neo4j: " + err)
+                            }
+                        })
+                    i++;
+                });
+            });
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
