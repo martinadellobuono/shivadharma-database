@@ -1,23 +1,7 @@
-<% if (typeof app_entry !== "null") { %>
-
 <% for (var i = 0; i < app_entry.length; i++) { %>
-
-<% var obj = app_entry[i]; %>
-<div class="mt-3">
-
-  <!-- stanza / pada -->
-  <span data-type="apparatus" data-subtype="stanza"><%= obj["start"]["properties"]["stanza"]; %></span>
-  <span data-type="apparatus" data-subtype="pada"><%= obj["start"]["properties"]["pada"]; %></span>
-
-  <!-- lemma -->
-  <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= obj["segments"][0]["end"]["properties"]["value"]; %></span>
-
-  <!-- variant -->
-  <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= obj["end"]["properties"]["value"]; %></span>
-
+<div class="inline-children" data-type="apparatus" data-subtype="apparatus_entry">
+  <span data-type="apparatus" data-subtype="stanza_pada"><%= app_entry[i]["stanza"] %><%= app_entry[i]["pada"] %></span>
+  <span data-type="apparatus" data-subtype="lemma"><%= app_entry[i]["lemma"] %></span>
+  <span data-type="apparatus" data-subtype="variants"><%= app_entry[i]["variants"] %></span>
 </div>
-
-<% }; %>
-
-
 <% }; %>

@@ -10,6 +10,7 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 router.get("/edit/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
+
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     var work_temp = [];
@@ -66,13 +67,50 @@ router.get("/edit/:id", async (req, res) => {
                     };
                     transl_temp = transl_temp.reverse();
 
-                    /* apparatus entry */
+                    /* apparatus entry array */
                     if (!app_entry.includes(record.get("app_entry"))) {
                         app_entry.push(record.get("app_entry"));
                     };
-                    
+
                 },
                 onCompleted: () => {
+                    /* apparatus entry dictionary */
+                    var lemmas = []
+                    var lemmaVariantsDict = [];
+
+                    if (app_entry.length > 1) {
+                        /* list of lemmas */
+                        for (var i = 0; i < app_entry.length; i++) {
+                            var obj = app_entry[i];
+                            var lemma = obj["segments"][0]["end"]["properties"]["value"];
+                            if (!lemmas.includes(lemma)) {
+                                lemmas.push(lemma);
+                            };
+                        };
+
+                        /* lemma : variants */
+                        lemmas.forEach((el) => {
+                            var variants = [];
+                            for (var i = 0; i < app_entry.length; i++) {
+                                var obj = app_entry[i];
+
+                                if (el == obj["segments"][0]["end"]["properties"]["value"]) {
+                                    variants.push(obj["end"]["properties"]["value"]);
+                                };
+
+                            };
+                            lemmaVariantsDict.push({
+                                stanza: obj["start"]["properties"]["stanza"],
+                                pada: obj["start"]["properties"]["pada"],
+                                lemma: el,
+                                variants: variants
+                            })
+                        });
+                    };
+
+                    console.log(lemmaVariantsDict);
+
+                    /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
                             id: req.params.id,
@@ -84,7 +122,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: file,
                             translation: transl_temp,
-                            app_entry: app_entry
+                            app_entry: lemmaVariantsDict
                         });
                     } else {
                         res.render("edit", {
@@ -97,7 +135,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: false,
                             translation: transl_temp,
-                            app_entry: app_entry
+                            app_entry: lemmaVariantsDict
                         });
                     };
                 },

@@ -11993,6 +11993,11 @@ body {
   cursor: not-allowed;
 }
 
+/* display */
+.inline-children > span {
+  display: inline;
+}
+
 /* layout */
 /* edit */
 .edition-container,
