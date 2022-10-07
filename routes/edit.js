@@ -77,6 +77,7 @@ router.get("/edit/:id", async (req, res) => {
                     var lemmaVariantsDict = [];
 
                     if (app_entry.length > 1) {
+
                         /* list of lemmas */
                         for (var i = 0; i < app_entry.length; i++) {
                             var obj = app_entry[i];
@@ -86,7 +87,7 @@ router.get("/edit/:id", async (req, res) => {
                             };
                         };
 
-                        /* lemma : variants */
+                        /* lemma : variants___witness */
                         lemmas.forEach((el) => {
                             var variants = [];
                             for (var i = 0; i < app_entry.length; i++) {
@@ -94,26 +95,26 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* variants */
                                 if (el == obj["segments"][0]["end"]["properties"]["value"]) {
-
                                     obj["segments"].forEach((el) => {
-
-                                        if (el["relationship"]["type"] == "HAS_VARIANT") {
-                                            var variant = el["end"]["properties"]["value"];
+                                        /* witness */
+                                        if (el["relationship"]["type"] == "ATTESTED_IN") {
+                                            var variant = el["start"]["properties"]["value"] + "___" + el["end"]["properties"]["siglum"];
                                             if (!variants.includes(variant)) {
                                                 variants.push(variant);
                                             };
                                         };
-
                                     });
-
                                 };
                             };
+
+                            /* dict app entry */
                             lemmaVariantsDict.push({
                                 stanza: obj["start"]["properties"]["stanza"],
                                 pada: obj["start"]["properties"]["pada"],
                                 lemma: el,
                                 variants: variants
-                            })
+                            });
+
                         });
                     };
 
