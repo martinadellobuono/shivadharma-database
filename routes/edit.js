@@ -30,14 +30,13 @@ router.get("/edit/:id", async (req, res) => {
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
+            
+                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(witness:Witness)
 
-
-                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
-
+                OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
 
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, lemma.value, variant.value, translation.value, app_entry
+                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry
                 `
             )
             .subscribe({
@@ -71,7 +70,6 @@ router.get("/edit/:id", async (req, res) => {
                     if (!app_entry.includes(record.get("app_entry"))) {
                         app_entry.push(record.get("app_entry"));
                     };
-
                 },
                 onCompleted: () => {
                     /* apparatus entry dictionary */
@@ -94,10 +92,21 @@ router.get("/edit/:id", async (req, res) => {
                             for (var i = 0; i < app_entry.length; i++) {
                                 var obj = app_entry[i];
 
+                                /* variants */
                                 if (el == obj["segments"][0]["end"]["properties"]["value"]) {
-                                    variants.push(obj["end"]["properties"]["value"]);
-                                };
 
+                                    obj["segments"].forEach((el) => {
+
+                                        if (el["relationship"]["type"] == "HAS_VARIANT") {
+                                            var variant = el["end"]["properties"]["value"];
+                                            if (!variants.includes(variant)) {
+                                                variants.push(variant);
+                                            };
+                                        };
+
+                                    });
+
+                                };
                             };
                             lemmaVariantsDict.push({
                                 stanza: obj["start"]["properties"]["stanza"],
