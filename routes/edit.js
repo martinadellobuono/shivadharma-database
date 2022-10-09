@@ -73,17 +73,11 @@ router.get("/edit/:id", async (req, res) => {
 
                 },
                 onCompleted: () => {
-                    /* apparatus entry dictionary */
                     var lemmas = [];
+                    /* variants / witnesses dict */
                     var variantWitnessesDict = [];
-
-                    /* dict app entry */
-                    /* lemmaVariantsDict.push({
-                        stanza: obj["start"]["properties"]["stanza"],
-                        pada: obj["start"]["properties"]["pada"],
-                        lemma: el,
-                        variants: variants
-                    }); */
+                    /* apparatus entry dict */
+                    var entryDict = [];
 
                     if (app_entry.length > 1) {
 
@@ -96,7 +90,7 @@ router.get("/edit/:id", async (req, res) => {
                             };
                         };
 
-                        /* lemma : variants */
+                        /* lemma / variants */
                         lemmas.forEach((el) => {
                             var variants = [];
 
@@ -132,16 +126,23 @@ router.get("/edit/:id", async (req, res) => {
                                     });
                                 };
 
-                                /* variant : witnesses */
+                                /* variant / witnesses dictionary */
                                 variantWitnessesDict.push({
                                     variant: variant,
                                     witnesses: witnesses
                                 });
 
                             });
-                        });
 
-                        console.log(variantWitnessesDict);
+                            /* apparatus entry dict */
+                            entryDict.push({
+                                stanza: obj["start"]["properties"]["stanza"],
+                                pada: obj["start"]["properties"]["pada"],
+                                lemma: el,
+                                variants: variantWitnessesDict
+                            }); 
+
+                        });
 
                     };
 
@@ -157,7 +158,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: file,
                             translation: transl_temp,
-                            app_entry: ""
+                            app_entry: entryDict
                         });
                     } else {
                         res.render("edit", {
@@ -170,7 +171,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: false,
                             translation: transl_temp,
-                            app_entry: ""
+                            app_entry: entryDict
                         });
                     };
                 },
