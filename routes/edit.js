@@ -70,11 +70,20 @@ router.get("/edit/:id", async (req, res) => {
                     if (!app_entry.includes(record.get("app_entry"))) {
                         app_entry.push(record.get("app_entry"));
                     };
+
                 },
                 onCompleted: () => {
                     /* apparatus entry dictionary */
-                    var lemmas = []
-                    var lemmaVariantsDict = [];
+                    var lemmas = [];
+                    var variantWitnessesDict = [];
+
+                    /* dict app entry */
+                    /* lemmaVariantsDict.push({
+                        stanza: obj["start"]["properties"]["stanza"],
+                        pada: obj["start"]["properties"]["pada"],
+                        lemma: el,
+                        variants: variants
+                    }); */
 
                     if (app_entry.length > 1) {
 
@@ -87,18 +96,17 @@ router.get("/edit/:id", async (req, res) => {
                             };
                         };
 
-                        /* lemma : variants___witness */
+                        /* lemma : variants */
                         lemmas.forEach((el) => {
                             var variants = [];
+
+                            /* variants */
                             for (var i = 0; i < app_entry.length; i++) {
                                 var obj = app_entry[i];
-
-                                /* variants */
                                 if (el == obj["segments"][0]["end"]["properties"]["value"]) {
                                     obj["segments"].forEach((el) => {
-                                        /* witness */
                                         if (el["relationship"]["type"] == "ATTESTED_IN") {
-                                            var variant = el["start"]["properties"]["value"] + "___" + el["end"]["properties"]["siglum"];
+                                            var variant = el["start"]["properties"]["value"];
                                             if (!variants.includes(variant)) {
                                                 variants.push(variant);
                                             };
@@ -107,18 +115,35 @@ router.get("/edit/:id", async (req, res) => {
                                 };
                             };
 
-                            /* dict app entry */
-                            lemmaVariantsDict.push({
-                                stanza: obj["start"]["properties"]["stanza"],
-                                pada: obj["start"]["properties"]["pada"],
-                                lemma: el,
-                                variants: variants
+                            /* witnesses */
+                            variants.forEach((variant) => {
+                                var witnesses = [];
+                                for (var i = 0; i < app_entry.length; i++) {
+                                    var obj = app_entry[i];
+                                    obj["segments"].forEach((el) => {
+                                        if (el["start"]["properties"]["value"] == variant) {
+                                            var witness = el["end"]["properties"]["siglum"];
+                                            if (witness !== "") {
+                                                if (!witnesses.includes(witness)) {
+                                                    witnesses.push(witness);
+                                                };
+                                            };
+                                        };
+                                    });
+                                };
+
+                                /* variant : witnesses */
+                                variantWitnessesDict.push({
+                                    variant: variant,
+                                    witnesses: witnesses
+                                });
+
                             });
-
                         });
-                    };
 
-                    console.log(lemmaVariantsDict);
+                        console.log(variantWitnessesDict);
+
+                    };
 
                     /* page rendering */
                     if (fs.existsSync(path)) {
@@ -132,7 +157,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: file,
                             translation: transl_temp,
-                            app_entry: lemmaVariantsDict
+                            app_entry: ""
                         });
                     } else {
                         res.render("edit", {
@@ -145,7 +170,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: false,
                             translation: transl_temp,
-                            app_entry: lemmaVariantsDict
+                            app_entry: ""
                         });
                     };
                 },
