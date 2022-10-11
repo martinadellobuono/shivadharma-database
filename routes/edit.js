@@ -91,11 +91,42 @@ router.get("/edit/:id", async (req, res) => {
                             };
                         };
 
+
                         /* lemma / variants */
                         lemmas.forEach((el) => {
 
                             /* lemma */
                             var lemma = el;
+
+                            /* stanzas */
+                            var stanzas = [];
+                            var padas = [];
+                            var lemmaStanzaDict = []
+                            for (var i = 0; i < app_entry.length; i++) {
+                                var obj = app_entry[i];
+                                if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
+                                    obj["segments"].forEach((el) => {
+                                        if (el["relationship"]["type"] == "HAS_LEMMA") {
+                                            /* stanzas */
+                                            var stanza = obj["start"]["properties"]["stanza"];
+                                            if (!stanzas.includes(stanza)) {
+                                                stanzas.push(stanza);
+                                            };
+                                            /* padas */
+                                            var pada = obj["start"]["properties"]["pada"];
+                                            if (!padas.includes(pada)) {
+                                                padas.push(pada);
+                                            };
+                                        };
+                                    });
+                                };
+                            };
+                            /* lemma / stanza / pada dict */
+                            lemmaStanzaDict.push({
+                                lemma: lemma,
+                                stanza: stanzas,
+                                pada: padas
+                            });
 
                             /* variant / witnesses dict */
                             var variantWitnessesDict = [];
@@ -109,6 +140,7 @@ router.get("/edit/:id", async (req, res) => {
                                 var obj = app_entry[i];
                                 if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                     obj["segments"].forEach((el) => {
+                                        /* variants */
                                         if (el["relationship"]["type"] == "ATTESTED_IN") {
                                             var variant = el["start"]["properties"]["value"];
                                             if (!variants.includes(variant)) {
@@ -140,12 +172,12 @@ router.get("/edit/:id", async (req, res) => {
                                 variantWitnessesDict.push({
                                     variant: variant,
                                     witnesses: witnesses
-                                });                                
+                                });
                             });
 
                             /* lemma / variant / witnesses dict */
                             entryDict.push({
-                                lemma: lemma,
+                                lemma: lemmaStanzaDict,
                                 variants: variantWitnessesDict
                             });
 
