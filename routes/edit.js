@@ -189,6 +189,22 @@ router.get("/edit/:id", async (req, res) => {
                         });
                     };
 
+                    // try
+                    for (var i = 0; i < allEntryDict.length; i++) {
+                        allEntryDict[i].forEach((entryDict) => {                            
+                            entryDict["variants"].forEach((el) => {
+                                if (el["witnesses"].length > 1) {
+                                    el["witnesses"].forEach((witness) => {
+                                        console.log(witness);
+                                    });
+                                } else {
+                                    console.log(el["witnesses"]);
+                                };
+                            });
+                        });
+                    };
+                    // /
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
@@ -201,7 +217,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: file,
                             translation: transl_temp,
-                            app_entry: allEntryDict
+                            allEntryDict: allEntryDict
                         });
                     } else {
                         res.render("edit", {
@@ -214,7 +230,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: false,
                             translation: transl_temp,
-                            app_entry: allEntryDict
+                            allEntryDict: allEntryDict
                         });
                     };
                 },
