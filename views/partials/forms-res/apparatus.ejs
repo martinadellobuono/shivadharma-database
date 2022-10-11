@@ -1,7 +1,5 @@
 <% for (var i = 0; i < app_entry.length; i++) { %>
-<div class="inline-children" data-type="apparatus" data-subtype="apparatus_entry">
-  <span data-type="apparatus" data-subtype="stanza_pada"><%= app_entry[i]["stanza"] %><%= app_entry[i]["pada"] %></span>
-  <span data-type="apparatus" data-subtype="lemma"><%= app_entry[i]["lemma"] %></span>
-  <span data-type="apparatus" data-subtype="variants"><%= app_entry[i]["variants"] %></span>
-</div>
+  <div>
+    <%= JSON.stringify(app_entry[i]); %>
+  </div>
 <% }; %>

@@ -73,15 +73,16 @@ router.get("/edit/:id", async (req, res) => {
 
                 },
                 onCompleted: () => {
+
+                    /* lemmas */
                     var lemmas = [];
-                    /* variants / witnesses dict */
-                    var variantWitnessesDict = [];
-                    /* apparatus entry dict */
-                    var entryDict = [];
+
+                    /* all entries dict */
+                    var allEntryDict = [];
 
                     if (app_entry.length > 1) {
 
-                        /* list of lemmas */
+                        /* lemmas */
                         for (var i = 0; i < app_entry.length; i++) {
                             var obj = app_entry[i];
                             var lemma = obj["segments"][0]["end"]["properties"]["value"];
@@ -92,12 +93,21 @@ router.get("/edit/:id", async (req, res) => {
 
                         /* lemma / variants */
                         lemmas.forEach((el) => {
-                            var variants = [];
+
+                            /* lemma */
+                            var lemma = el;
+
+                            /* variant / witnesses dict */
+                            var variantWitnessesDict = [];
+
+                            /* apparatus entry dict */
+                            var entryDict = [];
 
                             /* variants */
+                            var variants = [];
                             for (var i = 0; i < app_entry.length; i++) {
                                 var obj = app_entry[i];
-                                if (el == obj["segments"][0]["end"]["properties"]["value"]) {
+                                if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                     obj["segments"].forEach((el) => {
                                         if (el["relationship"]["type"] == "ATTESTED_IN") {
                                             var variant = el["start"]["properties"]["value"];
@@ -111,39 +121,43 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* witnesses */
                             variants.forEach((variant) => {
+
+                                // try
                                 var witnesses = [];
+                                // /
+
                                 for (var i = 0; i < app_entry.length; i++) {
                                     var obj = app_entry[i];
                                     obj["segments"].forEach((el) => {
-                                        if (el["start"]["properties"]["value"] == variant) {
-                                            var witness = el["end"]["properties"]["siglum"];
-                                            if (witness !== "") {
-                                                if (!witnesses.includes(witness)) {
-                                                    witnesses.push(witness);
-                                                };
+                                        if (el["relationship"]["type"] == "ATTESTED_IN") {
+                                            if (el["start"]["properties"]["value"] == variant) {
+                                                var witness = el["end"]["properties"]["siglum"];
+
+
+                                                variantWitnessesDict.push({
+                                                    variant: variant,
+                                                    witnesses: witness
+                                                });
                                             };
                                         };
                                     });
                                 };
-
-                                /* variant / witnesses dictionary */
-                                variantWitnessesDict.push({
-                                    variant: variant,
-                                    witnesses: witnesses
-                                });
-
                             });
 
-                            /* apparatus entry dict */
+                            /* variant / witnesses dictionary */
                             entryDict.push({
-                                stanza: obj["start"]["properties"]["stanza"],
-                                pada: obj["start"]["properties"]["pada"],
-                                lemma: el,
-                                variants: variantWitnessesDict
-                            }); 
+                                lemma: lemma,
+                                witnesses: variantWitnessesDict
+                            });
+
+                            console.log(JSON.stringify(entryDict));
+
+                            /* list of all the entry dict */
+                            if (!allEntryDict.includes(entryDict)) {
+                                allEntryDict.push(entryDict);
+                            };
 
                         });
-
                     };
 
                     /* page rendering */
@@ -158,7 +172,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: file,
                             translation: transl_temp,
-                            app_entry: entryDict
+                            app_entry: allEntryDict
                         });
                     } else {
                         res.render("edit", {
@@ -171,7 +185,7 @@ router.get("/edit/:id", async (req, res) => {
                             sigla: wit_temp,
                             file: false,
                             translation: transl_temp,
-                            app_entry: entryDict
+                            app_entry: allEntryDict
                         });
                     };
                 },
