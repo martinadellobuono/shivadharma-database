@@ -121,38 +121,35 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* witnesses */
                             variants.forEach((variant) => {
-
-                                // try
+                                /* witnesses */
                                 var witnesses = [];
-                                // /
-
                                 for (var i = 0; i < app_entry.length; i++) {
                                     var obj = app_entry[i];
                                     obj["segments"].forEach((el) => {
                                         if (el["relationship"]["type"] == "ATTESTED_IN") {
                                             if (el["start"]["properties"]["value"] == variant) {
                                                 var witness = el["end"]["properties"]["siglum"];
-
-
-                                                variantWitnessesDict.push({
-                                                    variant: variant,
-                                                    witnesses: witness
-                                                });
+                                                if (!witnesses.includes(witness)) {
+                                                    witnesses.push(witness);
+                                                };
                                             };
                                         };
                                     });
                                 };
+                                /* variant / witness dict */
+                                variantWitnessesDict.push({
+                                    variant: variant,
+                                    witnesses: witnesses
+                                });                                
                             });
 
-                            /* variant / witnesses dictionary */
+                            /* lemma / variant / witnesses dict */
                             entryDict.push({
                                 lemma: lemma,
-                                witnesses: variantWitnessesDict
+                                variants: variantWitnessesDict
                             });
 
-                            console.log(JSON.stringify(entryDict));
-
-                            /* list of all the entry dict */
+                            /* list of all the entries dict */
                             if (!allEntryDict.includes(entryDict)) {
                                 allEntryDict.push(entryDict);
                             };
