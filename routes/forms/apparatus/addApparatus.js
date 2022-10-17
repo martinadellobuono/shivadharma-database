@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const path = require("path");
 const fs = require("fs");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
@@ -12,13 +13,10 @@ const { render } = require("ejs");
 router.post("/addApparatus/:id",
     /* error handling */
     body("selectedFragment").isLength({ min: 1 }).withMessage("selected fragment"),
-    body("lemma").isLength({ min: 1 }).withMessage("lemma"),
-    body("variant").isLength({ min: 1 }).withMessage("variant"),
     async (req, res) => {
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
-
         var i = 0;
 
         /* variants and manuscripts to complete with i */
@@ -33,7 +31,6 @@ router.post("/addApparatus/:id",
                 variants.push(el);
             };
         });
-        // /
 
         /* save data */
         const session = driver.session();
@@ -83,6 +80,7 @@ router.post("/addApparatus/:id",
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
+            /* page rendering */
             res.redirect(`../edit/${idEdition}-${idEditor}`);
             await session.close();
         };

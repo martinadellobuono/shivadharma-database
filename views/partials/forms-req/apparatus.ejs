@@ -91,9 +91,29 @@
           <!-- lemma -->
           <div class="bg-white p-3 mb-3">
             <label class="form-label">Lemma</label>
-            <input class="form-control live-check mb-3" type="text" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
-            <label class="form-label">Witness&#x28;es&#x29;</label>
+            <!-- truncation -->
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" name="lemma-radios" value="circlefront">
+                <label class="form-check-label">Circlefront</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" name="lemma-radios" value="circleback">
+                <label class="form-check-label">Circleback</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" name="lemma-radios" value="circlearound">
+                <label class="form-check-label">Circlearound</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" name="lemma-radios" value="notruncation" checked>
+                <label class="form-check-label">No truncation</label>
+              </div>
+            </div>
+            <!-- lemma -->
+            <input class="form-control live-check mb-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
             <!-- witnesses -->
+            <label class="form-label">Witness&#x28;es&#x29;</label>
             <% if (sigla) { %>
             <% var wits = []; %>
             <% sigla.forEach((siglum) => { %>
@@ -107,9 +127,29 @@
           <!-- variants -->
           <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
             <label class="form-label">Variant</label>
-            <input type="text" class="form-control live-check mb-3" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
-            <label class="form-label">Witness&#x28;es&#x29;</label>
+            <!-- truncation -->
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" name="variant-radios" value="circlefront">
+                <label class="form-check-label">Circlefront</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" name="variant-radios" value="circleback">
+                <label class="form-check-label">Circleback</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" name="variant-radios" value="circlearound">
+                <label class="form-check-label">Circlearound</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" name="variant-radios" value="notruncation" checked>
+                <label class="form-check-label">No truncation</label>
+              </div>
+            </div>
+            <!-- variant -->
+            <input class="form-control live-check mb-3" type="text" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
             <!-- witnesses -->
+            <label class="form-label">Witness&#x28;es&#x29;</label>
             <% if (sigla) { %>
             <% var wits = []; %>
             <% sigla.forEach((siglum) => { %>

@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     closeBtn();
     liveCheck();
     checkAnnotatedFragments();
+    truncation();
 });
 
 /* alerts */
@@ -765,13 +766,41 @@ let liveCheckAutocomplete = () => {
 
 /* check the annotated fragments */
 let checkAnnotatedFragments = () => {
-
-    /* MODAL */
+    /* modal */
     /* close the modal */
     var modal = document.getElementById("check-modifications");
     var closeBtn = modal.querySelector(".btn-close");
     closeBtn.addEventListener("click", () => {
         modal.classList.remove("d-block");
     });
+};
 
+/* truncation */
+let truncation = () => {
+    var radios = document.querySelectorAll("[type='radio'][data-subtype='truncation']");
+    radios.forEach((radio) => {
+        radio.addEventListener("click", () => {
+            var val = radio.getAttribute("value");
+            var input = document.querySelector("[name='" + radio.getAttribute("data-href") + "']");
+            
+            /* remove ° */
+            input.value = input.value.replace(/\°/g, "");
+
+            /* add ° */
+            switch (val) {
+                case "circlefront":
+                    input.value = "\u00B0" + input.value;
+                    break;
+                case "circleback":
+                    input.value = input.value + "\u00B0";
+                    break;
+                case "circlearound":
+                    input.value = "\u00B0" + input.value + "\u00B0";
+                    break;
+                default:
+                    input.value = input.value;
+            };
+
+        });
+    });
 };
