@@ -111,7 +111,24 @@
               </div>
             </div>
             <!-- lemma -->
-            <input class="form-control live-check mb-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+            <input class="form-control live-check mb-2" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+
+            <!-- omission -->
+            <div class="mb-3">
+              <div class="mb-2">
+                <span class="text-secondary">or</span>
+              </div>
+              <!-- checkbox -->
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" data-subtype="omission" data-href="lemmaOmission" data-value="omission">
+                <label class="form-check-label">Omission</label>
+              </div>
+              <!-- comments -->
+              <div class="textarea-container d-none">
+                <textarea class="mt-1" placeholder="Insert additional comments..." name="lemmaOmission"></textarea>
+              </div>
+            </div>
+
             <!-- witnesses -->
             <label class="form-label">Witness&#x28;es&#x29;</label>
             <% if (sigla) { %>

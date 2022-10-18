@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     liveCheck();
     checkAnnotatedFragments();
     truncation();
+    omissions();
 });
 
 /* alerts */
@@ -815,6 +816,25 @@ let truncation = () => {
                     input.value = input.value;
             };
 
+        });
+    });
+};
+
+/* omissions */
+let omissions = () => {
+    var checkboxes = document.querySelectorAll("[type='checkbox'][data-subtype='omission']");
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("click", () => {
+            var input = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
+            /* checked omission */
+            if (checkbox.checked) {
+                /* show the textarea for comments */
+                input.closest(".textarea-container").classList.remove("d-none");
+            } else {
+                /* unchecked omission */
+                /* hide the textarea for comments */
+                input.closest(".textarea-container").classList.add("d-none");
+            };
         });
     });
 };
