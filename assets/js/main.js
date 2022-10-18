@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     liveCheck();
     checkAnnotatedFragments();
     truncation();
-    omissions();
+    lemmaPresence();
 });
 
 /* alerts */
@@ -820,45 +820,67 @@ let truncation = () => {
     });
 };
 
-/* omissions */
-let omissions = () => {
-    var checkboxes = document.querySelectorAll("[type='checkbox'][data-subtype='omission']");
-    checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("click", () => {
-            var input = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
+/* lemma presence */
+let lemmaPresence = () => {
 
-            /* data omission = what is omitted */
-            var dataOmission = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
-
-            /* data href = comments on what is omitted */
-            var dataHref = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
-            var dataHrefId = dataHref.id;
-
-            /* checked omission */
-            if (checkbox.checked) {
-                /* show the textarea for comments */
-                input.closest(".textarea-container").classList.remove("d-none");
-
-                /* local storage of the data omission */
-                localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
-                /* empty the data omission input */
-                dataOmission.value = "";
-
-                /* fill in the data href input */
-                tinyMCE.get(dataHrefId).setContent(localStorage.getItem(checkbox.getAttribute("data-href")));
+    var lemmaPresenceRadios = document.querySelectorAll("[type='radio'][data-subtype='lemmaPresence']");
+    lemmaPresenceRadios.forEach((presence) => {
+        presence.addEventListener("click", () => {
+            /* present lemma */
+            if (presence.getAttribute("data-value") == "present") {
+                document.querySelector("[data-workflow='present']").classList.remove("d-none");
+                document.querySelector("[data-workflow='omission']").classList.add("d-none");
             } else {
-                /* unchecked omission */
-                /* hide the textarea for comments */
-                input.closest(".textarea-container").classList.add("d-none");
-
-                /* refill the data omission input with the old data omission */
-                dataOmission.value = localStorage.getItem(checkbox.getAttribute("data-omission"));
-
-                /* local storage of the comment */
-                localStorage.setItem(checkbox.getAttribute("data-href"), tinyMCE.get(dataHrefId).getContent());
-                /* empty the data href input with the old data href */
-                tinyMCE.get(dataHrefId).setContent("");
+                /* omitted lemma */
+                document.querySelector("[data-workflow='present']").classList.add("d-none");
+                document.querySelector("[data-workflow='omission']").classList.remove("d-none");
+                /* omission comments */
+                omissions();
             };
         });
     });
+
+    /* omissions */
+    let omissions = () => {
+        var omissionCheckboxes = document.querySelectorAll("[type='radio'][data-subtype='omission']");
+        omissionCheckboxes.forEach((checkbox) => {
+            checkbox.addEventListener("click", () => {
+                //var input = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
+
+                /* data omission = what is omitted */
+                var dataOmission = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
+
+                /* data href = comments on what is omitted */
+                var dataHref = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
+                var dataHrefId = dataHref.id;
+
+                /* checked omission */
+                if (checkbox.checked) {
+                    /* show the textarea for comments */
+                    //input.closest(".textarea-container").classList.remove("d-none");
+
+                    /* local storage of the data omission */
+                    localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
+                    /* empty the data omission input */
+                    dataOmission.value = "";
+
+                    /* fill in the data href input */
+                    tinyMCE.get(dataHrefId).setContent(localStorage.getItem(checkbox.getAttribute("data-href")));
+                } else {
+                    /* unchecked omission */
+                    /* hide the textarea for comments */
+                    //input.closest(".textarea-container").classList.add("d-none");
+
+                    /* refill the data omission input with the old data omission */
+                    dataOmission.value = localStorage.getItem(checkbox.getAttribute("data-omission"));
+
+                    /* local storage of the comment */
+                    localStorage.setItem(checkbox.getAttribute("data-href"), tinyMCE.get(dataHrefId).getContent());
+                    /* empty the data href input with the old data href */
+                    tinyMCE.get(dataHrefId).setContent("");
+                };
+            });
+        });
+    };
+
 };
