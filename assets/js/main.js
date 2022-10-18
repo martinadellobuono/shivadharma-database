@@ -826,21 +826,30 @@ let omissions = () => {
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener("click", () => {
             var input = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
-            var lemma = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
+
+            /* data omission = what is omitted */
+            var dataOmission = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
+
             /* checked omission */
             if (checkbox.checked) {
                 /* show the textarea for comments */
                 input.closest(".textarea-container").classList.remove("d-none");
-                /* local storage of the lemma */
-                localStorage.setItem("lemma", lemma.value);
-                /* empty the lemma input */
-                lemma.value = "";
+                /* local storage of the data omission */
+                localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
+
+                // try
+                /* local storage of the comment */
+                localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
+                // /
+
+                /* empty the dataOmission input */
+                dataOmission.value = "";
             } else {
                 /* unchecked omission */
                 /* hide the textarea for comments */
                 input.closest(".textarea-container").classList.add("d-none");
-                /* refill the lemma input with the old lemma */
-                lemma.value = localStorage.getItem("lemma");
+                /* refill the data omission input with the old data omission */
+                dataOmission.value = localStorage.getItem(checkbox.getAttribute("data-omission"));
             };
         });
     });
