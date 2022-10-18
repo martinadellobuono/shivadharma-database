@@ -263,8 +263,14 @@ let cloneEl = () => {
             /* change the value of data-href of the cloned truncation */
             var truncationRadios = cloned.querySelectorAll("[type='radio'][data-subtype='truncation']");
             truncationRadios.forEach((radio) => {
+                /* attributes to create a link between the radio and the input */
                 radio.setAttribute("name", "variant" + i + "-radios");
                 radio.setAttribute("data-href", "variant" + i);
+                /* set no truncation as preselected option */
+                radio.checked = false;
+                if (radio.getAttribute("data-value") == "notruncation") {
+                    radio.checked = true;
+                };
             });
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
