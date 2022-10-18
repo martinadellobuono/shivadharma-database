@@ -833,29 +833,31 @@ let omissions = () => {
             /* data href = comments on what is omitted */
             var dataHref = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
             var dataHrefId = dataHref.id;
-            console.log(tinyMCE.get(dataHrefId).getContent());
-
 
             /* checked omission */
             if (checkbox.checked) {
                 /* show the textarea for comments */
                 input.closest(".textarea-container").classList.remove("d-none");
+
                 /* local storage of the data omission */
                 localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
-
-                // try
-                /* local storage of the comment */
-                //localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
-                // /
-
-                /* empty the dataOmission input */
+                /* empty the data omission input */
                 dataOmission.value = "";
+
+                /* fill in the data href input */
+                tinyMCE.get(dataHrefId).setContent(localStorage.getItem(checkbox.getAttribute("data-href")));
             } else {
                 /* unchecked omission */
                 /* hide the textarea for comments */
                 input.closest(".textarea-container").classList.add("d-none");
+
                 /* refill the data omission input with the old data omission */
                 dataOmission.value = localStorage.getItem(checkbox.getAttribute("data-omission"));
+
+                /* local storage of the comment */
+                localStorage.setItem(checkbox.getAttribute("data-href"), tinyMCE.get(dataHrefId).getContent());
+                /* empty the data href input with the old data href */
+                tinyMCE.get(dataHrefId).setContent("");
             };
         });
     });
