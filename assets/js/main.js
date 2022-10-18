@@ -260,6 +260,12 @@ let cloneEl = () => {
             /* change the name of the cloned input */
             cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
             cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
+            /* change the value of data-href of the cloned truncation */
+            var truncationRadios = cloned.querySelectorAll("[type='radio'][data-subtype='truncation']");
+            truncationRadios.forEach((radio) => {
+                radio.setAttribute("name", "variant" + i + "-radios");
+                radio.setAttribute("data-href", "variant" + i);
+            });
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
@@ -285,6 +291,8 @@ let cloneEl = () => {
             autocomplete();
             /* live check */
             liveCheckCloned();
+            /* truncation */
+            truncation();
         });
     });
 };
@@ -780,9 +788,9 @@ let truncation = () => {
     var radios = document.querySelectorAll("[type='radio'][data-subtype='truncation']");
     radios.forEach((radio) => {
         radio.addEventListener("click", () => {
-            var val = radio.getAttribute("value");
+            var val = radio.getAttribute("data-value");
             var input = document.querySelector("[name='" + radio.getAttribute("data-href") + "']");
-            
+
             /* remove ° */
             input.value = input.value.replace(/\°/g, "");
 
