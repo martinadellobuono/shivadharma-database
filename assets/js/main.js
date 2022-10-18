@@ -830,6 +830,12 @@ let omissions = () => {
             /* data omission = what is omitted */
             var dataOmission = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
 
+            /* data href = comments on what is omitted */
+            var dataHref = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
+            var dataHrefId = dataHref.id;
+            console.log(tinyMCE.get(dataHrefId).getContent());
+
+
             /* checked omission */
             if (checkbox.checked) {
                 /* show the textarea for comments */
@@ -839,7 +845,7 @@ let omissions = () => {
 
                 // try
                 /* local storage of the comment */
-                localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
+                //localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
                 // /
 
                 /* empty the dataOmission input */
