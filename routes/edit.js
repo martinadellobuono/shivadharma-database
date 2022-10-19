@@ -69,9 +69,11 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* apparatus entry array */
                     if (!app_entry.includes(record.get("app_entry"))) {
-                        app_entry.push(record.get("app_entry"));
+                        if (record.get("app_entry") !== null) {
+                            app_entry.push(record.get("app_entry"));
+                        };
                     };
-
+                    
                 },
                 onCompleted: () => {
 
@@ -81,9 +83,7 @@ router.get("/edit/:id", async (req, res) => {
                     /* all entries dict */
                     var allEntryDict = [];
 
-                    console.log(app_entry);
-
-                    if (app_entry.length >= 1) {
+                    if (app_entry.length > 0) {
 
                         /* lemmas */
                         for (var i = 0; i < app_entry.length; i++) {
@@ -189,6 +189,8 @@ router.get("/edit/:id", async (req, res) => {
                             };
 
                         });
+                    } else {
+                        allEntryDict = [];
                     };
 
                     /* page rendering */
