@@ -1,16 +1,44 @@
 <% for (var i = 0; i < allEntryDict.length; i++) { %>
+
+
+<!-- var robaMia = ""; -->
+
+
 <% allEntryDict[i].forEach((entryDict) => { %>
 
 <div class="p-3 mt-3 bg-white" data-type="apparatus" data-subtype="apparatus-entry">
 
   <!-- lemma / location -->
   <% entryDict["lemma"].forEach((el) => { %>
+
+  <!-- robaMia += lemma ___; -->
   <span data-type="apparatus" data-subtype="location"><span data-type="apparatus" data-subtype="stanza"><%= el["stanza"]; %></span><span data-type="apparatus" data-subtype="pada"><%= el["pada"]; %></span></span>
+
+  <!-- omission -->
+  <% if (el["lemma"] == "") { %>
+  <span data-type="apparatus" data-subtype="lemma">om.</span>
+  <% } else { %>
+  <!-- lemma -->
   <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]; %></span>
+  <% }; %>
+  <span>&#x5d;</span>
+
+  <!-- witnesses -->
+  <% if (el["witnesses"].length > 1) { %>
+  <% el["witnesses"].forEach((witness) => { %>
+  <span data-type="apparatus" data-subtype="witness"><%= witness %></span>
+  <% }); %>
+  <% } else { %>
+  <span data-type="apparatus" data-subtype="witness"><%= el["witnesses"]; %></span>
+  <% }; %>
+
   <% }); %>
 
   <!-- variant / witnesses -->
   <% entryDict["variants"].forEach((el) => { %>
+
+  <!-- robaMia += variante---; -->
+
   <span class="ms-4" data-type="apparatus" data-subtype="variants">
 
     <!-- variant -->
@@ -30,7 +58,8 @@
 
   <!-- modify button -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-warning" type="button">Modify</button>
+    <!-- robaMia da inserire come variabile encode uri component roba mia tra parentesi / dall'altra parte fai il decode  -->
+    <button class="btn btn-sm btn-warning" data-robaMia='robaMia' type="button">Modify</button>
   </div>
 </div>
 

@@ -23,6 +23,10 @@ router.get("/edit/:id", async (req, res) => {
     var transl_temp = [];
     var app_entry = [];
 
+    // try
+    var witnesses_relations = [];
+    // /
+
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -32,12 +36,15 @@ router.get("/edit/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
             
-                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(witness:Witness)
+                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
+
+                OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
 
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
 
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry
+                
+                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
                 `
             )
             .subscribe({
@@ -65,7 +72,6 @@ router.get("/edit/:id", async (req, res) => {
                             transl_temp.push(record.get("translation.value"));
                         };
                     };
-                    transl_temp = transl_temp.reverse();
 
                     /* apparatus entry array */
                     if (!app_entry.includes(record.get("app_entry"))) {
@@ -73,7 +79,14 @@ router.get("/edit/:id", async (req, res) => {
                             app_entry.push(record.get("app_entry"));
                         };
                     };
-                    
+
+                    /* witnesses relations array */
+                    if (!witnesses_relations.includes(record.get("witnesses_relations"))) {
+                        if (record.get("witnesses_relations") !== null) {
+                            witnesses_relations.push(record.get("witnesses_relations"));
+                        };
+                    };
+
                 },
                 onCompleted: () => {
 
@@ -85,114 +98,134 @@ router.get("/edit/:id", async (req, res) => {
 
                     if (app_entry.length > 0) {
 
-                        /* lemmas */
-                        for (var i = 0; i < app_entry.length; i++) {
-                            var obj = app_entry[i];
-                            var lemma = obj["segments"][0]["end"]["properties"]["value"];
-                            if (!lemmas.includes(lemma)) {
-                                lemmas.push(lemma);
-                            };
-                        };
+                        if (witnesses_relations.length > 0) {
 
-                        /* lemma / variants */
-                        lemmas.forEach((el) => {
-
-                            /* lemma */
-                            var lemma = el;
-
-                            /* stanzas */
-                            var stanzas = [];
-                            var padas = [];
-                            var lemmaStanzaDict = []
+                            /* lemmas */
                             for (var i = 0; i < app_entry.length; i++) {
                                 var obj = app_entry[i];
-                                if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
-                                    obj["segments"].forEach((el) => {
-                                        if (el["relationship"]["type"] == "HAS_LEMMA") {
-                                            /* stanzas */
-                                            var stanza = obj["start"]["properties"]["stanza"];
-                                            if (!stanzas.includes(stanza)) {
-                                                stanzas.push(stanza);
-                                            };
-                                            /* padas */
-                                            var pada = obj["start"]["properties"]["pada"];
-                                            if (!padas.includes(pada)) {
-                                                padas.push(pada);
-                                            };
-                                        };
-                                    });
-                                };
-                            };
-                            /* lemma / stanza / pada dict */
-                            lemmaStanzaDict.push({
-                                lemma: lemma,
-                                stanza: stanzas,
-                                pada: padas
-                            });
-
-                            /* variant / witnesses dict */
-                            var variantWitnessesDict = [];
-
-                            /* apparatus entry dict */
-                            var entryDict = [];
-
-                            /* variants */
-                            var variants = [];
-                            for (var i = 0; i < app_entry.length; i++) {
-                                var obj = app_entry[i];
-                                if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
-                                    obj["segments"].forEach((el) => {
-                                        /* variants */
-                                        if (el["relationship"]["type"] == "ATTESTED_IN") {
-                                            var variant = el["start"]["properties"]["value"];
-                                            if (!variants.includes(variant)) {
-                                                variants.push(variant);
-                                            };
-                                        };
-                                    });
+                                var lemma = obj["segments"][0]["end"]["properties"]["value"];
+                                if (!lemmas.includes(lemma)) {
+                                    lemmas.push(lemma);
                                 };
                             };
 
-                            /* witnesses */
-                            variants.forEach((variant) => {
-                                /* witnesses */
+                            /* lemma / variants */
+                            lemmas.forEach((el) => {
+
+                                /* lemma */
+                                var lemma = el;
+
+                                /* stanzas */
+                                var stanzas = [];
+                                var padas = [];
+                                var lemmaStanzaDict = []
+
+                                // try
                                 var witnesses = [];
+                                // /
+
                                 for (var i = 0; i < app_entry.length; i++) {
                                     var obj = app_entry[i];
-                                    obj["segments"].forEach((el) => {
-                                        if (el["relationship"]["type"] == "ATTESTED_IN") {
-                                            if (el["start"]["properties"]["value"] == variant) {
-                                                var witness = el["end"]["properties"]["siglum"];
-                                                if (!witnesses.includes(witness)) {
-                                                    witnesses.push(witness);
+                                    if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
+                                        obj["segments"].forEach((el) => {
+                                            if (el["relationship"]["type"] == "HAS_LEMMA") {
+                                                /* stanzas */
+                                                var stanza = obj["start"]["properties"]["stanza"];
+                                                if (!stanzas.includes(stanza)) {
+                                                    stanzas.push(stanza);
+                                                };
+                                                /* padas */
+                                                var pada = obj["start"]["properties"]["pada"];
+                                                if (!padas.includes(pada)) {
+                                                    padas.push(pada);
                                                 };
                                             };
-                                        };
-                                    });
+                                        });
+                                    };
                                 };
-                                /* variant / witness dict */
-                                variantWitnessesDict.push({
-                                    variant: variant,
-                                    witnesses: witnesses
+
+                                /* lemma witnesses */
+                                for (var i = 0; i < witnesses_relations.length; i++) {
+                                    var obj = witnesses_relations[i];
+                                    if (obj["start"]["labels"] == "Lemma") {
+                                        if (lemma == obj["start"]["properties"]["value"]) {
+                                            var witness = obj["end"]["properties"]["siglum"];
+                                            if (!witnesses.includes(witness)) {
+                                                witnesses.push(witness);
+                                            };
+                                        };
+                                    };
+                                };
+
+                                /* lemma / witnesses / stanza / pada dict */
+                                lemmaStanzaDict.push({
+                                    lemma: lemma,
+                                    witnesses: witnesses,
+                                    stanza: stanzas,
+                                    pada: padas
                                 });
+
+                                /* variant / witnesses dict */
+                                var variantWitnessesDict = [];
+
+                                /* apparatus entry dict */
+                                var entryDict = [];
+
+                                /* variants */
+                                var variants = [];
+                                for (var i = 0; i < app_entry.length; i++) {
+                                    var obj = app_entry[i];
+                                    if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
+                                        obj["segments"].forEach((el) => {
+                                            if (el["relationship"]["type"] == "HAS_VARIANT") {
+                                                var variant = el["end"]["properties"]["value"];
+                                                if (!variants.includes(variant)) {
+                                                    variants.push(variant);
+                                                };
+                                            };
+                                        });
+                                    };
+                                };
+
+                                /* witnesses */
+                                variants.forEach((variant) => {
+                                    /* witnesses */
+                                    var witnesses = [];
+
+                                    for (var i = 0; i < witnesses_relations.length; i++) {
+                                        var obj = witnesses_relations[i];
+                                        if (obj["start"]["labels"] == "Variant") {
+                                            var witness = obj["end"]["properties"]["siglum"];
+                                            if (!witnesses.includes(witness)) {
+                                                witnesses.push(witness);
+                                            };
+                                        };
+                                    };
+                                    /* variant / witness dict */
+                                    variantWitnessesDict.push({
+                                        variant: variant,
+                                        witnesses: witnesses
+                                    });
+                                });
+
+                                /* lemma / variant / witnesses dict */
+                                entryDict.push({
+                                    lemma: lemmaStanzaDict,
+                                    variants: variantWitnessesDict
+                                });
+
+                                /* list of all the entries dict */
+                                if (!allEntryDict.includes(entryDict)) {
+                                    allEntryDict.push(entryDict);
+                                };
+
                             });
 
-                            /* lemma / variant / witnesses dict */
-                            entryDict.push({
-                                lemma: lemmaStanzaDict,
-                                variants: variantWitnessesDict
-                            });
-
-                            /* list of all the entries dict */
-                            if (!allEntryDict.includes(entryDict)) {
-                                allEntryDict.push(entryDict);
-                            };
-
-                        });
+                        };
                     } else {
                         allEntryDict = [];
                     };
-
+                    
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {

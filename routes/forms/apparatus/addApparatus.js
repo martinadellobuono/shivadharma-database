@@ -14,6 +14,12 @@ router.post("/addApparatus/:id",
     /* error handling */
     body("selectedFragment").isLength({ min: 1 }).withMessage("selected fragment"),
     async (req, res) => {
+
+
+        // try 
+        console.log(req.body);
+        // /
+
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
@@ -48,14 +54,12 @@ router.post("/addApparatus/:id",
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                             MERGE (lemma:Lemma {value: "${req.body.lemma}"})
                             MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
-    
-    
+
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
                                 MERGE (witness:Witness {siglum: wit})
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
         
-                            
                             MERGE (variant:Variant {value: "${req.body[variant]}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
