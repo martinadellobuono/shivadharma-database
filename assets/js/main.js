@@ -727,6 +727,18 @@ let liveCheck = () => {
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                 } else {
                     /* other elements */
+                    /* truncation > recalculate the input value */
+                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
+                    radiosParents.forEach((radioParent) => {
+                        var radios = radioParent.querySelectorAll("[type='radio']");
+                        radios.forEach((radio) => {
+                            radio.addEventListener("change", () => {
+                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+                            });
+                        });
+                    });
+                    
+                    /* default input */
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
                 };
             });

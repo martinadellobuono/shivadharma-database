@@ -14,12 +14,6 @@ router.post("/addApparatus/:id",
     /* error handling */
     body("selectedFragment").isLength({ min: 1 }).withMessage("selected fragment"),
     async (req, res) => {
-
-
-        // try 
-        console.log(req.body);
-        // /
-
         const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];

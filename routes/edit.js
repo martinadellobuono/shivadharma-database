@@ -87,6 +87,8 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
 
+                    console.log(witnesses_relations);
+
                 },
                 onCompleted: () => {
 
@@ -194,12 +196,15 @@ router.get("/edit/:id", async (req, res) => {
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
-                                        if (obj["start"]["labels"] == "Variant") {
+
+                                        console.log(obj);
+
+                                        /* if (obj["start"]["labels"] == "Variant") {
                                             var witness = obj["end"]["properties"]["siglum"];
                                             if (!witnesses.includes(witness)) {
                                                 witnesses.push(witness);
                                             };
-                                        };
+                                        }; */
                                     };
                                     /* variant / witness dict */
                                     variantWitnessesDict.push({
@@ -225,7 +230,7 @@ router.get("/edit/:id", async (req, res) => {
                     } else {
                         allEntryDict = [];
                     };
-                    
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {

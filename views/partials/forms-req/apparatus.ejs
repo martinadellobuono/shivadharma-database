@@ -103,7 +103,7 @@
               </div>
             </div>
             <!-- truncation -->
-            <div class="p-3 bg-light" data-workflow="present">
+            <div class="p-3 pb-1 bg-light" data-workflow="present">
               <div class="mb-3">
                 <div class="mb-2">
                   <span class="fs-6 text-secondary">Truncation</span>
@@ -124,12 +124,12 @@
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" data-value="notruncation" name="lemma-radios" checked>
                   <label class="form-check-label">No truncation</label>
                 </div>
+                <!-- lemma -->
+                <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
               </div>
-              <!-- lemma -->
-              <input class="form-control live-check mb-2" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
             </div>
             <!-- witnesses -->
-            <div class="p-3 bg-light">
+            <div class="p-3 pt-0 bg-light">
               <label class="form-label">Witness&#x28;es&#x29;</label>
               <% if (sigla) { %>
               <% var wits = []; %>
@@ -142,7 +142,7 @@
               <% }; %>
             </div>
             <!-- omission -->
-            <div class="mb-3 p-3 bg-light d-none" data-workflow="omission">
+            <div class="mb-3 p-3 pb-1 bg-light d-none" data-workflow="omission">
               <div class="textarea-container">
                 <div class="mb-2">
                   <span class="fs-6 text-secondary">Additional notes on the omission</span>
@@ -158,6 +158,9 @@
             <label class="form-label">Variant</label>
             <!-- truncation -->
             <div class="mb-3">
+              <div class="mb-2">
+                <span class="fs-6 text-secondary">Truncation</span>
+              </div>
               <div class="form-check">
                 <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlefront" name="truncation-radios">
                 <label class="form-check-label">Circlefront</label>
@@ -174,20 +177,22 @@
                 <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="notruncation" name="truncation-radios" checked>
                 <label class="form-check-label">No truncation</label>
               </div>
+              <!-- variant -->
+              <input class="form-control live-check mb-0 mt-3" type="text" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
             </div>
-            <!-- variant -->
-            <input class="form-control live-check mb-3" type="text" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
             <!-- witnesses -->
-            <label class="form-label">Witness&#x28;es&#x29;</label>
-            <% if (sigla) { %>
-            <% var wits = []; %>
-            <% sigla.forEach((siglum) => { %>
-            <% if (wits.includes(siglum) === false) { %>
-            <% wits.push(siglum) %>
-            <% }; %>
-            <% }); %>
-            <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
-            <% }; %>
+            <div class="p-3 pt-0 bg-light">
+              <label class="form-label">Witness&#x28;es&#x29;</label>
+              <% if (sigla) { %>
+              <% var wits = []; %>
+              <% sigla.forEach((siglum) => { %>
+              <% if (wits.includes(siglum) === false) { %>
+              <% wits.push(siglum) %>
+              <% }; %>
+              <% }); %>
+              <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
+              <% }; %>
+            </div>
           </div>
           <div id="variant">
           </div>
