@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelAnnotations();
     closeBtn();
     liveCheck();
+    liveCheckPresence();
     checkAnnotatedFragments();
     truncation();
-    lemmaPresence();
+    lemmaVariantPresence();
 });
 
 /* alerts */
@@ -706,9 +707,20 @@ let liveCheck = () => {
     input.forEach((el) => {
         "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
-                /* lemma bracket */
+                /* lemma */
                 if (el.getAttribute("name") == "lemma") {
+                    /* bracket */
                     document.getElementById("lemma-bracket").classList.remove("d-none");
+                    /* truncation */
+                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
+                    radiosParents.forEach((radioParent) => {
+                        var radios = radioParent.querySelectorAll("[type='radio']");
+                        radios.forEach((radio) => {
+                            radio.addEventListener("change", () => {
+                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+                            });
+                        });
+                    });
                 };
                 /* checkbox */
                 if (el.getAttribute("type") == "checkbox") {
@@ -727,24 +739,28 @@ let liveCheck = () => {
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                 } else {
                     /* other elements */
-                    /* truncation > recalculate the input value */
-                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
-                    radiosParents.forEach((radioParent) => {
-                        var radios = radioParent.querySelectorAll("[type='radio']");
-                        radios.forEach((radio) => {
-                            radio.addEventListener("change", () => {
-                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
-                            });
-                        });
-                    });
-                    
-                    /* default input */
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
                 };
             });
         });
     });
     liveCheckAutocomplete();
+};
+
+/* live check presence */
+let liveCheckPresence = () => {
+    var presenceRadios = document.querySelectorAll(".check-presence");
+    presenceRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+            if (radio.getAttribute("data-value") == "omission") {
+                /* empty the input of the omitted lemma / variant */
+                var omittedInput = document.querySelector("[name='" + radio.getAttribute("data-omission") + "']");
+                omittedInput.value = "";
+                /* print om. in live check */
+                document.getElementById("live-" + radio.getAttribute("data-omission")).innerHTML = "om.";
+            };
+        });
+    });
 };
 
 /* live check cloned */
@@ -766,7 +782,7 @@ let liveCheckCloned = () => {
         });
     });
 
-    /* try */
+    /* live check autocomplete */
     liveCheckAutocomplete();
 
     /* remove the clone */
@@ -832,23 +848,22 @@ let truncation = () => {
     });
 };
 
-/* lemma presence */
-let lemmaPresence = () => {
-
-    var lemmaPresenceRadios = document.querySelectorAll("[type='radio'][data-subtype='lemmaPresence']");
-    lemmaPresenceRadios.forEach((presence) => {
+/* lemma / variant presence */
+let lemmaVariantPresence = () => {
+    var presenceRadios = document.querySelectorAll(".check-presence");
+    presenceRadios.forEach((presence) => {
         presence.addEventListener("click", () => {
-            /* present lemma */
-            if (presence.getAttribute("data-value") == "present") {
-                document.querySelector("[data-workflow='present']").classList.remove("d-none");
-                document.querySelector("[data-workflow='omission']").classList.add("d-none");
-            } else {
-                /* omitted lemma */
-                document.querySelector("[data-workflow='present']").classList.add("d-none");
-                document.querySelector("[data-workflow='omission']").classList.remove("d-none");
-                /* omission comments */
-                omissions();
-            };
+            var presenceVal = presence.getAttribute("data-value").split("-")[0];
+            var dataWorkflow = presence.getAttribute("data-value");
+            var forms = document.querySelectorAll("[data-subtype='" + presenceVal + "'][data-workflow]");
+
+            forms.forEach((form) => {
+                if (form.getAttribute("data-workflow") == dataWorkflow) {
+                    form.classList.remove("d-none");
+                } else {
+                    form.classList.add("d-none");
+                };
+            });
         });
     });
 
@@ -857,7 +872,6 @@ let lemmaPresence = () => {
         var omissionCheckboxes = document.querySelectorAll("[type='radio'][data-subtype='omission']");
         omissionCheckboxes.forEach((checkbox) => {
             checkbox.addEventListener("click", () => {
-                //var input = document.querySelector("[name='" + checkbox.getAttribute("data-href") + "']");
 
                 /* data omission = what is omitted */
                 var dataOmission = document.querySelector("[name='" + checkbox.getAttribute("data-omission") + "']");
@@ -868,9 +882,6 @@ let lemmaPresence = () => {
 
                 /* checked omission */
                 if (checkbox.checked) {
-                    /* show the textarea for comments */
-                    //input.closest(".textarea-container").classList.remove("d-none");
-
                     /* local storage of the data omission */
                     localStorage.setItem(checkbox.getAttribute("data-omission"), dataOmission.value);
                     /* empty the data omission input */
@@ -880,9 +891,6 @@ let lemmaPresence = () => {
                     tinyMCE.get(dataHrefId).setContent(localStorage.getItem(checkbox.getAttribute("data-href")));
                 } else {
                     /* unchecked omission */
-                    /* hide the textarea for comments */
-                    //input.closest(".textarea-container").classList.add("d-none");
-
                     /* refill the data omission input with the old data omission */
                     dataOmission.value = localStorage.getItem(checkbox.getAttribute("data-omission"));
 

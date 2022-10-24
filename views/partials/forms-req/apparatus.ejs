@@ -94,16 +94,16 @@
             <!-- present or omitted -->
             <div class="mb-3">
               <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="lemmaPresence" data-value="present" name="lemmaPresence" checked>
+                <input class="form-check-input check-presence" type="radio" data-subtype="lemma-presence" data-value="lemma-present" name="lemmaPresence" checked>
                 <label class="form-check-label">Present</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="lemmaPresence" data-value="omission" data-href="lemmaOmission" data-omission="lemma" name="lemmaPresence">
+                <input class="form-check-input check-presence" type="radio" data-subtype="lemma-presence" data-value="lemma-omission" data-href="lemmaOmission" data-omission="lemma" name="lemmaPresence">
                 <label class="form-check-label">Omitted</label>
               </div>
             </div>
             <!-- truncation -->
-            <div class="p-3 pb-1 bg-light" data-workflow="present">
+            <div class="p-3 pb-1 bg-light" data-subtype="lemma" data-workflow="lemma-present">
               <div class="mb-3">
                 <div class="mb-2">
                   <span class="fs-6 text-secondary">Truncation</span>
@@ -129,7 +129,7 @@
               </div>
             </div>
             <!-- witnesses -->
-            <div class="p-3 pt-0 bg-light">
+            <div class="p-3 bg-light">
               <label class="form-label">Witness&#x28;es&#x29;</label>
               <% if (sigla) { %>
               <% var wits = []; %>
@@ -142,7 +142,7 @@
               <% }; %>
             </div>
             <!-- omission -->
-            <div class="mb-3 p-3 pb-1 bg-light d-none" data-workflow="omission">
+            <div class="p-3 bg-light d-none" data-subtype="lemma" data-workflow="lemma-omission">
               <div class="textarea-container">
                 <div class="mb-2">
                   <span class="fs-6 text-secondary">Additional notes on the omission</span>
@@ -156,32 +156,49 @@
           <!-- variants -->
           <div class="alert alert-primary alert-dismissible fade show bg-white p-3 mb-3" data-cloned="variant">
             <label class="form-label">Variant</label>
-            <!-- truncation -->
+
+            <!-- try -->
+            <!-- present or omitted -->
             <div class="mb-3">
-              <div class="mb-2">
-                <span class="fs-6 text-secondary">Truncation</span>
+              <div class="form-check">
+                <input class="form-check-input check-presence" type="radio" data-subtype="variant-presence" data-value="variant-present" name="variantPresence" checked>
+                <label class="form-check-label">Present</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlefront" name="truncation-radios">
-                <label class="form-check-label">Circlefront</label>
+                <input class="form-check-input check-presence" type="radio" data-subtype="variant-presence" data-value="variant-omission" data-href="variantOmission" data-omission="variant0" name="variantPresence">
+                <label class="form-check-label">Omitted</label>
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circleback" name="truncation-radios">
-                <label class="form-check-label">Circleback</label>
+            </div>
+            <!-- / -->
+
+            <!-- truncation -->
+            <div class="p-3 pb-1 bg-light" data-subtype="variant" data-workflow="variant-present">
+              <div class="mb-3">
+                <div class="mb-2">
+                  <span class="fs-6 text-secondary">Truncation</span>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlefront" name="truncation-radios">
+                  <label class="form-check-label">Circlefront</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circleback" name="truncation-radios">
+                  <label class="form-check-label">Circleback</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlearound" name="truncation-radios">
+                  <label class="form-check-label">Circlearound</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="notruncation" name="truncation-radios" checked>
+                  <label class="form-check-label">No truncation</label>
+                </div>
+                <!-- variant -->
+                <input class="form-control live-check mb-0 mt-3" type="text" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
               </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlearound" name="truncation-radios">
-                <label class="form-check-label">Circlearound</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="notruncation" name="truncation-radios" checked>
-                <label class="form-check-label">No truncation</label>
-              </div>
-              <!-- variant -->
-              <input class="form-control live-check mb-0 mt-3" type="text" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
             </div>
             <!-- witnesses -->
-            <div class="p-3 pt-0 bg-light">
+            <div class="p-3 bg-light">
               <label class="form-label">Witness&#x28;es&#x29;</label>
               <% if (sigla) { %>
               <% var wits = []; %>
@@ -192,6 +209,17 @@
               <% }); %>
               <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
               <% }; %>
+            </div>
+            <!-- omission -->
+            <div class="p-3 bg-light d-none" data-subtype="variant" data-workflow="variant-omission">
+              <div class="textarea-container">
+                <div class="mb-2">
+                  <span class="fs-6 text-secondary">Additional notes on the omission</span>
+                </div>
+                <div>
+                  <textarea class="mt-1" placeholder="Insert additional notes..." name="variantOmission" id="variantOmissionEditor"></textarea>
+                </div>
+              </div>
             </div>
           </div>
           <div id="variant">
