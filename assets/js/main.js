@@ -749,15 +749,20 @@ let liveCheck = () => {
 
 /* live check presence */
 let liveCheckPresence = () => {
+    /* present / omission radios */
     var presenceRadios = document.querySelectorAll(".check-presence");
     presenceRadios.forEach((radio) => {
         radio.addEventListener("change", () => {
-            if (radio.getAttribute("data-value") == "omission") {
+            var liveCheck = document.getElementById("live-" + radio.getAttribute("data-omission"));
+            if (radio.getAttribute("data-value").indexOf("omission") > -1) {
                 /* empty the input of the omitted lemma / variant */
                 var omittedInput = document.querySelector("[name='" + radio.getAttribute("data-omission") + "']");
                 omittedInput.value = "";
                 /* print om. in live check */
-                document.getElementById("live-" + radio.getAttribute("data-omission")).innerHTML = "om.";
+                liveCheck.innerHTML = "om.";
+            } else {
+                /* empty the live check */
+                liveCheck.innerHTML = "";
             };
         });
     });
@@ -850,6 +855,7 @@ let truncation = () => {
 
 /* lemma / variant presence */
 let lemmaVariantPresence = () => {
+
     var presenceRadios = document.querySelectorAll(".check-presence");
     presenceRadios.forEach((presence) => {
         presence.addEventListener("click", () => {
