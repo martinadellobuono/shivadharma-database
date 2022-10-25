@@ -101,6 +101,15 @@ let textarea = () => {
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
 
+            /* KEYUP */
+            /* omissions */
+            ed.on("keyup", (e) => {
+                /* lemma */
+                if (ed.id == "lemmaOmissionEditor") {
+                    document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
+                };
+            });
+
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
 
@@ -763,6 +772,7 @@ let closeBtn = () => {
 };
 
 /* live check */
+/* textarea live check in textarea() */
 let liveCheck = () => {
     var input = document.querySelectorAll(".live-check");
     var checkedArr = [];
