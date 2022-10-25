@@ -244,24 +244,76 @@ let cloneEl = () => {
         el.addEventListener("click", () => {
             var cloneVal = el.getAttribute("data-clone");
             var toClone = document.querySelectorAll("[data-cloned='" + cloneVal + "']");
+
             /* clone the element */
             var cloned = toClone[0].cloneNode(true);
+
             /* add the close button */
             var closeDiv = document.createElement("span");
             closeDiv.className = "add-close";
             closeDiv.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
             cloned.insertBefore(closeDiv, cloned.firstChild);
+
             /* empty the forms */
             var forms = cloned.querySelectorAll("input");
             forms.forEach((el) => {
                 el.value = "";
             });
+
             /* change the id of the autocomplete cloned */
             var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
             cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
+
             /* change the name of the cloned input */
             cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
             cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
+
+            /* change the name of the presence radios */
+            var checkPresence = cloned.querySelectorAll(".check-presence");
+            checkPresence.forEach((presence) => {
+                /* data-workflow initial value */
+                var typeOfPresence = presence.getAttribute("data-value").split("-")[1];
+                /* data-subtype */
+                presence.setAttribute("data-subtype", "variant" + i + "-presence");
+                /* data-value */
+                presence.setAttribute("data-value", "variant" + i + "-" + typeOfPresence);
+                /* data-href */
+                if (presence.hasAttribute("data-href")) {
+                    presence.setAttribute("data-href", "variant" + i + "-omission");
+                };
+                /* data-omission */
+                if (presence.hasAttribute("data-omission")) {
+                    presence.setAttribute("data-omission", "variant" + i);
+                };
+                /* name */
+                presence.setAttribute("name", "variant" + i + "-presence");
+                /* radios */
+                presence.addEventListener("click", () => {
+                    var presenceVal = presence.getAttribute("data-value").split("-")[0];
+                    var dataWorkflow = presence.getAttribute("data-value");
+                    var forms = document.querySelectorAll("[data-subtype='" + presenceVal + "'][data-workflow]");
+
+                    forms.forEach((form) => {
+                        if (form.getAttribute("data-workflow") == dataWorkflow) {
+                            form.classList.remove("d-none");
+                        } else {
+                            form.classList.add("d-none");
+                        };
+                    });
+                });
+            });
+
+            /* corresponding blocks */
+            var presenceBlocks = cloned.querySelectorAll("[data-workflow]");
+            presenceBlocks.forEach((block) => {
+                /* data-subtype */
+                block.setAttribute("data-subtype", "variant" + i);
+                /* data-workflow initial value */
+                var typeOfPresence = block.getAttribute("data-workflow").split("-")[1];
+                /* data-workflow */
+                block.setAttribute("data-workflow", "variant" + i + "-" + typeOfPresence);
+            });
+
             /* change the value of data-href of the cloned truncation */
             var truncationRadios = cloned.querySelectorAll("[type='radio'][data-subtype='truncation']");
             truncationRadios.forEach((radio) => {
@@ -274,31 +326,41 @@ let cloneEl = () => {
                     radio.checked = true;
                 };
             });
+
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
+
             /* assign a specific class */
             cloned.classList.add("cloned-el");
+
             /* clone live check */
             var toCloneLiveCheck = document.getElementById("live-clone-" + el.getAttribute("data-clone"));
             var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
             document.getElementById("add-live-clone-" + el.getAttribute("data-clone")).appendChild(clonedLiveCheck);
+
             /* assign a specific id */
             cloned.id = cloneVal + "-" + i;
             clonedLiveCheck.setAttribute("data-ref", cloneVal + "-" + i);
+
             /* empty the live check spans */
             var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
             formsLiveCheck.forEach((el) => {
                 el.innerHTML = "";
             });
+
             /* i */
             i++;
+
             /* remove duplicates */
             cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
+
             /* autocomplete */
             autocomplete();
+
             /* live check */
             liveCheckCloned();
+
             /* truncation */
             truncation();
         });
@@ -855,14 +917,13 @@ let truncation = () => {
 
 /* lemma / variant presence */
 let lemmaVariantPresence = () => {
-
+    /* click on the radio to show the right block between present lemma / variant and omission */
     var presenceRadios = document.querySelectorAll(".check-presence");
     presenceRadios.forEach((presence) => {
         presence.addEventListener("click", () => {
             var presenceVal = presence.getAttribute("data-value").split("-")[0];
             var dataWorkflow = presence.getAttribute("data-value");
             var forms = document.querySelectorAll("[data-subtype='" + presenceVal + "'][data-workflow]");
-
             forms.forEach((form) => {
                 if (form.getAttribute("data-workflow") == dataWorkflow) {
                     form.classList.remove("d-none");
@@ -870,6 +931,7 @@ let lemmaVariantPresence = () => {
                     form.classList.add("d-none");
                 };
             });
+
         });
     });
 
@@ -908,5 +970,4 @@ let lemmaVariantPresence = () => {
             });
         });
     };
-
 };
