@@ -11999,6 +11999,25 @@ body {
 }
 
 /* layout */
+/* cols */
+.col-md-1 {
+  width: 3% !important;
+}
+
+.col-md-3 {
+  width: 41% !important;
+}
+
+.col-md-1 h3, .col-md-1 .h3 {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.col-md-1 .btn-annotation {
+  margin-top: 100px;
+  width: inherit;
+}
+
 /* edit */
 .edition-container,
 .edition-container .row {

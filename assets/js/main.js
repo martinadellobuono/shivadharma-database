@@ -312,7 +312,7 @@ let cloneEl = () => {
                 });
             });
 
-            /* corresponding blocks */
+            /* presence blocks */
             var presenceBlocks = cloned.querySelectorAll("[data-workflow]");
             presenceBlocks.forEach((block) => {
                 /* data-subtype */
@@ -343,14 +343,22 @@ let cloneEl = () => {
             /* assign a specific class */
             cloned.classList.add("cloned-el");
 
-            /* clone live check */
-            var toCloneLiveCheck = document.getElementById("live-clone-" + el.getAttribute("data-clone"));
+            /* clone live check */            
+            var n = i - 1;
+            var toCloneLiveCheck = document.getElementById("live-clone-" + cloneVal + n);
             var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
-            document.getElementById("add-live-clone-" + el.getAttribute("data-clone")).appendChild(clonedLiveCheck);
+            document.getElementById("add-live-clone-" + cloneVal).appendChild(clonedLiveCheck);
 
-            /* assign a specific id */
+            /* assign a specific id to the cloned element */
             cloned.id = cloneVal + "-" + i;
+
+            /* assign specific attributes to the cloned live check */
+            clonedLiveCheck.setAttribute("id", "live-clone-" + cloneVal + i);
             clonedLiveCheck.setAttribute("data-ref", cloneVal + "-" + i);
+
+            /* assign specific attributes to the cloned live check children */
+            clonedLiveCheck.querySelector("[data-subtype='variant']").setAttribute("id", "live-" + cloneVal + i);
+            clonedLiveCheck.querySelector("[data-subtype='witnesses']").setAttribute("id", "live-manuscriptVariant" + i);
 
             /* empty the live check spans */
             var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
