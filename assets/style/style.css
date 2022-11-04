@@ -12088,6 +12088,10 @@ body {
   border-radius: 10px;
 }
 
+.live-omission-note {
+  display: inline;
+}
+
 /* check modifications */
 #check-modifications .modal-content:after {
   position: absolute;

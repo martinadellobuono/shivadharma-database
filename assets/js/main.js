@@ -815,7 +815,6 @@ let liveCheck = () => {
                         });
                     });
                 });
-
                 /* lemma */
                 if (el.getAttribute("name") == "lemma") {
                     /* bracket */
@@ -887,7 +886,7 @@ let liveCheckCloned = () => {
                             });
                         });
                     });
-                    
+
                     /* other elements */
                     var elType = el.getAttribute("name");
                     var span = document.querySelectorAll("[data-ref='" + id + "']")[0];
@@ -896,6 +895,26 @@ let liveCheckCloned = () => {
                 });
             });
         });
+
+        /* try */
+        console.log("Omission radios in cloned el");
+        /* present / omission radios */
+        var presenceRadios = el.querySelectorAll(".check-presence");
+        presenceRadios.forEach((radio) => {
+            console.log(radio);
+            radio.addEventListener("change", () => {
+                var liveCheck = document.getElementById("live-" + radio.getAttribute("data-omission"));
+                if (radio.getAttribute("data-value").indexOf("omission") > -1) {
+                    var omittedInput = document.querySelector("[name='" + radio.getAttribute("data-omission") + "']");
+                    omittedInput.value = "";
+                    liveCheck.innerHTML = "om.";
+                } else {
+                    liveCheck.innerHTML = "";
+                };
+            });
+        });
+        /* / */
+
     });
 
     /* live check autocomplete */
