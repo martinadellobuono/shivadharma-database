@@ -108,6 +108,10 @@ let textarea = () => {
                 if (ed.id == "lemmaOmissionEditor") {
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                 };
+                /* variant */
+                if (ed.id == "variantOmissionEditor") {
+                    document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
+                };
             });
 
             /* MOUSEDOWN */
@@ -336,6 +340,20 @@ let cloneEl = () => {
                 };
             });
 
+
+            // try
+            /* omission comment blocks */
+            var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
+
+            var clonedTextarea = document.getElementById(omissionTextarea.id);
+            tinyMCE.execCommand('mceAddControl', false, clonedTextarea);
+
+
+            omissionTextarea.setAttribute("name", "variant" + i + "Omission");
+            omissionTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
+            // /
+
+
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
@@ -343,7 +361,7 @@ let cloneEl = () => {
             /* assign a specific class */
             cloned.classList.add("cloned-el");
 
-            /* clone live check */            
+            /* clone live check */
             var n = i - 1;
             var toCloneLiveCheck = document.getElementById("live-clone-" + cloneVal + n);
             var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
@@ -787,20 +805,21 @@ let liveCheck = () => {
     input.forEach((el) => {
         "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
+                /* truncation */
+                var radiosParents = el.parentNode.querySelectorAll(".form-check");
+                radiosParents.forEach((radioParent) => {
+                    var radios = radioParent.querySelectorAll("[type='radio']");
+                    radios.forEach((radio) => {
+                        radio.addEventListener("change", () => {
+                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+                        });
+                    });
+                });
+
                 /* lemma */
                 if (el.getAttribute("name") == "lemma") {
                     /* bracket */
                     document.getElementById("lemma-bracket").classList.remove("d-none");
-                    /* truncation */
-                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
-                    radiosParents.forEach((radioParent) => {
-                        var radios = radioParent.querySelectorAll("[type='radio']");
-                        radios.forEach((radio) => {
-                            radio.addEventListener("change", () => {
-                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
-                            });
-                        });
-                    });
                 };
                 /* checkbox */
                 if (el.getAttribute("type") == "checkbox") {
@@ -858,6 +877,18 @@ let liveCheckCloned = () => {
         input.forEach((el) => {
             "change keyup".split(" ").forEach((e) => {
                 el.addEventListener(e, () => {
+                    /* truncation */
+                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
+                    radiosParents.forEach((radioParent) => {
+                        var radios = radioParent.querySelectorAll("[type='radio']");
+                        radios.forEach((radio) => {
+                            radio.addEventListener("change", () => {
+                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+                            });
+                        });
+                    });
+                    
+                    /* other elements */
                     var elType = el.getAttribute("name");
                     var span = document.querySelectorAll("[data-ref='" + id + "']")[0];
                     var specSpan = span.querySelector("#live-" + elType);
@@ -928,7 +959,6 @@ let truncation = () => {
                 default:
                     input.value = input.value;
             };
-
         });
     });
 };

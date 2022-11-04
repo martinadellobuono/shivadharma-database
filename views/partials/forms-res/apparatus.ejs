@@ -37,6 +37,7 @@
   <!-- variant / witnesses -->
   <% entryDict["variants"].forEach((el) => { %>
 
+  <% if (el["variant"] !== "undefined") { %>
   <!-- robaMia += variante---; -->
 
   <span class="ms-4" data-type="apparatus" data-subtype="variants">
@@ -54,6 +55,8 @@
     <% }; %>
 
   </span>
+  <% }; %>
+
   <% }); %>
 
   <!-- modify button -->
