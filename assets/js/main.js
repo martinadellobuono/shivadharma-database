@@ -107,9 +107,8 @@ let textarea = () => {
                 /* lemma */
                 if (ed.id == "lemmaOmissionEditor") {
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
-                };
-                /* variant */
-                if (ed.id == "variantOmissionEditor") {
+                } else {
+                    /* variant */
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                 };
             });
@@ -896,8 +895,6 @@ let liveCheckCloned = () => {
             });
         });
 
-        /* try */
-        console.log("Omission radios in cloned el");
         /* present / omission radios */
         var presenceRadios = el.querySelectorAll(".check-presence");
         presenceRadios.forEach((radio) => {
@@ -913,8 +910,6 @@ let liveCheckCloned = () => {
                 };
             });
         });
-        /* / */
-
     });
 
     /* live check autocomplete */
