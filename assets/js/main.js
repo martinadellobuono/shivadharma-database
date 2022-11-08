@@ -339,19 +339,24 @@ let cloneEl = () => {
                 };
             });
 
-
-            // try
             /* omission comment blocks */
+            /* remove the cloned textarea */
             var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
-
-            var clonedTextarea = document.getElementById(omissionTextarea.id);
-            tinyMCE.execCommand('mceAddControl', false, clonedTextarea);
-
-
-            omissionTextarea.setAttribute("name", "variant" + i + "Omission");
-            omissionTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
-            // /
-
+            omissionTextarea.parentNode.remove();
+            /* create a new textarea */
+            var container = cloned.querySelector(".textarea-container");
+            var newTextarea = document.createElement("textarea");
+            container.appendChild(newTextarea);
+            /* set the attributes to the new textarea */
+            newTextarea.setAttribute("class", "mt-1");
+            newTextarea.setAttribute("placeholder", "Insert additional notes...");
+            newTextarea.setAttribute("data-type", "apparatus");
+            newTextarea.setAttribute("data-subtype", "omissionComment");
+            newTextarea.setAttribute("aria-hidden", "true");
+            newTextarea.setAttribute("name", "variant" + i + "Omission");
+            newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
+            /* initialize the new textarea */
+            setTimeout("textarea()", 500);
 
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
@@ -898,7 +903,6 @@ let liveCheckCloned = () => {
         /* present / omission radios */
         var presenceRadios = el.querySelectorAll(".check-presence");
         presenceRadios.forEach((radio) => {
-            console.log(radio);
             radio.addEventListener("change", () => {
                 var liveCheck = document.getElementById("live-" + radio.getAttribute("data-omission"));
                 if (radio.getAttribute("data-value").indexOf("omission") > -1) {
