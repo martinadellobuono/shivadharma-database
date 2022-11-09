@@ -12000,22 +12000,29 @@ body {
 
 /* layout */
 /* cols */
-.col-md-1 {
+.specific-cols.col-md-1 {
   width: 3% !important;
 }
 
-.col-md-3 {
+.specific-cols.col-md-3 {
   width: 41% !important;
 }
 
-.col-md-1 h3, .col-md-1 .h3 {
+.specific-cols.col-md-4 {
+  width: 41% !important;
+}
+
+.specific-cols.col-md-1 h3, .specific-cols.col-md-1 .h3 {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
 }
 
-.col-md-1 .btn-annotation {
+.specific-cols.col-md-1 .btn-annotation {
+  margin-left: -10px;
   margin-top: 100px;
-  width: inherit;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 /* edit */
