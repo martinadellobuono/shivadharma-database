@@ -31,7 +31,7 @@
   <div class="container-fluid bg-white edition-container">
     <div class="row">
       <!-- textus constitutus -->
-      <div class="col-md-6 border p-3 enlarge-col">
+      <div class="col-md-5 border p-3 enlarge-col">
         <h3 class="h6">Textus constitutus</h3>
         <form method="post" action="/addFile/<%= id %>" enctype="multipart/form-data">
           <label class="text-muted">Upload a <span class="fw-bold">.docx</span> or <span class="fw-bold">.txt</span> file:</label>
@@ -122,6 +122,11 @@
         <div class="annotation-form parallel d-none">
           <%- include ("partials/forms-req/parallel") %>
         </div>
+      </div>
+      <!-- commentary -->
+      <div class="col-md-1 border p-3 enlarge-col specific-cols">
+        <h3 class="h6">Commentary</h3>
+        <button type="button" class="btn btn-sm btn-secondary btn-annotation" data-value="commentary"><i class="bi bi-pencil-fill"></i></button>
       </div>
       <!-- citations -->
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
