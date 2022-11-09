@@ -11,10 +11,7 @@ const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
 router.post("/addApparatus/:id",
-    /* error handling */
-    body("selectedFragment").isLength({ min: 1 }).withMessage("selected fragment"),
     async (req, res) => {
-        const errors = validationResult(req);
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var i = 0;
@@ -28,7 +25,11 @@ router.post("/addApparatus/:id",
         var variants = [];
         keys.forEach((el) => {
             if (el.indexOf("variant") > -1) {
-                variants.push(el);
+                if (!variants.includes(el)) {
+                    if (!el.includes("presence") && !el.includes("Omission") && !el.includes("radios")) {
+                        variants.push(el);
+                    };
+                };
             };
         });
 
@@ -36,9 +37,14 @@ router.post("/addApparatus/:id",
         const session = driver.session();
         try {
             await session.writeTransaction((tx) => {
-                variants.forEach(() => {
-                    variant = "variant" + i;
+                variants.forEach((variant) => {
+                    //variant = "variant" + i;
                     manuscriptVariant = "manuscriptVariant" + i;
+
+                    /* try */
+                    console.log(variant);
+                    /* / */
+
                     tx.run(
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)

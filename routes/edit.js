@@ -87,8 +87,6 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
 
-                    console.log(witnesses_relations);
-
                 },
                 onCompleted: () => {
 
@@ -122,9 +120,8 @@ router.get("/edit/:id", async (req, res) => {
                                 var padas = [];
                                 var lemmaStanzaDict = []
 
-                                // try
+                                /* witnesses */
                                 var witnesses = [];
-                                // /
 
                                 for (var i = 0; i < app_entry.length; i++) {
                                     var obj = app_entry[i];
@@ -196,9 +193,6 @@ router.get("/edit/:id", async (req, res) => {
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
-
-                                        console.log(obj);
-
                                         /* if (obj["start"]["labels"] == "Variant") {
                                             var witness = obj["end"]["properties"]["siglum"];
                                             if (!witnesses.includes(witness)) {
@@ -206,6 +200,7 @@ router.get("/edit/:id", async (req, res) => {
                                             };
                                         }; */
                                     };
+
                                     /* variant / witness dict */
                                     variantWitnessesDict.push({
                                         variant: variant,
@@ -223,9 +218,7 @@ router.get("/edit/:id", async (req, res) => {
                                 if (!allEntryDict.includes(entryDict)) {
                                     allEntryDict.push(entryDict);
                                 };
-
                             });
-
                         };
                     } else {
                         allEntryDict = [];
