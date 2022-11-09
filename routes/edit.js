@@ -188,17 +188,20 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* witnesses */
                                 variants.forEach((variant) => {
-                                    /* witnesses */
                                     var witnesses = [];
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
-                                        /* if (obj["start"]["labels"] == "Variant") {
-                                            var witness = obj["end"]["properties"]["siglum"];
-                                            if (!witnesses.includes(witness)) {
-                                                witnesses.push(witness);
+
+                                        /* variant / witnesses */
+                                        if (obj["start"]["labels"] == "Variant") {
+                                            if (obj["start"]["properties"]["value"] == variant) {
+                                                var witness = obj["end"]["properties"]["siglum"];
+                                                if (!witnesses.includes(witness)) {
+                                                    witnesses.push(witness);
+                                                };
                                             };
-                                        }; */
+                                        };
                                     };
 
                                     /* variant / witness dict */
@@ -206,6 +209,7 @@ router.get("/edit/:id", async (req, res) => {
                                         variant: variant,
                                         witnesses: witnesses
                                     });
+
                                 });
 
                                 /* lemma / variant / witnesses dict */

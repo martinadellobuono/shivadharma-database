@@ -38,13 +38,7 @@ router.post("/addApparatus/:id",
         try {
             await session.writeTransaction((tx) => {
                 variants.forEach((variant) => {
-                    //variant = "variant" + i;
                     manuscriptVariant = "manuscriptVariant" + i;
-
-                    /* try */
-                    console.log(variant);
-                    /* / */
-
                     tx.run(
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
