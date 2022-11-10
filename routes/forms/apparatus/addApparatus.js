@@ -16,9 +16,12 @@ router.post("/addApparatus/:id",
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var i = 0;
 
-        /* variants and manuscripts to complete with i */
-        var variant;
+        /* manuscripts to complete with i */
         var manuscriptVariant;
+
+        /* try */
+        var lemma;
+        /* / */
 
         /* array of the variants */
         let keys = Object.keys(req.body);
@@ -39,6 +42,15 @@ router.post("/addApparatus/:id",
             await session.writeTransaction((tx) => {
                 variants.forEach((variant) => {
                     manuscriptVariant = "manuscriptVariant" + i;
+
+                    /* lemma omission */
+                    if (req.body.lemma == "") {
+                        lemma = "omission___" + Math.random().toString(16).slice(2)
+                    } else {
+                        lemma = req.body.lemma;
+                    };
+                    /* / */
+
                     tx.run(
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
@@ -46,8 +58,8 @@ router.post("/addApparatus/:id",
                             
                             MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                            MERGE (lemma:Lemma {value: "${req.body.lemma}"})
-                            MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+                            CREATE (lemma:Lemma {value: "${lemma}", notes: "${req.body.lemmaOmission}"})
+                            CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)
 
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
                                 MERGE (witness:Witness {siglum: wit})

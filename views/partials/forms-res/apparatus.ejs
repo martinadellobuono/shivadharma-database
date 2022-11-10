@@ -15,8 +15,12 @@
   <span data-type="apparatus" data-subtype="location"><span data-type="apparatus" data-subtype="stanza"><%= el["stanza"]; %></span><span data-type="apparatus" data-subtype="pada"><%= el["pada"]; %></span></span>
 
   <!-- omission -->
-  <% if (el["lemma"] == "") { %>
+
+  <% var lemma = el["lemma"].split("___")[0] %>
+
+  <% if (lemma == "omission") { %>
   <span data-type="apparatus" data-subtype="lemma">om.</span>
+  <span data-type="apparatus" data-subtype="lemmaOmission"><%- el["notes"]; %></span>
   <% } else { %>
   <!-- lemma -->
   <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]; %></span>

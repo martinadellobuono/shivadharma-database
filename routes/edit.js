@@ -22,10 +22,7 @@ router.get("/edit/:id", async (req, res) => {
     var wit_temp = [];
     var transl_temp = [];
     var app_entry = [];
-
-    // try
     var witnesses_relations = [];
-    // /
 
     const session = driver.session();
     try {
@@ -115,10 +112,11 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma */
                                 var lemma = el;
 
-                                /* stanzas */
+                                /* stanzas / padas / notes / lemma dictionary */
                                 var stanzas = [];
                                 var padas = [];
-                                var lemmaStanzaDict = []
+                                var notes = [];
+                                var lemmaDict = []
 
                                 /* witnesses */
                                 var witnesses = [];
@@ -129,14 +127,19 @@ router.get("/edit/:id", async (req, res) => {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_LEMMA") {
                                                 /* stanzas */
-                                                var stanza = obj["start"]["properties"]["stanza"];
+                                                var stanza = el["start"]["properties"]["stanza"];
                                                 if (!stanzas.includes(stanza)) {
                                                     stanzas.push(stanza);
                                                 };
                                                 /* padas */
-                                                var pada = obj["start"]["properties"]["pada"];
+                                                var pada = el["start"]["properties"]["pada"];
                                                 if (!padas.includes(pada)) {
                                                     padas.push(pada);
+                                                };
+                                                /* notes */
+                                                var note = el["end"]["properties"]["notes"];
+                                                if (!notes.includes(note)) {
+                                                    notes.push(note);
                                                 };
                                             };
                                         });
@@ -157,11 +160,12 @@ router.get("/edit/:id", async (req, res) => {
                                 };
 
                                 /* lemma / witnesses / stanza / pada dict */
-                                lemmaStanzaDict.push({
+                                lemmaDict.push({
                                     lemma: lemma,
                                     witnesses: witnesses,
                                     stanza: stanzas,
-                                    pada: padas
+                                    pada: padas,
+                                    notes: notes
                                 });
 
                                 /* variant / witnesses dict */
@@ -214,7 +218,7 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* lemma / variant / witnesses dict */
                                 entryDict.push({
-                                    lemma: lemmaStanzaDict,
+                                    lemma: lemmaDict,
                                     variants: variantWitnessesDict
                                 });
 
