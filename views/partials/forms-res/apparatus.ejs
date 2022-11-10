@@ -14,8 +14,7 @@
   <!-- robaMia += lemma ___; -->
   <span data-type="apparatus" data-subtype="location"><span data-type="apparatus" data-subtype="stanza"><%= el["stanza"]; %></span><span data-type="apparatus" data-subtype="pada"><%= el["pada"]; %></span></span>
 
-  <!-- omission -->
-
+  <!-- lemma -->
   <% var lemma = el["lemma"].split("___")[0] %>
 
   <!-- lemma omitted -->
@@ -46,13 +45,19 @@
   <!-- variant / witnesses -->
   <% entryDict["variants"].forEach((el) => { %>
 
-  <% if (el["variant"] !== "undefined") { %>
   <!-- robaMia += variante---; -->
+
+  <!-- variant -->
+  <% var variant = el["variant"].split("___")[0] %>
 
   <span class="ms-4" data-type="apparatus" data-subtype="variants">
 
-    <!-- variant -->
+    <!-- variant omitted -->
+    <% if (variant == "variantOmission") { %>
+    <span data-type="apparatus" data-subtype="variant">om.</span>
+    <% } else { %>
     <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= el["variant"] %></span>
+    <% }; %>
 
     <!-- witnesses -->
     <% if (el["witnesses"].length > 1) { %>
@@ -64,7 +69,6 @@
     <% }; %>
 
   </span>
-  <% }; %>
 
   <% }); %>
 

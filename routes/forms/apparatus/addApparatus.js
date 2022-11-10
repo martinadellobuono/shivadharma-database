@@ -51,11 +51,11 @@ router.post("/addApparatus/:id",
                     };
 
                     /* variant omission */
-                    /* if (req.body[variant] == "") {
-                        variantReq = "omission___" + Math.random().toString(16).slice(2)
+                    if (req.body[variant] == "") {
+                        variantReq = "variantOmission___" + Math.random().toString(16).slice(2)
                     } else {
-                        lemmaReq = req.body.lemma;
-                    }; */
+                        variantReq = req.body[variant];
+                    };
 
                     tx.run(
                         `
@@ -72,7 +72,7 @@ router.post("/addApparatus/:id",
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
         
-                            MERGE (variant:Variant {value: "${req.body[variant]}"})
+                            MERGE (variant:Variant {value: "${variantReq}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
                                     MERGE (witness:Witness {siglum: wit})

@@ -168,10 +168,6 @@ router.get("/edit/:id", async (req, res) => {
                                     notes: notes
                                 });
 
-                                /* try */
-                                console.log(notes);
-                                /* / */
-
                                 /* variant / witnesses dict */
                                 var variantWitnessesDict = [];
 
