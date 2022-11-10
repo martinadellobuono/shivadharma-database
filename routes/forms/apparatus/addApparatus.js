@@ -16,8 +16,9 @@ router.post("/addApparatus/:id",
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var i = 0;
 
-        /* manuscripts to complete with i */
+        /* manuscripts / notes to complete with i */
         var manuscriptVariant;
+        var notesVariant;
 
         /* lemma / variant var to distinguish the omissions */
         var lemmaReq;
@@ -42,6 +43,7 @@ router.post("/addApparatus/:id",
             await session.writeTransaction((tx) => {
                 variants.forEach((variant) => {
                     manuscriptVariant = "manuscriptVariant" + i;
+                    notesVariant = "variant" + i + "Omission";
 
                     /* lemma omission */
                     if (req.body.lemma == "") {
@@ -72,7 +74,7 @@ router.post("/addApparatus/:id",
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
         
-                            MERGE (variant:Variant {value: "${variantReq}"})
+                            MERGE (variant:Variant {value: "${variantReq}", notes: "${req.body[notesVariant]}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
                                     MERGE (witness:Witness {siglum: wit})

@@ -169,7 +169,7 @@ router.get("/edit/:id", async (req, res) => {
                                 });
 
                                 /* variant / witnesses dict */
-                                var variantWitnessesDict = [];
+                                var variantDict = [];
 
                                 /* apparatus entry dict */
                                 var entryDict = [];
@@ -193,25 +193,33 @@ router.get("/edit/:id", async (req, res) => {
                                 /* witnesses */
                                 variants.forEach((variant) => {
                                     var witnesses = [];
+                                    var notes = [];
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
 
-                                        /* variant / witnesses */
+                                        /* variant / witnesses / notes */
                                         if (obj["start"]["labels"] == "Variant") {
                                             if (obj["start"]["properties"]["value"] == variant) {
+                                                /* witnesses */
                                                 var witness = obj["end"]["properties"]["siglum"];
                                                 if (!witnesses.includes(witness)) {
                                                     witnesses.push(witness);
+                                                };
+                                                /* notes */
+                                                var note = obj["start"]["properties"]["notes"];
+                                                if (!notes.includes(note)) {
+                                                    notes.push(note);
                                                 };
                                             };
                                         };
                                     };
 
                                     /* variant / witness dict */
-                                    variantWitnessesDict.push({
+                                    variantDict.push({
                                         variant: variant,
-                                        witnesses: witnesses
+                                        witnesses: witnesses,
+                                        notes: notes
                                     });
 
                                 });
@@ -219,7 +227,7 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma / variant / witnesses dict */
                                 entryDict.push({
                                     lemma: lemmaDict,
-                                    variants: variantWitnessesDict
+                                    variants: variantDict
                                 });
 
                                 /* list of all the entries dict */
