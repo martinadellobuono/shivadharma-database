@@ -18,14 +18,14 @@
 
   <% var lemma = el["lemma"].split("___")[0] %>
 
+  <!-- lemma omitted -->
   <% if (lemma == "omission") { %>
   <span data-type="apparatus" data-subtype="lemma">om.</span>
-  <span data-type="apparatus" data-subtype="lemmaOmission"><%- el["notes"]; %></span>
   <% } else { %>
   <!-- lemma -->
   <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]; %></span>
-  <% }; %>
   <span>&#x5d;</span>
+  <% }; %>
 
   <!-- witnesses -->
   <% if (el["witnesses"].length > 1) { %>
@@ -34,6 +34,11 @@
   <% }); %>
   <% } else { %>
   <span data-type="apparatus" data-subtype="witness"><%= el["witnesses"]; %></span>
+  <% }; %>
+
+  <!-- omission notes -->
+  <% if (lemma == "omission") { %>
+  <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission"><%- el["notes"]; %></span>
   <% }; %>
 
   <% }); %>
