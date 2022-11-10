@@ -19,7 +19,7 @@
   <% var lemma = el["lemma"].split("___")[0] %>
 
   <!-- lemma omitted -->
-  <% if (lemma == "omission") { %>
+  <% if (lemma == "lemmaOmission") { %>
   <span data-type="apparatus" data-subtype="lemma">om.</span>
   <% } else { %>
   <!-- lemma -->
@@ -37,7 +37,7 @@
   <% }; %>
 
   <!-- omission notes -->
-  <% if (lemma == "omission") { %>
+  <% if (lemma == "lemmaOmission") { %>
   <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission"><%- el["notes"]; %></span>
   <% }; %>
 

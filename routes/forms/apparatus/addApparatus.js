@@ -19,9 +19,9 @@ router.post("/addApparatus/:id",
         /* manuscripts to complete with i */
         var manuscriptVariant;
 
-        /* try */
-        var lemma;
-        /* / */
+        /* lemma / variant var to distinguish the omissions */
+        var lemmaReq;
+        var variantReq;
 
         /* array of the variants */
         let keys = Object.keys(req.body);
@@ -45,11 +45,17 @@ router.post("/addApparatus/:id",
 
                     /* lemma omission */
                     if (req.body.lemma == "") {
-                        lemma = "omission___" + Math.random().toString(16).slice(2)
+                        lemmaReq = "lemmaOmission___" + Math.random().toString(16).slice(2)
                     } else {
-                        lemma = req.body.lemma;
+                        lemmaReq = req.body.lemma;
                     };
-                    /* / */
+
+                    /* variant omission */
+                    /* if (req.body[variant] == "") {
+                        variantReq = "omission___" + Math.random().toString(16).slice(2)
+                    } else {
+                        lemmaReq = req.body.lemma;
+                    }; */
 
                     tx.run(
                         `
@@ -58,7 +64,7 @@ router.post("/addApparatus/:id",
                             
                             MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanza: "${req.body.stanza}", pada: "${req.body.pada}"})
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                            CREATE (lemma:Lemma {value: "${lemma}", notes: "${req.body.lemmaOmission}"})
+                            CREATE (lemma:Lemma {value: "${lemmaReq}", notes: "${req.body.lemmaOmission}"})
                             CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)
 
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
