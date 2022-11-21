@@ -1,7 +1,9 @@
+/* dotenv */
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 };
 
+/* libraries */
 const express = require("express");
 const path = require("path");
 const { urlencoded } = require("express");
@@ -65,9 +67,150 @@ app.use(methodOverride("_method"));
 app.use(cookieParser());
 
 /* index */
-app.get("/", (req, res) => {
-    res.render("index", { name: "Marti" });
+app.get("/", checkAuthenticated, (req, res) => {
+    res.render("index", { name: req.user.name });
 });
+
+/* login system */
+/* register */
+app.get("/register", checkNotAuthenticated, async (req, res) => {
+    res.render("register.ejs");
+});
+
+app.post("/register", checkNotAuthenticated, async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        /* insert user in the db */
+        const session = driver.session();
+        try {
+            await session.writeTransaction(tx => tx
+                .run(
+                    `
+                    MERGE (editor:Editor {name: "${req.body.name}", email: "${req.body.email}", password: "${hashedPassword}"})
+                    RETURN id(editor), editor.name, editor.email, editor.password
+                    `
+                )
+                .subscribe({
+                    onNext: record => {
+                        /* user id */
+                        var ids = [];
+                        var id;
+                        if (!ids.includes(record.get("id(editor)"))) {
+                            ids.push(record.get("id(editor)"));
+                        };
+                        ids.forEach(el => {
+                            id = el["low"];
+                        });
+                        /* save the user */
+                        users.push({
+                            id: id,
+                            name: record.get("editor.name"),
+                            email: record.get("editor.email"),
+                            password: record.get("editor.password")
+                        });
+                    },
+                    onCompleted: () => {
+                        console.log("Data added to the database")
+                    },
+                    onError: err => {
+                        console.log(err)
+                    }
+                })
+            );
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await session.close();
+        };
+    } catch (err) {
+        console.log(err);
+    } finally {
+        res.redirect("/login");
+    };
+});
+
+/* login */
+app.get("/login", checkNotAuthenticated, async (req, res) => {
+    try {
+        /* get users from the db */
+        const session = driver.session();
+        try {
+            await session.readTransaction(tx => tx
+                .run(
+                    `
+                    MATCH (editor:Editor)
+                    RETURN id(editor), editor.name, editor.email, editor.password
+                    `
+                )
+                .subscribe({
+                    onNext: record => {
+                        /* user id */
+                        var ids = [];
+                        var id;
+                        if (!ids.includes(record.get("id(editor)"))) {
+                            ids.push(record.get("id(editor)"));
+                        };
+                        ids.forEach(el => {
+                            id = el["low"];
+                        });
+                        /* list of users */
+                        users.push({
+                            id: id,
+                            name: record.get("editor.name"),
+                            email: record.get("editor.email"),
+                            password: record.get("editor.password")
+                        });
+                    },
+                    onCompleted: () => {
+                        console.log("List of users ready")
+                    },
+                    onError: err => {
+                        console.log(err)
+                    }
+                })
+            );
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await session.close();
+        };
+    } catch (err) {
+        console.log(err);
+    } finally {
+        res.render("login.ejs");
+    };
+});
+
+app.post("/login", checkNotAuthenticated, passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true
+}));
+
+/* logout */
+app.delete("/logout", (req, res) => {
+    req.logOut((err) => {
+        if (err) { return next(err); };
+        res.redirect("login");
+    });
+});
+
+/* do not allow non-authenticated users */
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    };
+    res.redirect("/login");
+};
+
+/* do not go back to login if logged users */
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect("/");
+    };
+    next();
+};
 
 /* get started */
 const getStarted = require("./routes/getStarted");

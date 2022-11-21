@@ -17,8 +17,9 @@
         </li>
       </ul>
       <div class="navbar-text">
-        <a href="/login" title="Login"><button class="btn btn-light">Log in</button></a>
-        <a href="/register" title="Sign up"><button class="btn btn-outline-light">Sign up</button></a>
+        <form action="/logout?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-light btn-sm">Log out</button>
+        </form>
       </div>
     </div>
   </div>
