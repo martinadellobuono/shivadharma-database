@@ -1,19 +1,31 @@
-<h1>Login</h1>
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
 
-<% if (messages.error) { %>
-<%= locals.messages.error %>
-<% }; %>
+<div class="text-center">
+  <div class="mb-3">
+    <h1>Login</h1>
+  </div>
 
-<form action="/login" method="POST">
-  <div>
-    <label for="email">Email</label>
-    <input type="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" name="password" required>
-  </div>
-  <button type="submit">Login</button>
-</form>
-<span>Don't have an account yet?</span>
-<a href="/register" title="Register">Register</a>
+  <% if (messages.error) { %>
+  <%= locals.messages.error %>
+  <% }; %>
+
+  <form action="/login" method="POST">
+    <div class="mb-2">
+      <label for="email">Email</label>
+      <input type="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="password">Password</label>
+      <input type="password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </form>
+  <span>Don't have an account yet?</span>
+  <a href="/register" title="Register">Register</a>
+</div>
+
+</html>
