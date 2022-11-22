@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+
+<body>
+  <%- include ("partials/navbar") %>
+
+  <div class="text-center pb-5 pt-5">
+    <div class="mb-3">
+      <h1>Create your edition | Access key</h1>
+    </div>
+    <!-- error message -->
+    <% if (typeof errorMessage !== "undefined") { %>
+    <div class="alert alert-danger" role="alert">
+      <%= errorMessage %>
+    </div>
+    <% }; %>
+    <!-- api key -->
+    <form action="/apikey" method="POST">
+      <div class="mb-3">
+        <label for="password">Key to access</label>
+        <input type="password" name="apikey" required>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Access</button>
+      </div>
+    </form>
+    <!-- request the access -->
+    <hr>
+    <span>Don't have an access key yet?</span>
+    <a href="mailto:someone@yoursite.com?cc=someoneelse@theirsite.com, another@thatsite.com, me@mysite.com&bcc=lastperson@theirsite.com&subject=Request Shivadharma Database Access key&body=Dear Shivadharmins,%0D%0A%0D%0AI kindly ask you to provide me with the Shivadharma Database Access key to create my own edition.%0D%0A%0D%0AKind regards">Request the access key</a>
+  </div>
+  </div>
+
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
+</body>
+
+</html>

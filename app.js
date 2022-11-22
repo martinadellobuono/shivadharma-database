@@ -66,19 +66,26 @@ app.use(methodOverride("_method"));
 /* cookies */
 app.use(cookieParser());
 
+/* current user */
+var userName;
+
 /* index */
 app.get("/", checkAuthenticated, (req, res) => {
+    /* set the current user */
+    userName = req.user.name;
+    /* / */
     res.render("index", { name: req.user.name });
 });
 
 /* login system */
 /* register */
 app.get("/register", checkNotAuthenticated, async (req, res) => {
-    res.render("register.ejs");
+    res.render("register");
 });
 
 app.post("/register", checkNotAuthenticated, async (req, res) => {
     try {
+        /* crypt the password */
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         /* insert user in the db */
@@ -178,7 +185,7 @@ app.get("/login", checkNotAuthenticated, async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-        res.render("login.ejs");
+        res.render("login");
     };
 });
 
@@ -196,6 +203,33 @@ app.delete("/logout", (req, res) => {
     });
 });
 
+/* account */
+app.get("/account", checkAuthenticated, (req, res) => {
+    res.render("account", { name: userName });
+});
+
+/* get started */
+app.get("/getstarted", checkAuthenticated, (req, res) => {
+    res.render("getstarted", { name: userName });
+});
+
+const getStarted = require("./routes/getStarted");
+app.use("/", getStarted);
+
+/* api key */
+app.get("/apikey", checkAuthenticated, (req, res) => {
+    res.render("apikey", { name: userName });
+});
+
+app.post("/apikey", checkAuthenticated, async (req, res) => {
+    /* check if the api key is correct */
+    if (req.body.apikey == process.env.API_KEY) {
+        res.render("getStarted", { name: userName });
+    } else {
+        res.render("apikey", { name: userName, errorMessage: "Incorrect access key"});
+    };
+});
+
 /* do not allow non-authenticated users */
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -211,10 +245,6 @@ function checkNotAuthenticated(req, res, next) {
     };
     next();
 };
-
-/* get started */
-const getStarted = require("./routes/getStarted");
-app.use("/", getStarted);
 
 /* edit */
 const edit = require("./routes/edit");

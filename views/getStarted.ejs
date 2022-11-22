@@ -33,19 +33,19 @@
                     <form method="post" action="/getstarted">
                         <div class="mb-3">
                             <label>Work</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work">
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work" required>
                         </div>
                         <div class="mb-3">
                             <label>Author of the work</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author">
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author" required>
                         </div>
                         <div class="mb-3">
                             <label>Title of the edition</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title">
+                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title" required>
                         </div>
                         <div class="mb-3">
                             <label>Editor</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.editor %><% } %>" name="editor">
+                            <input type="text" class="form-control" readonly="true" value="<%- name %>" name="editor" required>
                         </div>
                         <input class="btn btn-primary" type="submit" value="Submit">
                     </form>

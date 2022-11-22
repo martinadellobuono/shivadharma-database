@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<%- include ("partials/head") %>
+
+<body>
+  <%- include ("partials/navbar") %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 bg-dark text-light p-5">
+        <ul>
+          <li>Home</li>
+          <li>Personal information</li>
+          <li>Editions</li>
+        </ul>
+      </div>
+      <div class="col-md-10 p-5">
+        <h2>Welcome <%= name %></h2>
+      </div>
+    </div>
+  </div>
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
+</body>
+
+</html>

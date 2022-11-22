@@ -13,13 +13,24 @@
           <a class="nav-link" aria-current="page" href="/editions">Editions</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/getStarted">Create an edition</a>
+          <a class="nav-link" aria-current="page" href="/apikey">Create an edition</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/account">Modify an edition</a>
         </li>
       </ul>
-      <div class="navbar-text">
-        <form action="/logout?_method=DELETE" method="POST">
+      <div class="navbar-text p-0">
+        <!-- logout -->
+        <form class="d-inline" action="/logout?_method=DELETE" method="POST">
           <button type="submit" class="btn btn-light btn-sm">Log out</button>
         </form>
+        <!-- personal account -->
+        <a href="/account">
+          <button type="submit" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-person-fill"></i>
+            <span><%= name %></span>
+          </button>
+        </a>
       </div>
     </div>
   </div>

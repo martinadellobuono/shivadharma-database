@@ -8,7 +8,9 @@
   </div>
 
   <% if (messages.error) { %>
-  <%= locals.messages.error %>
+  <div class="alert alert-danger" role="alert">
+      <%= locals.messages.error %>
+  </div>
   <% }; %>
 
   <form action="/login" method="POST">
@@ -24,6 +26,7 @@
       <button type="submit" class="btn btn-primary">Login</button>
     </div>
   </form>
+  <hr>
   <span>Don't have an account yet?</span>
   <a href="/register" title="Register">Register</a>
 </div>
