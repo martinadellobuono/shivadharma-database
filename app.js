@@ -66,14 +66,8 @@ app.use(methodOverride("_method"));
 /* cookies */
 app.use(cookieParser());
 
-/* current user */
-var userName;
-
 /* index */
 app.get("/", checkAuthenticated, (req, res) => {
-    /* set the current user */
-    userName = req.user.name;
-    /* / */
     res.render("index", { name: req.user.name });
 });
 
@@ -205,12 +199,12 @@ app.delete("/logout", (req, res) => {
 
 /* account */
 app.get("/account", checkAuthenticated, (req, res) => {
-    res.render("account", { name: userName });
+    res.render("account", { name: req.user.name });
 });
 
 /* get started */
 app.get("/getstarted", checkAuthenticated, (req, res) => {
-    res.render("getstarted", { name: userName });
+    res.render("getstarted", { name: req.user.name });
 });
 
 const getStarted = require("./routes/getStarted");
@@ -218,15 +212,15 @@ app.use("/", getStarted);
 
 /* api key */
 app.get("/apikey", checkAuthenticated, (req, res) => {
-    res.render("apikey", { name: userName });
+    res.render("apikey", { name: req.user.name });
 });
 
 app.post("/apikey", checkAuthenticated, async (req, res) => {
     /* check if the api key is correct */
     if (req.body.apikey == process.env.API_KEY) {
-        res.render("getStarted", { name: userName });
+        res.render("getStarted", { name: req.user.name });
     } else {
-        res.render("apikey", { name: userName, errorMessage: "Incorrect access key"});
+        res.render("apikey", { name: req.user.name, errorMessage: "Incorrect access key" });
     };
 });
 

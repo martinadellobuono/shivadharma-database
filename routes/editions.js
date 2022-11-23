@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const passport = require("passport");
+
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
 
@@ -24,7 +26,8 @@ router.get("/editions", async (req, res) => {
         res.render("editions", {
             editions: data.records.map(row => {
                 return row;
-            })
+            }),
+            name: req.user.name
         });
     } catch (err) {
         console.log("Error related to the upload of the editions: " + err);
