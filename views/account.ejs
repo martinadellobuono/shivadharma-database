@@ -6,20 +6,26 @@
   <%- include ("partials/navbar") %>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2 bg-dark text-light p-5">
-        <ul>
-          <li>Home</li>
-          <li>Personal information</li>
-          <li>Editions</li>
+      <div class="col-md-2 bg-dark p-0 account-sidebar">
+        <ul class="nav flex-column p-0" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" href="#account-home" role="tab">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#account-profile" role="tab">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#account-editions" role="tab">Editions</a>
+          </li>
         </ul>
       </div>
-      <div class="col-md-10 p-5">
+      <div class="col-md-10 p-5 tab-content">
         <!-- home -->
-        <div id="account-home">
+        <div class="tab-pane fade show active" id="account-home">
           <h2>Welcome <%= name %></h2>
         </div>
-        <!-- home -->
-        <div id="account-personal-information">
+        <!-- profile -->
+        <div class="tab-pane fade" id="account-profile">
           <h2>Profile</h2>
           <form action="" method="POST">
             <div class="mb-3">
@@ -38,7 +44,7 @@
           </form>
         </div>
         <!-- editions -->
-        <div id="account-editions">
+        <div class="tab-pane fade" id="account-editions">
           <h2>Editions</h2>
           <ul>
             <% if (editions) { %>
@@ -57,6 +63,19 @@
   </div>
   <%- include ("partials/footer") %>
   <%- include ("partials/script") %>
+
+  <script>
+    var triggerTabList = [].slice.call(document.querySelectorAll("ul[role='tablist'] a"))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+
+      triggerEl.addEventListener("click", function(event) {
+        event.preventDefault()
+        tabTrigger.show()
+      })
+    })
+  </script>
+
 </body>
 
 </html>

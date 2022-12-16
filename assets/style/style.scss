@@ -161,3 +161,22 @@ body {
 #check-modifications .modal-footer {
     justify-content: center !important;
 }
+
+/* account */
+.account-sidebar li {
+    padding: 0;
+}
+
+.account-sidebar a.active {
+    background-color: $light;
+    color: $dark;
+}
+
+.account-sidebar a:not(.active) {
+    color: $light;    
+}
+
+.account-sidebar a:hover:not(.active) {
+    background-color: $light;
+    color: $dark;
+}

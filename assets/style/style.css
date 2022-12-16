@@ -12123,4 +12123,23 @@ body {
       -ms-flex-pack: center !important;
           justify-content: center !important;
 }
+
+/* account */
+.account-sidebar li {
+  padding: 0;
+}
+
+.account-sidebar a.active {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.account-sidebar a:not(.active) {
+  color: #f8f9fa;
+}
+
+.account-sidebar a:hover:not(.active) {
+  background-color: #f8f9fa;
+  color: #212529;
+}
 /*# sourceMappingURL=style.css.map */
