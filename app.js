@@ -198,9 +198,8 @@ app.delete("/logout", (req, res) => {
 });
 
 /* account */
-app.get("/account", checkAuthenticated, (req, res) => {
-    res.render("account", { name: req.user.name });
-});
+const account = require("./routes/account");
+app.use("/", account, checkAuthenticated);
 
 /* get started */
 app.get("/getstarted", checkAuthenticated, (req, res) => {

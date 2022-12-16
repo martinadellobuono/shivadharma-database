@@ -1,31 +1,37 @@
 <!DOCTYPE html>
 <html>
 <%- include ("partials/head") %>
+
 <body>
-    <%- include ("partials/navbar") %>
+  <%- include ("partials/navbar") %>
 
-    <div class="container-fluid pb-5 pt-5">
-        <div class="container">
-            <h1 class="h2">Editions</h1>
-            <!-- alert -->
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <span>Editions are visible only if their file has been uploaded. <span class="fw-bold">A login system is coming soon!</span></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <!-- list of editions -->
-            <% if (editions) { %>
-                <% editions.forEach(function(edition) { %>
-                    <li class="p-2">
-                        <span class="fw-bold"><%= edition.get("edition.title") %></span>, <span><%= edition.get("author.name") %></span> <span class="text-muted">curated by <%= edition.get("editor.name") %></span>
-                        <a href="/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                        <a href="/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Modify the edition">Modify the edition</a>
-                    </li>
-                <% }); %>  
-            <% }; %>
-        </div>
+  <div class="container-fluid pb-5 pt-5">
+    <div class="container">
+      <h1 class="h2">Editions</h1>
+      <!-- alert -->
+      <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <span>You can edit only the editions of which you are the editor.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <!-- list of editions -->
+      <ul>
+        <% if (editions) { %>
+        <% editions.forEach(function(edition) { %>
+        <li class="p-2">
+          <span class="fw-bold"><%= edition.get("edition.title") %></span>, <span><%= edition.get("author.name") %></span> <span class="text-muted">curated by <%= edition.get("editor.name") %></span>
+          <a href="/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+          <% if (edition.get("editor.name") == name) { %>
+          <a href="/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+          <% }; %>
+        </li>
+        <% }); %>
+        <% }; %>
+      </ul>
     </div>
+  </div>
 
-    <%- include ("partials/footer") %>
-    <%- include ("partials/script") %>
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
 </body>
+
 </html>

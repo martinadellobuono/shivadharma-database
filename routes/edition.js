@@ -37,10 +37,6 @@ router.get("/edition/:id", async (req, res) => {
             )
             .subscribe({
                 onNext: record => {
-
-                    console.log(record.get("commentary.value"));
-
-
                     if (!work_temp.includes(record.get("work.title"))) {
                         work_temp.push(record.get("work.title"));
                     };
