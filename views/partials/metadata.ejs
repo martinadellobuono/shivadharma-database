@@ -55,135 +55,160 @@
 
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
-
-            <!-- siglum -->
             <div class="bg-light mb-3 p-3">
               <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
+                <!-- siglum -->
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
-                  <input type="text" class="form-control" aria-describedby="Siglum" name="witnessSiglum">
+                  <!-- base -->
+                  <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <label class="col-form-label">Base</label>
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" class="form-control" name="witnessSiglumBase">
+                    </div>
+                  </div>
+                  <!-- superscript -->
+                  <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <label class="col-form-label">Superscript</label>
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" class="form-control" name="witnessSiglumSuperscript">
+                    </div>
+                  </div>
+                  <!-- subscript -->
+                  <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <label class="col-form-label">Subscript</label>
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" class="form-control" name="witnessSiglumSubscript">
+                    </div>
+                  </div>
                 </div>
-
+                <!-- provenance -->
                 <div class="mb-3">
                   <label class="form-label">Provenance</label>
-                  <select class="form-select" aria-label="Default select example" name="">
-                    <option value="">Bengal</option>
-                    <option value="">Kashmir</option>
-                    <option value="">Nepal</option>
-                    <option value="">South India</option>
+                  <select class="form-select" aria-label="Default select example" name="witnessProvenance">
+                    <option value="Bengal">Bengal</option>
+                    <option value="Kashmir">Kashmir</option>
+                    <option value="Nepal">Nepal</option>
+                    <option value="South India">South India</option>
                   </select>
                 </div>
-
+                <!-- collection -->
                 <div class="mb-3">
                   <label class="form-label">Collection &#x28;present physical location&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Collection" name="">
+                  <input type="text" class="form-control" aria-describedby="Collection" name="witnessCollection">
                 </div>
-
+                <!-- classmark -->
                 <div class="mb-3">
                   <label class="form-label">Classmark/Identifying number</label>
-                  <input type="text" class="form-control" aria-describedby="Classmark/Identifying number" name="">
+                  <input type="number" class="form-control" aria-describedby="Classmark/Identifying number" name="witnessClassmark">
                 </div>
-
+                <!-- antigraph -->
                 <div class="mb-3">
                   <label class="form-label">Antigraph</label>
-                  <input type="text" class="form-control" aria-describedby="Antigraph" name="">
+                  <input type="text" class="form-control" aria-describedby="Antigraph" name="witnessAntigraph">
                 </div>
-
+                <!-- author -->
                 <div class="mb-3">
                   <label class="form-label">Author&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Author/s" name="">
+                  <input type="text" class="form-control" aria-describedby="Author/s" name="witnessAuthor">
                 </div>
-
+                <!-- title -->
                 <div class="mb-3">
                   <label class="form-label">Title&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Title/s" name="">
+                  <input type="text" class="form-control" aria-describedby="Title/s" name="witnessTitle">
                 </div>
-
+                <!-- notes -->
                 <div class="mb-3">
                   <label class="form-label">Notes &#x28;free text&#x29;</label>
-                  <textarea type="text" class="form-control" aria-describedby="Notes" name=""></textarea>
+                  <textarea type="text" class="form-control" aria-describedby="Notes" name="witnessNotes"></textarea>
                 </div>
-
+                <!-- language -->
                 <div class="mb-3">
                   <label class="form-label">Language&#x28;s&#x29;</label>
-                  <select class="form-select" aria-label="Default select example" name="">
+                  <select class="form-select" aria-label="Default select example" name="witnessLanguage">
                     <option value="">Sanskrit</option>
                     <option value="">Malayalam</option>
                     <option value="">Manipravalam</option>
                     <option value="">Tamil</option>
                   </select>
                 </div>
-
+                <!-- scripts -->
                 <div class="mb-3">
                   <label class="form-label">Script&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Script/s" name="">
+                  <input type="text" class="form-control" aria-describedby="Script/s" name="witnessScripts">
                 </div>
-
+                <!-- structural typology -->
                 <div class="mb-3">
                   <label class="form-label">Structural typology</label>
-                  <select class="form-select" aria-label="Default select example" name="">
+                  <select class="form-select" aria-label="Default select example" name="witnessStructuralTypology">
                     <option value="">Composite</option>
                     <option value="">Multiple texts</option>
                     <option value="">Single texts</option>
                   </select>
                 </div>
-
+                <!-- state -->
                 <div class="mb-3">
                   <label class="form-label">State</label>
-                  <select class="form-select" aria-label="Default select example" name="">
+                  <select class="form-select" aria-label="Default select example" name="witnessState">
                     <option value="">Complete</option>
                     <option value="">Inapplicable</option>
                     <option value="">Incomplete</option>
                   </select>
                 </div>
-
+                <!-- condition -->
                 <div class="mb-3">
                   <label class="form-label">Condition</label>
-                  <input type="text" class="form-control" aria-describedby="Condition" name="">
+                  <input type="text" class="form-control" aria-describedby="Condition" name="witnessCondition">
                 </div>
-
+                <!-- format -->
                 <div class="mb-3">
                   <label class="form-label">Format</label>
-                  <select class="form-select" aria-label="Default select example" name="">
+                  <select class="form-select" aria-label="Default select example" name="witnessFormat">
                     <option value="">Book</option>
                     <option value="">Pothi</option>
                     <option value="">Thyasapu</option>
                   </select>
                 </div>
-
+                <!-- material -->
                 <div class="mb-3">
                   <label class="form-label">Material</label>
-                  <input type="text" class="form-control" aria-describedby="Material" name="">
+                  <input type="text" class="form-control" aria-describedby="Material" name="witnessMaterial">
                 </div>
-
+                <!-- dimensions -->
                 <div class="mb-3">
                   <label class="form-label">Dimensions</label>
-                  <input type="text" class="form-control" aria-describedby="Dimensions" name="">
+                  <input type="text" class="form-control" aria-describedby="Dimensions" name="witnessDimensions">
                 </div>
-
+                <!-- extent -->
                 <div class="mb-3">
                   <label class="form-label">Extent</label>
-                  <input type="text" class="form-control" aria-describedby="Extent" name="">
+                  <input type="text" class="form-control" aria-describedby="Extent" name="witnessExtent">
                 </div>
-
+                <!-- binding description -->
                 <div class="mb-3">
                   <label class="form-label">Binding description</label>
-                  <input type="text" class="form-control" aria-describedby="Binding description" name="">
+                  <input type="text" class="form-control" aria-describedby="Binding description" name="witnessBindingDescription">
                 </div>
-
+                <!-- date -->
                 <div class="mb-3">
                   <label class="form-label">Date &#x28;acc. to the Gregorian calendar&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Date" name="">
+                  <input type="text" class="form-control" aria-describedby="Date" name="witnessDate">
                 </div>
-
+                <!-- foliation -->
                 <div class="mb-3">
                   <label class="form-label">Foliation &#x28;on the left margin of the recto, in Tamil numerals etc.&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Foliation" name="">
+                  <input type="text" class="form-control" aria-describedby="Foliation" name="witnessFoliation">
                 </div>
-
+                <!-- people -->
                 <div class="mb-3">
                   <label class="form-label">People associated &#x28;Scribe, owner, sponsor etc.&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="People" name="">
+                  <input type="text" class="form-control" aria-describedby="People" name="witnessPeople">
                 </div>
 
                 <div class="mb-3">
