@@ -22,6 +22,7 @@ router.get("/edition/:id", async (req, res) => {
     var auth_temp = [];
     var ed_temp = [];    
     var transl_temp = [];
+    var comm_temp = [];
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -30,11 +31,16 @@ router.get("/edition/:id", async (req, res) => {
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, author.name, editor.name, translation.value
+                OPTIONAL MATCH ()-[:HAS_COMMENTARY]->(commentary:Commentary)
+                RETURN work.title, edition.title, author.name, editor.name, translation.value, commentary.value
                 `
             )
             .subscribe({
                 onNext: record => {
+
+                    console.log(record.get("commentary.value"));
+
+
                     if (!work_temp.includes(record.get("work.title"))) {
                         work_temp.push(record.get("work.title"));
                     };
@@ -52,6 +58,11 @@ router.get("/edition/:id", async (req, res) => {
                             transl_temp.push(record.get("translation.value"));
                         };
                     };
+                    if (!comm_temp.includes(record.get("commentary.value"))) {
+                        if (record.get("commentary.value") !== null) {
+                            comm_temp.push(record.get("commentary.value"));
+                        };
+                    };
                     transl_temp = transl_temp.reverse();
                 },
                 onCompleted: () => {
@@ -64,7 +75,8 @@ router.get("/edition/:id", async (req, res) => {
                             author: auth_temp,
                             editor: ed_temp,
                             file: file,
-                            translation: transl_temp
+                            translation: transl_temp,
+                            commentary: comm_temp
                         });
                     } else {
                         res.render("edition", {
@@ -75,7 +87,8 @@ router.get("/edition/:id", async (req, res) => {
                             author: auth_temp,
                             editor: ed_temp,
                             file: false,
-                            translation: transl_temp
+                            translation: transl_temp,
+                            commentary: comm_temp
                         });
                     };
                 },

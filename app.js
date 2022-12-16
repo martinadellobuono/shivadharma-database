@@ -260,6 +260,10 @@ app.use("/", addApparatus);
 const addTranslation = require("./routes/forms/translation/addTranslation");
 app.use("/", addTranslation);
 
+/* add commentary */
+const addCommentary = require("./routes/forms/commentary/addCommentary");
+app.use("/", addCommentary);
+
 /* publish */
 const publish = require("./routes/publish");
 app.use("/", publish);

@@ -48,7 +48,7 @@
         <%- include (`../uploads/${file}`) %>
         <% }; %>
       </div>
-      <div class="col-md-5 border p-3 enlarge-col">
+      <div class="col-md-4 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
         <% if (typeof translation !== "undefined") { %>
         <% translation.forEach((el) => { %>
@@ -63,6 +63,16 @@
       </div>
       <div class="col-md-1 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Citations</h3>
+      </div>
+      <div class="col-md-1 border p-3 enlarge-col">
+        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Commentary</h3>
+        <% if (typeof commentary !== "undefined") { %>
+        <% commentary.forEach((el) => { %>
+        <div class="p-3">
+          <%- el %>
+        </div>
+        <% }); %>
+        <% }; %>
       </div>
     </div>
   </div>

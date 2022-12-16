@@ -1,0 +1,38 @@
+<ul class="nav nav-tabs" role="tablist">
+  <!-- annotate -->
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-transl" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
+  </li>
+  <!-- check -->
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-transl" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
+  </li>
+  <!-- cancel -->
+  <button type="button" class="btn btn-sm btn-pink" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation">
+    <i class="bi bi-eraser-fill"></i> Cancel
+  </button>
+</ul>
+<div class="tab-content scroll-tab">
+  <!-- ANNOTATE -->
+  <div class="tab-pane fade show active" id="annotate-transl" role="tabpanel" aria-labelledby="annotate-tab">
+    <form class="form-annotations textarea-container" id="commentary-req" method="post" action="/addCommentary/<%= id %>">
+      <!-- selected fragment -->
+      <div class="mb-3 mt-3">
+        <label class="form-label">Selected fragment</label>
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="translation" name="selectedFragment">
+      </div>
+      <!-- commentary -->
+      <div class="mb-3">
+        <textarea placeholder="Insert the commentary..." name="commentary"></textarea>
+      </div>
+      <!-- submit -->
+      <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+  <!-- CHECK -->
+  <div class="tab-pane fade" id="check-transl" role="tabpanel" aria-labelledby="check-tab">
+    
+  </div>
+</div>
