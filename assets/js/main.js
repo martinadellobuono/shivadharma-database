@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     alerts();
     popovers();
+    currentDate();
     textarea();
     autocomplete();
     cloneEl();
@@ -29,6 +30,21 @@ let popovers = () => {
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
+    });
+};
+
+/* current date */
+let currentDate = () => {
+    /* full date */
+    const date = new Date();
+    const month = date.toLocaleString('default', { month: 'long' });
+    console.log(month);
+
+
+    /* year */
+    var years = document.querySelectorAll(".current-year");
+    years.forEach((year) => {
+        year.innerHTML = new Date().getFullYear();
     });
 };
 
