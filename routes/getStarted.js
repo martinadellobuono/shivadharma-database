@@ -15,7 +15,25 @@ router.post("/getstarted",
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
-                .run("MERGE (work:Work {title: $work}) MERGE (edition:Edition {title: $title}) MERGE (author:Author {name: $author}) MERGE (editor:Editor {name: $editor}) MERGE (work)-[h:HAS_MANIFESTATION]->(edition) MERGE (work)-[w:WRITTEN_BY]->(author) MERGE (edition)-[e:EDITED_BY]->(editor) RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name", { work: req.body.work, title: req.body.title, author: req.body.author, editor: req.body.editor })
+                .run(
+                    `
+                    MERGE (work:Work {title: $work})
+                    MERGE (edition:Edition {title: $title, editionOf: $editionOf})
+                    MERGE (author:Author {name: $author})
+                    MERGE (editor:Editor {name: $editor})
+                    MERGE (work)-[h:HAS_MANIFESTATION]->(edition)
+                    MERGE (work)-[w:WRITTEN_BY]->(author)
+                    MERGE (edition)-[e:EDITED_BY]->(editor)
+                    RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name
+                    `,
+                    {
+                        work: req.body.work,
+                        title: req.body.title,
+                        author: req.body.author,
+                        editor: req.body.editor,
+                        editionOf: req.body.editionOf
+                    }
+                )
                 .subscribe({
                     onNext: record => {
                         res.redirect("edit/" + record.get("ID(edition)") + "-" + record.get("ID(editor)"));

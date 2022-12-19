@@ -141,15 +141,11 @@
               <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
               <% }; %>
             </div>
-            <!-- omission -->
-            <div class="p-3 bg-light d-none" data-subtype="lemma" data-workflow="lemma-omission">
+            <!-- additional notes -->
+            <div class="p-3 bg-light">
+              <label class="form-label">Additional notes</label>
               <div class="textarea-container">
-                <div class="mb-2">
-                  <span class="fs-6 text-secondary">Additional notes on the omission</span>
-                </div>
-                <div>
-                  <textarea class="mt-1 live-check" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="lemmaOmission" id="lemmaOmissionEditor"></textarea>
-                </div>
+                <textarea class="mt-1 live-check" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="lemmaOmission" id="lemmaOmissionEditor"></textarea>
               </div>
             </div>
           </div>
@@ -206,15 +202,11 @@
               <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
               <% }; %>
             </div>
-            <!-- omission -->
-            <div class="p-3 bg-light d-none" data-subtype="variant0" data-workflow="variant0-omission">
+            <!-- additional notes -->
+            <div class="p-3 bg-light">
+              <label class="form-label">Additional notes</label>
               <div class="textarea-container">
-                <div class="mb-2">
-                  <span class="fs-6 text-secondary">Additional notes on the omission</span>
-                </div>
-                <div>
-                  <textarea class="mt-1" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="variant0Omission" id="variant0-OmissionEditor"></textarea>
-                </div>
+                <textarea class="mt-1" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="variant0Omission" id="variant0-OmissionEditor"></textarea>
               </div>
             </div>
           </div>

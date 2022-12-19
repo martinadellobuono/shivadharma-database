@@ -1,61 +1,83 @@
 <!DOCTYPE html>
 <html>
 <%- include ("partials/head") %>
+
 <body>
-    <%- include ("partials/navbar") %>
-    
-    <div class="container-fluid pb-5 pt-5">
-        <div class="container">
+  <%- include ("partials/navbar") %>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="h2">Create your edition | Get started</h1>
-                </div>
-            </div>
+  <div class="container-fluid pb-5 pt-5">
+    <div class="container">
 
-            <!-- error handling -->
-            <div class="row">
-                <div class="col-md-12">
-                    <% if (typeof errors !== "undefined") { %>
-                        <% errors.forEach((error) => { %>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <p>Please insert the <strong><%= error.msg %></strong>.</p>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <% }); %>
-                    <% }; %>
-                </div>
-            </div>
-
-            <!-- metadata -->
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <form method="post" action="/getstarted">
-                        <div class="mb-3">
-                            <label>Work</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Author of the work</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Title of the edition</label>
-                            <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label>Editor</label>
-                            <input type="text" class="form-control" readonly="true" value="<%- name %>" name="editor" required>
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Submit">
-                    </form>
-                </div>
-            </div>
-
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="h2">Create your edition | Get started</h1>
         </div>
-    </div>
+      </div>
 
-    <%- include ("partials/footer") %>
-    <%- include ("partials/script") %>
+      <!-- error handling -->
+      <div class="row">
+        <div class="col-md-12">
+          <% if (typeof errors !== "undefined") { %>
+          <% errors.forEach((error) => { %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <p>Please insert the <strong><%= error.msg %></strong>.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <% }); %>
+          <% }; %>
+        </div>
+      </div>
+
+      <!-- metadata -->
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <form method="post" action="/getstarted">
+            <div class="mb-3">
+              <label>Work</label>
+              <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work" required>
+            </div>
+            <div class="mb-3">
+              <label>Author of the work</label>
+              <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author" required>
+            </div>
+            <div class="mb-3">
+              <label>Title of the edition</label>
+              <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title" required>
+            </div>
+            <div class="mb-3">
+              <label>Editor</label>
+              <input type="text" class="form-control" readonly="true" value="<%- name %>" name="editor" required>
+            </div>
+            <div class="mb-3">
+              <label>Edition of</label>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" id="editionOfMula" value="m&#x16b;la text" name="editionOf" checked>
+                <label class="form-check-label" for="editionOfMula">m&#x16b;la text</label>
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" id="editionOfMulaCommentary" value="m&#x16b;la text and commentary" name="editionOf">
+                <label class="form-check-label" for="editionOfMulaCommentary">m&#x16b;la text and commentary</label>
+              </div>
+              <!-- depending input -->
+              <div class="bg-light mx-4 mb-3 mt-3 p-3">
+                <label class="form-label">Author of the commentary</label>
+                <input type="text" class="form-control" name="authorCommentary">
+              </div>
+              <div class="form-check">
+                <input type="radio" class="form-check-input" id="editionOfCommentary" value="m&#x16b;la text and commentary" name="editionOf">
+                <label class="form-check-label" for="editionOfCommentary">commentary</label>
+              </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit">
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <%- include ("partials/footer") %>
+  <%- include ("partials/script") %>
 </body>
+
 </html>

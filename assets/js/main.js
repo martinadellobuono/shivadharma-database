@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alerts();
     popovers();
     currentDate();
+    currentTime();
     textarea();
     autocomplete();
     cloneEl();
@@ -37,16 +38,48 @@ let popovers = () => {
 let currentDate = () => {
     /* full date */
     const date = new Date();
-    const month = date.toLocaleString('default', { month: 'long' });
-    console.log(month);
-
-
+    const month = date.toLocaleString("default", { month: "long" });
+    const weekday = date.toLocaleString("default", { weekday: "long" });
+    const day = date.getDate();
+    const year = date.getFullYear();
     /* year */
     var years = document.querySelectorAll(".current-year");
-    years.forEach((year) => {
-        year.innerHTML = new Date().getFullYear();
+    years.forEach((el) => {
+        el.innerHTML = year;
+    });
+    /* complete date */
+    var currentDate = weekday + " " + day + " " + month + " " + year;
+    var currentDates = document.querySelectorAll(".current-date");
+    currentDates.forEach((el) => {
+        el.innerHTML = currentDate;
     });
 };
+
+/* current time */
+let currentTime = () => {
+    function time() {
+        var date = new Date();
+        var hour = date.getHours();
+        var minutes = date.getMinutes();
+        if (minutes < 10) {
+            minutes = "0" + minutes
+        } else {
+            minutes = date.getMinutes();
+        };
+        var seconds = date.getSeconds();
+        if (seconds < 10) {
+            seconds = "0" + seconds
+        } else {
+            seconds = date.getSeconds();
+        };
+        var currentTimes = document.querySelectorAll(".current-time");
+        currentTimes.forEach((el) => {
+            el.innerHTML = hour + ":" + minutes + ":" + seconds;
+        });
+    };
+    time();
+    window.setInterval(time, 1000);
+}
 
 /* textarea */
 let textarea = () => {
