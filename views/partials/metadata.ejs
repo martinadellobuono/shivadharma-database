@@ -60,15 +60,6 @@
                 <!-- siglum -->
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
-                  <!-- base -->
-                  <div class="row g-3 align-items-center">
-                    <div class="col-auto">
-                      <label class="col-form-label">Base</label>
-                    </div>
-                    <div class="col-auto">
-                      <input type="text" class="form-control" name="witnessSiglumBase">
-                    </div>
-                  </div>
                   <!-- superscript -->
                   <div class="row g-3 align-items-center">
                     <div class="col-auto">
@@ -76,6 +67,15 @@
                     </div>
                     <div class="col-auto">
                       <input type="text" class="form-control" name="witnessSiglumSuperscript">
+                    </div>
+                  </div>
+                  <!-- base -->
+                  <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                      <label class="col-form-label">Base</label>
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" class="form-control" name="witnessSiglumBase">
                     </div>
                   </div>
                   <!-- subscript -->
@@ -98,6 +98,11 @@
                     <option value="South India">South India</option>
                   </select>
                 </div>
+                <!-- settlement -->
+                <div class="mb-3">
+                  <label class="form-label">Settlement</label>
+                  <input type="text" class="form-control" aria-describedby="Settlement" name="witnessSettlement">
+                </div>
                 <!-- collection -->
                 <div class="mb-3">
                   <label class="form-label">Collection &#x28;present physical location&#x29;</label>
@@ -105,8 +110,8 @@
                 </div>
                 <!-- classmark -->
                 <div class="mb-3">
-                  <label class="form-label">Classmark/Identifying number</label>
-                  <input type="number" class="form-control" aria-describedby="Classmark/Identifying number" name="witnessClassmark">
+                  <label class="form-label">Identifying number&#x28;s&#x29;</label>
+                  <input type="number" class="form-control" aria-describedby="Identifying number" name="witnessClassmark">
                 </div>
                 <!-- antigraph -->
                 <div class="mb-3">
@@ -116,49 +121,44 @@
                 <!-- author -->
                 <div class="mb-3">
                   <label class="form-label">Author&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Author/s" name="witnessAuthor">
+                  <input type="text" class="form-control" aria-describedby="Author(s)" name="witnessAuthor">
                 </div>
                 <!-- title -->
                 <div class="mb-3">
                   <label class="form-label">Title&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Title/s" name="witnessTitle">
-                </div>
-                <!-- notes -->
-                <div class="mb-3">
-                  <label class="form-label">Notes &#x28;free text&#x29;</label>
-                  <textarea type="text" class="form-control" aria-describedby="Notes" name="witnessNotes"></textarea>
+                  <input type="text" class="form-control" aria-describedby="Title(s)" name="witnessTitle">
                 </div>
                 <!-- language -->
                 <div class="mb-3">
                   <label class="form-label">Language&#x28;s&#x29;</label>
                   <select class="form-select" aria-label="Default select example" name="witnessLanguage">
-                    <option value="">Sanskrit</option>
-                    <option value="">Malayalam</option>
-                    <option value="">Manipravalam</option>
-                    <option value="">Tamil</option>
+                    <option value="Sanskrit">Sanskrit</option>
+                    <option value="Malayalam">Malayalam</option>
+                    <option value="Manipravalam">Manipravalam</option>
+                    <option value="Tamil">Tamil</option>
                   </select>
                 </div>
                 <!-- scripts -->
                 <div class="mb-3">
                   <label class="form-label">Script&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Script/s" name="witnessScripts">
+                  <input type="text" class="form-control" aria-describedby="Script(s)" name="witnessScripts">
                 </div>
                 <!-- structural typology -->
                 <div class="mb-3">
                   <label class="form-label">Structural typology</label>
                   <select class="form-select" aria-label="Default select example" name="witnessStructuralTypology">
-                    <option value="">Composite</option>
-                    <option value="">Multiple texts</option>
-                    <option value="">Single texts</option>
+                    <option value="Composite">Composite</option>
+                    <option value="Multiple texts">Multiple texts</option>
+                    <option value="Single texts">Single texts</option>
                   </select>
                 </div>
                 <!-- state -->
                 <div class="mb-3">
                   <label class="form-label">State</label>
                   <select class="form-select" aria-label="Default select example" name="witnessState">
-                    <option value="">Complete</option>
-                    <option value="">Inapplicable</option>
-                    <option value="">Incomplete</option>
+                    <option value="Complete">Complete</option>
+                    <option value="Inapplicable">Inapplicable</option>
+                    <option value="Incomplete">Incomplete</option>
                   </select>
                 </div>
                 <!-- condition -->
@@ -170,9 +170,9 @@
                 <div class="mb-3">
                   <label class="form-label">Format</label>
                   <select class="form-select" aria-label="Default select example" name="witnessFormat">
-                    <option value="">Book</option>
-                    <option value="">Pothi</option>
-                    <option value="">Thyasapu</option>
+                    <option value="Book">Book</option>
+                    <option value="Pothi">Pothi</option>
+                    <option value="Thyasapu">Thyasapu</option>
                   </select>
                 </div>
                 <!-- material -->
@@ -190,87 +190,86 @@
                   <label class="form-label">Extent</label>
                   <input type="text" class="form-control" aria-describedby="Extent" name="witnessExtent">
                 </div>
-                <!-- binding description -->
+                <!-- binding -->
                 <div class="mb-3">
-                  <label class="form-label">Binding description</label>
-                  <input type="text" class="form-control" aria-describedby="Binding description" name="witnessBindingDescription">
-                </div>
-                <!-- date -->
-                <div class="mb-3">
-                  <label class="form-label">Date &#x28;acc. to the Gregorian calendar&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Date" name="witnessDate">
+                  <label class="form-label">Binding</label>
+                  <input type="text" class="form-control" aria-describedby="Binding description" name="witnessBinding">
                 </div>
                 <!-- foliation -->
                 <div class="mb-3">
                   <label class="form-label">Foliation &#x28;on the left margin of the recto, in Tamil numerals etc.&#x29;</label>
                   <input type="text" class="form-control" aria-describedby="Foliation" name="witnessFoliation">
                 </div>
+                <!-- date -->
+                <div class="mb-3">
+                  <label class="form-label">Date &#x28;acc. to the Gregorian calendar&#x29;</label>
+                  <input type="text" class="form-control" aria-describedby="Date" name="witnessDate">
+                </div>
                 <!-- people -->
                 <div class="mb-3">
                   <label class="form-label">People associated &#x28;Scribe, owner, sponsor etc.&#x29;</label>
                   <input type="text" class="form-control" aria-describedby="People" name="witnessPeople">
                 </div>
-
+                <!-- marginalia -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Text on guard/added leaves leaves and Marginalia</label>
-                  <input type="text" class="form-control" aria-describedby="Text on guard/added leaves leaves and Marginalia" name="">
+                  <label class="form-label">Marginalia</label>
+                  <input type="text" class="form-control" aria-describedby="Text on guard/added leaves leaves and Marginalia" name="witnessMarginalia">
                 </div>
-
+                <!-- initial rubric -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Initial Rubric</label>
-                  <input type="text" class="form-control" aria-describedby="Initial Rubric" name="">
+                  <label class="form-label">Initial Rubric</label>
+                  <input type="text" class="form-control" aria-describedby="Initial Rubric" name="witnessInitialRubric">
                 </div>
-
+                <!-- incipit -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Incipit</label>
-                  <input type="text" class="form-control" aria-describedby="Incipit" name="">
+                  <label class="form-label">Incipit</label>
+                  <input type="text" class="form-control" aria-describedby="Incipit" name="witnessIncipit">
                 </div>
-
+                <!-- explicit -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Explicit</label>
-                  <input type="text" class="form-control" aria-describedby="Explicit" name="">
+                  <label class="form-label">Explicit</label>
+                  <input type="text" class="form-control" aria-describedby="Explicit" name="witnessExplicit">
                 </div>
-
+                <!-- final rubric and invocations -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Final Rubric and Invocations</label>
-                  <input type="text" class="form-control" aria-describedby="Final Rubric and Invocations" name="">
+                  <label class="form-label">Final Rubric and Invocations</label>
+                  <input type="text" class="form-control" aria-describedby="Final Rubric and Invocations" name="witnessFinalRubric">
                 </div>
-
+                <!-- colophon -->
                 <div class="mb-3">
-                  <label class="form-label">Transcript: Colophon</label>
-                  <input type="text" class="form-control" aria-describedby="Colophon" name="">
+                  <label class="form-label">Colophon</label>
+                  <input type="text" class="form-control" aria-describedby="Colophon" name="witnessColophon">
                 </div>
-
+                <!-- bibliography -->
                 <div class="mb-3">
                   <label class="form-label">Bibliography</label>
-                  <input type="text" class="form-control" aria-describedby="Bibliography" name="">
+                  <input type="text" class="form-control" aria-describedby="Bibliography" name="witnessBibliography">
                 </div>
-
+                <!-- editions -->
                 <div class="mb-3">
                   <label class="form-label">Edition&#x28;s&#x29;</label>
-                  <input type="text" class="form-control" aria-describedby="Edition/s" name="">
+                  <input type="text" class="form-control" aria-describedby="Edition(s)" name="witnessEditions">
                 </div>
-
+                <!-- secondary literature-->
                 <div class="mb-3">
                   <label class="form-label">Secondary Literature</label>
-                  <input type="text" class="form-control" aria-describedby="Secondary Literature" name="">
+                  <input type="text" class="form-control" aria-describedby="Secondary Literature" name="witnessSecondaryLiterature">
                 </div>
-
+                <!-- author of the record -->
                 <div class="mb-3">
                   <label class="form-label">Author&#x28;s&#x29; of the Record</label>
-                  <input type="text" class="form-control" aria-describedby="Author/s of the record" name="">
+                  <input type="text" class="form-control" aria-describedby="Author(s) of the record" name="witnessAuthorRecord">
                 </div>
-
+                <!-- siglum tex -->
                 <div class="mb-3">
                   <label class="form-label">Siglum in TeX</label>
-                  <input type="text" class="form-control" aria-describedby="Siglum in TeX" name="">
+                  <input type="text" class="form-control" aria-describedby="Siglum in TeX" name="witnessSiglumTex">
                 </div>
-
+                <!-- notes -->
                 <div class="mb-3">
-                  <label class="form-label">Remarks</label>
-                  <input type="text" class="form-control" aria-describedby="Remarks" name="">
+                  <label class="form-label">Notes &#x28;free text&#x29;</label>
+                  <textarea type="text" class="form-control" aria-describedby="Notes" name="witnessNotes"></textarea>
                 </div>
-
               </form>
             </div>
 

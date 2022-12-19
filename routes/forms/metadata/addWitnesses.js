@@ -24,6 +24,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
                 MERGE (witness:Witness {
                     siglum: $siglum, 
                     provenance: $provenance,
+                    settlement: $settlement,
                     collection: $collection,
                     classmark: $classmark,
                     antigraph: $antigraph,
@@ -39,16 +40,29 @@ router.post("/addWitnesses/:id", async (req, res) => {
                     material: $material,
                     dimensions: $dimensions,
                     extent: $extent,
-                    bindingDescription: $bindingDescription,
+                    binding: $binding,
                     date: $date,
                     foliation: $foliation,
-                    people: $people
+                    people: $people,
+                    marginalia: $marginalia,
+                    initialRubric: $initialRubric,
+                    incipit: $incipit,
+                    explicit: $explicit,
+                    finalRubric: $finalRubric,
+                    colophon: $colophon,
+                    bibliography: $bibliography,
+                    editions: $editions,
+                    secondaryLiterature: $secondaryLiterature,
+                    authorRecord: $authorRecord,
+                    siglumTex: $siglumTex,
+                    notes: $notes
                 })
                 MERGE (edition)<-[:USED_IN]-(witness)
                 RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on
                 `, { 
                     siglum: req.body.witnessSiglumBase + "<sup>" + req.body.witnessSiglumSuperscript + "</sup><sub>" + req.body.witnessSiglumSubscript + "</sub>",
                     provenance: req.body.witnessProvenance,
+                    settlement: req.body.witnessSettlement,
                     collection: req.body.witnessCollection,
                     classmark: req.body.witnessClassmark,
                     antigraph: req.body.witnessAntigraph,
@@ -64,10 +78,23 @@ router.post("/addWitnesses/:id", async (req, res) => {
                     material: req.body.witnessMaterial,
                     dimensions: req.body.witnessDimensions,
                     extent: req.body.witnessExtent,
-                    bindingDescription: req.body.witnessBindingDescription,
+                    binding: req.body.witnessBinding,
                     date: req.body.witnessDate,
                     foliation: req.body.witnessFoliation,
-                    people: req.body.witnessPeople
+                    people: req.body.witnessPeople,
+                    marginalia: req.body.witnessMarginalia,
+                    initialRubric: req.body.witnessInitialRubric,
+                    incipit: req.body.witnessIncipit,
+                    explicit: req.body.witnessExplicit,
+                    finalRubric: req.body.witnessFinalRubric,
+                    colophon: req.body.witnessColophon,
+                    bibliography: req.body.witnessBibliography,
+                    editions: req.body.witnessEditions,
+                    secondaryLiterature: req.body.witnessSecondaryLiterature,
+                    authorRecord: req.body.witnessAuthorRecord,
+                    siglumTex: req.body.witnessSiglumTex,
+                    notes: req.body.witnessNotes
+
                 }
             )
             .subscribe({
