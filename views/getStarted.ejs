@@ -51,20 +51,20 @@
             <div class="mb-3">
               <label>Edition of</label>
               <div class="form-check">
-                <input type="radio" class="form-check-input" id="editionOfMula" value="m&#x16b;la text" name="editionOf" checked>
+                <input type="radio" class="depending-input form-check-input" id="editionOfMula" value="m&#x16b;la text" name="editionOf" checked>
                 <label class="form-check-label" for="editionOfMula">m&#x16b;la text</label>
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" id="editionOfMulaCommentary" value="m&#x16b;la text and commentary" name="editionOf">
+                <input type="radio" class="depending-input form-check-input" id="editionOfMulaCommentary" value="m&#x16b;la text and commentary" data-target="author-commentary" name="editionOf">
                 <label class="form-check-label" for="editionOfMulaCommentary">m&#x16b;la text and commentary</label>
               </div>
               <!-- depending input -->
-              <div class="bg-light mx-4 mb-3 mt-3 p-3">
+              <div class="bg-light mx-4 mb-3 mt-3 p-3 d-none" id="author-commentary">
                 <label class="form-label">Author of the commentary</label>
                 <input type="text" class="form-control" name="authorCommentary">
               </div>
               <div class="form-check">
-                <input type="radio" class="form-check-input" id="editionOfCommentary" value="m&#x16b;la text and commentary" name="editionOf">
+                <input type="radio" class="depending-input form-check-input" id="editionOfCommentary" value="m&#x16b;la text and commentary" name="editionOf">
                 <label class="form-check-label" for="editionOfCommentary">commentary</label>
               </div>
             </div>

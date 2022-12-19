@@ -18,7 +18,7 @@ router.post("/getstarted",
                 .run(
                     `
                     MERGE (work:Work {title: $work})
-                    MERGE (edition:Edition {title: $title, editionOf: $editionOf})
+                    MERGE (edition:Edition {title: $title, editionOf: $editionOf, authorCommentary: $authorCommentary})
                     MERGE (author:Author {name: $author})
                     MERGE (editor:Editor {name: $editor})
                     MERGE (work)-[h:HAS_MANIFESTATION]->(edition)
@@ -31,7 +31,8 @@ router.post("/getstarted",
                         title: req.body.title,
                         author: req.body.author,
                         editor: req.body.editor,
-                        editionOf: req.body.editionOf
+                        editionOf: req.body.editionOf,
+                        authorCommentary: req.body.authorCommentary
                     }
                 )
                 .subscribe({

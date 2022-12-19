@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentTime();
     textarea();
     autocomplete();
+    dependingForms();
     cloneEl();
     annotations();
     cancelAnnotations();
@@ -66,15 +67,9 @@ let currentTime = () => {
         } else {
             minutes = date.getMinutes();
         };
-        var seconds = date.getSeconds();
-        if (seconds < 10) {
-            seconds = "0" + seconds
-        } else {
-            seconds = date.getSeconds();
-        };
         var currentTimes = document.querySelectorAll(".current-time");
         currentTimes.forEach((el) => {
-            el.innerHTML = hour + ":" + minutes + ":" + seconds;
+            el.innerHTML = '<i class="bi bi-watch"></i> ' + hour + ":" + minutes;
         });
     };
     time();
@@ -295,6 +290,24 @@ let autocomplete = () => {
             }
         });
         i++;
+    });
+};
+
+/* depending forms */
+let dependingForms = () => {
+    const dependingForms = document.querySelectorAll(".depending-input");
+    var resultInput;
+    dependingForms.forEach((el) => {
+        el.addEventListener("change", () => {
+            if (el.hasAttribute("data-target")) {
+                resultInput = el.getAttribute("data-target");
+                document.getElementById(resultInput).classList.remove("d-none");
+                document.getElementById(resultInput).classList.add("d-block");
+            } else {
+                document.getElementById(resultInput).classList.remove("d-block");
+                document.getElementById(resultInput).classList.add("d-none");
+            };
+        });
     });
 };
 
