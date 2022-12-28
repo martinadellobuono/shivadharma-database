@@ -61,30 +61,64 @@
           <!-- stanza / pada -->
           <div class="bg-white p-3 mb-3">
             <label class="form-label">Stanza</label>
-            <input type="number" min="1" class="form-control live-check mb-3" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanza">
+            <div class="input-group mb-3">
+              <span class="input-group-text">Starting stanza</span>
+              <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaStart">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Pāda</label>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="a" name="padaStart">
+                <label class="form-check-label">a</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="b" name="padaStart">
+                <label class="form-check-label">b</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="c" name="padaStart">
+                <label class="form-check-label">c</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="d" name="padaStart">
+                <label class="form-check-label">d</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="e" name="padaStart">
+                <label class="form-check-label">e</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input live-check" type="checkbox" value="f" name="padaStart">
+                <label class="form-check-label">f</label>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Ending stanza</span>
+              <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaEnd">
+            </div>
             <label class="form-label">Pāda</label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="a" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="a" name="padaEnd">
               <label class="form-check-label">a</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="b" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="b" name="padaEnd">
               <label class="form-check-label">b</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="c" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="c" name="padaEnd">
               <label class="form-check-label">c</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="d" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="d" name="padaEnd">
               <label class="form-check-label">d</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="e" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="e" name="padaEnd">
               <label class="form-check-label">e</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input live-check" type="checkbox" value="f" name="pada">
+              <input class="form-check-input live-check" type="checkbox" value="f" name="padaEnd">
               <label class="form-check-label">f</label>
             </div>
           </div>

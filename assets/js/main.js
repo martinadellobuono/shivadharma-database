@@ -49,7 +49,7 @@ let currentDate = () => {
         el.innerHTML = year;
     });
     /* complete date */
-    var currentDate = weekday + " " + day + " " + month + " " + year;
+    var currentDate = weekday.charAt(0).toUpperCase() + weekday.slice(1) + " " + day + " " + month.charAt(0).toUpperCase() + month.slice(1) + " " + year;
     var currentDates = document.querySelectorAll(".current-date");
     currentDates.forEach((el) => {
         el.innerHTML = currentDate;
