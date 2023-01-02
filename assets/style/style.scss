@@ -73,7 +73,7 @@ body {
 }
 
 /* display */
-.inline-children > span {
+.inline-children>span {
     display: inline;
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 .account-sidebar a:not(.active) {
-    color: $light;    
+    color: $light;
 }
 
 .account-sidebar a:hover:not(.active) {
@@ -221,4 +221,15 @@ body {
 .logo {
     width: 5%;
     height: auto;
+}
+
+/* expand section */
+.expand-section[aria-expanded="false"]::after {
+    content: "\25BC";
+    font-size: 12px;
+}
+
+.expand-section[aria-expanded="true"]::after {
+    content: "\25B2";
+    font-size: 12px;
 }
