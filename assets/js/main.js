@@ -449,6 +449,10 @@ let cloneEl = () => {
             clonedLiveCheck.querySelector("[data-subtype='variant']").setAttribute("id", "live-" + cloneVal + i);
             clonedLiveCheck.querySelector("[data-subtype='witnesses']").setAttribute("id", "live-manuscriptVariant" + i);
 
+            /* try */
+            clonedLiveCheck.querySelector("[data-subtype='additional-notes']").setAttribute("id", "live-variant" + i + "-OmissionEditor");
+            /* / */
+
             /* empty the live check spans */
             var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
             formsLiveCheck.forEach((el) => {
