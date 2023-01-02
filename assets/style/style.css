@@ -11983,8 +11983,44 @@ body {
 }
 
 /* buttons */
+.btn-orange {
+  background-color: #fd9843;
+  color: #f8f9fa;
+}
+
+.btn-indigo {
+  background-color: #8540f5;
+  color: #f8f9fa;
+}
+
 .btn-pink {
+  background-color: #f1aeb5;
+  color: #f8f9fa;
+}
+
+.btn-teal {
+  background-color: #4dd4ac;
+  color: #f8f9fa;
+}
+
+/* btn hover */
+.btn-orange:hover {
+  background-color: #fd7e14;
+  color: #f8f9fa;
+}
+
+.btn-indigo:hover {
+  background-color: #6610f2;
+  color: #f8f9fa;
+}
+
+.btn-pink:hover {
   background-color: #ea868f;
+  color: #f8f9fa;
+}
+
+.btn-teal:hover {
+  background-color: #79dfc1;
   color: #f8f9fa;
 }
 

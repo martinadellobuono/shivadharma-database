@@ -26,8 +26,44 @@ body {
 }
 
 /* buttons */
+.btn-orange {
+    background-color: $orange-400;
+    color: $light;
+}
+
+.btn-indigo {
+    background-color: $indigo-400;
+    color: $light;
+}
+
 .btn-pink {
+    background-color: $red-200;
+    color: $light;
+}
+
+.btn-teal {
+    background-color: $teal-400;
+    color: $light;
+}
+
+/* btn hover */
+.btn-orange:hover {
+    background-color: $orange;
+    color: $light;
+}
+
+.btn-indigo:hover {
+    background-color: $indigo;
+    color: $light;
+}
+
+.btn-pink:hover {
     background-color: $red-300;
+    color: $light;
+}
+
+.btn-teal:hover {
+    background-color: $teal-300;
     color: $light;
 }
 

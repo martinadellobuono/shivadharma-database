@@ -535,6 +535,7 @@ let annotations = () => {
                     /* selected fragment form */
                     var category = el.getAttribute("data-value");
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+                    
                     /* hide the non clicked form */
                     var forms = document.querySelectorAll(".annotation-form");
                     forms.forEach((el) => {
