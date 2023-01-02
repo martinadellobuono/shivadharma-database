@@ -259,6 +259,10 @@ app.use("/", addApparatus);
 const addTranslation = require("./routes/forms/translation/addTranslation");
 app.use("/", addTranslation);
 
+/* add parallel */
+const addParallel = require("./routes/forms/parallel/addParallel");
+app.use("/", addParallel);
+
 /* add commentary */
 const addCommentary = require("./routes/forms/commentary/addCommentary");
 app.use("/", addCommentary);
