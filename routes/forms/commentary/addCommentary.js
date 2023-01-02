@@ -19,7 +19,7 @@ router.post("/addCommentary/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (commentary:Commentary {value: "${req.body.commentary}"})
                 MERGE (selectedFragment)-[:HAS_COMMENTARY]->(commentary)
