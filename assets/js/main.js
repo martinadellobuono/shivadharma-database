@@ -162,7 +162,11 @@ let textarea = () => {
 
                 /* open the modal */
                 var annotation = e.target.closest("[data-type='annotation-object']");
-                var annotationId = annotation.getAttribute("data-annotation");
+                var annotationId;
+
+                if (annotation.getAttribute("data-annotation") !== null) {
+                    annotationId = annotation.getAttribute("data-annotation");
+                };
 
                 if (annotation !== null) {
                     var modalContainer = document.querySelector("#check-modifications");
@@ -404,10 +408,11 @@ let cloneEl = () => {
             /* omission comment blocks */
             /* remove the cloned textarea */
             var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
-            omissionTextarea.parentNode.remove();
+            omissionTextarea.remove();
             /* create a new textarea */
             var container = cloned.querySelector(".textarea-container");
             var newTextarea = document.createElement("textarea");
+            container.innerHTML = "";
             container.appendChild(newTextarea);
             /* set the attributes to the new textarea */
             newTextarea.setAttribute("class", "mt-1");

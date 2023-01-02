@@ -12142,4 +12142,10 @@ body {
   background-color: #f8f9fa;
   color: #212529;
 }
+
+/* logo */
+.logo {
+  width: 5%;
+  height: auto;
+}
 /*# sourceMappingURL=style.css.map */
