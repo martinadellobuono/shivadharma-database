@@ -346,91 +346,97 @@ let cloneEl = () => {
             });
 
             /* change the id of the autocomplete cloned */
-            var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
-            cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
+            if (cloned.classList.contains("data-list") == true) {
+                /* change the id of the autocomplete cloned */
+                var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
+                cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
+                /* change the name of the cloned input */
+                cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
+                cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
+                /* change the name of the presence radios */
+                var checkPresence = cloned.querySelectorAll(".check-presence");
+                checkPresence.forEach((presence) => {
+                    /* data-workflow initial value */
+                    var typeOfPresence = presence.getAttribute("data-value").split("-")[1];
+                    /* data-subtype */
+                    presence.setAttribute("data-subtype", "variant" + i + "-presence");
+                    /* data-value */
+                    presence.setAttribute("data-value", "variant" + i + "-" + typeOfPresence);
+                    /* data-href */
+                    if (presence.hasAttribute("data-href")) {
+                        presence.setAttribute("data-href", "variant" + i + "-omission");
+                    };
+                    /* data-omission */
+                    if (presence.hasAttribute("data-omission")) {
+                        presence.setAttribute("data-omission", "variant" + i);
+                    };
+                    /* name */
+                    presence.setAttribute("name", "variant" + i + "-presence");
+                    /* radios */
+                    presence.addEventListener("click", () => {
+                        var presenceVal = presence.getAttribute("data-value").split("-")[0];
+                        var dataWorkflow = presence.getAttribute("data-value");
+                        var forms = document.querySelectorAll("[data-subtype='" + presenceVal + "'][data-workflow]");
 
-            /* change the name of the cloned input */
-            cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
-            cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
-
-            /* change the name of the presence radios */
-            var checkPresence = cloned.querySelectorAll(".check-presence");
-            checkPresence.forEach((presence) => {
-                /* data-workflow initial value */
-                var typeOfPresence = presence.getAttribute("data-value").split("-")[1];
-                /* data-subtype */
-                presence.setAttribute("data-subtype", "variant" + i + "-presence");
-                /* data-value */
-                presence.setAttribute("data-value", "variant" + i + "-" + typeOfPresence);
-                /* data-href */
-                if (presence.hasAttribute("data-href")) {
-                    presence.setAttribute("data-href", "variant" + i + "-omission");
-                };
-                /* data-omission */
-                if (presence.hasAttribute("data-omission")) {
-                    presence.setAttribute("data-omission", "variant" + i);
-                };
-                /* name */
-                presence.setAttribute("name", "variant" + i + "-presence");
-                /* radios */
-                presence.addEventListener("click", () => {
-                    var presenceVal = presence.getAttribute("data-value").split("-")[0];
-                    var dataWorkflow = presence.getAttribute("data-value");
-                    var forms = document.querySelectorAll("[data-subtype='" + presenceVal + "'][data-workflow]");
-
-                    forms.forEach((form) => {
-                        if (form.getAttribute("data-workflow") == dataWorkflow) {
-                            form.classList.remove("d-none");
-                        } else {
-                            form.classList.add("d-none");
-                        };
+                        forms.forEach((form) => {
+                            if (form.getAttribute("data-workflow") == dataWorkflow) {
+                                form.classList.remove("d-none");
+                            } else {
+                                form.classList.add("d-none");
+                            };
+                        });
                     });
                 });
-            });
 
-            /* presence blocks */
-            var presenceBlocks = cloned.querySelectorAll("[data-workflow]");
-            presenceBlocks.forEach((block) => {
-                /* data-subtype */
-                block.setAttribute("data-subtype", "variant" + i);
-                /* data-workflow initial value */
-                var typeOfPresence = block.getAttribute("data-workflow").split("-")[1];
-                /* data-workflow */
-                block.setAttribute("data-workflow", "variant" + i + "-" + typeOfPresence);
-            });
+                /* presence blocks */
+                var presenceBlocks = cloned.querySelectorAll("[data-workflow]");
+                presenceBlocks.forEach((block) => {
+                    /* data-subtype */
+                    block.setAttribute("data-subtype", "variant" + i);
+                    /* data-workflow initial value */
+                    var typeOfPresence = block.getAttribute("data-workflow").split("-")[1];
+                    /* data-workflow */
+                    block.setAttribute("data-workflow", "variant" + i + "-" + typeOfPresence);
+                });
 
-            /* change the value of data-href of the cloned truncation */
-            var truncationRadios = cloned.querySelectorAll("[type='radio'][data-subtype='truncation']");
-            truncationRadios.forEach((radio) => {
-                /* attributes to create a link between the radio and the input */
-                radio.setAttribute("name", "variant" + i + "-radios");
-                radio.setAttribute("data-href", "variant" + i);
-                /* set no truncation as preselected option */
-                radio.checked = false;
-                if (radio.getAttribute("data-value") == "notruncation") {
-                    radio.checked = true;
-                };
-            });
+                /* change the value of data-href of the cloned truncation */
+                var truncationRadios = cloned.querySelectorAll("[type='radio'][data-subtype='truncation']");
+                truncationRadios.forEach((radio) => {
+                    /* attributes to create a link between the radio and the input */
+                    radio.setAttribute("name", "variant" + i + "-radios");
+                    radio.setAttribute("data-href", "variant" + i);
+                    /* set no truncation as preselected option */
+                    radio.checked = false;
+                    if (radio.getAttribute("data-value") == "notruncation") {
+                        radio.checked = true;
+                    };
+                });
 
-            /* omission comment blocks */
-            /* remove the cloned textarea */
-            var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
-            omissionTextarea.remove();
-            /* create a new textarea */
-            var container = cloned.querySelector(".textarea-container");
-            var newTextarea = document.createElement("textarea");
-            container.innerHTML = "";
-            container.appendChild(newTextarea);
-            /* set the attributes to the new textarea */
-            newTextarea.setAttribute("class", "mt-1");
-            newTextarea.setAttribute("placeholder", "Insert additional notes...");
-            newTextarea.setAttribute("data-type", "apparatus");
-            newTextarea.setAttribute("data-subtype", "omissionComment");
-            newTextarea.setAttribute("aria-hidden", "true");
-            newTextarea.setAttribute("name", "variant" + i + "Omission");
-            newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
-            /* initialize the new textarea */
-            setTimeout("textarea()", 500);
+                /* omission comment blocks */
+                /* remove the cloned textarea */
+                var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
+                omissionTextarea.remove();
+                /* create a new textarea */
+                var container = cloned.querySelector(".textarea-container");
+                var newTextarea = document.createElement("textarea");
+                container.innerHTML = "";
+                container.appendChild(newTextarea);
+                /* set the attributes to the new textarea */
+                newTextarea.setAttribute("class", "mt-1");
+                newTextarea.setAttribute("placeholder", "Insert additional notes...");
+                newTextarea.setAttribute("data-type", "apparatus");
+                newTextarea.setAttribute("data-subtype", "omissionComment");
+                newTextarea.setAttribute("aria-hidden", "true");
+                newTextarea.setAttribute("name", "variant" + i + "Omission");
+                newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
+                /* initialize the new textarea */
+                setTimeout("textarea()", 500);
+            } else {
+                /* expand sections */
+                var idToChange = cloned.querySelector("a.expand-section").getAttribute("href");
+                cloned.querySelector("a.expand-section").setAttribute("href", "#expand-metadata" + i);
+                cloned.querySelector(idToChange).setAttribute("id", "expand-metadata" + i);
+            };
 
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
@@ -542,7 +548,7 @@ let annotations = () => {
                     /* selected fragment form */
                     var category = el.getAttribute("data-value");
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
-                    
+
                     /* hide the non clicked form */
                     var forms = document.querySelectorAll(".annotation-form");
                     forms.forEach((el) => {

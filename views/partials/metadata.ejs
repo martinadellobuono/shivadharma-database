@@ -82,8 +82,8 @@
           </div>
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
-            <div class="bg-light mb-3 p-3">
-              <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
+            <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
+              <div class="bg-light mb-3 p-3" data-cloned="witness">
                 <!-- siglum -->
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
@@ -301,12 +301,14 @@
                     <textarea type="text" class="form-control" aria-describedby="Notes" name="witnessNotes"></textarea>
                   </div>
                 </div>
-
-              </form>
+              </div>
+            </form>
+            <!-- cloned witnesses -->
+            <div id="witness">
             </div>
             <!-- add witness -->
             <div class="mb-3">
-              <button type="button" class="btn btn-primary">&#x2b;</button>
+              <button type="button" class="btn btn-primary" data-clone="witness">&#x2b;</button>
             </div>
             <!-- submit -->
             <div>
