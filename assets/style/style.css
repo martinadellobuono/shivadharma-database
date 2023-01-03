@@ -12186,13 +12186,15 @@ body {
 }
 
 /* expand section */
+.expand-section {
+  font-size: 12px;
+}
+
 .expand-section[aria-expanded="false"]::after {
   content: "\25BC";
-  font-size: 12px;
 }
 
 .expand-section[aria-expanded="true"]::after {
   content: "\25B2";
-  font-size: 12px;
 }
 /*# sourceMappingURL=style.css.map */

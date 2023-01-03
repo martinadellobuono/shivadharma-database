@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAnnotatedFragments();
     truncation();
     lemmaVariantPresence();
+    previewCheck();
 });
 
 /* alerts */
@@ -1114,4 +1115,24 @@ let lemmaVariantPresence = () => {
             });
         });
     };
+};
+
+/* preview check */
+let previewCheck = () => {
+    var previewCheck = document.querySelectorAll("input.previewCheck");
+    var targetCheck = document.querySelectorAll("label.previewCheck");
+    targetCheck.forEach((target) => {
+        var check = target.getAttribute("data-value");
+        previewCheck.forEach((input) => {
+            if (input.value == check) {
+                /* check the radio/checkbox depending on the db value */
+                input.checked = true;
+                /* if depending input show the depending form */
+                if (input.classList.contains("depending-input") == true) {
+                    var formToShow = input.getAttribute("data-target");
+                    document.getElementById(formToShow).classList.remove("d-none");
+                };
+            };
+        });
+    });
 };

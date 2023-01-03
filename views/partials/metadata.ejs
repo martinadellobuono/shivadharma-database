@@ -9,7 +9,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-
         <!-- tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item" role="presentation">
@@ -23,22 +22,48 @@
           <!-- title and responsibility -->
           <div class="tab-pane mb-3 mt-3 fade show active" id="meta-title" role="tabpanel" aria-labelledby="meta-title">
             <form method="post" action="/edit/<%= id %>">
+              <!-- work -->
               <div class="mb-3">
                 <label class="form-label">Work</label>
                 <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= work %>" name="work">
               </div>
+              <!-- title -->
               <div class="mb-3">
                 <label class="form-label">Title of the edition</label>
                 <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= title %>" name="title">
               </div>
+              <!-- author -->
               <div class="mb-3">
                 <label class="form-label">Author of the edited work</label>
                 <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= author %>" name="author">
               </div>
+              <!-- editor -->
               <div class="mb-3">
                 <label class="form-label">Editor</label>
                 <input type="text" class="form-control" aria-describedby="Editor" value="<%= editor %>" name="editor">
               </div>
+              <!-- edition of -->
+              <div class="mb-3">
+                <label class="previewCheck" data-value="<%= editionOf %>">Edition of</label>
+                <div class="form-check">
+                  <input type="radio" class="depending-input previewCheck form-check-input" id="editionOfMula" value="m&#x16b;la text" name="editionOf" checked>
+                  <label class="form-check-label" for="editionOfMula">m&#x16b;la text</label>
+                </div>
+                <div class="form-check">
+                  <input type="radio" class="depending-input previewCheck form-check-input" id="editionOfMulaCommentary" value="m&#x16b;la text and commentary" data-target="author-commentary" name="editionOf">
+                  <label class="form-check-label" for="editionOfMulaCommentary">m&#x16b;la text and commentary</label>
+                </div>
+                <!-- depending input -->
+                <div class="bg-light mx-4 mb-3 mt-3 p-3 d-none" id="author-commentary">
+                  <label class="form-label">Author of the commentary</label>
+                  <input type="text" class="form-control" name="authorCommentary">
+                </div>
+                <div class="form-check">
+                  <input type="radio" class="depending-input previewCheck form-check-input" id="editionOfCommentary" value="commentary" name="editionOf">
+                  <label class="form-check-label" for="editionOfCommentary">commentary</label>
+                </div>
+              </div>
+              <!-- date -->
               <div class="mb-3">
                 <label class="form-label">Date of publication of the edition</label>
                 <% if (typeof date !== "undefined") { %>
@@ -51,8 +76,6 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
-
-
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
             <div class="bg-light mb-3 p-3">
@@ -88,7 +111,6 @@
                     </div>
                   </div>
                 </div>
-
                 <!-- collapse -->
                 <a class="btn btn-dark expand-section mb-3" data-bs-toggle="collapse" href="#expand-metadata0" role="button" aria-expanded="false" aria-controls="expand-metadata0"></a>
                 <div class="collapse" id="expand-metadata0">
@@ -278,12 +300,10 @@
 
               </form>
             </div>
-
             <!-- add witness -->
             <div class="mb-3">
               <button type="button" class="btn btn-primary">&#x2b;</button>
             </div>
-
             <!-- submit -->
             <div>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

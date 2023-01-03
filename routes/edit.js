@@ -21,6 +21,7 @@ router.get("/edit/:id", async (req, res) => {
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     var work_temp = [];
     var title_temp = [];
+    var editionOf;
     var auth_temp = [];
     var ed_temp = [];
     var date_temp = [];
@@ -37,58 +38,59 @@ router.get("/edit/:id", async (req, res) => {
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-            
                 OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
-
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
-
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
-
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                
-                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
+                RETURN work.title, edition.title, edition.editionOf, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
                 `
             )
             .subscribe({
                 onNext: record => {
+                    /* witness sigla */
                     if (!wit_temp.includes(record.get("witness.siglum"))) {
                         wit_temp.push(record.get("witness.siglum"));
                     };
+                    /* work */
                     if (!work_temp.includes(record.get("work.title"))) {
                         work_temp.push(record.get("work.title"));
                     };
+                    /* edition of */
+                    editionOf = record.get("edition.editionOf");
+                    /* title */
                     if (!title_temp.includes(record.get("edition.title"))) {
                         title_temp.push(record.get("edition.title"));
                     };
+                    /* author */
                     if (!auth_temp.includes(record.get("author.name"))) {
                         auth_temp.push(record.get("author.name"));
                     };
+                    /* editor */
                     if (!ed_temp.includes(record.get("editor.name"))) {
                         ed_temp.push(record.get("editor.name"));
                     };
+                    /* date */
                     if (!date_temp.includes(record.get("date.on"))) {
                         date_temp.push(record.get("date.on"));
                     };
+                    /* translation */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
                             transl_temp.push(record.get("translation.value"));
                         };
                     };
-
                     /* apparatus entry array */
                     if (!app_entry.includes(record.get("app_entry"))) {
                         if (record.get("app_entry") !== null) {
                             app_entry.push(record.get("app_entry"));
                         };
                     };
-
                     /* witnesses relations array */
                     if (!witnesses_relations.includes(record.get("witnesses_relations"))) {
                         if (record.get("witnesses_relations") !== null) {
                             witnesses_relations.push(record.get("witnesses_relations"));
                         };
                     };
-
                 },
                 onCompleted: () => {
 
@@ -252,6 +254,7 @@ router.get("/edit/:id", async (req, res) => {
                             name: req.user.name,
                             work: work_temp,
                             title: title_temp,
+                            editionOf: editionOf,
                             author: auth_temp,
                             editor: ed_temp,
                             date: date_temp,
@@ -266,6 +269,7 @@ router.get("/edit/:id", async (req, res) => {
                             name: req.user.name,
                             work: work_temp,
                             title: title_temp,
+                            editionOf: editionOf,
                             author: auth_temp,
                             editor: ed_temp,
                             date: date_temp,
