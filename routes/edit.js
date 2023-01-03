@@ -314,10 +314,10 @@ router.post("/edit/:id", async (req, res) => {
                 MERGE (date:Date)
                 MERGE (edition)-[p:PUBLISHED_ON]->(date)
                 ON CREATE
-                    SET edition.title = "${req.body.title}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
+                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
                 ON MATCH 
-                    SET edition.title = "${req.body.title}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
-                RETURN edition.title, date.on, editor.name, work.title, author.name, witness.siglum, file.name
+                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
+                RETURN *
                 `
             )
             .subscribe({
