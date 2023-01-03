@@ -56,7 +56,11 @@
                 <!-- depending input -->
                 <div class="bg-light mx-4 mb-3 mt-3 p-3 d-none" id="author-commentary">
                   <label class="form-label">Author of the commentary</label>
-                  <input type="text" class="form-control" name="authorCommentary">
+                  <% if (typeof authorCommentary !== "undefined") { %>
+                  <input type="text" class="form-control" value="<%= authorCommentary %>" name="authorCommentary">
+                  <% } else { %>
+                  <input type="text" class="form-control" value="" name="authorCommentary">
+                  <% }; %>
                 </div>
                 <div class="form-check">
                   <input type="radio" class="depending-input previewCheck form-check-input" id="editionOfCommentary" value="commentary" name="editionOf">
@@ -70,7 +74,7 @@
                 <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
                 <% } else { %>
                 <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
-                <% } %>
+                <% }; %>
               </div>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary">Submit</button>

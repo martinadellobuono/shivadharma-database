@@ -22,6 +22,7 @@ router.get("/edit/:id", async (req, res) => {
     var work_temp = [];
     var title_temp = [];
     var editionOf;
+    var authorCommentary_temp = [];
     var auth_temp = [];
     var ed_temp = [];
     var date_temp = [];
@@ -42,7 +43,7 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, edition.editionOf, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
                 `
             )
             .subscribe({
@@ -57,6 +58,10 @@ router.get("/edit/:id", async (req, res) => {
                     };
                     /* edition of */
                     editionOf = record.get("edition.editionOf");
+                    /* author of commentary */
+                    if (!authorCommentary_temp.includes(record.get("edition.authorCommentary"))) {
+                        authorCommentary_temp.push(record.get("edition.authorCommentary"));
+                    };
                     /* title */
                     if (!title_temp.includes(record.get("edition.title"))) {
                         title_temp.push(record.get("edition.title"));
@@ -255,6 +260,7 @@ router.get("/edit/:id", async (req, res) => {
                             work: work_temp,
                             title: title_temp,
                             editionOf: editionOf,
+                            authorCommentary: authorCommentary_temp,
                             author: auth_temp,
                             editor: ed_temp,
                             date: date_temp,
@@ -270,6 +276,7 @@ router.get("/edit/:id", async (req, res) => {
                             work: work_temp,
                             title: title_temp,
                             editionOf: editionOf,
+                            authorCommentary: authorCommentary_temp,
                             author: auth_temp,
                             editor: ed_temp,
                             date: date_temp,
