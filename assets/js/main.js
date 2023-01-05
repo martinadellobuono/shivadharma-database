@@ -236,11 +236,13 @@ let autocomplete = () => {
     [].forEach.call(document.querySelectorAll("[data-list]:not(.no-autocomplete-duplicates)"), (el) => {
         /* remove duplicates */
         el.classList.add("no-autocomplete-duplicates");
+        
         /* create the autocomplete */
         var dataType = el.getAttribute("data-type");
         var dataList = el.getAttribute("data-list");
         var idList = el.getAttribute("id");
         var jsonList = JSON.parse(dataList);
+    
         const autoCompleteJS = new autoComplete({
             selector: "#" + idList,
             placeHolder: "Search for " + dataType + "...",
@@ -248,6 +250,7 @@ let autocomplete = () => {
                 src: jsonList,
                 cache: true
             },
+            threshold: 0,
             resultsList: {
                 id: "autoComplete_list_" + i,
                 class: "results_list",
@@ -265,6 +268,7 @@ let autocomplete = () => {
                     };
                 },
                 noResults: true,
+                maxResults: undefined
             },
             resultItem: {
                 highlight: true
@@ -281,7 +285,7 @@ let autocomplete = () => {
             events: {
                 input: {
                     focus: (event) => {
-                        //autoCompleteJS.open(jsonList);
+                        autoCompleteJS.open(jsonList);
                     },
                     selection(event) {
                         const feedback = event.detail;
@@ -345,12 +349,11 @@ let cloneEl = () => {
                 el.value = "";
             });
 
-            /* change the id of the autocomplete cloned */
             /* variants */
-            if (cloned.classList.contains("data-list") == true) {
+            if (!cloned.classList.contains("wit-clone") == true) {
                 /* change the id of the autocomplete cloned */
-                var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
-                cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i;
+                /* var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
+                cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i; */
                 /* change the name of the cloned input */
                 cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
                 cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
@@ -438,6 +441,7 @@ let cloneEl = () => {
                 var idToChange = cloned.querySelector("a.expand-section").getAttribute("href");
                 cloned.querySelector("a.expand-section").setAttribute("href", "#expand-metadata" + i);
                 cloned.querySelector(idToChange).setAttribute("id", "expand-metadata" + i);
+                /* change the name of the cloned input */
                 var clonedInputs = cloned.querySelectorAll("[name]");
                 clonedInputs.forEach((input) => {
                     var val = input.getAttribute("name").slice(0, -1) + i;
@@ -446,45 +450,58 @@ let cloneEl = () => {
                 i ++;
             };
 
+            /* TRY */
+            /* autocomplete */
+            var autocompleteInputs = cloned.querySelectorAll("[data-list]");
+            autocompleteInputs.forEach((input) => {
+                input.id = input.getAttribute("name");
+            });
+
             /* print the clone */
             var appendClone = document.getElementById(cloneVal);
             appendClone.appendChild(cloned);
 
-            /* assign a specific class */
-            cloned.classList.add("cloned-el");
+            /* live check */
+            if (!cloned.classList.contains("wit-clone") == true) {
+                /* assign a specific class */
+                cloned.classList.add("cloned-el");
 
-            /* clone live check */
-            var n = i - 1;
-            var toCloneLiveCheck = document.getElementById("live-clone-" + cloneVal + n);
-            var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
-            document.getElementById("add-live-clone-" + cloneVal).appendChild(clonedLiveCheck);
+                /* clone live check */
+                var n = i - 1;
+                var toCloneLiveCheck = document.getElementById("live-clone-" + cloneVal + n);
+                var clonedLiveCheck = toCloneLiveCheck.cloneNode(true);
+                document.getElementById("add-live-clone-" + cloneVal).appendChild(clonedLiveCheck);
 
-            /* assign a specific id to the cloned element */
-            cloned.id = cloneVal + "-" + i;
+                /* assign a specific id to the cloned element */
+                cloned.id = cloneVal + "-" + i;
 
-            /* assign specific attributes to the cloned live check */
-            clonedLiveCheck.setAttribute("id", "live-clone-" + cloneVal + i);
-            clonedLiveCheck.setAttribute("data-ref", cloneVal + "-" + i);
+                /* assign specific attributes to the cloned live check */
+                clonedLiveCheck.setAttribute("id", "live-clone-" + cloneVal + i);
+                clonedLiveCheck.setAttribute("data-ref", cloneVal + "-" + i);
 
-            /* assign specific attributes to the cloned live check children */
-            clonedLiveCheck.querySelector("[data-subtype='variant']").setAttribute("id", "live-" + cloneVal + i);
-            clonedLiveCheck.querySelector("[data-subtype='witnesses']").setAttribute("id", "live-manuscriptVariant" + i);
+                /* assign specific attributes to the cloned live check children */
+                clonedLiveCheck.querySelector("[data-subtype='variant']").setAttribute("id", "live-" + cloneVal + i);
+                clonedLiveCheck.querySelector("[data-subtype='witnesses']").setAttribute("id", "live-manuscriptVariant" + i);
 
-            /* try */
-            clonedLiveCheck.querySelector("[data-subtype='additional-notes']").setAttribute("id", "live-variant" + i + "-OmissionEditor");
-            /* / */
+                /* additional notes */
+                clonedLiveCheck.querySelector("[data-subtype='additional-notes']").setAttribute("id", "live-variant" + i + "-OmissionEditor");
 
-            /* empty the live check spans */
-            var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
-            formsLiveCheck.forEach((el) => {
-                el.innerHTML = "";
-            });
+                /* empty the live check spans */
+                var formsLiveCheck = clonedLiveCheck.querySelectorAll("span");
+                formsLiveCheck.forEach((el) => {
+                    el.innerHTML = "";
+                });
+            };
 
             /* i */
             i++;
 
             /* remove duplicates */
-            cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates");
+            /* cloned.querySelectorAll("[data-list]")[0].classList.remove("no-autocomplete-duplicates"); */
+            var autocompleteInputs = cloned.querySelectorAll("[data-list]");
+            autocompleteInputs.forEach((input) => {
+                input.classList.remove("no-autocomplete-duplicates");
+            });
 
             /* autocomplete */
             autocomplete();

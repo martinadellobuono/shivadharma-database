@@ -83,7 +83,7 @@
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
             <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
-              <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3" data-cloned="witness">
+              <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3 wit-clone" data-cloned="witness">
                 <!-- siglum -->
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
@@ -141,12 +141,12 @@
                   <!-- classmark -->
                   <div class="mb-3">
                     <label class="form-label">Identifying number&#x28;s&#x29;</label>
-                    <input type="number" class="form-control" aria-describedby="Identifying number" name="witnessClassmark0">
+                    <input type="text" class="form-control" aria-describedby="Identifying number" name="witnessClassmark0">
                   </div>
                   <!-- antigraph -->
                   <div class="mb-3">
                     <label class="form-label">Antigraph</label>
-                    <input type="text" class="form-control" aria-describedby="Antigraph" name="witnessAntigraph0">
+                    <input class="form-control" id="witnessAntigraph0" data-list="<%= JSON.stringify(sigla) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for witness..." aria-activedescendant="" name="witnessAntigraph0">
                   </div>
                   <!-- author -->
                   <div class="mb-3">
@@ -185,7 +185,7 @@
                   <!-- state -->
                   <div class="mb-3">
                     <label class="form-label">State</label>
-                    <select class="form-select" aria-label="Default select example" name="witnessState0">
+                    <select class="form-select" aria-label="Select state" name="witnessState0">
                       <option value="Complete">Complete</option>
                       <option value="Inapplicable">Inapplicable</option>
                       <option value="Incomplete">Incomplete</option>
@@ -194,7 +194,12 @@
                   <!-- condition -->
                   <div class="mb-3">
                     <label class="form-label">Condition</label>
-                    <input type="text" class="form-control" aria-describedby="Condition" name="witnessCondition0">
+                    <select class="form-select" aria-label="Select condition" name="witnessCondition0">
+                      <option value="Damaged">Damaged</option>
+                      <option value="Good">Good</option>
+                      <option value="Some damaged folios">Some damaged folios</option>
+                      <option value="Some damaged folios and missing folios">Some damaged folios and missing folios</option>
+                    </select>
                   </div>
                   <!-- format -->
                   <div class="mb-3">
@@ -208,7 +213,12 @@
                   <!-- material -->
                   <div class="mb-3">
                     <label class="form-label">Material</label>
-                    <input type="text" class="form-control" aria-describedby="Material" name="witnessMaterial0">
+                    <select class="form-select" aria-label="Select material" name="witnessMaterial0">
+                      <option value="Birch-bark">Birch-bark</option>
+                      <option value="Paper">Paper</option>
+                      <option value="Palm-leaf">Palm-leaf</option>
+                      <option value="Else">Else</option>
+                    </select>
                   </div>
                   <!-- dimensions -->
                   <div class="mb-3">
@@ -233,7 +243,10 @@
                   <!-- date -->
                   <div class="mb-3">
                     <label class="form-label">Date &#x28;acc. to the Gregorian calendar&#x29;</label>
-                    <input type="text" class="form-control" aria-describedby="Date" name="witnessDate0">
+                    <select class="form-select" aria-label="Select material" name="witnessDate0">
+                      <option value="Birch-bark">Dated</option>
+                      <option value="Paper">Undated</option>
+                    </select>
                   </div>
                   <!-- people -->
                   <div class="mb-3">
