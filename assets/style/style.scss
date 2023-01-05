@@ -235,3 +235,12 @@ body {
 .expand-section[aria-expanded="true"]::after {
     content: "\25B2";
 }
+
+/* help symbol */
+.help-symbol {
+    color: $secondary;
+}
+
+.help-symbol:hover {
+    color: $gray-700;
+}

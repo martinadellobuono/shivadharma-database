@@ -88,30 +88,33 @@
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
                   <!-- superscript -->
-                  <div class="row g-3 align-items-center">
+                  <div class="row g-3 align-items-center mb-2">
                     <div class="col-auto">
-                      <label class="col-form-label">Superscript</label>
+                      <label class="col-form-label">Superscript<sup class="help-symbol" data-bs-toggle="popover" title="Superscript" data-bs-content="Insert here the first capital letter (or first two letters, only the first capital) of the place where the manuscript is kept (see: settlement)."><i class="bi bi-question-lg"></i></sup></label>
                     </div>
                     <div class="col-auto">
                       <input type="text" class="form-control" name="witnessSiglumSuperscript0">
+                      <div class="form-text">e.g., K for Kathmandu, Ko for Kolkata, O for Oxford, etc.</div>
                     </div>
                   </div>
                   <!-- base -->
-                  <div class="row g-3 align-items-center">
+                  <div class="row g-3 align-items-center mb-2">
                     <div class="col-auto">
-                      <label class="col-form-label">Base</label>
+                      <label class="col-form-label">Base<sup class="help-symbol" data-bs-toggle="popover" title="Base" data-bs-content="Insert here the first capital letter of the script of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     </div>
                     <div class="col-auto">
                       <input type="text" class="form-control" name="witnessSiglumBase0">
+                      <div class="form-text">e.g., N for Nepālākṣara, G for Grantha, etc.</div>
                     </div>
                   </div>
                   <!-- subscript -->
                   <div class="row g-3 align-items-center">
                     <div class="col-auto">
-                      <label class="col-form-label">Subscript</label>
+                      <label class="col-form-label">Subscript<sup class="help-symbol" data-bs-toggle="popover" title="Subscript" data-bs-content="Insert here the last digit (or two digits) of the identifying number of the collection in which the manuscript is kept (see: collection)."><i class="bi bi-question-lg"></i></sup></label>
                     </div>
                     <div class="col-auto">
                       <input type="text" class="form-control" name="witnessSiglumSubscript0">
+                      <div class="form-text">e.g., K for Kathmandu, Ko for Kolkata, O for Oxford, etc.</div>
                     </div>
                   </div>
                 </div>
@@ -120,62 +123,115 @@
                 <div class="collapse" id="expand-metadata0">
                   <!-- provenance -->
                   <div class="mb-3">
-                    <label class="form-label">Provenance</label>
-                    <select class="form-select" aria-label="Default select example" name="witnessProvenance0">
-                      <option value="Bengal">Bengal</option>
-                      <option value="Kashmir">Kashmir</option>
-                      <option value="Nepal">Nepal</option>
-                      <option value="South India">South India</option>
-                    </select>
+                    <label class="form-label">Provenance<sup class="help-symbol" data-bs-toggle="popover" title="Provenance" data-bs-content="Insert here the country or region of origin of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-bengal" type="radio" value="Bengal" name="witnessProvenance0" checked>
+                      <label class="form-check-label" for="prov-bengal">Bengal</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-kashmir" type="radio" value="Kashmir" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-kashmir">Kashmir</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-nepal" type="radio" value="Nepal" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-nepal">Nepal</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-south-india" type="radio" value="South India" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-south-india">South India</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-unknown" type="radio" value="Unknown" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-unknown">Unknown</label>
+                    </div>
+                    <div class="form-check">
+                      <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-check-input" id="prov-else" type="radio" value="else" name="witnessProvenance0">
+                          <label class="form-check-label" for="prov-else">Else</label>
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" name="witnessProvenance0">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <!-- settlement -->
                   <div class="mb-3">
-                    <label class="form-label">Settlement</label>
+                    <label class="form-label">Settlement<sup class="help-symbol" data-bs-toggle="popover" title="Settlement" data-bs-content="Insert here the city where the manuscript is currently kept."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Settlement" name="witnessSettlement0">
+                    <div class="form-text">e.g., Kathmandu, Oxford, etc.</div>
                   </div>
                   <!-- collection -->
                   <div class="mb-3">
-                    <label class="form-label">Collection &#x28;present physical location&#x29;</label>
+                    <label class="form-label">Collection &#x28;present physical location&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Collection" data-bs-content="Insert here the present physical location, library or institute."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Collection" name="witnessCollection0">
+                    <div class="form-text">e.g., National Archives, Bodleian Library, etc.</div>
                   </div>
                   <!-- classmark -->
                   <div class="mb-3">
-                    <label class="form-label">Identifying number&#x28;s&#x29;</label>
+                    <label class="form-label">Identifying number&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Identifying number(s)" data-bs-content="Insert here the sigla gave to the manuscript by the repository institutes for archiving purposes."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Identifying number" name="witnessClassmark0">
+                    <div class="form-text">Separate the values by using the semicolon.</div>
                   </div>
                   <!-- antigraph -->
                   <div class="mb-3">
-                    <label class="form-label">Antigraph</label>
+                    <label class="form-label">Antigraph<sup class="help-symbol" data-bs-toggle="popover" title="Identifying number(s)" data-bs-content="Insert here the siglum of the manuscript of which the present manuscript is a copy (i.e., an apograph)."><i class="bi bi-question-lg"></i></sup></label>
                     <input class="form-control" id="witnessAntigraph0" data-list="<%= JSON.stringify(sigla) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for witness..." aria-activedescendant="" name="witnessAntigraph0">
                   </div>
                   <!-- author -->
                   <div class="mb-3">
-                    <label class="form-label">Author&#x28;s&#x29;</label>
-                    <input type="text" class="form-control" aria-describedby="Author(s)" name="witnessAuthor0">
+                    <label class="form-label">Author&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Author(s)" data-bs-content="Insert here the name of the author(s) of the work(s) contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <input class="form-control" id="witnessAuthor0" data-list="<%= JSON.stringify(author) %>" data-type="author" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for author..." aria-activedescendant="" name="witnessAuthor0">
                   </div>
                   <!-- title -->
                   <div class="mb-3">
-                    <label class="form-label">Title&#x28;s&#x29;</label>
+                    <label class="form-label">Title&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Title(s)" data-bs-content="Insert here the title(s) of the work(s) contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Title(s)" name="witnessTitle0">
+                    <div class="form-text">Separate the values by using the semicolon.</div>
                   </div>
                   <!-- language -->
                   <div class="mb-3">
-                    <label class="form-label">Language&#x28;s&#x29;</label>
-                    <select class="form-select" aria-label="Default select example" name="witnessLanguage0">
-                      <option value="Sanskrit">Sanskrit</option>
-                      <option value="Malayalam">Malayalam</option>
-                      <option value="Manipravalam">Manipravalam</option>
-                      <option value="Tamil">Tamil</option>
-                    </select>
+                    <div class="mb-3">
+                      <label class="form-label">Language&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Language(s)" data-bs-content="Select or insert here the language(s) of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                      <div class="form-check">
+                        <input class="form-check-input" id="lang-sanskrit" type="checkbox" value="Sanskrit" name="witnessLanguage0" checked>
+                        <label class="form-check-label" for="lang-sanskrit">Sanskrit</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" id="lang-malayalam" type="checkbox" value="Malayalam" name="witnessLanguage0">
+                        <label class="form-check-label" for="lang-malayalam">Malayalam</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" id="lang-manipravalam" type="checkbox" value="Manipravalam" name="witnessLanguage0">
+                        <label class="form-check-label" for="lang-manipravalam">Manipravalam</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" id="lang-tamil" type="checkbox" value="Tamil" name="witnessLanguage0">
+                        <label class="form-check-label" for="lang-tamil">Tamil</label>
+                      </div>
+                      <div class="form-check">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-auto">
+                            <input class="form-check-input" id="lang-else" type="checkbox" value="else" name="witnessLanguage0">
+                            <label class="form-check-label" for="lang-else">Else</label>
+                          </div>
+                          <div class="col-auto">
+                            <input type="text" class="form-control" name="witnessLanguage0">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <!-- scripts -->
                   <div class="mb-3">
-                    <label class="form-label">Script&#x28;s&#x29;</label>
+                    <label class="form-label">Script&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Script(s)" data-bs-content="Select or insert here the script(s) of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Script(s)" name="witnessScripts0">
+                    <div class="form-text">Separate the values by using the semicolon.</div>
                   </div>
                   <!-- structural typology -->
                   <div class="mb-3">
-                    <label class="form-label">Structural typology</label>
+                    <label class="form-label">Structural typology<sup class="help-symbol" data-bs-toggle="popover" title="Structural typology" data-bs-content="Select the type of structure of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <select class="form-select" aria-label="Default select example" name="witnessStructuralTypology0">
                       <option value="Composite">Composite</option>
                       <option value="Multiple texts">Multiple texts</option>
@@ -184,7 +240,7 @@
                   </div>
                   <!-- state -->
                   <div class="mb-3">
-                    <label class="form-label">State</label>
+                    <label class="form-label">State<sup class="help-symbol" data-bs-toggle="popover" title="State" data-bs-content="Select whether the manuscript is complete or incomplete."><i class="bi bi-question-lg"></i></sup></label>
                     <select class="form-select" aria-label="Select state" name="witnessState0">
                       <option value="Complete">Complete</option>
                       <option value="Inapplicable">Inapplicable</option>
@@ -193,46 +249,105 @@
                   </div>
                   <!-- condition -->
                   <div class="mb-3">
-                    <label class="form-label">Condition</label>
+                    <label class="form-label">Condition<sup class="help-symbol" data-bs-toggle="popover" title="Condition" data-bs-content="Select here the condition of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <select class="form-select" aria-label="Select condition" name="witnessCondition0">
                       <option value="Damaged">Damaged</option>
                       <option value="Good">Good</option>
                       <option value="Some damaged folios">Some damaged folios</option>
                       <option value="Some damaged folios and missing folios">Some damaged folios and missing folios</option>
+                      <option value="Worn out">Worn out</option>
                     </select>
                   </div>
                   <!-- format -->
                   <div class="mb-3">
-                    <label class="form-label">Format</label>
-                    <select class="form-select" aria-label="Default select example" name="witnessFormat0">
-                      <option value="Book">Book</option>
-                      <option value="Pothi">Pothi</option>
-                      <option value="Thyasapu">Thyasapu</option>
-                    </select>
+                    <label class="form-label">Format<sup class="help-symbol" data-bs-toggle="popover" title="Format" data-bs-content="select or insert here the format of the manuscript ."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="form-check">
+                      <input class="form-check-input" id="form-book" type="radio" value="Book" name="witnessFormat0" checked>
+                      <label class="form-check-label" for="form-book">Book</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="form-pothi" type="radio" value="Pothi" name="witnessFormat0">
+                      <label class="form-check-label" for="form-pothi">Pothi</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="form-thyasapu" type="radio" value="Thyasapu" name="witnessFormat0">
+                      <label class="form-check-label" for="form-thyasapu">Thyasapu</label>
+                    </div>
+                    <div class="form-check">
+                      <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-check-input" id="form-else" type="radio" value="else" name="witnessFormat0">
+                          <label class="form-check-label" for="form-else">Else</label>
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" name="witnessFormat0">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <!-- material -->
                   <div class="mb-3">
-                    <label class="form-label">Material</label>
-                    <select class="form-select" aria-label="Select material" name="witnessMaterial0">
-                      <option value="Birch-bark">Birch-bark</option>
-                      <option value="Paper">Paper</option>
-                      <option value="Palm-leaf">Palm-leaf</option>
-                      <option value="Else">Else</option>
-                    </select>
+                    <label class="form-label">Material<sup class="help-symbol" data-bs-toggle="popover" title="Material" data-bs-content="Select or insert here the material of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="form-check">
+                      <input class="form-check-input" id="mat-birch-bark" type="radio" value="Birch-bark" name="witnessMaterial0" checked>
+                      <label class="form-check-label" for="prov-birch-bark">Birch-bark</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="mat-paper" type="radio" value="Paper" name="witnessMaterial0">
+                      <label class="form-check-label" for="mat-paper">Paper</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="mat-palm-leaf" type="radio" value="Palm-leaf" name="witnessMaterial0">
+                      <label class="form-check-label" for="mat-palm-leaf">Palm-leaf</label>
+                    </div>
+                    <div class="form-check">
+                      <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-check-input" id="mat-material-else" type="radio" value="else" name="witnessMaterial0">
+                          <label class="form-check-label" for="mat-material-else">Else</label>
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" name="witnessMaterial0">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <!-- dimensions -->
                   <div class="mb-3">
-                    <label class="form-label">Dimensions</label>
-                    <input type="text" class="form-control" aria-describedby="Dimensions" name="witnessDimensions0">
+                    <label class="form-label">Dimensions<sup class="help-symbol" data-bs-toggle="popover" title="Dimensions" data-bs-content="Insert here the dimensions of the manuscripts."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="row g-3 align-items-center">
+                      <div class="col-auto">
+                        <span>Width</span>
+                      </div>
+                      <div class="col-auto">
+                        <input class="form-control calculate-dimensions" data-ref="witnessDimensionsUnit0" type="number" min="0.1" class="form-control" aria-describedby="Dimensions" name="witnessDimensionsW0">
+                      </div>
+                      <div class="col-auto">
+                        <span class="form-text">x</span>
+                      </div>
+                      <div class="col-auto">
+                        <span>Height</span>
+                      </div>
+                      <div class="col-auto">
+                        <input class="form-control calculate-dimensions" data-ref="witnessDimensionsUnit0" type="number" min="0.1" class="form-control" aria-describedby="Dimensions" name="witnessDimensionsH0">
+                      </div>
+                      <div class="col-auto">
+                        <select class="form-select dimensions-unit" aria-label="in/cm" name="witnessDimensionsUnit0">
+                          <option value="in" selected>in</option>
+                          <option value="cm">cm</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-text">Use the coma as floating point.</div>
                   </div>
                   <!-- extent -->
                   <div class="mb-3">
-                    <label class="form-label">Extent</label>
-                    <input type="text" class="form-control" aria-describedby="Extent" name="witnessExtent0">
+                    <label class="form-label">Extent<sup class="help-symbol" data-bs-toggle="popover" title="Extent" data-bs-content="Insert here the total number of folios or pages of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <input type="number" class="form-control" aria-describedby="Extent" name="witnessExtent0">
                   </div>
                   <!-- binding -->
                   <div class="mb-3">
-                    <label class="form-label">Binding</label>
+                    <label class="form-label">Binding<sup class="help-symbol" data-bs-toggle="popover" title="Binding" data-bs-content="Insert here the binding description of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Binding description" name="witnessBinding0">
                   </div>
                   <!-- foliation -->

@@ -12197,4 +12197,13 @@ body {
 .expand-section[aria-expanded="true"]::after {
   content: "\25B2";
 }
+
+/* help symbol */
+.help-symbol {
+  color: #6c757d;
+}
+
+.help-symbol:hover {
+  color: #495057;
+}
 /*# sourceMappingURL=style.css.map */

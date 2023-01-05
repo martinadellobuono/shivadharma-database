@@ -79,7 +79,8 @@ router.post("/addWitnesses/:id", async (req, res) => {
                 condition = "witnessCondition" + i;
                 format = "witnessFormat" + i;
                 material = "witnessMaterial" + i;
-                dimensions = "witnessDimensions" + i;
+                dimensionsW = "witnessDimensionsW" + i;
+                dimensionsH = "witnessDimensionsH" + i;
                 extent = "witnessExtent" + i;
                 binding = "witnessBinding" + i;
                 foliation = "witnessFoliation" + i;
@@ -119,7 +120,8 @@ router.post("/addWitnesses/:id", async (req, res) => {
                         condition: "${req.body[condition]}",
                         format: "${req.body[format]}",
                         material: "${req.body[material]}",
-                        dimensions: "${req.body[dimensions]}",
+                        dimensionsW: "${req.body[dimensionsW]}",
+                        dimensionsH: "${req.body[dimensionsH]}",
                         extent: "${req.body[extent]}",
                         binding: "${req.body[binding]}",
                         foliation: "${req.body[foliation]}",

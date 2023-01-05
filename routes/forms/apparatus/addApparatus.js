@@ -67,13 +67,13 @@ router.post("/addApparatus/:id",
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                             CREATE (lemma:Lemma {value: "${lemmaReq}", notes: "${req.body.lemmaOmission}"})
                             CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)
-                            FOREACH (wit IN split("${req.body.manuscriptLemma}", " | ") |
+                            FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
                                 MERGE (witness:Witness {siglum: wit})
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
                             MERGE (variant:Variant {value: "${variantReq}", notes: "${req.body[notesVariant]}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                            FOREACH (wit IN split("${req.body[manuscriptVariant]}", " | ") |
+                            FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
                                     MERGE (witness:Witness {siglum: wit})
                                     MERGE (variant)-[:ATTESTED_IN]->(witness)
                             )

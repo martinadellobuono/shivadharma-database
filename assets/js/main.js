@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     checkAnnotatedFragments();
     truncation();
     lemmaVariantPresence();
+    witArea();
     previewCheck();
 });
 
@@ -236,13 +237,13 @@ let autocomplete = () => {
     [].forEach.call(document.querySelectorAll("[data-list]:not(.no-autocomplete-duplicates)"), (el) => {
         /* remove duplicates */
         el.classList.add("no-autocomplete-duplicates");
-        
+
         /* create the autocomplete */
         var dataType = el.getAttribute("data-type");
         var dataList = el.getAttribute("data-list");
         var idList = el.getAttribute("id");
         var jsonList = JSON.parse(dataList);
-    
+
         const autoCompleteJS = new autoComplete({
             selector: "#" + idList,
             placeHolder: "Search for " + dataType + "...",
@@ -275,7 +276,7 @@ let autocomplete = () => {
             },
             query: (query) => {
                 // split query into array
-                const querySplit = query.split("|");
+                const querySplit = query.split(";");
                 // get last query value index
                 const lastQuery = querySplit.length - 1;
                 // trim new query
@@ -293,13 +294,13 @@ let autocomplete = () => {
                         // trim selected value
                         const selection = feedback.selection.value.trim();
                         // split query into array and trim each value
-                        const query = input.value.split("|").map(item => item.trim());
+                        const query = input.value.split(";").map(item => item.trim());
                         // remove last query
                         query.pop();
                         // add selected value
                         query.push(selection);
                         // replace input value with the new query
-                        input.value = query.join(" | ") + " | ";
+                        input.value = query.join(" ; ") + " ; ";
                     }
                 }
             }
@@ -351,9 +352,6 @@ let cloneEl = () => {
 
             /* variants */
             if (!cloned.classList.contains("wit-clone") == true) {
-                /* change the id of the autocomplete cloned */
-                /* var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
-                cloned.querySelectorAll("[data-list]")[0].id = idToClone + "-" + i; */
                 /* change the name of the cloned input */
                 cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
                 cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
@@ -441,16 +439,23 @@ let cloneEl = () => {
                 var idToChange = cloned.querySelector("a.expand-section").getAttribute("href");
                 cloned.querySelector("a.expand-section").setAttribute("href", "#expand-metadata" + i);
                 cloned.querySelector(idToChange).setAttribute("id", "expand-metadata" + i);
+
+                /* close the expanded sections */
+                var collapsed = cloned.querySelector(".collapse");
+                if (collapsed.classList.contains("show")) {
+                    collapsed.classList.remove("show");
+                    cloned.querySelector("a.expand-section").setAttribute("aria-expanded", "false");
+                };
+
                 /* change the name of the cloned input */
                 var clonedInputs = cloned.querySelectorAll("[name]");
                 clonedInputs.forEach((input) => {
                     var val = input.getAttribute("name").slice(0, -1) + i;
                     input.setAttribute("name", val);
                 });
-                i ++;
+                i++;
             };
 
-            /* TRY */
             /* autocomplete */
             var autocompleteInputs = cloned.querySelectorAll("[data-list]");
             autocompleteInputs.forEach((input) => {
@@ -951,7 +956,7 @@ let liveCheck = () => {
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                 } else {
                     /* other elements */
-                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[|]/g, " ");
+                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[;]/g, " ");
                 };
             });
         });
@@ -1046,7 +1051,7 @@ let liveCheckAutocomplete = () => {
             var id = el.getAttribute("id");
             var input = document.querySelector("[aria-controls='" + id + "']");
             var val = input.value;
-            document.getElementById("live-" + input.getAttribute("name")).innerHTML = val.replace(/[|]/g, " ");
+            document.getElementById("live-" + input.getAttribute("name")).innerHTML = val.replace(/[;]/g, " ");
         });
     });
 };
@@ -1146,6 +1151,31 @@ let lemmaVariantPresence = () => {
             });
         });
     };
+};
+
+/* area of witnesses */
+let witArea = () => {
+    /* on change the area unit */
+    var unitsList = document.querySelectorAll(".dimensions-unit");
+    unitsList.forEach((unit) => {
+        unit.addEventListener("change", (e) => {
+            /* print the area unit */
+            var selectedUnit = unit.options[unit.options.selectedIndex];
+            /* convert width height */
+            var numericValues = document.querySelectorAll("[data-ref=" + e.target.getAttribute("name") + "]");
+            numericValues.forEach((val) => {
+                if (selectedUnit.value == "cm") {                    
+                    var x = val.value;
+                    var y = 2.54;
+                    val.value = x*y;
+                } else {
+                    var x = val.value;
+                    var y = 2.54;
+                    val.value = x/y;
+                };
+            });
+        });
+    });
 };
 
 /* preview check */
