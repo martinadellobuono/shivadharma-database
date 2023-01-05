@@ -218,6 +218,7 @@
                           </div>
                           <div class="col-auto">
                             <input type="text" class="form-control" name="witnessLanguage0">
+                            <div class="form-text">Separate the values by using the semicolon.</div>
                           </div>
                         </div>
                       </div>
@@ -349,74 +350,115 @@
                   <div class="mb-3">
                     <label class="form-label">Binding<sup class="help-symbol" data-bs-toggle="popover" title="Binding" data-bs-content="Insert here the binding description of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Binding description" name="witnessBinding0">
+                    <div class="form-text">e.g., 2 string holes, 4 string holes, etc.</div>
                   </div>
                   <!-- foliation -->
                   <div class="mb-3">
-                    <label class="form-label">Foliation &#x28;on the left margin of the recto, in Tamil numerals etc.&#x29;</label>
+                    <label class="form-label">Foliation<sup class="help-symbol" data-bs-toggle="popover" title="Foliation" data-bs-content="Insert here the type of foliation."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Foliation" name="witnessFoliation0">
+                    <div class="form-text">e.g., placement of folio number on recto/verso margin, figures, etc.</div>
                   </div>
                   <!-- date -->
                   <div class="mb-3">
-                    <label class="form-label">Date &#x28;acc. to the Gregorian calendar&#x29;</label>
-                    <select class="form-select" aria-label="Select material" name="witnessDate0">
-                      <option value="Birch-bark">Dated</option>
-                      <option value="Paper">Undated</option>
-                    </select>
+                    <label class="form-label">Date<sup class="help-symbol" data-bs-toggle="popover" title="Date" data-bs-content="Insert here the date of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="form-check">
+                      <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-check-input" id="date-dated" type="radio" value="Dated" name="witnessDate0">
+                          <label class="form-check-label" for="date-dated">Dated</label>
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" name="witnessDate0">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="date-undated" type="radio" value="Undated" name="witnessDate0" checked>
+                      <label class="form-check-label" for="date-undated">Undated</label>
+                    </div>
+                    <div class="form-text">According to the Gregorian calendar</div>
                   </div>
                   <!-- people -->
                   <div class="mb-3">
-                    <label class="form-label">People associated &#x28;Scribe, owner, sponsor etc.&#x29;</label>
-                    <input type="text" class="form-control" aria-describedby="People" name="witnessPeople0">
+                    <label class="form-label">People associated<sup class="help-symbol" data-bs-toggle="popover" title="People associated" data-bs-content="Insert here the people associated with the manuscript."><i class="bi bi-question-lg"></i></sup></label>
+                    <div class="form-check">
+                      <input class="form-check-input" id="people-scribe" type="checkbox" value="Scribe" name="witnessPeople0" checked>
+                      <label class="form-check-label" for="people-scribe">Scribe</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="people-owner" type="checkbox" value="Owner" name="witnessPeople0">
+                      <label class="form-check-label" for="people-owner">Owner</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="people-sponsor" type="checkbox" value="Sponsor" name="witnessPeople0">
+                      <label class="form-check-label" for="people-sponsor">Sponsor</label>
+                    </div>
+                    <div class="form-check">
+                      <div class="row g-3 align-items-center">
+                        <div class="col-auto">
+                          <input class="form-check-input" id="lang-else" type="checkbox" value="else" name="witnessPeople0">
+                          <label class="form-check-label" for="lang-else">Else</label>
+                        </div>
+                        <div class="col-auto">
+                          <input type="text" class="form-control" name="witnessPeople0">
+                          <div class="form-text">Separate the values by using the semicolon.</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <!-- marginalia -->
                   <div class="mb-3">
-                    <label class="form-label">Marginalia</label>
+                    <label class="form-label">Marginalia<sup class="help-symbol" data-bs-toggle="popover" title="Marginalia" data-bs-content="Transcribe here the paratexts found on the cover & guard leaves and the marginalia."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Text on guard/added leaves leaves and Marginalia" name="witnessMarginalia0">
                   </div>
                   <!-- initial rubric -->
                   <div class="mb-3">
-                    <label class="form-label">Initial Rubric</label>
+                    <label class="form-label">Initial Rubric<sup class="help-symbol" data-bs-toggle="popover" title="Initial Rubric" data-bs-content="Transcribe here the initial rubric of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Initial Rubric" name="witnessInitialRubric0">
                   </div>
                   <!-- incipit -->
                   <div class="mb-3">
-                    <label class="form-label">Incipit</label>
+                    <label class="form-label">Incipit<sup class="help-symbol" data-bs-toggle="popover" title="Incipit" data-bs-content="Transcribe here the incipit of the work contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Incipit" name="witnessIncipit0">
                   </div>
                   <!-- explicit -->
                   <div class="mb-3">
-                    <label class="form-label">Explicit</label>
+                    <label class="form-label">Explicit<sup class="help-symbol" data-bs-toggle="popover" title="Explicit" data-bs-content="Transcribe here the explicit of the work contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Explicit" name="witnessExplicit0">
                   </div>
                   <!-- final rubric and invocations -->
                   <div class="mb-3">
-                    <label class="form-label">Final Rubric and Invocations</label>
+                    <label class="form-label">Final Rubric and Invocations<sup class="help-symbol" data-bs-toggle="popover" title="Final Rubric and Invocations" data-bs-content="Transcribe here the final rubric and invocations of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Final Rubric and Invocations" name="witnessFinalRubric0">
                   </div>
                   <!-- colophon -->
                   <div class="mb-3">
-                    <label class="form-label">Colophon</label>
+                    <label class="form-label">Colophon<sup class="help-symbol" data-bs-toggle="popover" title="Colophon" data-bs-content="Transcribe here the colophon of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Colophon" name="witnessColophon0">
                   </div>
                   <!-- bibliography -->
                   <div class="mb-3">
-                    <label class="form-label">Bibliography</label>
+                    <label class="form-label">Bibliography<sup class="help-symbol" data-bs-toggle="popover" title="Bibliography" data-bs-content="Insert here works and/or catalogues which mention the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Bibliography" name="witnessBibliography0">
+                    <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using the semicolon.</div>
                   </div>
                   <!-- editions -->
                   <div class="mb-3">
-                    <label class="form-label">Edition&#x28;s&#x29;</label>
+                    <label class="form-label">Edition&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Edition&#x28;s&#x29;" data-bs-content="Insert here printed editions based on the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Edition(s)" name="witnessEditions0">
+                    <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using the semicolon.</div>
                   </div>
                   <!-- secondary literature-->
                   <div class="mb-3">
-                    <label class="form-label">Secondary Literature</label>
+                    <label class="form-label">Secondary Literature<sup class="help-symbol" data-bs-toggle="popover" title="Secondary Literature" data-bs-content="Insert here secondary literature on the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <input type="text" class="form-control" aria-describedby="Secondary Literature" name="witnessSecondaryLiterature0">
+                    <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using the semicolon.</div>
                   </div>
                   <!-- author of the record -->
                   <div class="mb-3">
-                    <label class="form-label">Author&#x28;s&#x29; of the Record</label>
-                    <input type="text" class="form-control" aria-describedby="Author(s) of the record" name="witnessAuthorRecord0">
+                    <label class="form-label">Author&#x28;s&#x29; of the Record<sup class="help-symbol" data-bs-toggle="popover" title="Author&#x28;s&#x29; of the Record" data-bs-content="Insert here your name and surname / name and surname of your collaborator."><i class="bi bi-question-lg"></i></sup></label>
+                    <input class="form-control" id="witnessAuthorRecord0" data-list="<%= JSON.stringify(editor) %>" data-type="authors of the record" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for authors..." aria-activedescendant="" name="witnessAuthorRecord0">
+                    <div class="form-text">Insert name and surname. Separate the values by using the semicolon.</div>
                   </div>
                   <!-- siglum tex -->
                   <div class="mb-3">
