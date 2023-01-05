@@ -94,7 +94,6 @@ router.post("/addApparatus/:id",
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
-            /* page rendering */
             res.redirect(`../edit/${idEdition}-${idEditor}`);
             await session.close();
         };

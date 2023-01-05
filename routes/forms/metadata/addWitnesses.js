@@ -1,117 +1,162 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
-
 const router = express.Router();
-
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.post("/addWitnesses/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
+    
+    var i = 0;
+
+    var siglum;
+    var provenance;
+    var settlement;
+    var collection;
+    var classmark;
+    var antigraph;
+    var author;
+    var title;
+    var notes;
+    var language;
+    var scripts;
+    var structuralTypology;
+    var state;
+    var condition;
+    var format;
+    var material;
+    var dimensions;
+    var extent;
+    var binding;
+    var date;
+    var foliation;
+    var people;
+    var marginalia;
+    var initialRubric;
+    var incipit;
+    var explicit;
+    var finalRubric;
+    var colophon;
+    var bibliography;
+    var editions;
+    var secondaryLiterature;
+    var authorRecord;
+    var siglumTex;
+    var notes;
+
+    let keys = Object.keys(req.body);
+    var wits = [];
+    keys.forEach((el) => {
+        if (el.indexOf("witnessSiglumSuperscript") > -1) {
+            if (!wits.includes(el)) {
+                wits.push(el);
+            };
+        };
+    });
+
     const session = driver.session();
     try {
-        await session.writeTransaction(tx => tx
-            .run(
-                `
-                MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)  
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                MERGE (witness:Witness {
-                    siglum: $siglum, 
-                    provenance: $provenance,
-                    settlement: $settlement,
-                    collection: $collection,
-                    classmark: $classmark,
-                    antigraph: $antigraph,
-                    author: $author,
-                    title: $title,
-                    notes: $notes,
-                    language: $language,
-                    scripts: $scripts,
-                    structuralTypology: $structuralTypology,
-                    state: $state,
-                    condition: $condition,
-                    format: $format,
-                    material: $material,
-                    dimensions: $dimensions,
-                    extent: $extent,
-                    binding: $binding,
-                    date: $date,
-                    foliation: $foliation,
-                    people: $people,
-                    marginalia: $marginalia,
-                    initialRubric: $initialRubric,
-                    incipit: $incipit,
-                    explicit: $explicit,
-                    finalRubric: $finalRubric,
-                    colophon: $colophon,
-                    bibliography: $bibliography,
-                    editions: $editions,
-                    secondaryLiterature: $secondaryLiterature,
-                    authorRecord: $authorRecord,
-                    siglumTex: $siglumTex,
-                    notes: $notes
-                })
-                MERGE (edition)<-[:USED_IN]-(witness)
-                RETURN work.title, edition.title, author.name, editor.name, witness.siglum, date.on
-                `, { 
-                    siglum: req.body.witnessSiglumBase + "<sup>" + req.body.witnessSiglumSuperscript + "</sup><sub>" + req.body.witnessSiglumSubscript + "</sub>",
-                    provenance: req.body.witnessProvenance,
-                    settlement: req.body.witnessSettlement,
-                    collection: req.body.witnessCollection,
-                    classmark: req.body.witnessClassmark,
-                    antigraph: req.body.witnessAntigraph,
-                    author: req.body.witnessAuthor,
-                    title: req.body.witnessTitle,
-                    notes: req.body.witnessNotes,
-                    language: req.body.witnessLanguage,
-                    scripts: req.body.witnessScripts,
-                    structuralTypology: req.body.witnessStructuralTypology,
-                    state: req.body.witnessState,
-                    condition: req.body.witnessCondition,
-                    format: req.body.witnessFormat,
-                    material: req.body.witnessMaterial,
-                    dimensions: req.body.witnessDimensions,
-                    extent: req.body.witnessExtent,
-                    binding: req.body.witnessBinding,
-                    date: req.body.witnessDate,
-                    foliation: req.body.witnessFoliation,
-                    people: req.body.witnessPeople,
-                    marginalia: req.body.witnessMarginalia,
-                    initialRubric: req.body.witnessInitialRubric,
-                    incipit: req.body.witnessIncipit,
-                    explicit: req.body.witnessExplicit,
-                    finalRubric: req.body.witnessFinalRubric,
-                    colophon: req.body.witnessColophon,
-                    bibliography: req.body.witnessBibliography,
-                    editions: req.body.witnessEditions,
-                    secondaryLiterature: req.body.witnessSecondaryLiterature,
-                    authorRecord: req.body.witnessAuthorRecord,
-                    siglumTex: req.body.witnessSiglumTex,
-                    notes: req.body.witnessNotes
+        await session.writeTransaction((tx) => {
+            wits.forEach(() => {
+                base = "witnessSiglumBase" + i;
+                superscript = "witnessSiglumSuperscript" + i;
+                subscript = "witnessSiglumSubscript" + i;
+                provenance = "witnessProvenance" + i;
+                settlement = "witnessSettlement" + i;
+                collection = "witnessCollection" + i;
+                classmark = "witnessClassmark" + i;
+                antigraph = "witnessAntigraph" + i;
+                author = "witnessAuthor" + i;
+                title = "witnessTitle" + i;
+                language = "witnessLanguage" + i;
+                scripts = "witnessScripts" + i;
+                structuralTypology = "witnessStructuralTypology" + i;
+                state = "witnessState" + i;
+                condition = "witnessCondition" + i;
+                format = "witnessFormat" + i;
+                material = "witnessMaterial" + i;
+                dimensions = "witnessDimensions" + i;
+                extent = "witnessExtent" + i;
+                binding = "witnessBinding" + i;
+                foliation = "witnessFoliation" + i;
+                date = "witnessDate" + i;
+                people = "witnessPeople" + i;
+                marginalia = "witnessMarginalia" + i;
+                initialRubric = "witnessInitialRubric" + i;
+                incipit = "witnessIncipit" + i;
+                explicit = "witnessExplicit" + i;
+                finalRubric = "witnessFinalRubric" + i;
+                colophon = "witnessColophon" + i;
+                bibliography = "witnessBibliography" + i;
+                editions = "witnessEditions" + i;
+                secondaryLiterature = "witnessSecondaryLiterature" + i;
+                authorRecord = "witnessAuthorRecord" + i;
+                siglumTex = "witnessSiglumTex" + i;
+                notes = "witnessNotes" + i;
 
-                }
-            )
-            .subscribe({
-                onNext: () => {
-                    res.redirect(`../edit/${idEdition}-${idEditor}`);
-                },
-                onCompleted: () => {
-                    console.log("Data added to the database")
-                },
-                onError: err => {
-                    console.log("Error related to Neo4j action /addWitnesses/:id: " + err)
-                }
-            })
-        );
+                tx.run(
+                    `
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)  
+                    WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                    OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
+                    MERGE (witness:Witness {
+                        siglum: "${req.body[base]}" + "<sup>" + "${req.body[superscript]}" + "</sup><sub>" + "${req.body[subscript]}" + "</sub>",
+                        provenance: "${req.body[provenance]}",
+                        settlement: "${req.body[settlement]}",
+                        collection: "${req.body[collection]}",
+                        classmark: "${req.body[classmark]}",
+                        antigraph: "${req.body[antigraph]}",
+                        author: "${req.body[author]}",
+                        title: "${req.body[title]}",
+                        language: "${req.body[language]}",
+                        scripts: "${req.body[scripts]}",
+                        structuralTypology: "${req.body[structuralTypology]}",
+                        state: "${req.body[state]}",
+                        condition: "${req.body[condition]}",
+                        format: "${req.body[format]}",
+                        material: "${req.body[material]}",
+                        dimensions: "${req.body[dimensions]}",
+                        extent: "${req.body[extent]}",
+                        binding: "${req.body[binding]}",
+                        foliation: "${req.body[foliation]}",
+                        date: "${req.body[date]}",
+                        people: "${req.body[people]}",
+                        marginalia: "${req.body[marginalia]}",
+                        initialRubric: "${req.body[initialRubric]}",
+                        incipit: "${req.body[incipit]}",
+                        explicit: "${req.body[explicit]}",
+                        finalRubric: "${req.body[finalRubric]}",
+                        colophon: "${req.body[colophon]}",
+                        bibliography: "${req.body[bibliography]}",
+                        editions: "${req.body[editions]}",
+                        secondaryLiterature: "${req.body[secondaryLiterature]}",
+                        authorRecord: "${req.body[authorRecord]}",
+                        siglumTex: "${req.body[siglumTex]}",
+                        notes: "${req.body[notes]}"
+                    })
+                    MERGE (edition)<-[:USED_IN]-(witness)
+                    RETURN *
+                    `
+                )
+                    .subscribe({
+                        onCompleted: () => {
+                            console.log("Data added to the database")
+                        },
+                        onError: err => {
+                            console.log("Error related to Neo4j action /addWitnesses/:id: " + err)
+                        }
+                    })
+                i++;
+            });
+        });
     } catch (err) {
         console.log("Error related to Neo4j action /addWitnesses/:id: " + err);
     } finally {
+        res.redirect(`../edit/${idEdition}-${idEditor}`);
         await session.close();
     };
 });

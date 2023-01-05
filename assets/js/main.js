@@ -346,6 +346,7 @@ let cloneEl = () => {
             });
 
             /* change the id of the autocomplete cloned */
+            /* variants */
             if (cloned.classList.contains("data-list") == true) {
                 /* change the id of the autocomplete cloned */
                 var idToClone = cloned.querySelectorAll("[data-list]")[0].getAttribute("id");
@@ -432,10 +433,17 @@ let cloneEl = () => {
                 /* initialize the new textarea */
                 setTimeout("textarea()", 500);
             } else {
+                /* witnesses */
                 /* expand sections */
                 var idToChange = cloned.querySelector("a.expand-section").getAttribute("href");
                 cloned.querySelector("a.expand-section").setAttribute("href", "#expand-metadata" + i);
                 cloned.querySelector(idToChange).setAttribute("id", "expand-metadata" + i);
+                var clonedInputs = cloned.querySelectorAll("[name]");
+                clonedInputs.forEach((input) => {
+                    var val = input.getAttribute("name").slice(0, -1) + i;
+                    input.setAttribute("name", val);
+                });
+                i ++;
             };
 
             /* print the clone */
