@@ -45,19 +45,14 @@ router.post("/addApparatus/:id",
 
                     /* remove "all" from padas arrays */
                     var padaStartArr = req.body.padaStart;
-                    if (padaStartArr.includes("all")) {
-                        var idx = padaStartArr.indexOf("all");
-                        if (idx != 1) {
-                            padaStartArr.splice(idx, 1);
-                        };
+
+                    if (padaStartArr.includes("a") && padaStartArr.includes("b") && padaStartArr.includes("c") && padaStartArr.includes("d") && padaStartArr.includes("e") && padaStartArr.includes("f")) {
+                        padaStartArr = [];
                     };
                     
                     var padaEndArr = req.body.padaEnd;
-                    if (padaEndArr.includes("all")) {
-                        var idx = padaEndArr.indexOf("all");
-                        if (idx != 1) {
-                            padaEndArr.splice(idx, 1);
-                        };
+                    if (padaEndArr.includes("a") && padaEndArr.includes("b") && padaEndArr.includes("c") && padaEndArr.includes("d") && padaEndArr.includes("e") && padaEndArr.includes("f")) {
+                        padaEndArr = [];
                     };
 
                     /* variant additions */
