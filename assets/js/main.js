@@ -83,7 +83,7 @@ let textarea = () => {
     var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     tinymce.init({
         selector: ".textarea-container textarea",
-        resize: false,
+        resize: "both",
         width: "100%",
         plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
         menubar: "file edit view insert format tools table help",
