@@ -947,20 +947,33 @@ let closeBtn = () => {
 /* textarea live check in textarea() */
 let liveCheck = () => {
     var input = document.querySelectorAll(".live-check");
-    var checkedArr = [];
+    var padaStart = [];
+    var padaEnd = [];
+
     input.forEach((el) => {
         "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
-                /* truncation */
+                /* radios */
                 var radiosParents = el.parentNode.querySelectorAll(".form-check");
                 radiosParents.forEach((radioParent) => {
                     var radios = radioParent.querySelectorAll("[type='radio']");
                     radios.forEach((radio) => {
                         radio.addEventListener("change", () => {
+                            /* truncation */
                             document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
                         });
                     });
                 });
+                /* lemma */
+                if (el.getAttribute("name") == "stanzaEnd") {
+                    if (el.value !== "") {
+                        /* add dash */
+                        document.getElementById("stanza-dash").classList.remove("d-none");
+                    } else {
+                        /* remove dash */
+                        document.getElementById("stanza-dash").classList.add("d-none");
+                    };
+                };
                 /* lemma */
                 if (el.getAttribute("name") == "lemma") {
                     /* bracket */
@@ -968,19 +981,41 @@ let liveCheck = () => {
                 };
                 /* checkbox */
                 if (el.getAttribute("type") == "checkbox") {
-                    if (el.checked === true) {
-                        if (checkedArr.includes(el.value) === false) {
-                            checkedArr.push(el.value);
-                        };
-                    } else {
-                        if (checkedArr.includes(el.value) === true) {
-                            var index = checkedArr.indexOf(el.value);
-                            if (index !== -1) {
-                                checkedArr.splice(index, 1);
+                    /* pada start */
+                    if (el.getAttribute("name") == "padaStart") {
+                        /* add value */
+                        if (el.checked === true) {
+                            if (padaStart.includes(el.value) === false) {
+                                padaStart.push(el.value);
+                            };
+                        } else {
+                            /* remove value */
+                            if (padaStart.includes(el.value) === true) {
+                                var index = padaStart.indexOf(el.value);
+                                if (index !== -1) {
+                                    padaStart.splice(index, 1);
+                                };
                             };
                         };
+                        document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(padaStart).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+                    } else {
+                        /* pada end */
+                        /* add value */
+                        if (el.checked === true) {
+                            if (padaEnd.includes(el.value) === false) {
+                                padaEnd.push(el.value);
+                            };
+                        } else {
+                            /* remove value */
+                            if (padaEnd.includes(el.value) === true) {
+                                var index = padaEnd.indexOf(el.value);
+                                if (index !== -1) {
+                                    padaEnd.splice(index, 1);
+                                };
+                            };
+                        };
+                        document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(padaEnd).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                     };
-                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(checkedArr).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                 } else {
                     /* other elements */
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[;]/g, " ");

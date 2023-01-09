@@ -7,20 +7,20 @@
     <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
     <h1>Register</h1>
   </div>
-  <form action="/register" method="POST">
+  <form class="login-form" action="/register" method="POST">
     <div class="mb-3">
       <label for="name">Full name</label>
-      <input type="text" name="name" required>
+      <input class="form-control" type="text" name="name" required>
       <div id="emailHelp" class="form-text">Insert your name first, then your surname.</div>
     </div>
     <div class="mb-3">
       <label for="email">Email</label>
-      <input type="email" name="email" required>
+      <input class="form-control" type="email" name="email" required>
       <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
     </div>
     <div class="mb-3">
       <label for="password">Password</label>
-      <input type="password" name="password" required>
+      <input class="form-control" type="password" name="password" required>
     </div>
     <div class="mb-3">
       <button type="submit" class="btn btn-primary">Register</button>
