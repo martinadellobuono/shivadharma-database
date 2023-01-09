@@ -12003,6 +12003,11 @@ body {
   color: #f8f9fa;
 }
 
+.btn-yellow {
+  background-color: #ffcd39;
+  color: #212529;
+}
+
 /* btn hover */
 .btn-orange:hover {
   background-color: #fd7e14;
@@ -12022,6 +12027,10 @@ body {
 .btn-teal:hover {
   background-color: #79dfc1;
   color: #f8f9fa;
+}
+
+.btn-yellow:hover {
+  background-color: #ffda6a;
 }
 
 /* cursor */

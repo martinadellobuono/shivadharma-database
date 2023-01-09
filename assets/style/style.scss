@@ -46,6 +46,11 @@ body {
     color: $light;
 }
 
+.btn-yellow {
+    background-color: $yellow-400;
+    color: $dark;
+}
+
 /* btn hover */
 .btn-orange:hover {
     background-color: $orange;
@@ -65,6 +70,10 @@ body {
 .btn-teal:hover {
     background-color: $teal-300;
     color: $light;
+}
+
+.btn-yellow:hover {
+    background-color: $yellow-300;
 }
 
 /* cursor */

@@ -12,7 +12,10 @@
   <% entryDict["lemma"].forEach((el) => { %>
 
   <!-- robaMia += lemma ___; -->
-  <span data-type="apparatus" data-subtype="location"><span data-type="apparatus" data-subtype="stanza"><%= el["stanza"]; %></span><span data-type="apparatus" data-subtype="pada"><%= el["pada"]; %></span></span>
+  <span data-type="apparatus" data-subtype="location">
+    <span data-type="apparatus" data-subtype="stanza-start"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start"><%= el["padaStart"]; %></span>
+    <span data-type="apparatus" data-subtype="stanza-end"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end"><%= el["padaEnd"]; %></span>
+  </span>
 
   <!-- lemma -->
   <% var lemma = el["lemma"].split("___")[0] %>

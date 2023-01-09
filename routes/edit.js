@@ -124,9 +124,11 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma */
                                 var lemma = el;
 
-                                /* stanzas / padas / notes / lemma dictionary */
-                                var stanzas = [];
-                                var padas = [];
+                                /* stanza start / pada start / stanza end / pada end / notes / lemma dictionary */
+                                var stanzaStart = [];
+                                var padaStart = [];
+                                var stanzaEnd = [];
+                                var padaEnd = [];
                                 var notes = [];
                                 var lemmaDict = []
 
@@ -138,15 +140,25 @@ router.get("/edit/:id", async (req, res) => {
                                     if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_LEMMA") {
-                                                /* stanzas */
-                                                var stanza = el["start"]["properties"]["stanza"];
-                                                if (!stanzas.includes(stanza)) {
-                                                    stanzas.push(stanza);
+                                                /* stanza start */
+                                                var stanza = el["start"]["properties"]["stanzaStart"];
+                                                if (!stanzaStart.includes(stanza)) {
+                                                    stanzaStart.push(stanza);
                                                 };
-                                                /* padas */
-                                                var pada = el["start"]["properties"]["pada"];
-                                                if (!padas.includes(pada)) {
-                                                    padas.push(pada);
+                                                /* pada start */
+                                                var pada = el["start"]["properties"]["padaStart"];
+                                                if (!padaStart.includes(pada)) {
+                                                    padaStart.push(pada);
+                                                };
+                                                /* stanza end */
+                                                var stanza = el["start"]["properties"]["stanzaEnd"];
+                                                if (!stanzaEnd.includes(stanza)) {
+                                                    stanzaEnd.push(stanza);
+                                                };
+                                                /* pada end */
+                                                var pada = el["start"]["properties"]["padaEnd"];
+                                                if (!padaEnd.includes(pada)) {
+                                                    padaEnd.push(pada);
                                                 };
                                                 /* notes */
                                                 var note = el["end"]["properties"]["notes"];
@@ -175,8 +187,10 @@ router.get("/edit/:id", async (req, res) => {
                                 lemmaDict.push({
                                     lemma: lemma,
                                     witnesses: witnesses,
-                                    stanza: stanzas,
-                                    pada: padas,
+                                    stanzaStart: stanzaStart,
+                                    padaStart: padaStart,
+                                    stanzaEnd: stanzaEnd,
+                                    padaEnd: padaEnd,
                                     notes: notes
                                 });
 
@@ -209,7 +223,6 @@ router.get("/edit/:id", async (req, res) => {
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
-
                                         /* variant / witnesses / notes */
                                         if (obj["start"]["labels"] == "Variant") {
                                             if (obj["start"]["properties"]["value"] == variant) {

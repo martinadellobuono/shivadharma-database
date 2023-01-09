@@ -42,6 +42,25 @@ router.post("/addApparatus/:id",
         try {
             await session.writeTransaction((tx) => {
                 variants.forEach((variant) => {
+
+                    /* remove "all" from padas arrays */
+                    var padaStartArr = req.body.padaStart;
+                    if (padaStartArr.includes("all")) {
+                        var idx = padaStartArr.indexOf("all");
+                        if (idx != 1) {
+                            padaStartArr.splice(idx, 1);
+                        };
+                    };
+                    
+                    var padaEndArr = req.body.padaEnd;
+                    if (padaEndArr.includes("all")) {
+                        var idx = padaEndArr.indexOf("all");
+                        if (idx != 1) {
+                            padaEndArr.splice(idx, 1);
+                        };
+                    };
+
+                    /* variant additions */
                     manuscriptVariant = "manuscriptVariant" + i;
                     notesVariant = "variant" + i + "Omission";
 
@@ -63,7 +82,7 @@ router.post("/addApparatus/:id",
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                             WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
+                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${padaStartArr}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${padaEndArr}"})
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                             CREATE (lemma:Lemma {value: "${lemmaReq}", notes: "${req.body.lemmaOmission}"})
                             CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)
