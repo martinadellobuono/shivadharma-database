@@ -13,8 +13,8 @@
 
   <!-- robaMia += lemma ___; -->
   <span data-type="apparatus" data-subtype="location">
-    <span data-type="apparatus" data-subtype="stanza-start"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start"><%= el["padaStart"]; %></span>
-    <span data-type="apparatus" data-subtype="stanza-end"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end"><%= el["padaEnd"]; %></span>
+    <span data-type="apparatus" data-subtype="stanza-start"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start"><%= el["padaStart"].join().replace(/,/g, ""); %></span>
+    <span data-type="apparatus" data-subtype="stanza-end"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end"><%= el["padaEnd"].join().replace(/,/g, ""); %></span>
   </span>
 
   <!-- lemma -->
