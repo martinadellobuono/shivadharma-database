@@ -344,10 +344,12 @@ let cloneEl = () => {
             closeDiv.innerHTML = `<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
             cloned.insertBefore(closeDiv, cloned.firstChild);
 
-            /* empty the forms */
+            /* empty the forms - not radios and checkboxes */
             var forms = cloned.querySelectorAll("input");
             forms.forEach((el) => {
-                el.value = "";
+                if (el.getAttribute("type") !== "radio" && el.getAttribute("type") !== "checkbox") {
+                    el.value = "";
+                };
             });
 
             /* variants */
@@ -355,6 +357,7 @@ let cloneEl = () => {
                 /* change the name of the cloned input */
                 cloned.querySelector("input[name='variant0']").setAttribute("name", "variant" + i);
                 cloned.querySelector("input[name='manuscriptVariant0']").setAttribute("name", "manuscriptVariant" + i);
+
                 /* change the name of the presence radios */
                 var checkPresence = cloned.querySelectorAll(".check-presence");
                 checkPresence.forEach((presence) => {
@@ -453,7 +456,31 @@ let cloneEl = () => {
                     var val = input.getAttribute("name").slice(0, -1) + i;
                     input.setAttribute("name", val);
                 });
-                i++;
+
+                /* textareas */
+                var textareas = cloned.querySelectorAll("[data-type='witness-metadata']");
+                var name;
+                textareas.forEach((textarea) => {
+                    name = textarea.getAttribute("name");
+                    var container = textarea.parentNode;
+                    /* remove the cloned textarea */
+                    textarea.remove();
+                    /* create new textareas */
+                    var newTextarea = document.createElement("textarea");
+                    container.innerHTML = "";
+                    container.appendChild(newTextarea);
+                    /* set the attributes to the new textarea */
+                    newTextarea.setAttribute("class", "mt-1");
+                    newTextarea.setAttribute("data-type", "witness-metadata");
+                    /* newTextarea.setAttribute("data-subtype", "omissionComment"); */
+                    newTextarea.setAttribute("aria-hidden", "true");
+                    newTextarea.setAttribute("name", name);
+                    newTextarea.setAttribute("id", name);
+                    /* initialize the new textarea */
+                    setTimeout("textarea()", 500);
+                });
+
+                //i++;
             };
 
             /* autocomplete */
@@ -1164,14 +1191,14 @@ let witArea = () => {
             /* convert width height */
             var numericValues = document.querySelectorAll("[data-ref=" + e.target.getAttribute("name") + "]");
             numericValues.forEach((val) => {
-                if (selectedUnit.value == "cm") {                    
+                if (selectedUnit.value == "cm") {
                     var x = val.value;
                     var y = 2.54;
-                    val.value = x*y;
+                    val.value = x * y;
                 } else {
                     var x = val.value;
                     var y = 2.54;
-                    val.value = x/y;
+                    val.value = x / y;
                 };
             });
         });
