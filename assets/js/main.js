@@ -1039,6 +1039,7 @@ let liveCheckPresence = () => {
                 omittedInput.value = "";
                 /* print om. in live check */
                 liveCheck.innerHTML = "om.";
+                document.getElementById("lemma-bracket").classList.add("d-none");
             } else {
                 /* empty the live check */
                 liveCheck.innerHTML = "";
