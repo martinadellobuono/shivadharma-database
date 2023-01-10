@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     annotations();
     cancelAnnotations();
     closeBtn();
+    modifyAnnotations();
     liveCheck();
     liveCheckPresence();
     checkAnnotatedFragments();
@@ -942,6 +943,54 @@ let closeBtn = () => {
         });
     });
 };
+
+
+
+
+/* TRY */
+let modifyAnnotations = () => {
+    var modifyBtn = document.querySelectorAll(".modify-btn");
+    modifyBtn.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            var type = btn.getAttribute("data-type");
+            var dataContainer = btn.closest(".container-" + type);
+            var data = dataContainer.querySelectorAll("[data-name]");
+            /* click on the annotate tab */
+            var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
+            tab.click();
+            /* input to fill in */
+            data.forEach((el) => {
+                var form = document.getElementById(type + "-req");
+                var name = el.getAttribute("data-name");
+                var val = el.getAttribute("data-fill");
+                var inputType = form.querySelector("[name='" + name + "']").getAttribute("type");
+                /* fill the input */
+                if (inputType == "checkbox") {
+                    /* checkbox */
+                    /* remove the check */
+                    var checks = form.querySelectorAll("[name='" + name + "']");
+                    checks.forEach((check) => {
+                        check.checked = false;
+                    });
+                    /* check */
+                    var vals = val.split(",");
+                    vals.forEach((el) => {
+                        form.querySelector("[name='" + name + "'][value='" + el + "']").checked = true;
+                    });
+                } else {
+                    /* other type of input */
+                    form.querySelector("[name='" + name + "']").value = val;
+                };
+
+            });
+
+        });
+    });
+};
+/* / */
+
+
+
 
 /* live check */
 /* textarea live check in textarea() */

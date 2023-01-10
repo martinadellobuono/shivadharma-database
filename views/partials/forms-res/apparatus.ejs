@@ -1,20 +1,15 @@
 <% for (var i = 0; i < allEntryDict.length; i++) { %>
 
-
-<!-- var robaMia = ""; -->
-
-
 <% allEntryDict[i].forEach((entryDict) => { %>
 
-<div class="p-3 mt-3 bg-white" data-type="apparatus" data-subtype="apparatus-entry">
+<div class="p-3 mt-3 bg-white container-apparatus" data-type="apparatus" data-subtype="apparatus-entry">
 
   <!-- lemma / location -->
   <% entryDict["lemma"].forEach((el) => { %>
 
-  <!-- robaMia += lemma ___; -->
   <span data-type="apparatus" data-subtype="location">
-    <span data-type="apparatus" data-subtype="stanza-start"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start"><%= el["padaStart"].join().replace(/,/g, ""); %></span>
-    <span data-type="apparatus" data-subtype="stanza-end"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end"><%= el["padaEnd"].join().replace(/,/g, ""); %></span>
+    <span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>'><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>'><%= el["padaStart"].join().replace(/,/g, ""); %></span>
+    <span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>'><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>'><%= el["padaEnd"].join().replace(/,/g, ""); %></span>
   </span>
 
   <!-- lemma -->
@@ -22,10 +17,10 @@
 
   <!-- lemma omitted -->
   <% if (lemma == "lemmaOmission") { %>
-  <span data-type="apparatus" data-subtype="lemma">om.</span>
+  <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-presence="lemma-omission">om.</span>
   <% } else { %>
   <!-- lemma -->
-  <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]; %></span>
+  <span class="fst-italic" data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-presence="lemma-present"><%= el["lemma"]; %></span>
   <span>&#x5d;</span>
   <% }; %>
 
@@ -47,8 +42,6 @@
 
   <!-- variant / witnesses -->
   <% entryDict["variants"].forEach((el) => { %>
-
-  <!-- robaMia += variante---; -->
 
   <!-- variant -->
   <% var variant = el["variant"].split("___")[0] %>
@@ -82,8 +75,7 @@
 
   <!-- modify button -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <!-- robaMia da inserire come variabile encode uri component roba mia tra parentesi / dall'altra parte fai il decode  -->
-    <button class="btn btn-sm btn-warning" data-robaMia='robaMia' type="button">Modify</button>
+    <button class="btn btn-sm btn-warning modify-btn" type="button" data-type="apparatus">Modify</button>
   </div>
 </div>
 
