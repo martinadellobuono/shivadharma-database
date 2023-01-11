@@ -65,9 +65,7 @@
     <% }; %>
 
     <!-- omission notes -->
-    <% if (variant == "variantOmission") { %>
-    <span class="live-omission-note" data-type="apparatus" data-subtype="variantOmission"><%- el["notes"]; %></span>
-    <% }; %>
+    <span class="live-omission-note" data-type="apparatus" data-subtype="variantOmission" data-name="variant<%= el['numbers'] %>Omission" data-fill='<%= el["notes"]; %>'><%- el["notes"]; %></span>
 
   </span>
 

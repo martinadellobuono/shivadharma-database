@@ -1004,17 +1004,16 @@ let modifyAnnotations = () => {
                 let updateTextareas = () => {
                     var textareas = form.querySelectorAll("textarea[name='" + name + "']");
                     textareas.forEach((textarea) => {
-                        var idTextarea = textarea.id;
-                        tinyMCE.get(idTextarea).setContent(val);
+                        let printTxt = () => {
+                            tinyMCE.get(textarea.id).setContent(val);
+                        };
+                        setTimeout(printTxt, 1000);
                     });
                 };
-
                 /* clones the variant containers */
                 let cloneVariant = () => {
                     if (el.getAttribute("data-subtype") == "variant") {
-                        if (el.getAttribute("data-name") == "variant0") {
-                            console.log("variant0");
-                        } else {
+                        if (el.getAttribute("data-name") !== "variant0") {
                             form.querySelector("[data-clone='variant']").click();
                         };
                     };

@@ -248,8 +248,10 @@ router.get("/edit/:id", async (req, res) => {
                                                 };
                                                 /* notes */
                                                 var note = obj["start"]["properties"]["notes"];
-                                                if (!notes.includes(note)) {
-                                                    notes.push(note);
+                                                if (note !== "") {
+                                                    if (!notes.includes(note)) {
+                                                        notes.push(note);
+                                                    };
                                                 };
                                             };
                                         };
