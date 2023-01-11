@@ -17,10 +17,10 @@
 
   <!-- lemma omitted -->
   <% if (lemma == "lemmaOmission") { %>
-  <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-presence="lemma-omission">om.</span>
+  <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-radio="lemma-omission">om.</span>
   <% } else { %>
   <!-- lemma -->
-  <span class="fst-italic" data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-presence="lemma-present"><%= el["lemma"]; %></span>
+  <span class="fst-italic" data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-radio="lemma-present"><%= el["lemma"]; %></span>
   <span>&#x5d;</span>
   <% }; %>
 
