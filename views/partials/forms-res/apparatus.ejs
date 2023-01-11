@@ -25,7 +25,6 @@
   <% }; %>
 
   <!-- witnesses -->
-  <% var witnesses = el["witnesses"]; %>
   <span data-name="manuscriptLemma" data-fill='<%= el["witnesses"]; %>'></span>
   <% if (el["witnesses"].split(" ; ").length > 1) { %>
   <% el["witnesses"].split(" ; ").forEach((witness) => { %>
@@ -56,12 +55,13 @@
     <% }; %>
 
     <!-- witnesses -->
-    <% if (el["witnesses"].length > 1) { %>
-    <% el["witnesses"].forEach((witness) => { %>
-    <%= witness %>
+    <span data-name="manuscriptVariant<%= el['numbers'] %>" data-fill='<%= el["witnesses"]; %>'></span>
+    <% if (el["witnesses"].split(" ; ").length > 1) { %>
+    <% el["witnesses"].split(" ; ").forEach((witness) => { %>
+    <span data-type="apparatus" data-subtype="witness"><%= witness %></span>
     <% }); %>
     <% } else { %>
-    <%= el["witnesses"]; %>
+    <span data-type="apparatus" data-subtype="witness"><%= el["witnesses"]; %></span>
     <% }; %>
 
     <!-- omission notes -->

@@ -258,7 +258,7 @@ router.get("/edit/:id", async (req, res) => {
                                     /* variant / witness dict */
                                     variantDict.push({
                                         variant: variant,
-                                        witnesses: witnesses,
+                                        witnesses: witnesses.join(" ; "),
                                         numbers: numbers,
                                         notes: notes
                                     });
