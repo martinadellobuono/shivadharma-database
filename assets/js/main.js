@@ -989,9 +989,11 @@ let modifyAnnotations = () => {
                 });
                 /* radios */
                 if (el.hasAttribute("data-radio")) {
-                    var val = el.getAttribute("data-radio");
-                    var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
-                    radio.click();
+                    var vals = el.getAttribute("data-radio").split(" ");
+                    vals.forEach((val) => {
+                        var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
+                        radio.click();
+                    });
                 };
             });
 

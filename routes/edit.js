@@ -124,11 +124,12 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma */
                                 var lemma = el;
 
-                                /* stanza start / pada start / stanza end / pada end / notes / lemma dictionary */
+                                /* stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
                                 var stanzaStart = [];
                                 var padaStart = [];
                                 var stanzaEnd = [];
                                 var padaEnd = [];
+                                var truncation = [];
                                 var notes = [];
                                 var lemmaDict = []
 
@@ -159,6 +160,13 @@ router.get("/edit/:id", async (req, res) => {
                                                 var pada = el["start"]["properties"]["padaEnd"];
                                                 if (!padaEnd.includes(pada)) {
                                                     padaEnd.push(pada);
+                                                };
+                                                /* truncation */
+                                                var truncationVal = el["end"]["properties"]["truncation"];
+                                                if (truncationVal !== undefined) {
+                                                    if (!truncation.includes(truncationVal)) {
+                                                        truncation.push(truncationVal);
+                                                    };
                                                 };
                                                 /* notes */
                                                 var note = el["end"]["properties"]["notes"];
@@ -191,6 +199,7 @@ router.get("/edit/:id", async (req, res) => {
                                     padaStart: padaStart,
                                     stanzaEnd: stanzaEnd,
                                     padaEnd: padaEnd,
+                                    truncation: truncation,
                                     notes: notes
                                 });
 
