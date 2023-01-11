@@ -992,6 +992,12 @@ let modifyAnnotations = () => {
                 lists.forEach((list) => {
                     list.value = val;
                 });
+                /* textareas */
+                var textareas = form.querySelectorAll("textarea[name='" + name + "']");
+                textareas.forEach((textarea) => {
+                    var idTextarea = textarea.id;
+                    tinyMCE.get(idTextarea).setContent(val);            
+                });
                 /* radios */
                 /* if (el.hasAttribute("data-radio")) {
                     var vals = el.getAttribute("data-radio").split(" ");

@@ -35,11 +35,8 @@
   <span data-type="apparatus" data-subtype="witness"><%- el["witnesses"]; %></span>
   <% }; %>
 
-  <!-- lemma omission notes -->
-  <% if (lemma == "lemmaOmission") { %>
-  <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission"><%- el["notes"]; %></span>
-  <% }; %>
-
+  <!-- lemma notes -->
+  <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission" data-name="lemmaNotes" data-fill='<%= el["notes"]; %>'><%- el["notes"]; %></span>
   <% }); %>
 
   <!-- variant / witnesses -->

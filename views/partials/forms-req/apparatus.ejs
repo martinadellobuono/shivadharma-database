@@ -173,13 +173,14 @@
               <% }; %>
               <% }); %>
               <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+              <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               <% }; %>
             </div>
             <!-- additional notes -->
             <div class="p-3 bg-light">
               <label class="form-label">Additional notes</label>
               <div class="textarea-container">
-                <textarea class="mt-1 live-check" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="lemmaOmission" id="lemmaOmissionEditor"></textarea>
+                <textarea class="mt-1 live-check" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="lemmaNotes" id="lemmaNotes"></textarea>
               </div>
             </div>
           </div>
@@ -234,6 +235,7 @@
               <% }; %>
               <% }); %>
               <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
+              <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               <% }; %>
             </div>
             <!-- additional notes -->
