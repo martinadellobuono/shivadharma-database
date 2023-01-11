@@ -1007,12 +1007,13 @@ let modifyAnnotations = () => {
                         let printTxt = () => {
                             tinyMCE.get(textarea.id).setContent(val);
                         };
-                        setTimeout(printTxt, 1000);
+                        setTimeout(printTxt, 2000);
                     });
                 };
                 /* clones the variant containers */
                 let cloneVariant = () => {
                     if (el.getAttribute("data-subtype") == "variant") {
+                        /* click on the button to clone the variant container */
                         if (el.getAttribute("data-name") !== "variant0") {
                             form.querySelector("[data-clone='variant']").click();
                         };
@@ -1042,7 +1043,6 @@ let modifyAnnotations = () => {
                     updateTextareas();
                 };
             });
-
         });
     });
 };
