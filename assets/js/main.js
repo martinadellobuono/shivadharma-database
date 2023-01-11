@@ -951,7 +951,14 @@ let closeBtn = () => {
 let modifyAnnotations = () => {
     var modifyBtn = document.querySelectorAll(".modify-btn");
     modifyBtn.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", () => {
+            /* remove the clones by default */
+            var formContainer = document.getElementById(btn.getAttribute("data-type") + "-req");
+            var cloneContainers = formContainer.querySelectorAll(".cloned-el");
+            cloneContainers.forEach((clone) => {
+                clone.remove();
+            });
+
             var type = btn.getAttribute("data-type");
             var dataContainer = btn.closest(".container-" + type);
             var data = dataContainer.querySelectorAll("[data-name]");
