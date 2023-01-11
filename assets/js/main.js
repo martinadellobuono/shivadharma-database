@@ -1005,23 +1005,37 @@ let modifyAnnotations = () => {
                     var textareas = form.querySelectorAll("textarea[name='" + name + "']");
                     textareas.forEach((textarea) => {
                         var idTextarea = textarea.id;
-                        tinyMCE.get(idTextarea).setContent(val);            
+                        tinyMCE.get(idTextarea).setContent(val);
                     });
                 };
-                
-                /* radios */
+
+                /* clones the variant containers */
+                let cloneVariant = () => {
+                    if (el.getAttribute("data-subtype") == "variant") {
+                        if (el.getAttribute("data-name") == "variant0") {
+                            console.log("variant0");
+                        } else {
+                            form.querySelector("[data-clone='variant']").click();
+                        };
+                    };
+                };
+
+                /* radio */
                 if (el.hasAttribute("data-radio")) {
+                    cloneVariant();
                     updateNumbers();
                     updateTexts();
                     updateCheckbox();
                     updateLists();
                     updateTextareas();
+                    /* update radio */
                     var vals = el.getAttribute("data-radio").split(" ");
                     vals.forEach((val) => {
                         var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
                         radio.click();
                     });
                 } else {
+                    cloneVariant();
                     updateNumbers();
                     updateTexts();
                     updateCheckbox();
