@@ -93,7 +93,7 @@ router.post("/addApparatus/:id",
                                 MERGE (witness:Witness {siglum: wit})
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
-                            MERGE (variant:Variant {value: "${variantReq}", notes: "${req.body[notesVariant]}"})
+                            MERGE (variant:Variant {value: "${variantReq}", number: "${i}", notes: "${req.body[notesVariant]}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
                                     MERGE (witness:Witness {siglum: wit})

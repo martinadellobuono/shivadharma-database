@@ -965,47 +965,69 @@ let modifyAnnotations = () => {
                 var val = el.getAttribute("data-fill");
                 /* fill the input */
                 /* numbers */
-                var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
-                numbers.forEach((number) => {
-                    number.value = val;
-                });
-                /* texts */
-                var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
-                texts.forEach((text) => {
-                    text.value = val;
-                });
-                /* checkbox */
-                var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
-                checkboxes.forEach((checkbox) => {
-                    /* uncheck */
-                    checkbox.checked = false;
-                    /* check */
-                    var values = val.split(",");
-                    values.forEach((v) => {
-                        if (checkbox.getAttribute("value") == v) {
-                            checkbox.checked = true;
-                        };
+                let updateNumbers = () => {
+                    var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
+                    numbers.forEach((number) => {
+                        number.value = val;
                     });
-                });
+                };
+                /* texts */
+                let updateTexts = () => {
+                    var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
+                    texts.forEach((text) => {
+                        text.value = val;
+                    });
+                };
+                /* checkbox */
+                let updateCheckbox = () => {
+                    var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
+                    checkboxes.forEach((checkbox) => {
+                        /* uncheck */
+                        checkbox.checked = false;
+                        /* check */
+                        var values = val.split(",");
+                        values.forEach((v) => {
+                            if (checkbox.getAttribute("value") == v) {
+                                checkbox.checked = true;
+                            };
+                        });
+                    });
+                };
                 /* lists */
-                var lists = form.querySelectorAll("[data-list][name='" + name + "']");
-                lists.forEach((list) => {
-                    list.value = val;
-                });
+                let updateLists = () => {
+                    var lists = form.querySelectorAll("[data-list][name='" + name + "']");
+                    lists.forEach((list) => {
+                        list.value = val;
+                    });
+                };
                 /* textareas */
-                var textareas = form.querySelectorAll("textarea[name='" + name + "']");
-                textareas.forEach((textarea) => {
-                    var idTextarea = textarea.id;
-                    tinyMCE.get(idTextarea).setContent(val);            
-                });
+                let updateTextareas = () => {
+                    var textareas = form.querySelectorAll("textarea[name='" + name + "']");
+                    textareas.forEach((textarea) => {
+                        var idTextarea = textarea.id;
+                        tinyMCE.get(idTextarea).setContent(val);            
+                    });
+                };
+                
                 /* radios */
-                /* if (el.hasAttribute("data-radio")) {
+                if (el.hasAttribute("data-radio")) {
+                    updateNumbers();
+                    updateTexts();
+                    updateCheckbox();
+                    updateLists();
+                    updateTextareas();
                     var vals = el.getAttribute("data-radio").split(" ");
                     vals.forEach((val) => {
                         var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
                         radio.click();
                     });
-                }; */
+                } else {
+                    updateNumbers();
+                    updateTexts();
+                    updateCheckbox();
+                    updateLists();
+                    updateTextareas();
+                };
             });
 
         });

@@ -49,9 +49,10 @@
 
     <!-- variant omitted -->
     <% if (variant == "variantOmission") { %>
-    <span data-type="apparatus" data-subtype="variant">om.</span>
+    <span data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>'>om.</span>
     <% } else { %>
-    <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= el["variant"] %></span>
+    <!-- variant -->
+    <span class="fst-italic" data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>'><%= el["variant"] %></span>
     <% }; %>
 
     <!-- witnesses -->

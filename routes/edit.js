@@ -228,6 +228,7 @@ router.get("/edit/:id", async (req, res) => {
                                 /* witnesses */
                                 variants.forEach((variant) => {
                                     var witnesses = [];
+                                    var numbers = [];
                                     var notes = [];
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
@@ -239,6 +240,11 @@ router.get("/edit/:id", async (req, res) => {
                                                 var witness = obj["end"]["properties"]["siglum"];
                                                 if (!witnesses.includes(witness)) {
                                                     witnesses.push(witness);
+                                                };
+                                                /* number */
+                                                var number = obj["start"]["properties"]["number"];
+                                                if (!numbers.includes(number)) {
+                                                    numbers.push(number);
                                                 };
                                                 /* notes */
                                                 var note = obj["start"]["properties"]["notes"];
@@ -253,6 +259,7 @@ router.get("/edit/:id", async (req, res) => {
                                     variantDict.push({
                                         variant: variant,
                                         witnesses: witnesses,
+                                        numbers: numbers,
                                         notes: notes
                                     });
 
