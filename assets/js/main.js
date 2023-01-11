@@ -969,7 +969,7 @@ let modifyAnnotations = () => {
                 numbers.forEach((number) => {
                     number.value = val;
                 });
-                /* text */
+                /* texts */
                 var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
                 texts.forEach((text) => {
                     text.value = val;
@@ -987,14 +987,19 @@ let modifyAnnotations = () => {
                         };
                     });
                 });
+                /* lists */
+                var lists = form.querySelectorAll("[data-list][name='" + name + "']");
+                lists.forEach((list) => {
+                    list.value = val;
+                });
                 /* radios */
-                if (el.hasAttribute("data-radio")) {
+                /* if (el.hasAttribute("data-radio")) {
                     var vals = el.getAttribute("data-radio").split(" ");
                     vals.forEach((val) => {
                         var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
                         radio.click();
                     });
-                };
+                }; */
             });
 
         });

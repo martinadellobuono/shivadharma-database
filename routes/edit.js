@@ -194,7 +194,7 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma / witnesses / stanza / pada dict */
                                 lemmaDict.push({
                                     lemma: lemma,
-                                    witnesses: witnesses,
+                                    witnesses: witnesses.join(" ; "),
                                     stanzaStart: stanzaStart,
                                     padaStart: padaStart,
                                     stanzaEnd: stanzaEnd,
