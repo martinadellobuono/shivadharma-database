@@ -480,8 +480,6 @@ let cloneEl = () => {
                     /* initialize the new textarea */
                     setTimeout("textarea()", 500);
                 });
-
-                //i++;
             };
 
             /* autocomplete */
@@ -944,10 +942,7 @@ let closeBtn = () => {
     });
 };
 
-
-
-
-/* TRY */
+/* modify annotations */
 let modifyAnnotations = () => {
     var modifyBtn = document.querySelectorAll(".modify-btn");
     modifyBtn.forEach((btn) => {
@@ -989,6 +984,10 @@ let modifyAnnotations = () => {
                     var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
                     texts.forEach((text) => {
                         text.value = val;
+                        /* selected fragment */
+                        if (name == "lemma") {
+                            form.querySelector("input[name='selectedFragment']").value = val;
+                        };
                         /* live check */
                         document.getElementById("live-" + name).innerHTML = val;
                     });
@@ -1064,10 +1063,6 @@ let modifyAnnotations = () => {
         });
     });
 };
-/* / */
-
-
-
 
 /* live check */
 /* textarea live check in textarea() */
