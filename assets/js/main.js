@@ -1036,6 +1036,14 @@ let modifyAnnotations = () => {
                             tinyMCE.get(textarea.id).setContent(val);
                         };
                         setTimeout(printTxt, 2000);
+                        /* live check */
+                        var idTextarea = name.split("Omission")[0];
+                        if (idTextarea.indexOf("Notes") > -1) {
+                            idTextarea = name.split("Notes")[0];
+                            document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                        } else {
+                            document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                        };
                     });
                 };
 
