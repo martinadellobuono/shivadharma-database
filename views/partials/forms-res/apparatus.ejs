@@ -7,6 +7,7 @@
   <!-- lemma / location -->
   <% entryDict["lemma"].forEach((el) => { %>
 
+  <!-- location -->
   <span data-type="apparatus" data-subtype="location">
     <span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"].join().replace(/,/g, ""); %></span>
     <span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"><%= el["padaEnd"].join().replace(/,/g, ""); %></span>

@@ -42,8 +42,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
-                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, translation.value, app_entry, witnesses_relations
+                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, app_entry, witnesses_relations, translation.value
                 `
             )
             .subscribe({
@@ -282,6 +282,12 @@ router.get("/edit/:id", async (req, res) => {
                     } else {
                         allEntryDict = [];
                     };
+
+
+                    /* try */
+                    console.log(transl_temp);
+                    /* / */
+
 
                     /* page rendering */
                     if (fs.existsSync(path)) {

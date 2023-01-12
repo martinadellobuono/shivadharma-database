@@ -975,7 +975,9 @@ let modifyAnnotations = () => {
                     numbers.forEach((number) => {
                         number.value = val;
                         /* live check */
-                        document.getElementById("live-" + name).innerHTML = val;
+                        if (type == "apparatus") {
+                            document.getElementById("live-" + name).innerHTML = val;
+                        };
                     });
                 };
 
@@ -989,7 +991,9 @@ let modifyAnnotations = () => {
                             form.querySelector("input[name='selectedFragment']").value = val;
                         };
                         /* live check */
-                        document.getElementById("live-" + name).innerHTML = val;
+                        if (type == "apparatus") {
+                            document.getElementById("live-" + name).innerHTML = val;
+                        };
                     });
                 };
 
@@ -1014,7 +1018,9 @@ let modifyAnnotations = () => {
                         });
                     });
                     /* live check */
-                    document.getElementById("live-" + name).innerHTML = arr.join("");
+                    if (type == "apparatus") {
+                        document.getElementById("live-" + name).innerHTML = arr.join("");
+                    };
                 };
 
                 /* lists */
@@ -1023,7 +1029,9 @@ let modifyAnnotations = () => {
                     lists.forEach((list) => {
                         list.value = val;
                         /* live check */
-                        document.getElementById("live-" + name).innerHTML = val;
+                        if (type == "apparatus") {
+                            document.getElementById("live-" + name).innerHTML = val;
+                        };
                     });
                 };
 
@@ -1036,12 +1044,14 @@ let modifyAnnotations = () => {
                         };
                         setTimeout(printTxt, 2000);
                         /* live check */
-                        var idTextarea = name.split("Omission")[0];
-                        if (idTextarea.indexOf("Notes") > -1) {
-                            idTextarea = name.split("Notes")[0];
-                            document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
-                        } else {
-                            document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                        if (type == "apparatus") {
+                            var idTextarea = name.split("Omission")[0];
+                            if (idTextarea.indexOf("Notes") > -1) {
+                                idTextarea = name.split("Notes")[0];
+                                document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                            } else {
+                                document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                            };
                         };
                     });
                 };
