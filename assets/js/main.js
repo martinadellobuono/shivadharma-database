@@ -952,103 +952,105 @@ let modifyAnnotations = () => {
     var modifyBtn = document.querySelectorAll(".modify-btn");
     modifyBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
-            /* remove the clones by default */
-            var formContainer = document.getElementById(btn.getAttribute("data-type") + "-req");
-            var cloneContainers = formContainer.querySelectorAll(".cloned-el");
-            cloneContainers.forEach((clone) => {
-                clone.remove();
-            });
-
+            /* fill the form */
             var type = btn.getAttribute("data-type");
+            var form = document.getElementById(type + "-req");
             var dataContainer = btn.closest(".container-" + type);
             var data = dataContainer.querySelectorAll("[data-name]");
             /* click on the annotate tab */
             var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
             tab.click();
             /* input to fill in */
+            console.log("I dati iniziano qui");
             data.forEach((el) => {
-                var form = document.getElementById(type + "-req");
                 var name = el.getAttribute("data-name");
                 var val = el.getAttribute("data-fill");
+
+                if (el.getAttribute("data-subtype") == "variant") {
+                    if (el.getAttribute("data-name") !== "variant0") {
+                        form.querySelector("[data-clone='variant']").click();
+                    };
+                };
+                
                 /* fill the input */
                 /* numbers */
-                let updateNumbers = () => {
-                    var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
-                    numbers.forEach((number) => {
-                        number.value = val;
-                    });
-                };
+                /* let updateNumbers = () => { */
+                var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
+                numbers.forEach((number) => {
+                    number.value = val;
+                });
+                /* }; */
                 /* texts */
-                let updateTexts = () => {
-                    var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
-                    texts.forEach((text) => {
-                        text.value = val;
-                    });
-                };
+                /* let updateTexts = () => { */
+                var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
+                texts.forEach((text) => {
+                    text.value = val;
+                });
+                /* }; */
                 /* checkbox */
-                let updateCheckbox = () => {
-                    var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
-                    checkboxes.forEach((checkbox) => {
-                        /* uncheck */
-                        checkbox.checked = false;
-                        /* check */
-                        var values = val.split(",");
-                        values.forEach((v) => {
-                            if (checkbox.getAttribute("value") == v) {
-                                checkbox.checked = true;
-                            };
-                        });
-                    });
-                };
-                /* lists */
-                let updateLists = () => {
-                    var lists = form.querySelectorAll("[data-list][name='" + name + "']");
-                    lists.forEach((list) => {
-                        list.value = val;
-                    });
-                };
-                /* textareas */
-                let updateTextareas = () => {
-                    var textareas = form.querySelectorAll("textarea[name='" + name + "']");
-                    textareas.forEach((textarea) => {
-                        let printTxt = () => {
-                            tinyMCE.get(textarea.id).setContent(val);
+                /* let updateCheckbox = () => { */
+                var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
+                checkboxes.forEach((checkbox) => {
+                    /* uncheck */
+                    checkbox.checked = false;
+                    /* check */
+                    var values = val.split(",");
+                    values.forEach((v) => {
+                        if (checkbox.getAttribute("value") == v) {
+                            checkbox.checked = true;
                         };
-                        setTimeout(printTxt, 2000);
                     });
-                };
+                });
+                /* }; */
+                /* lists */
+                /* let updateLists = () => { */
+                var lists = form.querySelectorAll("[data-list][name='" + name + "']");
+                lists.forEach((list) => {
+                    list.value = val;
+                });
+                /* }; */
+                /* textareas */
+                /* let updateTextareas = () => { */
+                var textareas = form.querySelectorAll("textarea[name='" + name + "']");
+                textareas.forEach((textarea) => {
+                    let printTxt = () => {
+                        tinyMCE.get(textarea.id).setContent(val);
+                    };
+                    setTimeout(printTxt, 2000);
+                });
+                /* }; */
+
                 /* clones the variant containers */
-                let cloneVariant = () => {
+                /* let cloneVariant = () => {
                     if (el.getAttribute("data-subtype") == "variant") {
-                        /* click on the button to clone the variant container */
                         if (el.getAttribute("data-name") !== "variant0") {
                             form.querySelector("[data-clone='variant']").click();
                         };
                     };
-                };
+                }; */
 
                 /* radio */
-                if (el.hasAttribute("data-radio")) {
+                /* if (el.hasAttribute("data-radio")) {
                     cloneVariant();
                     updateNumbers();
                     updateTexts();
                     updateCheckbox();
                     updateLists();
                     updateTextareas();
-                    /* update radio */
                     var vals = el.getAttribute("data-radio").split(" ");
                     vals.forEach((val) => {
                         var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
                         radio.click();
                     });
-                } else {
-                    cloneVariant();
-                    updateNumbers();
-                    updateTexts();
-                    updateCheckbox();
-                    updateLists();
-                    updateTextareas();
-                };
+                } else { */
+                /* cloneVariant();
+                updateNumbers();
+                updateTexts();
+                updateCheckbox();
+                updateLists();
+                updateTextareas(); */
+                /* }; */
+
             });
         });
     });
