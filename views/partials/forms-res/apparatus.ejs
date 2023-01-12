@@ -8,8 +8,8 @@
   <% entryDict["lemma"].forEach((el) => { %>
 
   <span data-type="apparatus" data-subtype="location">
-    <span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>'><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>'><%= el["padaStart"].join().replace(/,/g, ""); %></span>
-    <span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>'><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>'><%= el["padaEnd"].join().replace(/,/g, ""); %></span>
+    <span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"].join().replace(/,/g, ""); %></span>
+    <span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"><%= el["padaEnd"].join().replace(/,/g, ""); %></span>
   </span>
 
   <!-- lemma -->
@@ -17,15 +17,15 @@
 
   <!-- lemma omitted -->
   <% if (lemma == "lemmaOmission") { %>
-  <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-radio='lemma-omission <%= el["truncation"]; %>'>om.</span>
+  <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-input="text" data-radio='lemma-omission <%= el["truncation"]; %>'>om.</span>
   <% } else { %>
   <!-- lemma -->
-  <span class="fst-italic" data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-radio='lemma-present <%= el["truncation"]; %>'><%= el["lemma"]; %></span>
+  <span class="fst-italic" data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]; %>' data-input="text" data-radio='lemma-present <%= el["truncation"]; %>'><%= el["lemma"]; %></span>
   <span>&#x5d;</span>
   <% }; %>
 
   <!-- witnesses -->
-  <span data-name="manuscriptLemma" data-fill='<%= el["witnesses"]; %>'></span>
+  <span data-name="manuscriptLemma" data-fill='<%= el["witnesses"]; %>' data-input="list"></span>
   <% if (el["witnesses"].split(" ; ").length > 1) { %>
   <% el["witnesses"].split(" ; ").forEach((witness) => { %>
   <span data-type="apparatus" data-subtype="witness"><%- witness %></span>
@@ -35,7 +35,7 @@
   <% }; %>
 
   <!-- lemma notes -->
-  <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission" data-name="lemmaNotes" data-fill='<%= el["notes"]; %>'><%- el["notes"]; %></span>
+  <span class="live-omission-note" data-type="apparatus" data-subtype="lemmaOmission" data-name="lemmaNotes" data-fill='<%= el["notes"]; %>' data-input="textarea"><%- el["notes"]; %></span>
   <% }); %>
 
   <!-- variant / witnesses -->
@@ -48,14 +48,14 @@
 
     <!-- variant omitted -->
     <% if (variant == "variantOmission") { %>
-    <span data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>'>om.</span>
+    <span data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>' data-input="text">om.</span>
     <% } else { %>
     <!-- variant -->
-    <span class="fst-italic" data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>'><%= el["variant"] %></span>
+    <span class="fst-italic" data-type="apparatus" data-subtype="variant" data-name="variant<%= el['numbers'] %>" data-fill='<%= el["variant"] %>' data-input="text"><%= el["variant"] %></span>
     <% }; %>
 
     <!-- witnesses -->
-    <span data-name="manuscriptVariant<%= el['numbers'] %>" data-fill='<%= el["witnesses"]; %>'></span>
+    <span data-name="manuscriptVariant<%= el['numbers'] %>" data-fill='<%= el["witnesses"]; %>' data-input="list"></span>
     <% if (el["witnesses"].split(" ; ").length > 1) { %>
     <% el["witnesses"].split(" ; ").forEach((witness) => { %>
     <span data-type="apparatus" data-subtype="witness"><%= witness %></span>
@@ -65,7 +65,7 @@
     <% }; %>
 
     <!-- omission notes -->
-    <span class="live-omission-note" data-type="apparatus" data-subtype="variantOmission" data-name="variant<%= el['numbers'] %>Omission" data-fill='<%= el["notes"]; %>'><%- el["notes"]; %></span>
+    <span class="live-omission-note" data-type="apparatus" data-subtype="variantOmission" data-name="variant<%= el['numbers'] %>Omission" data-fill='<%= el["notes"]; %>' data-input="textarea"><%- el["notes"]; %></span>
 
   </span>
 

@@ -952,104 +952,105 @@ let modifyAnnotations = () => {
     var modifyBtn = document.querySelectorAll(".modify-btn");
     modifyBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
-            /* fill the form */
             var type = btn.getAttribute("data-type");
             var form = document.getElementById(type + "-req");
             var dataContainer = btn.closest(".container-" + type);
             var data = dataContainer.querySelectorAll("[data-name]");
+
             /* click on the annotate tab */
             var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
             tab.click();
+
             /* input to fill in */
-            console.log("I dati iniziano qui");
             data.forEach((el) => {
                 var name = el.getAttribute("data-name");
                 var val = el.getAttribute("data-fill");
 
+                /* clone variant containers */
                 if (el.getAttribute("data-subtype") == "variant") {
                     if (el.getAttribute("data-name") !== "variant0") {
                         form.querySelector("[data-clone='variant']").click();
                     };
                 };
-                
-                /* fill the input */
+
+                /* types of input */
                 /* numbers */
-                /* let updateNumbers = () => { */
-                var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
-                numbers.forEach((number) => {
-                    number.value = val;
-                });
-                /* }; */
+                let numbers = () => {
+                    var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
+                    numbers.forEach((number) => {
+                        number.value = val;
+                        /* live check */
+                        document.getElementById("live-" + name).innerHTML = val;
+                    });
+                };
+
                 /* texts */
-                /* let updateTexts = () => { */
-                var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
-                texts.forEach((text) => {
-                    text.value = val;
-                });
-                /* }; */
+                let texts = () => {
+                    var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
+                    texts.forEach((text) => {
+                        text.value = val;
+                        /* live check */
+                        document.getElementById("live-" + name).innerHTML = val;
+                    });
+                };
+
                 /* checkbox */
-                /* let updateCheckbox = () => { */
-                var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
-                checkboxes.forEach((checkbox) => {
-                    /* uncheck */
-                    checkbox.checked = false;
-                    /* check */
-                    var values = val.split(",");
-                    values.forEach((v) => {
-                        if (checkbox.getAttribute("value") == v) {
-                            checkbox.checked = true;
-                        };
+                let checkbox = () => {
+                    var arr = [];
+                    var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
+                    checkboxes.forEach((checkbox) => {
+                        /* uncheck */
+                        checkbox.checked = false;
+                        /* check */
+                        var values = val.split(",");
+                        values.forEach((v) => {
+                            /* check the checkbox */
+                            if (checkbox.getAttribute("value") == v) {
+                                checkbox.checked = true;
+                            };
+                            /* fill the array for the live check */
+                            if (arr.includes(v) == false) {
+                                arr.push(v);
+                            };
+                        });
                     });
-                });
-                /* }; */
+                    /* live check */
+                    document.getElementById("live-" + name).innerHTML = arr.join("");
+                };
+
                 /* lists */
-                /* let updateLists = () => { */
-                var lists = form.querySelectorAll("[data-list][name='" + name + "']");
-                lists.forEach((list) => {
-                    list.value = val;
-                });
-                /* }; */
-                /* textareas */
-                /* let updateTextareas = () => { */
-                var textareas = form.querySelectorAll("textarea[name='" + name + "']");
-                textareas.forEach((textarea) => {
-                    let printTxt = () => {
-                        tinyMCE.get(textarea.id).setContent(val);
-                    };
-                    setTimeout(printTxt, 2000);
-                });
-                /* }; */
-
-                /* clones the variant containers */
-                /* let cloneVariant = () => {
-                    if (el.getAttribute("data-subtype") == "variant") {
-                        if (el.getAttribute("data-name") !== "variant0") {
-                            form.querySelector("[data-clone='variant']").click();
-                        };
-                    };
-                }; */
-
-                /* radio */
-                /* if (el.hasAttribute("data-radio")) {
-                    cloneVariant();
-                    updateNumbers();
-                    updateTexts();
-                    updateCheckbox();
-                    updateLists();
-                    updateTextareas();
-                    var vals = el.getAttribute("data-radio").split(" ");
-                    vals.forEach((val) => {
-                        var radio = form.querySelector("[type='radio'][data-value='" + val + "']");
-                        radio.click();
+                let lists = () => {
+                    var lists = form.querySelectorAll("[data-list][name='" + name + "']");
+                    lists.forEach((list) => {
+                        list.value = val;
+                        /* live check */
+                        document.getElementById("live-" + name).innerHTML = val;
                     });
-                } else { */
-                /* cloneVariant();
-                updateNumbers();
-                updateTexts();
-                updateCheckbox();
-                updateLists();
-                updateTextareas(); */
-                /* }; */
+                };
+
+                /* textareas */
+                let textareas = () => {
+                    var textareas = form.querySelectorAll("textarea[name='" + name + "']");
+                    textareas.forEach((textarea) => {
+                        let printTxt = () => {
+                            tinyMCE.get(textarea.id).setContent(val);
+                        };
+                        setTimeout(printTxt, 2000);
+                    });
+                };
+
+                /* fill the input */
+                if (el.getAttribute("data-input") == "number") {
+                    numbers();
+                } else if (el.getAttribute("data-input") == "text") {
+                    texts();
+                } else if (el.getAttribute("data-input") == "checkbox") {
+                    checkbox();
+                } else if (el.getAttribute("data-input") == "list") {
+                    lists();
+                } else {
+                    textareas();
+                };
 
             });
         });
