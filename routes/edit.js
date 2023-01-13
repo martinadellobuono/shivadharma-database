@@ -27,9 +27,9 @@ router.get("/edit/:id", async (req, res) => {
     var ed_temp = [];
     var date_temp = [];
     var wit_temp = [];
-    var transl_temp = [];
-    var app_entry = [];
+    var apparatus_entry = [];
     var witnesses_relations = [];
+    var translation_temp = [];
 
     const session = driver.session();
     try {
@@ -39,11 +39,11 @@ router.get("/edit/:id", async (req, res) => {
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                OPTIONAL MATCH app_entry = (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
+                OPTIONAL MATCH apparatus_entry = (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
-                OPTIONAL MATCH transl_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, app_entry, witnesses_relations, transl_entry
+                OPTIONAL MATCH translation_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry
                 `
             )
             .subscribe({
@@ -79,21 +79,27 @@ router.get("/edit/:id", async (req, res) => {
                         date_temp.push(record.get("date.on"));
                     };
                     /* translation */
-                    if (!transl_temp.includes(record.get("transl_entry"))) {
-                        if (record.get("transl_entry") !== null) {
-                            transl_temp.push(record.get("transl_entry"));
+                    if (!translation_temp.includes(record.get("translation_entry"))) {
+                        if (record.get("translation_entry") !== null) {
+                            translation_temp.push(record.get("translation_entry"));
                         };
                     };
-                    /* apparatus entry array */
-                    if (!app_entry.includes(record.get("app_entry"))) {
-                        if (record.get("app_entry") !== null) {
-                            app_entry.push(record.get("app_entry"));
+                    /* apparatus */
+                    if (!apparatus_entry.includes(record.get("apparatus_entry"))) {
+                        if (record.get("apparatus_entry") !== null) {
+                            apparatus_entry.push(record.get("apparatus_entry"));
                         };
                     };
                     /* witnesses relations array */
                     if (!witnesses_relations.includes(record.get("witnesses_relations"))) {
                         if (record.get("witnesses_relations") !== null) {
                             witnesses_relations.push(record.get("witnesses_relations"));
+                        };
+                    };
+                    /* translation */
+                    if (!translation_temp.includes(record.get("translation_entry"))) {
+                        if (record.get("translation_entry") !== null) {
+                            translation_temp.push(record.get("translation_entry"));
                         };
                     };
                 },
@@ -106,13 +112,13 @@ router.get("/edit/:id", async (req, res) => {
                     /* all entries dict */
                     var appEntryDict = [];
 
-                    if (app_entry.length > 0) {
+                    if (apparatus_entry.length > 0) {
 
                         if (witnesses_relations.length > 0) {
 
                             /* lemmas */
-                            for (var i = 0; i < app_entry.length; i++) {
-                                var obj = app_entry[i];
+                            for (var i = 0; i < apparatus_entry.length; i++) {
+                                var obj = apparatus_entry[i];
                                 var lemma = obj["segments"][0]["end"]["properties"]["value"];
                                 if (!lemmas.includes(lemma)) {
                                     lemmas.push(lemma);
@@ -136,8 +142,8 @@ router.get("/edit/:id", async (req, res) => {
                                 /* witnesses */
                                 var witnesses = [];
 
-                                for (var i = 0; i < app_entry.length; i++) {
-                                    var obj = app_entry[i];
+                                for (var i = 0; i < apparatus_entry.length; i++) {
+                                    var obj = apparatus_entry[i];
                                     if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_LEMMA") {
@@ -211,8 +217,8 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* variants */
                                 var variants = [];
-                                for (var i = 0; i < app_entry.length; i++) {
-                                    var obj = app_entry[i];
+                                for (var i = 0; i < apparatus_entry.length; i++) {
+                                    var obj = apparatus_entry[i];
                                     if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_VARIANT") {
@@ -285,9 +291,9 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* TRANSLATIONS */
                     var translArr = [];
-                    if (transl_temp.length > 0) {
-                        for (var i = 0; i < transl_temp.length; i++) {
-                            var obj = transl_temp[i];
+                    if (translation_temp.length > 0) {
+                        for (var i = 0; i < translation_temp.length; i++) {
+                            var obj = translation_temp[i];
 
                             /* translation */
                             var transl = obj["end"]["properties"]["value"];
@@ -328,6 +334,8 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
 
+                    /* PARALLEL */
+                    
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {

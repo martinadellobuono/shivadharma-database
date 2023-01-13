@@ -21,7 +21,7 @@ router.post("/addParallel/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (parallel:Parallel {value: "${req.body.parallel}"})
+                MERGE (parallel:Parallel {value: '${req.body.parallel}', stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
                 MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel)
                 RETURN *
                 `
