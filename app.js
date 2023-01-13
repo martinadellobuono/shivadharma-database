@@ -267,6 +267,10 @@ app.use("/", addParallel);
 const addCommentary = require("./routes/forms/commentary/addCommentary");
 app.use("/", addCommentary);
 
+/* add citation */
+const addCitation = require("./routes/forms/citation/addCitation");
+app.use("/", addCitation);
+
 /* publish */
 const publish = require("./routes/publish");
 app.use("/", publish);
