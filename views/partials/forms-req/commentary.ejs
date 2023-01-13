@@ -1,20 +1,20 @@
 <ul class="nav nav-tabs" role="tablist">
   <!-- annotate -->
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-transl" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-commentary" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
   </li>
   <!-- check -->
   <li class="nav-item" role="presentation">
-    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-transl" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-commentary" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
   </li>
   <!-- cancel -->
   <button type="button" class="btn btn-sm btn-pink" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation">
     <i class="bi bi-eraser-fill"></i> Cancel
   </button>
 </ul>
-<div class="tab-content scroll-tab">
+<div class="tab-content">
   <!-- ANNOTATE -->
-  <div class="tab-pane fade show active" id="annotate-transl" role="tabpanel" aria-labelledby="annotate-tab">
+  <div class="tab-pane fade show active scroll-tab" id="annotate-commentary" role="tabpanel" aria-labelledby="annotate-tab">
     <form class="form-annotations textarea-container" id="commentary-req" method="post" action="/addCommentary/<%= id %>">
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
@@ -102,7 +102,11 @@
     </form>
   </div>
   <!-- CHECK -->
-  <div class="tab-pane fade" id="check-transl" role="tabpanel" aria-labelledby="check-tab">
-
+  <div class="tab-pane fade" id="check-commentary" role="tabpanel" aria-labelledby="check-tab">
+    <h2 class="mt-3 h5" id="check-annotation"></h2>
+    <!-- results apparatus -->
+    <div class="scroll-tab" id="commentary-res">
+      <%- include ("partials/forms-res/commentary") %>
+    </div>
   </div>
 </div>

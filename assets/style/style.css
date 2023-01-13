@@ -11974,12 +11974,16 @@ body {
 }
 
 /* background */
-.bg-teal {
-  background-color: #a6e9d5;
+.bg-indigo {
+  background-color: #c29ffa;
 }
 
 .bg-orange {
   background-color: #feb272;
+}
+
+.bg-teal {
+  background-color: #a6e9d5;
 }
 
 .bg-yellow {

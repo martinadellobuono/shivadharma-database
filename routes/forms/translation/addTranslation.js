@@ -21,7 +21,7 @@ router.post("/addTranslation/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (translation:Translation {value: "${req.body.translation}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
+                MERGE (translation:Translation {value: '${req.body.translation}', stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
                 MERGE (selectedFragment)-[:HAS_TRANSLATION]->(translation)
                 RETURN *
                 `
