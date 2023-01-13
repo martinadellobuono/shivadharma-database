@@ -39,7 +39,7 @@ router.get("/edit/:id", async (req, res) => {
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
+                OPTIONAL MATCH app_entry = (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
                 OPTIONAL MATCH transl_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
@@ -121,7 +121,6 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* lemma / variants */
                             lemmas.forEach((el) => {
-
                                 /* lemma */
                                 var lemma = el;
 
@@ -289,10 +288,13 @@ router.get("/edit/:id", async (req, res) => {
                     if (transl_temp.length > 0) {
                         for (var i = 0; i < transl_temp.length; i++) {
                             var obj = transl_temp[i];
+
+                            /* translation */
                             var transl = obj["end"]["properties"]["value"];
+
+                            /* stanzas / padas */
                             var stanzaStart = obj["end"]["properties"]["stanzaStart"];
                             var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
-
                             var padaStart = obj["end"]["properties"]["padaStart"];
                             if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
                                 padaStart = "";
@@ -308,8 +310,18 @@ router.get("/edit/:id", async (req, res) => {
                                 padaEnd = "";
                             };
 
-                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl;
+                            /* fragment */
+                            var fragment;
+                            obj["segments"].forEach((el) => {
+                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
+                                    fragment = el["end"]["properties"]["value"];
+                                };  
+                            });                
+
+                            /* tranlation entry */
+                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment;
                             
+                            /* translations array */
                             if (!translArr.includes(translEntry)) {
                                 translArr.push(translEntry);
                             };

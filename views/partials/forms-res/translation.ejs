@@ -16,11 +16,30 @@
   <% var padaEnd = translations[i].split("-")[1]; %>
   <% padaEnd = padaEnd.split("___")[0].replace(/[#,]/g, ""); %>
 
+  <!-- translation -->
+  <% var translation = translations[i].split("___")[1]; %>
+  <% translation = translation.split("===")[0]; %>
+
+  <!-- fragment -->
+  <% var fragment = translations[i].split("___")[1]; %>
+  <% fragment = fragment.split("===")[1] %>
+
   <!-- location -->
-  <span data-type="translation" data-subtype="location">
+  <span class="d-none" data-type="translation" data-subtype="location">
     <span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
     <span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
   </span>
+
+  <!-- fragment -->
+  <div class="bg-teal p-2" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
+
+  <!-- translation -->
+  <div class="p-2" data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= translation; %>' data-input="textarea"><%- translation; %></div>
+
+  <!-- modify button -->
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+    <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
+  </div>
 
 </div>
 
