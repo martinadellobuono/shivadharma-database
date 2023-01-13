@@ -1,9 +1,27 @@
+<% for (var i = 0; i < translations.length; i++) { %>
+
+<!-- translation entry -->
 <div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
 
-    <!-- location -->
+  <!-- stanzas -->
+  <% var stanzaStart = translations[i].split("-")[0]; %>
+  <% stanzaStart = stanzaStart.split("#")[0]; %>
+  <% var stanzaEnd = translations[i].split("-")[1]; %>
+  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+
+  <!-- padas -->
+  <% var padaStart = translations[i].split("-")[0]; %>
+  <% padaStart = padaStart.split("#")[1]; %>
+  <% padaStart = padaStart.replace(/,/g, "") %>
+  <% var padaEnd = translations[i].split("-")[1]; %>
+  <% padaEnd = padaEnd.split("___")[0].replace(/[#,]/g, ""); %>
+
+  <!-- location -->
   <span data-type="translation" data-subtype="location">
-    <span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='' data-input="number"></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='' data-input="checkbox"></span>
-    <span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='' data-input="checkbox"></span>
+    <span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
+    <span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
   </span>
 
 </div>
+
+<% }; %>

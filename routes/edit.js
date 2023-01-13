@@ -42,8 +42,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH app_entry = (selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
-                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, app_entry, witnesses_relations, translation.value
+                OPTIONAL MATCH transl_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, app_entry, witnesses_relations, transl_entry
                 `
             )
             .subscribe({
@@ -79,9 +79,9 @@ router.get("/edit/:id", async (req, res) => {
                         date_temp.push(record.get("date.on"));
                     };
                     /* translation */
-                    if (!transl_temp.includes(record.get("translation.value"))) {
-                        if (record.get("translation.value") !== null) {
-                            transl_temp.push(record.get("translation.value"));
+                    if (!transl_temp.includes(record.get("transl_entry"))) {
+                        if (record.get("transl_entry") !== null) {
+                            transl_temp.push(record.get("transl_entry"));
                         };
                     };
                     /* apparatus entry array */
@@ -99,11 +99,12 @@ router.get("/edit/:id", async (req, res) => {
                 },
                 onCompleted: () => {
 
+                    /* APPARATUS */
                     /* lemmas */
                     var lemmas = [];
 
                     /* all entries dict */
-                    var allEntryDict = [];
+                    var appEntryDict = [];
 
                     if (app_entry.length > 0) {
 
@@ -274,20 +275,46 @@ router.get("/edit/:id", async (req, res) => {
                                 });
 
                                 /* list of all the entries dict */
-                                if (!allEntryDict.includes(entryDict)) {
-                                    allEntryDict.push(entryDict);
+                                if (!appEntryDict.includes(entryDict)) {
+                                    appEntryDict.push(entryDict);
                                 };
                             });
                         };
                     } else {
-                        allEntryDict = [];
+                        appEntryDict = [];
                     };
 
+                    /* TRANSLATIONS */
+                    var translArr = [];
+                    if (transl_temp.length > 0) {
+                        for (var i = 0; i < transl_temp.length; i++) {
+                            var obj = transl_temp[i];
+                            var transl = obj["end"]["properties"]["value"];
+                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
+                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
 
-                    /* try */
-                    console.log(transl_temp);
-                    /* / */
+                            var padaStart = obj["end"]["properties"]["padaStart"];
+                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
+                                padaStart = "";
+                            };
 
+                            var padaEnd = obj["end"]["properties"]["padaStart"];
+                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
+                                padaEnd = "";
+                            };
+
+                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
+                                stanzaEnd = "";
+                                padaEnd = "";
+                            };
+
+                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl;
+                            
+                            if (!translArr.includes(translEntry)) {
+                                translArr.push(translEntry);
+                            };
+                        };
+                    };
 
                     /* page rendering */
                     if (fs.existsSync(path)) {
@@ -303,8 +330,8 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: file,
-                            translation: transl_temp,
-                            allEntryDict: allEntryDict
+                            translations: translArr,
+                            appEntryDict: appEntryDict
                         });
                     } else {
                         res.render("edit", {
@@ -319,8 +346,8 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: false,
-                            translation: transl_temp,
-                            allEntryDict: allEntryDict
+                            translations: translArr,
+                            appEntryDict: appEntryDict
                         });
                     };
                 },
