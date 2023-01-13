@@ -102,6 +102,14 @@
             <div class="annotation-form apparatus d-none">
               <%- include ("partials/forms-req/apparatus") %>
             </div>
+            <!-- notes form -->
+            <div class="annotation-form note d-none">
+              <%- include ("partials/forms-req/note") %>
+            </div>
+            <!-- text structure form -->
+            <div class="annotation-form textStructure d-none">
+              <%- include ("partials/forms-req/textStructure") %>
+            </div>
           </div>
         </div>
       </div>
@@ -149,11 +157,11 @@
       <div class="col-md-12">
         <span>Insert/check: </span>
         <!-- text structure -->
-        <button type="button" class="btn btn-sm btn-annotation text-light bg-secondary" data-value="text-structure"><i class="bi bi-pencil-fill"></i> Text structure</button>
+        <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="textStructure"><i class="bi bi-pencil-fill"></i> Text structure</button>
         <!-- apparatus entry -->
         <button type="button" class="btn btn-sm btn-annotation btn-yellow" data-value="apparatus"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
-        <!-- notes -->
-        <button type="button" class="btn btn-sm btn-annotation text-light bg-secondary" data-value="notes"><i class="bi bi-pencil-fill"></i> Notes</button>
+        <!-- note -->
+        <button type="button" class="btn btn-sm btn-annotation btn-blue" data-value="note"><i class="bi bi-pencil-fill"></i> Notes</button>
       </div>
     </div>
   </div>

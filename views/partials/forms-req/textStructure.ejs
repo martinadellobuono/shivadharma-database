@@ -1,11 +1,12 @@
+<!-- text structure -->
 <ul class="nav nav-tabs" role="tablist">
   <!-- annotate -->
   <li class="nav-item" role="presentation">
-    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-commentary" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-textStructure" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
   </li>
   <!-- check -->
   <li class="nav-item" role="presentation">
-    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-commentary" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-textStructure" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
   </li>
   <!-- cancel -->
   <button type="button" class="btn btn-sm btn-pink" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation">
@@ -14,12 +15,12 @@
 </ul>
 <div class="tab-content">
   <!-- ANNOTATE -->
-  <div class="tab-pane fade show active scroll-tab" id="annotate-commentary" role="tabpanel" aria-labelledby="annotate-tab">
-    <form class="form-annotations textarea-container" id="commentary-req" method="post" action="/addCommentary/<%= id %>">
+  <div class="tab-pane fade show active scroll-tab" id="annotate-textStructure" role="tabpanel" aria-labelledby="annotate-tab">
+    <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addtextStructure/<%= id %>">
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
         <label class="form-label">Selected fragment</label>
-        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="commentary" name="selectedFragment">
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="textStructure" name="selectedFragment">
       </div>
       <!-- stanza / pada -->
       <div class="bg-white p-3 mb-3">
@@ -90,10 +91,10 @@
           <div class="form-text">If you refer to all the padas, select all the options.</div>
         </div>
       </div>
-      <!-- commentary -->
+      <!-- text structure -->
       <div class="mb-3">
-        <label class="form-label">Commentary</label>
-        <textarea placeholder="Insert the commentary..." name="commentary"></textarea>
+        <label class="form-label">Text structure</label>
+        <textarea placeholder="Insert the text structure..." name="textStructure"></textarea>
       </div>
       <!-- submit -->
       <div>
@@ -102,11 +103,11 @@
     </form>
   </div>
   <!-- CHECK -->
-  <div class="tab-pane fade" id="check-commentary" role="tabpanel" aria-labelledby="check-tab">
+  <div class="tab-pane fade" id="check-textStructure" role="tabpanel" aria-labelledby="check-tab">
     <h2 class="mt-3 h5" id="check-annotation"></h2>
-    <!-- results commentary -->
-    <div class="scroll-tab" id="commentary-res">
-      <%- include ("partials/forms-res/commentary") %>
+    <!-- results text structure -->
+    <div class="scroll-tab" id="textStructure-res">
+      <%- include ("partials/forms-res/textStructure") %>
     </div>
   </div>
 </div>

@@ -25,20 +25,20 @@
   <% fragment = fragment.split("===")[1] %>
 
   <!-- location -->
-  <span class="d-none" data-type="citation" data-subtype="location">
+  <div class="p-2" data-type="citation" data-subtype="location">
     <span data-type="citation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="citation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
     <span data-type="citation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="citation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
-  </span>
+  </div>
 
   <!-- fragment -->
-  <div class="bg-teal p-2" data-type="citation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
+  <div class="bg-fuchsia p-2" data-type="citation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
 
   <!-- citation -->
   <div class="p-2" data-type="citation" data-subtype="citation" data-name="citation" data-fill='<%= citation; %>' data-input="textarea"><%- citation; %></div>
 
   <!-- modify button -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="citation">Modify</button>
+    <button class="btn btn-sm btn-fuchsia modify-btn" type="button" data-type="citation">Modify</button>
   </div>
 
 </div>

@@ -33,6 +33,7 @@ router.get("/edit/:id", async (req, res) => {
     var parallel_temp = [];
     var commentary_temp = [];
     var citation_temp = [];
+    var note_temp = [];
 
     const session = driver.session();
     try {
@@ -49,7 +50,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH parallel_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_COMMENTARY]->(commentary:Commentary)
                 OPTIONAL MATCH citation_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_A_CITATION_OF]->(citation:Citation)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry
+                OPTIONAL MATCH note_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_DESCRIBED_IN]->(note:Note)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry, note_entry
                 `
             )
             .subscribe({
@@ -118,6 +120,12 @@ router.get("/edit/:id", async (req, res) => {
                     if (!citation_temp.includes(record.get("citation_entry"))) {
                         if (record.get("citation_entry") !== null) {
                             citation_temp.push(record.get("citation_entry"));
+                        };
+                    };
+                    /* notes */
+                    if (!note_temp.includes(record.get("note_entry"))) {
+                        if (record.get("note_entry") !== null) {
+                            note_temp.push(record.get("note_entry"));
                         };
                     };
                 },
@@ -493,6 +501,53 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
 
+                    /* NOTES */
+                    var notesArr = [];
+                    if (note_temp.length > 0) {
+                        for (var i = 0; i < note_temp.length; i++) {
+                            var obj = note_temp[i];
+
+                            /* note */
+                            var note = obj["end"]["properties"]["value"];
+
+                            /* stanzas / padas */
+                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
+                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
+                            var padaStart = obj["end"]["properties"]["padaStart"];
+
+                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
+                                padaStart = "";
+                            };
+
+                            var padaEnd = obj["end"]["properties"]["padaStart"];
+                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
+                                padaEnd = "";
+                            };
+
+                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
+                                stanzaEnd = "";
+                                padaEnd = "";
+                            };
+
+                            /* fragment */
+                            var fragment;
+                            obj["segments"].forEach((el) => {
+                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
+                                    fragment = el["end"]["properties"]["value"];
+                                };
+                            });
+
+                            /* note entry */
+                            var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment;
+
+                            /* commentary array */
+                            if (!notesArr.includes(noteEntry)) {
+                                notesArr.push(noteEntry);
+                            };
+
+                        };
+                    };
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
@@ -511,7 +566,8 @@ router.get("/edit/:id", async (req, res) => {
                             translations: translArr,
                             parallels: paralArr,
                             commentaries: commArr,
-                            citations: citArr
+                            citations: citArr,
+                            notes: notesArr
                         });
                     } else {
                         res.render("edit", {
@@ -530,7 +586,8 @@ router.get("/edit/:id", async (req, res) => {
                             translations: translArr,
                             parallels: paralArr,
                             commentaries: commArr,
-                            citations: citArr
+                            citations: citArr,
+                            notes: notesArr
                         });
                     };
                 },

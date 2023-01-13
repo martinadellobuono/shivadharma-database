@@ -11974,9 +11974,12 @@ body {
 }
 
 /* background */
+.bg-blue {
+  background-color: #cff4fc;
+}
+
 .bg-fuchsia {
   background-color: #efadce;
-  color: #f8f9fa;
 }
 
 .bg-indigo {
@@ -11996,6 +11999,11 @@ body {
 }
 
 /* buttons */
+.btn-blue {
+  background-color: #087990;
+  color: #f8f9fa;
+}
+
 .btn-fuchsia {
   background-color: #de5c9d;
   color: #f8f9fa;
@@ -12027,6 +12035,11 @@ body {
 }
 
 /* btn hover */
+.btn-blue:hover {
+  background-color: #0aa2c0;
+  color: #f8f9fa;
+}
+
 .btn-fuchsia:hover {
   background-color: #e685b5;
   color: #f8f9fa;
@@ -12123,8 +12136,14 @@ body {
 }
 
 /* tabs */
-.scroll-tab {
+.apparatus-scroll.scroll-tab {
   height: 60vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.scroll-tab:not(.apparatus-scroll) {
+  height: 70vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }

@@ -271,6 +271,10 @@ app.use("/", addCommentary);
 const addCitation = require("./routes/forms/citation/addCitation");
 app.use("/", addCitation);
 
+/* add note */
+const addNote = require("./routes/forms/note/addNote");
+app.use("/", addNote);
+
 /* publish */
 const publish = require("./routes/publish");
 app.use("/", publish);

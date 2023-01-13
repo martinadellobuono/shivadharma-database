@@ -51,7 +51,7 @@
       <% }; %>
       <% }; %>
       <!-- apparatus form -->
-      <div class="annotation-form apparatus d-none scroll-tab">
+      <div class="annotation-form apparatus d-none apparatus-scroll scroll-tab">
         <form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
           <!-- selected fragment -->
           <div class="mb-3 mt-3">
@@ -96,7 +96,7 @@
             <div class="input-group mb-3">
               <span class="input-group-text">Ending stanza</span>
               <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaEnd">
-              <div class="form-text">If you refer to only one stanza, fill the form with the number of the starting stanza.</div>
+              <div class="form-text">If you refer to only one stanza, fill the form with the number of the starting stanza and pāda&#x28;s&#x29;.</div>
             </div>
             <div class="mb-3">
               <label class="form-label">Pāda</label>
@@ -270,7 +270,7 @@
     <div class="tab-pane fade" id="check-apparatus" role="tabpanel" aria-labelledby="check-tab">
       <h2 class="mt-3 h5" id="check-annotation"></h2>
       <!-- results apparatus -->
-      <div class="scroll-tab" id="apparatus-res">
+      <div class="apparatus-scroll scroll-tab" id="apparatus-res">
         <%- include ("partials/forms-res/apparatus") %>
       </div>
     </div>

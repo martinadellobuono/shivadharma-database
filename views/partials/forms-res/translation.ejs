@@ -25,10 +25,10 @@
   <% fragment = fragment.split("===")[1] %>
 
   <!-- location -->
-  <span class="d-none" data-type="translation" data-subtype="location">
+  <div class="p-2" data-type="translation" data-subtype="location">
     <span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
     <span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
-  </span>
+  </div>
 
   <!-- fragment -->
   <div class="bg-teal p-2" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
