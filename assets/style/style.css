@@ -12029,6 +12029,7 @@ body {
 /* btn hover */
 .btn-fuchsia:hover {
   background-color: #e685b5;
+  color: #f8f9fa;
 }
 
 .btn-orange:hover {

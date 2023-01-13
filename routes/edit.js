@@ -32,6 +32,7 @@ router.get("/edit/:id", async (req, res) => {
     var translation_temp = [];
     var parallel_temp = [];
     var commentary_temp = [];
+    var citation_temp = [];
 
     const session = driver.session();
     try {
@@ -47,7 +48,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH translation_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH parallel_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_COMMENTARY]->(commentary:Commentary)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry
+                OPTIONAL MATCH citation_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_A_CITATION_OF]->(citation:Citation)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry
                 `
             )
             .subscribe({
@@ -110,6 +112,12 @@ router.get("/edit/:id", async (req, res) => {
                     if (!commentary_temp.includes(record.get("commentary_entry"))) {
                         if (record.get("commentary_entry") !== null) {
                             commentary_temp.push(record.get("commentary_entry"));
+                        };
+                    };
+                    /* citations */
+                    if (!citation_temp.includes(record.get("citation_entry"))) {
+                        if (record.get("citation_entry") !== null) {
+                            citation_temp.push(record.get("citation_entry"));
                         };
                     };
                 },
@@ -438,6 +446,53 @@ router.get("/edit/:id", async (req, res) => {
                         };
                     };
 
+                    /* CITATIONS */
+                    var citArr = [];
+                    if (citation_temp.length > 0) {
+                        for (var i = 0; i < citation_temp.length; i++) {
+                            var obj = citation_temp[i];
+
+                            /* citation */
+                            var citation = obj["end"]["properties"]["value"];
+
+                            /* stanzas / padas */
+                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
+                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
+                            var padaStart = obj["end"]["properties"]["padaStart"];
+
+                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
+                                padaStart = "";
+                            };
+
+                            var padaEnd = obj["end"]["properties"]["padaStart"];
+                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
+                                padaEnd = "";
+                            };
+
+                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
+                                stanzaEnd = "";
+                                padaEnd = "";
+                            };
+
+                            /* fragment */
+                            var fragment;
+                            obj["segments"].forEach((el) => {
+                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
+                                    fragment = el["end"]["properties"]["value"];
+                                };
+                            });
+
+                            /* citation entry */
+                            var citEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment;
+
+                            /* commentary array */
+                            if (!citArr.includes(citEntry)) {
+                                citArr.push(citEntry);
+                            };
+
+                        };
+                    };
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
@@ -455,7 +510,8 @@ router.get("/edit/:id", async (req, res) => {
                             appEntryDict: appEntryDict,
                             translations: translArr,
                             parallels: paralArr,
-                            commentaries: commArr
+                            commentaries: commArr,
+                            citations: citArr
                         });
                     } else {
                         res.render("edit", {
@@ -473,7 +529,8 @@ router.get("/edit/:id", async (req, res) => {
                             appEntryDict: appEntryDict,
                             translations: translArr,
                             parallels: paralArr,
-                            commentaries: commArr
+                            commentaries: commArr,
+                            citations: citArr
                         });
                     };
                 },
