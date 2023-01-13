@@ -134,8 +134,12 @@
       </div>
       <!-- citations -->
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
+        <button type="button" class="btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation"></button>
         <h3 class="h6">Citations</h3>
-        <button type="button" class="btn btn-sm btn-secondary btn-annotation" data-value="citation"><i class="bi bi-pencil-fill"></i></button>
+        <button type="button" class="btn btn-sm btn-fuchsia btn-annotation mb-2" title="Insert/check a citation" data-value="citation"><i class="bi bi-pencil-fill"></i></button>
+        <div class="annotation-form citation d-none">
+          <%- include ("partials/forms-req/citation") %>
+        </div>
       </div>
     </div>
   </div>

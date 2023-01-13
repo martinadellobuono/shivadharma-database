@@ -567,6 +567,7 @@ let annotations = () => {
                     /* OPEN THE BOX */
                     /* close the open box */
                     closeAnnotationBox();
+
                     /* top annotations resize */
                     if (el.parentNode.classList.contains("enlarge-col") === true) {
                         var bigger = el.parentNode;
@@ -582,7 +583,6 @@ let annotations = () => {
                         el.classList.remove("d-block");
                         /* hide the close button */
                         bigger.querySelector(".btn-close").classList.remove("d-none");
-
                     } else {
                         /* below annotations resize */
                         var smaller = document.querySelectorAll(".col-md-4.enlarge-col");

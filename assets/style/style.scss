@@ -17,6 +17,11 @@ body {
 }
 
 /* background */
+.bg-fuchsia {
+    background-color: $pink-200;
+    color: $light;
+}
+
 .bg-indigo {
     background-color: $indigo-200;
 }
@@ -34,6 +39,11 @@ body {
 }
 
 /* buttons */
+.btn-fuchsia {
+    background-color: $pink-400;
+    color: $light;
+}
+
 .btn-orange {
     background-color: $orange-400;
     color: $light;
@@ -60,6 +70,10 @@ body {
 }
 
 /* btn hover */
+.btn-fuchsia:hover {
+    background-color: $pink-300;
+}
+
 .btn-orange:hover {
     background-color: $orange;
     color: $light;

@@ -11974,6 +11974,11 @@ body {
 }
 
 /* background */
+.bg-fuchsia {
+  background-color: #efadce;
+  color: #f8f9fa;
+}
+
 .bg-indigo {
   background-color: #c29ffa;
 }
@@ -11991,6 +11996,11 @@ body {
 }
 
 /* buttons */
+.btn-fuchsia {
+  background-color: #de5c9d;
+  color: #f8f9fa;
+}
+
 .btn-orange {
   background-color: #fd9843;
   color: #f8f9fa;
@@ -12017,6 +12027,10 @@ body {
 }
 
 /* btn hover */
+.btn-fuchsia:hover {
+  background-color: #e685b5;
+}
+
 .btn-orange:hover {
   background-color: #fd7e14;
   color: #f8f9fa;
