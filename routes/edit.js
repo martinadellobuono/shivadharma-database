@@ -30,6 +30,7 @@ router.get("/edit/:id", async (req, res) => {
     var apparatus_entry = [];
     var witnesses_relations = [];
     var translation_temp = [];
+    var parallel_temp = [];
 
     const session = driver.session();
     try {
@@ -43,7 +44,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
                 OPTIONAL MATCH translation_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry
+                OPTIONAL MATCH parallel_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_PARALLEL]->(parallel:Parallel)
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry
                 `
             )
             .subscribe({
@@ -100,6 +102,12 @@ router.get("/edit/:id", async (req, res) => {
                     if (!translation_temp.includes(record.get("translation_entry"))) {
                         if (record.get("translation_entry") !== null) {
                             translation_temp.push(record.get("translation_entry"));
+                        };
+                    };
+                    /* parallel */
+                    if (!parallel_temp.includes(record.get("parallel_entry"))) {
+                        if (record.get("parallel_entry") !== null) {
+                            parallel_temp.push(record.get("parallel_entry"));
                         };
                     };
                 },
@@ -321,12 +329,12 @@ router.get("/edit/:id", async (req, res) => {
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
-                                };  
-                            });                
+                                };
+                            });
 
                             /* tranlation entry */
                             var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment;
-                            
+
                             /* translations array */
                             if (!translArr.includes(translEntry)) {
                                 translArr.push(translEntry);
@@ -335,7 +343,52 @@ router.get("/edit/:id", async (req, res) => {
                     };
 
                     /* PARALLEL */
-                    
+                    var paralArr = [];
+                    if (parallel_temp.length > 0) {
+                        for (var i = 0; i < parallel_temp.length; i++) {
+                            var obj = parallel_temp[i];
+
+                            /* parallel */
+                            var parallel = obj["end"]["properties"]["value"];
+
+                            /* stanzas / padas */
+                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
+                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
+                            var padaStart = obj["end"]["properties"]["padaStart"];
+
+                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
+                                padaStart = "";
+                            };
+
+                            var padaEnd = obj["end"]["properties"]["padaStart"];
+                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
+                                padaEnd = "";
+                            };
+
+                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
+                                stanzaEnd = "";
+                                padaEnd = "";
+                            };
+
+                            /* fragment */
+                            var fragment;
+                            obj["segments"].forEach((el) => {
+                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
+                                    fragment = el["end"]["properties"]["value"];
+                                };
+                            });
+
+                            /* parallel entry */
+                            var paralEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment;
+
+                            /* parallels array */
+                            if (!paralArr.includes(paralEntry)) {
+                                paralArr.push(paralEntry);
+                            };
+
+                        };
+                    };
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
@@ -350,8 +403,9 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: file,
+                            appEntryDict: appEntryDict,
                             translations: translArr,
-                            appEntryDict: appEntryDict
+                            parallels: paralArr
                         });
                     } else {
                         res.render("edit", {
@@ -366,8 +420,9 @@ router.get("/edit/:id", async (req, res) => {
                             date: date_temp,
                             sigla: wit_temp,
                             file: false,
+                            appEntryDict: appEntryDict,
                             translations: translArr,
-                            appEntryDict: appEntryDict
+                            parallels: paralArr
                         });
                     };
                 },

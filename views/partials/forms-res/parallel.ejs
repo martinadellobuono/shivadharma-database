@@ -1,1 +1,46 @@
-Parallels
+<% for (var i = 0; i < parallels.length; i++) { %>
+
+<!-- parallel entry -->
+<div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
+
+  <!-- stanzas -->
+  <% var stanzaStart = parallels[i].split("-")[0]; %>
+  <% stanzaStart = stanzaStart.split("#")[0]; %>
+  <% var stanzaEnd = parallels[i].split("-")[1]; %>
+  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+
+  <!-- padas -->
+  <% var padaStart = parallels[i].split("-")[0]; %>
+  <% padaStart = padaStart.split("#")[1]; %>
+  <% padaStart = padaStart.replace(/,/g, "") %>
+  <% var padaEnd = parallels[i].split("-")[1]; %>
+  <% padaEnd = padaEnd.split("___")[0].replace(/[#,]/g, ""); %>
+
+  <!-- parallel -->
+  <% var parallel = parallels[i].split("___")[1]; %>
+  <% parallel = parallel.split("===")[0]; %>
+
+  <!-- fragment -->
+  <% var fragment = parallels[i].split("___")[1]; %>
+  <% fragment = fragment.split("===")[1] %>
+
+  <!-- location -->
+  <span class="d-none" data-type="parallel" data-subtype="location">
+    <span data-type="parallel" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="parallel" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
+    <span data-type="parallel" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="parallel" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
+  </span>
+
+  <!-- fragment -->
+  <div class="bg-orange p-2" data-type="parallel" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
+
+  <!-- parallel -->
+  <div class="p-2" data-type="parallel" data-subtype="parallel" data-name="parallel" data-fill='<%= parallel; %>' data-input="textarea"><%- parallel; %></div>
+
+  <!-- modify button -->
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+    <button class="btn btn-sm btn-orange modify-btn" type="button" data-type="parallel">Modify</button>
+  </div>
+
+</div>
+
+<% }; %>

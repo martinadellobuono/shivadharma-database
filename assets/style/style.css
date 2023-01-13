@@ -11975,7 +11975,11 @@ body {
 
 /* background */
 .bg-teal {
-  background-color: #79dfc1;
+  background-color: #a6e9d5;
+}
+
+.bg-orange {
+  background-color: #feb272;
 }
 
 .bg-yellow {
