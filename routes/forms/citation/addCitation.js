@@ -19,10 +19,17 @@ router.post("/addCitation/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", chapter: "${req.body.chapter}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
+                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                ON CREATE
+                    SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
+                ON MATCH
+                    SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (citation:Citation {value: '${req.body.citation}', stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
-                MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation)
+                MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
+                ON CREATE
+                    SET citation.value = '${req.body.citation}'
+                ON MATCH
+                    SET citation.value = '${req.body.citation}'
                 RETURN *
                 `
             )
