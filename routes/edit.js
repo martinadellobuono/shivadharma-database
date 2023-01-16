@@ -49,7 +49,7 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
                 OPTIONAL MATCH translation_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH parallel_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_PARALLEL]->(parallel:Parallel)
-                OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_COMMENTARY]->(commentary:Commentary)
+                OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_COMMENTED_IN]->(commentary:Commentary)
                 OPTIONAL MATCH citation_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH note_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_DESCRIBED_IN]->(note:Note)
                 RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, selectedFragment.chapter, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry, note_entry
@@ -398,32 +398,22 @@ router.get("/edit/:id", async (req, res) => {
                             /* commentary */
                             var commentary = obj["end"]["properties"]["value"];
 
-                            /* stanzas / padas */
-                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
-                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
-                            var padaStart = obj["end"]["properties"]["padaStart"];
-
-                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
-                                padaStart = "";
-                            };
-
-                            var padaEnd = obj["end"]["properties"]["padaStart"];
-                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
-                                padaEnd = "";
-                            };
-
-                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
-                                stanzaEnd = "";
-                                padaEnd = "";
-                            };
-
-                            /* fragment */
+                            /* fragment / location */
                             var fragment;
                             var chapter;
+                            var stanzaStart;
+                            var stanzaEnd;
+                            var padaStart;
+                            var padaEnd;
+
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
+                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    padaStart = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaStart"];
                                 };
                             });
 
@@ -514,7 +504,7 @@ router.get("/edit/:id", async (req, res) => {
                                     padaEnd = el["end"]["properties"]["padaStart"];
                                 };
                             });
-                            
+
                             /* note entry */
                             var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
 

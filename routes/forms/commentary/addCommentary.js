@@ -19,10 +19,17 @@ router.post("/addCommentary/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", chapter: "${req.body.chapter}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
+                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                ON CREATE
+                    SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
+                ON MATCH
+                    SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (commentary:Commentary {value: '${req.body.commentary}', stanzaStart: "${req.body.stanzaStart}", padaStart: "${req.body.padaStart}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${req.body.padaEnd}"})
-                MERGE (selectedFragment)-[:HAS_COMMENTARY]->(commentary)
+                MERGE (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
+                ON CREATE
+                    SET commentary.value = '${req.body.commentary}'
+                ON MATCH
+                    SET commentary.value = '${req.body.commentary}'
                 RETURN *
                 `
             )
