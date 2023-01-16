@@ -14,8 +14,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       <!-- list of editions -->
+      <% if (editions.length > 0) { %>
       <ul>
-        <% if (editions) { %>
         <% editions.forEach(function(edition) { %>
         <li class="p-2">
           <span class="fw-bold"><%= edition.get("edition.title") %></span>, <span><%= edition.get("author.name") %></span> <span class="text-muted">curated by <%= edition.get("editor.name") %></span>
@@ -25,8 +25,13 @@
           <% }; %>
         </li>
         <% }); %>
-        <% }; %>
       </ul>
+      <% } else { %>
+      <div>
+        <p>No edition is available for now.</p>
+        <a href="/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
+      </div>
+      <% }; %>
     </div>
   </div>
 

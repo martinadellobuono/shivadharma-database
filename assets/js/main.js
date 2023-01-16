@@ -981,7 +981,7 @@ let modifyAnnotations = () => {
                     numbers.forEach((number) => {
                         number.value = val;
                         /* live check */
-                        if (type == "apparatus") {
+                        if (type == "apparatus" && el.getAttribute("data-name") !== "chapter") {
                             document.getElementById("live-" + name).innerHTML = val;
                         };
                     });
