@@ -160,10 +160,10 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* chapter / stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
                                 var chapter;
-                                var stanzaStart = [];
-                                var padaStart = [];
-                                var stanzaEnd = [];
-                                var padaEnd = [];
+                                var stanzaStart;
+                                var padaStart;
+                                var stanzaEnd;
+                                var padaEnd;
                                 var truncation = [];
                                 var notes = [];
                                 var lemmaDict = []
@@ -179,24 +179,17 @@ router.get("/edit/:id", async (req, res) => {
                                                 /* chapter */
                                                 chapter = el["start"]["properties"]["chapter"];
                                                 /* stanza start */
-                                                var stanza = el["start"]["properties"]["stanzaStart"];
-                                                if (!stanzaStart.includes(stanza)) {
-                                                    stanzaStart.push(stanza);
-                                                };
+                                                stanzaStart = el["start"]["properties"]["stanzaStart"];
                                                 /* pada start */
-                                                var pada = el["start"]["properties"]["padaStart"];
-                                                if (!padaStart.includes(pada)) {
-                                                    padaStart.push(pada);
-                                                };
+                                                padaStart = el["start"]["properties"]["padaStart"];
                                                 /* stanza end */
-                                                var stanza = el["start"]["properties"]["stanzaEnd"];
-                                                if (!stanzaEnd.includes(stanza)) {
-                                                    stanzaEnd.push(stanza);
-                                                };
+                                                stanzaEnd = el["start"]["properties"]["stanzaEnd"];
                                                 /* pada end */
-                                                var pada = el["start"]["properties"]["padaEnd"];
-                                                if (!padaEnd.includes(pada)) {
-                                                    padaEnd.push(pada);
+                                                /* starting === ending */
+                                                padaEnd = el["start"]["properties"]["padaEnd"];
+                                                if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
+                                                    stanzaEnd = "";
+                                                    padaEnd = "";
                                                 };
                                                 /* truncation */
                                                 var truncationVal = el["end"]["properties"]["truncation"];

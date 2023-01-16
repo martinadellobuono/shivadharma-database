@@ -7,12 +7,13 @@
   <!-- lemma / location -->
   <% entryDict["lemma"].forEach((el) => { %>
 
-  <!-- location -->
-  <div class="p-2" data-type="apparatus" data-subtype="location">
-    <div class="mb-2">
-      <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="apparatus" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"><%= el["chapter"]; %></span> <span class="fst-italic"><span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"]; %></span><span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"><%= el["padaEnd"]; %></span></span>
-    </div>
+  <!-- chapter -->
+  <div data-type="apparatus" data-subtype="location">
+    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="apparatus" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"><%= el["chapter"]; %></span>
   </div>
+
+  <!-- location -->
+  <span data-type="apparatus" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="pada-start" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"]; %></span><span data-type="apparatus" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"><%= el["stanzaEnd"]; %></span><span data-type="apparatus" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"><%= el["padaEnd"]; %></span>
 
   <!-- lemma -->
   <% var lemma = el["lemma"].split("___")[0] %>
