@@ -39,9 +39,18 @@
         <label class="form-label">Selected fragment</label>
         <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="parallel" name="selectedFragment">
       </div>
-      <!-- stanza / pada -->
       <div class="bg-white p-3 mb-3">
+        <!-- chapter -->
+        <div class="mb-3">
+          <label class="form-label">Chapter</label>
+          <input class="form-control" type="number" aria-describedby="Chapter" placeholder="Insert the number of chapter" name="chapter">
+        </div>
+        <!-- stanza / pada -->
         <label class="form-label">Stanza</label>
+        <div class="mb-3">
+          <div class="form-text">If you refer to only one stanza, fill the starting stanza and pāda&#x28;s&#x29; form, then the ending stanza and pāda&#x28;s&#x29; with the values of the starting ones.</div>
+          <div class="form-text">If you refer to all the padas, select all the options.</div>
+        </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Starting stanza</span>
           <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaStart" required>
@@ -72,12 +81,10 @@
             <input class="form-check-input live-check" type="checkbox" value="f" name="padaStart">
             <label class="form-check-label">f</label>
           </div>
-          <div class="form-text">If you refer to all the padas, select all the options.</div>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Ending stanza</span>
           <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaEnd">
-          <div class="form-text">If you refer to only one stanza, fill the form with the number of the starting stanza and pāda&#x28;s&#x29;.</div>
         </div>
         <div class="mb-3">
           <label class="form-label">Pāda</label>
@@ -105,7 +112,6 @@
             <input class="form-check-input live-check" type="checkbox" value="f" name="padaEnd">
             <label class="form-check-label">f</label>
           </div>
-          <div class="form-text">If you refer to all the padas, select all the options.</div>
         </div>
       </div>
       <!-- parallel -->

@@ -85,7 +85,7 @@ router.post("/addApparatus/:id",
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                             WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${padaStartArr}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${padaEndArr}"})
+                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", chapter: "${req.body.chapter}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${padaStartArr}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${padaEndArr}"})
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                             CREATE (lemma:Lemma {value: "${lemmaReq}", truncation: "${req.body.lemmaTruncation}", notes: "${req.body.lemmaNotes}"})
                             CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)

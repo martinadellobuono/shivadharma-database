@@ -12143,7 +12143,7 @@ body {
 }
 
 .scroll-tab:not(.apparatus-scroll) {
-  height: 70vh;
+  height: 65vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }

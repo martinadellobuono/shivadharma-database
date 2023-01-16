@@ -34,6 +34,7 @@ router.get("/edit/:id", async (req, res) => {
     var commentary_temp = [];
     var citation_temp = [];
     var note_temp = [];
+    var chapter;
 
     const session = driver.session();
     try {
@@ -51,7 +52,7 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_COMMENTARY]->(commentary:Commentary)
                 OPTIONAL MATCH citation_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH note_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry, note_entry
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, selectedFragment.chapter, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry, note_entry
                 `
             )
             .subscribe({
@@ -128,9 +129,10 @@ router.get("/edit/:id", async (req, res) => {
                             note_temp.push(record.get("note_entry"));
                         };
                     };
+                    /* chapter */
+                    chapter = record.get("selectedFragment.chapter");
                 },
                 onCompleted: () => {
-
                     /* APPARATUS */
                     /* lemmas */
                     var lemmas = [];
@@ -156,7 +158,8 @@ router.get("/edit/:id", async (req, res) => {
                                 /* lemma */
                                 var lemma = el;
 
-                                /* stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
+                                /* chapter / stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
+                                var chapter;
                                 var stanzaStart = [];
                                 var padaStart = [];
                                 var stanzaEnd = [];
@@ -173,6 +176,8 @@ router.get("/edit/:id", async (req, res) => {
                                     if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_LEMMA") {
+                                                /* chapter */
+                                                chapter = el["start"]["properties"]["chapter"];
                                                 /* stanza start */
                                                 var stanza = el["start"]["properties"]["stanzaStart"];
                                                 if (!stanzaStart.includes(stanza)) {
@@ -227,6 +232,7 @@ router.get("/edit/:id", async (req, res) => {
                                 lemmaDict.push({
                                     lemma: lemma,
                                     witnesses: witnesses.join(" ; "),
+                                    chapter: chapter,
                                     stanzaStart: stanzaStart,
                                     padaStart: padaStart,
                                     stanzaEnd: stanzaEnd,
@@ -344,14 +350,16 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* fragment */
                             var fragment;
+                            var chapter;
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
+                                    chapter = el["end"]["properties"]["chapter"];
                                 };
                             });
 
                             /* tranlation entry */
-                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment;
+                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter;
 
                             /* translations array */
                             if (!translArr.includes(translEntry)) {
@@ -390,14 +398,16 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* fragment */
                             var fragment;
+                            var chapter;
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
+                                    chapter = el["end"]["properties"]["chapter"];
                                 };
                             });
 
                             /* parallel entry */
-                            var paralEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment;
+                            var paralEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment + "/" + chapter;
 
                             /* parallels array */
                             if (!paralArr.includes(paralEntry)) {
@@ -437,14 +447,16 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* fragment */
                             var fragment;
+                            var chapter;
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
+                                    chapter = el["end"]["properties"]["chapter"];
                                 };
                             });
 
                             /* commentary entry */
-                            var commEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment;
+                            var commEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!commArr.includes(commEntry)) {
@@ -484,14 +496,16 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* fragment */
                             var fragment;
+                            var chapter;
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
+                                    chapter = el["end"]["properties"]["chapter"];
                                 };
                             });
 
                             /* citation entry */
-                            var citEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment;
+                            var citEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!citArr.includes(citEntry)) {
@@ -531,14 +545,16 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* fragment */
                             var fragment;
+                            var chapter;
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
+                                    chapter = el["end"]["properties"]["chapter"];
                                 };
                             });
 
                             /* note entry */
-                            var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment;
+                            var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!notesArr.includes(noteEntry)) {

@@ -8,7 +8,7 @@
   <% stanzaStart = stanzaStart.split("#")[0]; %>
   <% var stanzaEnd = commentaries[i].split("-")[1]; %>
   <% stanzaEnd = stanzaEnd.split("#")[0]; %>
-  
+
   <!-- padas -->
   <% var padaStart = commentaries[i].split("-")[0]; %>
   <% padaStart = padaStart.split("#")[1]; %>
@@ -20,14 +20,19 @@
   <% var commentary = commentaries[i].split("___")[1]; %>
   <% commentary = commentary.split("===")[0]; %>
 
-  <!-- fragment -->
+  <!-- fragment / chapter -->
   <% var fragment = commentaries[i].split("___")[1]; %>
+  <% var chapter; %>
   <% fragment = fragment.split("===")[1] %>
+  <% chapter = fragment.split("/") %>
+  <% fragment = chapter[0]; %>
+  <% chapter = chapter[1]; %>
 
   <!-- location -->
   <div class="p-2" data-type="commentary" data-subtype="location">
-    <span data-type="commentary" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="commentary" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span>
-    <span data-type="commentary" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="commentary" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span>
+    <div class="mb-2">
+      <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="commentary" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="commentary" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="commentary" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart; %></span><span data-type="commentary" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="commentary" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd; %></span></span>
+    </div>
   </div>
 
   <!-- fragment -->
