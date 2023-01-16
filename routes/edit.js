@@ -496,35 +496,25 @@ router.get("/edit/:id", async (req, res) => {
                             /* note */
                             var note = obj["end"]["properties"]["value"];
 
-                            /* stanzas / padas */
-                            var stanzaStart = obj["end"]["properties"]["stanzaStart"];
-                            var stanzaEnd = obj["end"]["properties"]["stanzaStart"];
-                            var padaStart = obj["end"]["properties"]["padaStart"];
-
-                            if (padaStart == "undefined" || padaStart.includes("a") && padaStart.includes("b") && padaStart.includes("c") && padaStart.includes("d") && padaStart.includes("e") && padaStart.includes("f")) {
-                                padaStart = "";
-                            };
-
-                            var padaEnd = obj["end"]["properties"]["padaStart"];
-                            if (padaEnd == "undefined" || padaEnd.includes("a") && padaEnd.includes("b") && padaEnd.includes("c") && padaEnd.includes("d") && padaEnd.includes("e") && padaEnd.includes("f")) {
-                                padaEnd = "";
-                            };
-
-                            if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
-                                stanzaEnd = "";
-                                padaEnd = "";
-                            };
-
-                            /* fragment */
+                            /* fragment / location */
                             var fragment;
                             var chapter;
+                            var stanzaStart;
+                            var stanzaEnd;
+                            var padaStart;
+                            var padaEnd;
+                            
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
+                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    padaStart = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaStart"];
                                 };
                             });
-
+                            
                             /* note entry */
                             var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
 
