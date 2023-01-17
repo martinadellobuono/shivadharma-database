@@ -155,7 +155,7 @@ router.get("/edit/:id", async (req, res) => {
                             lemmas.forEach((el) => {
                                 /* lemma */
                                 var lemma = el;
-
+                                
                                 /* chapter / stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
                                 var chapter;
                                 var stanzaStart;
@@ -183,12 +183,7 @@ router.get("/edit/:id", async (req, res) => {
                                                 /* stanza end */
                                                 stanzaEnd = el["start"]["properties"]["stanzaEnd"];
                                                 /* pada end */
-                                                /* starting === ending */
                                                 padaEnd = el["start"]["properties"]["padaEnd"];
-                                                if (stanzaStart + padaStart == stanzaEnd + padaEnd) {
-                                                    stanzaEnd = "";
-                                                    padaEnd = "";
-                                                };
                                                 /* truncation */
                                                 var truncationVal = el["end"]["properties"]["truncation"];
                                                 if (truncationVal !== undefined) {
@@ -334,9 +329,9 @@ router.get("/edit/:id", async (req, res) => {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
                                     stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
                                     padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaEnd"];
                                 };
                             });
 
@@ -372,9 +367,9 @@ router.get("/edit/:id", async (req, res) => {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
                                     stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
                                     padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaEnd"];
                                 };
                             });
 
@@ -411,9 +406,9 @@ router.get("/edit/:id", async (req, res) => {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
                                     stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
                                     padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaEnd"];
                                 };
                             });
 
@@ -450,9 +445,9 @@ router.get("/edit/:id", async (req, res) => {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
                                     stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
                                     padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaEnd"];
                                 };
                             });
 
@@ -483,15 +478,15 @@ router.get("/edit/:id", async (req, res) => {
                             var stanzaEnd;
                             var padaStart;
                             var padaEnd;
-                            
+
                             obj["segments"].forEach((el) => {
                                 if (el["relationship"]["type"] == "HAS_FRAGMENT") {
                                     fragment = el["end"]["properties"]["value"];
                                     chapter = el["end"]["properties"]["chapter"];
                                     stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaStart"];
+                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
                                     padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaStart"];
+                                    padaEnd = el["end"]["properties"]["padaEnd"];
                                 };
                             });
 

@@ -45,7 +45,7 @@ router.post("/addApparatus/:id",
 
                     /* remove "all" from padas arrays */
                     var padaStartArr = req.body.padaStart;
-                    
+
                     if (padaStartArr == undefined) {
                         padaStartArr = [];
                     } else {
@@ -53,7 +53,7 @@ router.post("/addApparatus/:id",
                             padaStartArr = [];
                         };
                     };
-                    
+
                     var padaEndArr = req.body.padaEnd;
                     if (padaEndArr == undefined) {
                         padaEndArr = [];
@@ -85,14 +85,22 @@ router.post("/addApparatus/:id",
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                             WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", chapter: "${req.body.chapter}", stanzaStart: "${req.body.stanzaStart}", padaStart: "${padaStartArr}", stanzaEnd: "${req.body.stanzaEnd}", padaEnd: "${padaEndArr}"})
+                            MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                            ON CREATE
+                                SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
+                            ON MATCH
+                                SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                            CREATE (lemma:Lemma {value: "${lemmaReq}", truncation: "${req.body.lemmaTruncation}", notes: "${req.body.lemmaNotes}"})
-                            CREATE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+                            MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)
+                            ON CREATE
+                                SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
+                            ON MATCH
+                                SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
                                 MERGE (witness:Witness {siglum: wit})
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
+
                             MERGE (variant:Variant {value: "${variantReq}", number: "${i}", notes: "${req.body[notesVariant]}"})
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
