@@ -567,6 +567,9 @@ let annotations = () => {
         /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
         el.addEventListener("click", () => {
 
+            /* type of annotation */
+            var category = el.getAttribute("data-value");
+
             /* get selected text */
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
@@ -608,8 +611,13 @@ let annotations = () => {
                     };
 
                     /* SHOW THE FORMS */
+                    /* click on annotation tab */
+                    var formToShow = document.querySelector(".annotation-form." + category);
+                    var someTabTriggerEl = formToShow.querySelector("button[data-bs-target='#annotate-" + category + "']")
+                    var tab = new bootstrap.Tab(someTabTriggerEl);
+                    tab.show();
+
                     /* selected fragment form */
-                    var category = el.getAttribute("data-value");
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
 
                     /* hide the non clicked form */
@@ -816,6 +824,11 @@ let annotations = () => {
                     safeCancelBtn.setAttribute("data-cancel", "annotation-" + n);
 
                 } else {
+                    /* show default settings */
+                    var formToHide = document.querySelector(".annotation-form." + category);
+                    formToHide.classList.add("d-none");
+                    document.querySelector(".default-settings").classList.remove("d-none");
+                    /* warning that you have selected nothing */
                     document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
 
@@ -868,17 +881,27 @@ let previewAnnotations = () => {
             /* SHOW THE FORMS */
             /* selected fragment form */
             var category = btn.getAttribute("data-value");
-            /* hide the non clicked form */
-            var forms = document.querySelectorAll(".annotation-form");
-            forms.forEach((el) => {
-                /* show the clicked form */
-                if (el.classList.contains(category) === true) {
-                    el.classList.remove("d-none");
-                    /* show the preview */
-                    el.querySelector("button[data-bs-target='#check-" + category + "']").click();
+
+            /* show the preview */
+            var formToShow = document.querySelector(".annotation-form." + category);
+            formToShow.classList.remove("d-none");
+            var someTabTriggerEl = formToShow.querySelector("button[data-bs-target='#check-" + category + "']")
+            var tab = new bootstrap.Tab(someTabTriggerEl);
+            tab.show();
+
+            /* hide other preview */
+            var formsToHide = document.querySelectorAll(".annotation-form:not(." + category + ")");
+            formsToHide.forEach((form) => {
+                form.classList.add("d-none");
+            });
+
+            /* hide the annotate button in the preview */
+            var btnToShow = document.querySelectorAll(".btn-vertical .btn-annotation");
+            btnToShow.forEach((btn) => {
+                if (btn.getAttribute("data-value") !== category) {
+                    btn.parentNode.classList.remove("d-none");
                 } else {
-                    /* hide the clicked form */
-                    el.classList.add("d-none");
+                    btn.parentNode.classList.add("d-none");
                 };
             });
 
