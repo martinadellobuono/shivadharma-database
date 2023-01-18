@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dependingForms();
     cloneEl();
     annotations();
+    previewAnnotations();
     cancelAnnotations();
     closeBtn();
     modifyAnnotations();
@@ -575,8 +576,8 @@ let annotations = () => {
                     closeAnnotationBox();
 
                     /* top annotations resize */
-                    if (el.parentNode.classList.contains("enlarge-col") === true) {
-                        var bigger = el.parentNode;
+                    var bigger = el.closest(".enlarge-col");
+                    if (bigger !== null) {
                         var toHide = document.querySelector(".annotations-box-below");
                         toHide.classList.add("d-none");
                         toHide.classList.remove("d-block");
@@ -821,6 +822,67 @@ let annotations = () => {
             };
         });
 
+    });
+};
+
+/* preview annotations */
+let previewAnnotations = () => {
+    var btnPreview = document.querySelectorAll(".btn-preview");
+    btnPreview.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            /* close annotations */
+            closeAnnotationBox();
+            /* open panels */
+            /* vertical panels */
+            var bigger = btn.closest(".enlarge-col");
+            if (bigger !== null) {
+                var toHide = document.querySelector(".annotations-box-below");
+                toHide.classList.add("d-none");
+                toHide.classList.remove("d-block");
+                bigger.classList.remove("col-md-1");
+                bigger.classList.add("col-md-4");
+                bigger.classList.add("bg-light");
+                /* hide the button to add annotations */
+                btn.classList.add("top-btn");
+                btn.classList.add("d-none");
+                btn.classList.remove("d-block");
+                /* hide the close button */
+                bigger.querySelector(".btn-close").classList.remove("d-none");
+            } else {
+                /* below annotations resize */
+                var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
+                var toShow = document.querySelector(".annotations-box-below");
+                toShow.classList.add("d-block");
+                toShow.classList.remove("d-none");
+                if (smaller.length > 0) {
+                    smaller.forEach((el) => {
+                        el.classList.add("col-md-1");
+                        el.classList.remove("col-md-4");
+                        el.classList.remove("bg-light");
+                        /* hide the button to add annotations */
+                        el.querySelector(".top-btn").classList.remove("d-none");
+                    });
+                };
+            };
+
+            /* SHOW THE FORMS */
+            /* selected fragment form */
+            var category = btn.getAttribute("data-value");
+            /* hide the non clicked form */
+            var forms = document.querySelectorAll(".annotation-form");
+            forms.forEach((el) => {
+                /* show the clicked form */
+                if (el.classList.contains(category) === true) {
+                    el.classList.remove("d-none");
+                    /* show the preview */
+                    el.querySelector("button[data-bs-target='#check-" + category + "']").click();
+                } else {
+                    /* hide the clicked form */
+                    el.classList.add("d-none");
+                };
+            });
+
+        });
     });
 };
 

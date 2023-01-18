@@ -118,7 +118,10 @@
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
         <button type="button" class="btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation"></button>
         <h3 class="h6">Translation</h3>
-        <button type="button" class="btn btn-sm btn-annotation btn-teal mb-2" title="Insert/check a translation" data-value="translation"><i class="bi bi-pencil-fill"></i></button>
+        <div class="btn-group-vertical btn-vertical">
+          <button type="button" class="btn btn-sm btn-preview btn-teal" data-value="translation" title="Insert/check translations"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-teal mb-2" data-value="translation" title="Insert/check translations"><i class="bi bi-pencil-fill"></i></button>
+        </div>
         <div class="annotation-form translation d-none">
           <%- include ("partials/forms-req/translation") %>
         </div>
@@ -127,7 +130,10 @@
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
         <button type="button" class="btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation"></button>
         <h3 class="h6">Parallels</h3>
-        <button type="button" class="btn btn-sm btn-orange btn-annotation mb-2" title="Insert/check a parallel" data-value="parallel"><i class="bi bi-pencil-fill"></i></button>
+        <div class="btn-group-vertical btn-vertical">
+          <button type="button" class="btn btn-sm btn-preview btn-orange" data-value="parallel" title="Preview parallels"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-orange btn-annotation mb-2" data-value="parallel" title="Insert/check parallels"><i class="bi bi-pencil-fill"></i></button>
+        </div>
         <div class="annotation-form parallel d-none">
           <%- include ("partials/forms-req/parallel") %>
         </div>
@@ -136,7 +142,10 @@
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
         <button type="button" class="btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation"></button>
         <h3 class="h6">Commentary</h3>
-        <button type="button" class="btn btn-sm btn-indigo btn-annotation mb-2" title="Insert/check a commentary" data-value="commentary"><i class="bi bi-pencil-fill"></i></button>
+        <div class="btn-group-vertical btn-vertical">
+          <button type="button" class="btn btn-sm btn-preview btn-indigo" data-value="commentary" title="Preview commentary"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-indigo btn-annotation mb-2" data-value="commentary" title="Insert/check commentary"><i class="bi bi-pencil-fill"></i></button>
+        </div>
         <div class="annotation-form commentary d-none">
           <%- include ("partials/forms-req/commentary") %>
         </div>
@@ -145,7 +154,10 @@
       <div class="col-md-1 border p-3 enlarge-col specific-cols">
         <button type="button" class="btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-annotation" data-type="cancel-annotation"></button>
         <h3 class="h6">Citations</h3>
-        <button type="button" class="btn btn-sm btn-fuchsia btn-annotation mb-2" title="Insert/check a citation" data-value="citation"><i class="bi bi-pencil-fill"></i></button>
+        <div class="btn-group-vertical btn-vertical">
+          <button type="button" class="btn btn-sm btn-preview btn-fuchsia" data-value="citation" title="Preview citations"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-fuchsia btn-annotation mb-2" data-value="citation" title="Insert/check citations"><i class="bi bi-pencil-fill"></i></button>
+        </div>
         <div class="annotation-form citation d-none">
           <%- include ("partials/forms-req/citation") %>
         </div>
@@ -158,11 +170,20 @@
       <div class="col-md-12">
         <span>Insert/check: </span>
         <!-- text structure -->
-        <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="textStructure"><i class="bi bi-pencil-fill"></i> Text structure</button>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="textStructure" title="Preview text structure"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="textStructure" title="Insert/check text structure"><i class="bi bi-pencil-fill"></i> Text structure</button>
+        </div>
         <!-- apparatus entry -->
-        <button type="button" class="btn btn-sm btn-annotation btn-yellow" data-value="apparatus"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm btn-preview btn-yellow" data-value="apparatus" title="Preview apparatus"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-yellow" data-value="apparatus" title="Insert/check text structure"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
+        </div>
         <!-- note -->
-        <button type="button" class="btn btn-sm btn-annotation btn-blue" data-value="note"><i class="bi bi-pencil-fill"></i> Note</button>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm btn-preview btn-blue" data-value="note" title="Preview notes"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-blue" data-value="note" title="Insert/check notes"><i class="bi bi-pencil-fill"></i> Note</button>
+        </div>
       </div>
     </div>
   </div>
