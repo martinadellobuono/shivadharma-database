@@ -353,8 +353,9 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* parallel */
                             var parallel = obj["end"]["properties"]["value"];
+                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
-                            /* fragment / location */
+                            /* ID / fragment / location */
                             var fragment;
                             var chapter;
                             var stanzaStart;
@@ -374,7 +375,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* parallel entry */
-                            var paralEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment + "/" + chapter;
+                            var paralEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment + "/" + chapter;
 
                             /* parallels array */
                             if (!paralArr.includes(paralEntry)) {

@@ -1,4 +1,6 @@
 <!-- text structure -->
+<button type="button" class="btn-close float-end" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-textStructure" data-type="cancel-annotation"></button>
+<h3 class="h6">Text structure</h3>
 <ul class="nav nav-tabs" role="tablist">
   <!-- annotate -->
   <li class="nav-item" role="presentation">
@@ -17,6 +19,11 @@
   <!-- ANNOTATE -->
   <div class="tab-pane fade show active scroll-tab" id="annotate-textStructure" role="tabpanel" aria-labelledby="annotate-tab">
     <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addtextStructure/<%= id %>">
+      <!-- ID -->
+      <div class="d-none">
+        <label class="form-label">ID of annotation</label>
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="ID of annotation" readonly="true" data-value="textStructure" name="idAnnotation">
+      </div>
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
         <label class="form-label">Selected fragment</label>

@@ -16,6 +16,11 @@
   <!-- ANNOTATE -->
   <div class="tab-pane fade show active scroll-tab" id="annotate-commentary" role="tabpanel" aria-labelledby="annotate-tab">
     <form class="form-annotations textarea-container" id="commentary-req" method="post" action="/addCommentary/<%= id %>">
+      <!-- ID -->
+      <div class="d-none">
+        <label class="form-label">ID of annotation</label>
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="ID of annotation" readonly="true" data-value="commentary" name="idAnnotation">
+      </div>
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
         <label class="form-label">Selected fragment</label>

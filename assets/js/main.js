@@ -570,6 +570,16 @@ let annotations = () => {
             /* type of annotation */
             var category = el.getAttribute("data-value");
 
+            /* hide the annotate button in the preview */
+            var btnToShow = document.querySelectorAll(".btn-vertical .btn-preview");
+            btnToShow.forEach((btn) => {
+                if (btn.getAttribute("data-value") !== category) {
+                    btn.parentNode.classList.remove("d-none");
+                } else {
+                    btn.parentNode.classList.add("d-none");
+                };
+            });
+
             /* get selected text */
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
@@ -619,6 +629,10 @@ let annotations = () => {
 
                     /* selected fragment form */
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+
+                    /* generate an ID for each annotation */
+                    var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
+                    document.querySelector("[name='idAnnotation'][data-value='" + category + "']").value = idAnnotation;
 
                     /* hide the non clicked form */
                     var forms = document.querySelectorAll(".annotation-form");

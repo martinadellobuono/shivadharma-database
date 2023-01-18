@@ -3,8 +3,12 @@
 <!-- parallel entry -->
 <div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
 
+  <!-- id annotation -->
+  <% var idAnnotation = parallels[i].split("+")[0]; %>
+
   <!-- stanzas -->
-  <% var stanzaStart = parallels[i].split("-")[0]; %>
+  <% var stanzaStart = parallels[i].split("+")[1]; %>
+  <% stanzaStart = stanzaStart.split("-")[0]; %>
   <% stanzaStart = stanzaStart.split("#")[0]; %>
   <% var stanzaEnd = parallels[i].split("-")[1]; %>
   <% stanzaEnd = stanzaEnd.split("#")[0]; %>
@@ -28,6 +32,9 @@
   <% chapter = fragment.split("/") %>
   <% fragment = chapter[0]; %>
   <% chapter = chapter[1]; %>
+
+  <!-- idAnnotation -->
+  <span data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
 
   <!-- location -->
   <div class="p-2" data-type="parallel" data-subtype="location">
