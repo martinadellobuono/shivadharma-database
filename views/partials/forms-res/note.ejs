@@ -3,8 +3,12 @@
 <!-- note entry -->
 <div class="p-3 mt-3 bg-white container-note" data-type="note" data-subtype="note-entry">
 
+  <!-- id annotation -->
+  <% var idAnnotation = notes[i].split("+")[0]; %>
+
   <!-- stanzas -->
-  <% var stanzaStart = notes[i].split("-")[0]; %>
+  <% var stanzaStart = notes[i].split("+")[1]; %>
+  <% stanzaStart = stanzaStart.split("-")[0]; %>
   <% stanzaStart = stanzaStart.split("#")[0]; %>
   <% var stanzaEnd = notes[i].split("-")[1]; %>
   <% stanzaEnd = stanzaEnd.split("#")[0]; %>
@@ -30,7 +34,7 @@
   <% chapter = chapter[1]; %>
 
   <!-- idAnnotation -->
-  <span data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='' data-input="text"></span>
+  <span data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
 
   <!-- location -->
   <div class="p-2" data-type="note" data-subtype="location">

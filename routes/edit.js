@@ -483,6 +483,9 @@ router.get("/edit/:id", async (req, res) => {
                             /* note */
                             var note = obj["end"]["properties"]["value"];
 
+                            /* id */
+                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
+
                             /* fragment / location */
                             var fragment;
                             var chapter;
@@ -503,7 +506,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* note entry */
-                            var noteEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
+                            var noteEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!notesArr.includes(noteEntry)) {

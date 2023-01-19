@@ -16,7 +16,6 @@
   <!-- padas -->
   <% var padaStart = translations[i].split("-")[0]; %>
   <% padaStart = padaStart.split("#")[1]; %>
-  <% padaStart = padaStart %>
   <% var padaEnd = translations[i].split("-")[1]; %>
   <% padaEnd = padaEnd.split("___")[0]; %>
   <% padaEnd = padaEnd.split("#")[1]; %>
@@ -34,14 +33,14 @@
   <% chapter = chapter[1]; %>
 
   <!-- idAnnotation -->
-  <span data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
+  <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
 
   <!-- location -->
   <div class="p-2" data-type="translation" data-subtype="location">
     <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
+    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
     <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/[#,]/g, ""); %></span></span>
+    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number"><%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/#|,|a\,b\,c\,d\,e\,f/g, ""); %></span></span>
     <% }; %>
   </div>
 
