@@ -3,8 +3,12 @@
 <!-- citation entry -->
 <div class="p-3 mt-3 bg-white container-citation" data-type="citation" data-subtype="citation-entry">
 
+  <!-- id annotation -->
+  <% var idAnnotation = citations[i].split("+")[0]; %>
+
   <!-- stanzas -->
-  <% var stanzaStart = citations[i].split("-")[0]; %>
+  <% var stanzaStart = citations[i].split("+")[1]; %>
+  <% stanzaStart = stanzaStart.split("-")[0]; %>
   <% stanzaStart = stanzaStart.split("#")[0]; %>
   <% var stanzaEnd = citations[i].split("-")[1]; %>
   <% stanzaEnd = stanzaEnd.split("#")[0]; %>
@@ -30,7 +34,7 @@
   <% chapter = chapter[1]; %>
 
   <!-- idAnnotation -->
-  <span data-type="citation" data-subtype="ID" data-name="idAnnotation" data-fill='' data-input="text"></span>
+  <span data-type="citation" data-subtype="ID" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
 
   <!-- location -->
   <div class="p-2" data-type="citation" data-subtype="location">

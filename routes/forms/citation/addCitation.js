@@ -25,7 +25,7 @@ router.post("/addCitation/:id", async (req, res) => {
                 ON MATCH
                     SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
+                MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET citation.value = '${req.body.citation}'
                 ON MATCH

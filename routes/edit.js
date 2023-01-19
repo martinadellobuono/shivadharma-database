@@ -316,6 +316,9 @@ router.get("/edit/:id", async (req, res) => {
                             /* translation */
                             var transl = obj["end"]["properties"]["value"];
 
+                            /* id */
+                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
+
                             /* fragment / location */
                             var fragment;
                             var chapter;
@@ -336,7 +339,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* tranlation entry */
-                            var translEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter;
+                            var translEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter;
 
                             /* translations array */
                             if (!translArr.includes(translEntry)) {
@@ -353,9 +356,11 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* parallel */
                             var parallel = obj["end"]["properties"]["value"];
+
+                            /* id */
                             var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
-                            /* ID / fragment / location */
+                            /* fragment / location */
                             var fragment;
                             var chapter;
                             var stanzaStart;
@@ -394,6 +399,9 @@ router.get("/edit/:id", async (req, res) => {
                             /* commentary */
                             var commentary = obj["end"]["properties"]["value"];
 
+                            /* id */
+                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
+
                             /* fragment / location */
                             var fragment;
                             var chapter;
@@ -414,7 +422,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* commentary entry */
-                            var commEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter;
+                            var commEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!commArr.includes(commEntry)) {
@@ -432,6 +440,9 @@ router.get("/edit/:id", async (req, res) => {
 
                             /* citation */
                             var citation = obj["end"]["properties"]["value"];
+
+                            /* id */
+                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
                             /* fragment / location */
                             var fragment;
@@ -453,7 +464,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* citation entry */
-                            var citEntry = stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment + "/" + chapter;
+                            var citEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment + "/" + chapter;
 
                             /* commentary array */
                             if (!citArr.includes(citEntry)) {

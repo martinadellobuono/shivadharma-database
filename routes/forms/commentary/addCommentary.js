@@ -25,7 +25,7 @@ router.post("/addCommentary/:id", async (req, res) => {
                 ON MATCH
                     SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
+                MERGE (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET commentary.value = '${req.body.commentary}'
                 ON MATCH

@@ -3,8 +3,12 @@
 <!-- translation entry -->
 <div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
 
+  <!-- id annotation -->
+  <% var idAnnotation = translations[i].split("+")[0]; %>
+
   <!-- stanzas -->
-  <% var stanzaStart = translations[i].split("-")[0]; %>
+  <% var stanzaStart = translations[i].split("+")[1]; %>
+  <% stanzaStart = stanzaStart.split("-")[0]; %>
   <% stanzaStart = stanzaStart.split("#")[0]; %>
   <% var stanzaEnd = translations[i].split("-")[1]; %>
   <% stanzaEnd = stanzaEnd.split("#")[0]; %>
@@ -30,7 +34,7 @@
   <% chapter = chapter[1]; %>
 
   <!-- idAnnotation -->
-  <span data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='' data-input="text"></span>
+  <span data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
 
   <!-- location -->
   <div class="p-2" data-type="translation" data-subtype="location">
