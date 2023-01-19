@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
     modifyAnnotations();
     liveCheck();
     liveCheckPresence();
-    checkAnnotatedFragments();
+    /* checkAnnotatedFragments(); */
     truncation();
     lemmaVariantPresence();
     witArea();
-    previewCheck();
+    /* previewCheck(); */
 });
 
 /* alerts */
@@ -570,16 +570,6 @@ let annotations = () => {
             /* type of annotation */
             var category = el.getAttribute("data-value");
 
-            /* hide the annotate button in the preview */
-            /* var btnToShow = document.querySelectorAll(".btn-vertical .btn-preview");
-            btnToShow.forEach((btn) => {
-                if (btn.getAttribute("data-value") !== category) {
-                    btn.parentNode.classList.remove("d-none");
-                } else {
-                    btn.parentNode.classList.add("d-none");
-                };
-            }); */
-
             /* get selected text */
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
@@ -620,7 +610,14 @@ let annotations = () => {
                         };
                     };
 
-                    /* SHOW THE FORMS */
+                    /* SHOW THE FORMS / HIDE THE NOT SELECTED CATEGORY FORMS */
+                    /* show the correct category form */
+                    var forms = document.querySelectorAll(".annotation-form." + category);
+                    forms.forEach((form) => {
+                        form.classList.remove("d-none");
+                    });
+                    /* / */
+
                     /* click on annotation tab */
                     var formToShow = document.querySelector(".annotation-form." + category);
                     var someTabTriggerEl = formToShow.querySelector("button[data-bs-target='#annotate-" + category + "']")
@@ -628,22 +625,13 @@ let annotations = () => {
                     tab.show();
 
                     /* selected fragment form */
-                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "html" }).trim();
 
                     /* generate an ID for each annotation */
-                    var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
-                    document.querySelector("[name='idAnnotation'][data-value='" + category + "']").value = idAnnotation;
-
-                    /* hide the non clicked form */
-                    var forms = document.querySelectorAll(".annotation-form");
-                    forms.forEach((el) => {
-                        /* show the clicked form */
-                        if (el.classList.contains(category) === true) {
-                            el.classList.remove("d-none");
-                        } else {
-                            /* hide the clicked form */
-                            el.classList.add("d-none");
-                        };
+                    var idInputs = formToShow.querySelectorAll("input.id-input");
+                    idInputs.forEach((input) => {
+                        var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
+                        input.value = idAnnotation;
                     });
 
                     /* PRINT MILESTONES AND CONTENT IN THE TEXT */
@@ -829,7 +817,6 @@ let annotations = () => {
                             };
                         };
                     };
-                    // /
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
@@ -908,16 +895,6 @@ let previewAnnotations = () => {
             formsToHide.forEach((form) => {
                 form.classList.add("d-none");
             });
-
-            /* hide the annotate button in the preview */
-            /* var btnToShow = document.querySelectorAll(".btn-vertical .btn-annotation");
-            btnToShow.forEach((btn) => {
-                if (btn.getAttribute("data-value") !== category) {
-                    btn.parentNode.classList.remove("d-none");
-                } else {
-                    btn.parentNode.classList.add("d-none");
-                };
-            }); */
 
         });
     });
@@ -1061,6 +1038,12 @@ let modifyAnnotations = () => {
             var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
             tab.click();
 
+            /* show the correct category form */
+            var forms = document.querySelectorAll(".annotation-form." + type);
+            forms.forEach((form) => {
+                form.classList.remove("d-none");
+            });
+
             /* input to fill in */
             data.forEach((el) => {
                 var name = el.getAttribute("data-name");
@@ -1097,7 +1080,9 @@ let modifyAnnotations = () => {
                         };
                         /* live check */
                         if (type == "apparatus") {
-                            document.getElementById("live-" + name).innerHTML = val;
+                            if (document.getElementById("live-" + name) !== null) {
+                                document.getElementById("live-" + name).innerHTML = val;
+                            };
                         };
                     });
                 };

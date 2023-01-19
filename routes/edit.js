@@ -145,17 +145,30 @@ router.get("/edit/:id", async (req, res) => {
                             /* lemmas */
                             for (var i = 0; i < apparatus_entry.length; i++) {
                                 var obj = apparatus_entry[i];
-                                var lemma = obj["segments"][0]["end"]["properties"]["value"];
-                                if (!lemmas.includes(lemma)) {
-                                    lemmas.push(lemma);
+
+                                /* selected fragment */
+                                var selectedFragment = obj["segments"][0]["end"]["properties"]["value"];
+
+                                /* lemma */
+                                var lemma = obj["segments"][1]["end"]["properties"]["value"];
+
+                                /* id lemma */
+                                var idLemma = obj["segments"][1]["end"]["properties"]["idLemma"];
+
+                                /* array of lemmas */
+                                if (!lemmas.includes(lemma + "#" + idLemma)) {
+                                    lemmas.push(lemma + "#" + idLemma);
                                 };
                             };
 
                             /* lemma / variants */
                             lemmas.forEach((el) => {
                                 /* lemma */
-                                var lemma = el;
-                                
+                                var lemma = el.split("#")[0];
+
+                                /* id lemma */
+                                var idLemma = el.split("#")[1];
+
                                 /* chapter / stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
                                 var chapter;
                                 var stanzaStart;
@@ -171,7 +184,7 @@ router.get("/edit/:id", async (req, res) => {
 
                                 for (var i = 0; i < apparatus_entry.length; i++) {
                                     var obj = apparatus_entry[i];
-                                    if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
+                                    if (lemma.replace(/°/g, "") == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_LEMMA") {
                                                 /* chapter */
@@ -205,7 +218,7 @@ router.get("/edit/:id", async (req, res) => {
                                 for (var i = 0; i < witnesses_relations.length; i++) {
                                     var obj = witnesses_relations[i];
                                     if (obj["start"]["labels"] == "Lemma") {
-                                        if (lemma == obj["start"]["properties"]["value"]) {
+                                        if (lemma.replace(/°/g, "") == obj["start"]["properties"]["value"]) {
                                             var witness = obj["end"]["properties"]["siglum"];
                                             if (!witnesses.includes(witness)) {
                                                 witnesses.push(witness);
@@ -216,6 +229,8 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* lemma / witnesses / stanza / pada dict */
                                 lemmaDict.push({
+                                    selectedFragment: selectedFragment,
+                                    idLemma: idLemma,
                                     lemma: lemma,
                                     witnesses: witnesses.join(" ; "),
                                     chapter: chapter,
@@ -237,12 +252,19 @@ router.get("/edit/:id", async (req, res) => {
                                 var variants = [];
                                 for (var i = 0; i < apparatus_entry.length; i++) {
                                     var obj = apparatus_entry[i];
-                                    if (lemma == obj["segments"][0]["end"]["properties"]["value"]) {
+                                    if (lemma.replace(/°/g, "") == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_VARIANT") {
+
+                                                /* variant */
                                                 var variant = el["end"]["properties"]["value"];
-                                                if (!variants.includes(variant)) {
-                                                    variants.push(variant);
+
+                                                /* id variant */
+                                                var idVariant = el["end"]["properties"]["idVariant"];
+
+                                                /* array of variants */
+                                                if (!variants.includes(variant + "#" + idVariant)) {
+                                                    variants.push(variant + "#" + idVariant);
                                                 };
                                             };
                                         });
@@ -250,13 +272,21 @@ router.get("/edit/:id", async (req, res) => {
                                 };
 
                                 /* witnesses */
-                                variants.forEach((variant) => {
+                                variants.forEach((el) => {
+
+                                    /* variant */
+                                    var variant = el.split("#")[0];
+
+                                    /* id variant */
+                                    var idVariant = el.split("#")[1];
+
                                     var witnesses = [];
                                     var numbers = [];
                                     var notes = [];
 
                                     for (var i = 0; i < witnesses_relations.length; i++) {
                                         var obj = witnesses_relations[i];
+
                                         /* variant / witnesses / notes */
                                         if (obj["start"]["labels"] == "Variant") {
                                             if (obj["start"]["properties"]["value"] == variant) {
@@ -283,6 +313,7 @@ router.get("/edit/:id", async (req, res) => {
 
                                     /* variant / witness dict */
                                     variantDict.push({
+                                        idVariant: idVariant,
                                         variant: variant,
                                         witnesses: witnesses.join(" ; "),
                                         numbers: numbers,
