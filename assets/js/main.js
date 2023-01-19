@@ -571,14 +571,14 @@ let annotations = () => {
             var category = el.getAttribute("data-value");
 
             /* hide the annotate button in the preview */
-            var btnToShow = document.querySelectorAll(".btn-vertical .btn-preview");
+            /* var btnToShow = document.querySelectorAll(".btn-vertical .btn-preview");
             btnToShow.forEach((btn) => {
                 if (btn.getAttribute("data-value") !== category) {
                     btn.parentNode.classList.remove("d-none");
                 } else {
                     btn.parentNode.classList.add("d-none");
                 };
-            });
+            }); */
 
             /* get selected text */
             if (document.getSelection) {
@@ -910,14 +910,14 @@ let previewAnnotations = () => {
             });
 
             /* hide the annotate button in the preview */
-            var btnToShow = document.querySelectorAll(".btn-vertical .btn-annotation");
+            /* var btnToShow = document.querySelectorAll(".btn-vertical .btn-annotation");
             btnToShow.forEach((btn) => {
                 if (btn.getAttribute("data-value") !== category) {
                     btn.parentNode.classList.remove("d-none");
                 } else {
                     btn.parentNode.classList.add("d-none");
                 };
-            });
+            }); */
 
         });
     });
