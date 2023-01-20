@@ -616,7 +616,6 @@ let annotations = () => {
                     forms.forEach((form) => {
                         form.classList.remove("d-none");
                     });
-                    /* / */
 
                     /* click on annotation tab */
                     var formToShow = document.querySelector(".annotation-form." + category);

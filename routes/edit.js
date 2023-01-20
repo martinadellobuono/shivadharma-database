@@ -145,16 +145,12 @@ router.get("/edit/:id", async (req, res) => {
                             /* lemmas */
                             for (var i = 0; i < apparatus_entry.length; i++) {
                                 var obj = apparatus_entry[i];
-
                                 /* selected fragment */
                                 var selectedFragment = obj["segments"][0]["end"]["properties"]["value"];
-
                                 /* lemma */
                                 var lemma = obj["segments"][1]["end"]["properties"]["value"];
-
                                 /* id lemma */
                                 var idLemma = obj["segments"][1]["end"]["properties"]["idLemma"];
-
                                 /* array of lemmas */
                                 if (!lemmas.includes(lemma + "#" + idLemma)) {
                                     lemmas.push(lemma + "#" + idLemma);
@@ -255,13 +251,10 @@ router.get("/edit/:id", async (req, res) => {
                                     if (lemma.replace(/°/g, "") == obj["segments"][0]["end"]["properties"]["value"]) {
                                         obj["segments"].forEach((el) => {
                                             if (el["relationship"]["type"] == "HAS_VARIANT") {
-
                                                 /* variant */
                                                 var variant = el["end"]["properties"]["value"];
-
                                                 /* id variant */
                                                 var idVariant = el["end"]["properties"]["idVariant"];
-
                                                 /* array of variants */
                                                 if (!variants.includes(variant + "#" + idVariant)) {
                                                     variants.push(variant + "#" + idVariant);
@@ -273,13 +266,13 @@ router.get("/edit/:id", async (req, res) => {
 
                                 /* witnesses */
                                 variants.forEach((el) => {
-
                                     /* variant */
                                     var variant = el.split("#")[0];
-
+                                    
                                     /* id variant */
                                     var idVariant = el.split("#")[1];
 
+                                    /* witnesses */
                                     var witnesses = [];
                                     var numbers = [];
                                     var notes = [];
@@ -290,8 +283,9 @@ router.get("/edit/:id", async (req, res) => {
                                         /* variant / witnesses / notes */
                                         if (obj["start"]["labels"] == "Variant") {
                                             if (obj["start"]["properties"]["value"] == variant) {
-                                                /* witnesses */
+                                                /* witness */
                                                 var witness = obj["end"]["properties"]["siglum"];
+                                                /* witnesses array */
                                                 if (!witnesses.includes(witness)) {
                                                     witnesses.push(witness);
                                                 };

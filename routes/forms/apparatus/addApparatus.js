@@ -19,6 +19,7 @@ router.post("/addApparatus/:id",
         /* manuscripts / notes to complete with i */
         var manuscriptVariant;
         var notesVariant;
+        var idWitnessVariant;
 
         /* lemma / variant var to distinguish the omissions */
         var lemmaReq;
@@ -66,6 +67,7 @@ router.post("/addApparatus/:id",
                     /* variant additions */
                     manuscriptVariant = "manuscriptVariant" + i;
                     notesVariant = "variant" + i + "Omission";
+                    idWitnessVariant = "idWitnessVariant" + i;
 
                     /* lemma omission */
                     if (req.body.lemma == "") {
@@ -91,24 +93,37 @@ router.post("/addApparatus/:id",
                             ON MATCH
                                 SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
+                           
+                           
                             MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma {idLemma: "${req.body.idLemma}"})
                             ON CREATE
                                 SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
                             ON MATCH
                                 SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
+
+
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
                                 MERGE (witness:Witness {siglum: wit})
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
+
+
                             MERGE (variant:Variant {idVariant: "${req.body.idVariant}"})
                             ON CREATE
                                 SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
                             ON MATCH
                                 SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
+                            
+
+
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
-                                    MERGE (witness:Witness {siglum: wit})
-                                    MERGE (variant)-[:ATTESTED_IN]->(witness)
+                                MERGE (witness:Witness {siglum: wit})
+                                ON CREATE
+                                    SET witness.siglum = wit
+                                ON MATCH
+                                    SET witness.siglum = wit
+                                MERGE (variant)-[:ATTESTED_IN]->(witness)
                             )
                             RETURN *
                             `

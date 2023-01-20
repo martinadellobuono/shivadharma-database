@@ -172,6 +172,7 @@
                 </div>
                 <!-- lemma -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
+                <!-- lemma id -->
                 <input class="form-control cursor-not-allowed id-input" type="text" aria-describedby="ID of lemma" readonly="true" data-value="apparatus" name="idLemma">
               </div>
             </div>
@@ -235,6 +236,7 @@
                 </div>
                 <!-- variant -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="variant" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
+                <!-- variant id -->
                 <input class="form-control cursor-not-allowed id-input" type="text" aria-describedby="ID of variant" readonly="true" data-value="variant" name="idVariant">
               </div>
             </div>
@@ -248,6 +250,7 @@
               <% wits.push(siglum) %>
               <% }; %>
               <% }); %>
+              <!-- witnesses -->
               <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               <% }; %>
