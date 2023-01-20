@@ -624,7 +624,7 @@ let annotations = () => {
                     tab.show();
 
                     /* selected fragment form */
-                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "html" }).trim();
+                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
 
                     /* generate an ID for each annotation */
                     var idInputs = formToShow.querySelectorAll("input.id-input");

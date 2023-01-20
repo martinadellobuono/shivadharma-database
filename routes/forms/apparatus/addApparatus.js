@@ -87,6 +87,8 @@ router.post("/addApparatus/:id",
                         `
                             MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                             WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+
+
                             MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
                             ON CREATE
                                 SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
@@ -101,21 +103,23 @@ router.post("/addApparatus/:id",
                             ON MATCH
                                 SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
 
-
                             FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
                                 MERGE (witness:Witness {siglum: wit})
+                                ON CREATE
+                                    SET witness.siglum = wit
+                                ON MATCH
+                                    SET witness.siglum = wit
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
 
-
+                            
                             MERGE (variant:Variant {idVariant: "${req.body.idVariant}"})
                             ON CREATE
                                 SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
                             ON MATCH
                                 SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
+        
                             MERGE (lemma)-[:HAS_VARIANT]->(variant)
-                            
-
 
                             FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
                                 MERGE (witness:Witness {siglum: wit})
@@ -125,6 +129,12 @@ router.post("/addApparatus/:id",
                                     SET witness.siglum = wit
                                 MERGE (variant)-[:ATTESTED_IN]->(witness)
                             )
+
+                            WITH lemma, variant
+                            MATCH (l:Witness)<-[wl:ATTESTED_IN]-(lemma)-[:HAS_VARIANT]->(variant)-[wv:ATTESTED_IN]->(v:Witness)
+                            WHERE NOT "${req.body[manuscriptVariant]}" CONTAINS v.siglum AND NOT "${req.body.manuscriptLemma}" CONTAINS l.siglum
+                            DELETE wl, wv
+
                             RETURN *
                             `
                     )

@@ -74,9 +74,6 @@ router.post("/addFile/:id",
                         `, { file: fileName }
                     )
                     .subscribe({
-                        onNext: () => {
-                            res.redirect("/edit/" + idEdition + "-" + idEditor);
-                        },
                         onCompleted: () => {
                             console.log("Data added to the database")
                         },
@@ -97,6 +94,7 @@ router.post("/addFile/:id",
         form.on("end", () => {
             console.log("File uploaded");
         });
+        res.redirect("/edit/" + idEdition + "-" + idEditor);
     });
 
 module.exports = router;
