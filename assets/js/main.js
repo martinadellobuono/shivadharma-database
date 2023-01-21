@@ -444,6 +444,14 @@ let cloneEl = () => {
                 newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
                 /* initialize the new textarea */
                 setTimeout("textarea()", 500);
+
+                /* generate an ID for each annotation */
+                var idInputs = cloned.querySelectorAll("input.id-input");
+                idInputs.forEach((input) => {
+                    var idAnnotation = "variant" + i + Math.random().toString(16).slice(2) + (new Date()).getTime();
+                    input.value = idAnnotation;
+                });
+
             } else {
                 /* witnesses */
                 /* expand sections */

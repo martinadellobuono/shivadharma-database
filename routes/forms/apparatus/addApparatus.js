@@ -96,7 +96,6 @@ router.post("/addApparatus/:id",
                                 SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                             MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                            
-                           
                             MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma {idLemma: "${req.body.idLemma}"})
                             ON CREATE
                                 SET lemma.value = '${lemmaReq}', lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
@@ -112,7 +111,6 @@ router.post("/addApparatus/:id",
                                 MERGE (lemma)-[:ATTESTED_IN]->(witness)
                             )
 
-                            
                             MERGE (variant:Variant {idVariant: "${req.body.idVariant}"})
                             ON CREATE
                                 SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
@@ -138,22 +136,22 @@ router.post("/addApparatus/:id",
                             RETURN *
                             `
                     )
-                        .subscribe({
-                            onCompleted: () => {
-                                console.log("Data added to the graph");
-                            },
-                            onError: err => {
-                                console.log("Error related to the upload to Neo4j: " + err)
-                            }
-                        })
+                    .subscribe({
+                        onCompleted: () => {
+                            console.log("Data added to the graph");
+                        },
+                        onError: err => {
+                            console.log("Error related to the upload to Neo4j: " + err)
+                        }
+                    })
                     i++;
                 });
             });
         } catch (err) {
             console.log("Error related to Neo4j in adding the apparatus: " + err);
         } finally {
-            res.redirect(`../edit/${idEdition}-${idEditor}`);
             await session.close();
+            res.redirect(`../edit/${idEdition}-${idEditor}`);
         };
     });
 

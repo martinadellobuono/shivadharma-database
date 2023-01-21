@@ -34,9 +34,6 @@ router.post("/addNote/:id", async (req, res) => {
                 `
             )
             .subscribe({
-                onNext: () => {
-                    res.redirect(`../edit/${idEdition}-${idEditor}`);
-                },
                 onCompleted: () => {
                     console.log("Data added to the graph");
                 },
@@ -49,6 +46,7 @@ router.post("/addNote/:id", async (req, res) => {
         console.log("Error related to Neo4j in adding the translation: " + err);
     } finally {
         await session.close();
+        res.redirect(`../edit/${idEdition}-${idEditor}`);
     };
 });
 

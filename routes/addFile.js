@@ -17,6 +17,8 @@ router.post("/addFile/:id",
     async (req, res) => {
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
+
+        /* upload file */
         var form = formidable();
         form.parse(req);
         form.on("fileBegin", (name, file) => {
@@ -24,7 +26,6 @@ router.post("/addFile/:id",
         });
         form.on("file", async (name, file) => {
             var url = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-            var fileName = `${idEdition}-${idEditor}.html`
             if (file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
                 mammoth.convertToHtml({ path: file.path })
                     .then((result) => {
@@ -49,7 +50,39 @@ router.post("/addFile/:id",
                             console.log("Error in converting the file: " + error);
                         };
                     })
-                    .done();
+                    .done(async () => {
+                        /* put in the database and visualize it in the editor */
+                        var fileName = `${idEdition}-${idEditor}.html`
+                        const session = driver.session();
+                        try {
+                            await session.writeTransaction(tx => tx
+                                .run(
+                                    `
+                                    MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                                    WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                                    OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                                    OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
+                                    MERGE (file:File {name: $file})
+                                    MERGE (file)-[pr:PRODUCED_BY]->(editor)
+                                    RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
+                                    `, { file: fileName }
+                                )
+                                .subscribe({
+                                    onCompleted: () => {
+                                        console.log("Data added to the database")
+                                    },
+                                    onError: err => {
+                                        console.log("Error related to Neo4j action /addFile/:id: " + err)
+                                    }
+                                })
+                            );
+                        } catch (err) {
+                            console.log("Error related to Neo4j: " + err);
+                        } finally {
+                            await session.close();
+                            res.redirect("/edit/" + idEdition + "-" + idEditor);
+                        };
+                    });
             } else {
                 fs.rename(file.path, url, (err) => {
                     if (err) {
@@ -59,42 +92,14 @@ router.post("/addFile/:id",
                     };
                 });
             };
-            const session = driver.session();
-            try {
-                await session.writeTransaction(tx => tx
-                    .run(
-                        `
-                        MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                        WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                        OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
-                        OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-                        MERGE (file:File {name: $file})
-                        MERGE (file)-[pr:PRODUCED_BY]->(editor)
-                        RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
-                        `, { file: fileName }
-                    )
-                    .subscribe({
-                        onCompleted: () => {
-                            console.log("Data added to the database")
-                        },
-                        onError: err => {
-                            console.log("Error related to Neo4j action /addFile/:id: " + err)
-                        }
-                    })
-                );
-            } catch (err) {
-                console.log("Error related to Neo4j: " + err);
-            } finally {
-                await session.close();
-            };
         });
         form.on("error", (err) => {
             console.log(err);
         })
-        form.on("end", () => {
+        form.on("end", async () => {
             console.log("File uploaded");
         });
-        res.redirect("/edit/" + idEdition + "-" + idEditor);
+
     });
 
 module.exports = router;
