@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     alerts();
     popovers();
+    tabs();
     currentDate();
     currentTime();
     textarea();
@@ -9,15 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
     cloneEl();
     annotations();
     previewAnnotations();
-    cancelAnnotations();
+    /* cancelAnnotations(); */
     closeBtn();
     modifyAnnotations();
     liveCheck();
     liveCheckPresence();
-    /* checkAnnotatedFragments(); */
     truncation();
     lemmaVariantPresence();
-    witArea();
+    witnessDimensions();
     /* previewCheck(); */
 });
 
@@ -36,6 +36,19 @@ let popovers = () => {
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
+    });
+};
+
+/* tabs */
+let tabs = () => {
+    var triggerTabList = [].slice.call(document.querySelectorAll("ul[role='tablist'] a"))
+    triggerTabList.forEach(function(triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl);
+
+      triggerEl.addEventListener("click", function(event) {
+        event.preventDefault();
+        tabTrigger.show();
+      });
     });
 };
 
@@ -82,7 +95,7 @@ let currentTime = () => {
 
 /* textarea */
 let textarea = () => {
-    var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var useDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     tinymce.init({
         selector: ".textarea-container textarea",
         resize: "both",
@@ -169,27 +182,30 @@ let textarea = () => {
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                 } else {
                     /* variant */
-                    document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
+                    if (document.getElementById("live-" + ed.id) != null) {
+                        document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
+                    };
                 };
             });
 
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
 
-                /* open the modal */
-                var annotation = e.target.closest("[data-type='annotation-object']");
+                /* open the modal to ask to edit an annotated string or add a new annotation */
+                var annotation;
                 var annotationId;
+                
+                if (e.target.closest("[data-type='annotation-object']") !== null) {
 
-                if (annotation.getAttribute("data-annotation") !== null) {
+                    annotation = e.target.closest("[data-type='annotation-object']");
                     annotationId = annotation.getAttribute("data-annotation");
-                };
 
-                if (annotation !== null) {
+                    /* show the modal */
                     var modalContainer = document.querySelector("#check-modifications");
                     var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
                     modal.show();
 
-                    /* ADD A NEW ANNOTATION */
+                    /* add a new annotation */
                     var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
                     addAnnotation.addEventListener("click", () => {
 
@@ -229,9 +245,8 @@ let textarea = () => {
                         });
 
                     });
-
-
                 };
+
             });
 
         }
@@ -1348,17 +1363,6 @@ let liveCheckAutocomplete = () => {
     });
 };
 
-/* check the annotated fragments */
-let checkAnnotatedFragments = () => {
-    /* modal */
-    /* close the modal */
-    var modal = document.getElementById("check-modifications");
-    var closeBtn = modal.querySelector(".btn-close");
-    closeBtn.addEventListener("click", () => {
-        modal.classList.remove("d-block");
-    });
-};
-
 /* truncation */
 let truncation = () => {
     var radios = document.querySelectorAll("[type='radio'][data-subtype='truncation']");
@@ -1445,8 +1449,8 @@ let lemmaVariantPresence = () => {
     };
 };
 
-/* area of witnesses */
-let witArea = () => {
+/* dimensions of witnesses */
+let witnessDimensions = () => {
     /* on change the area unit */
     var unitsList = document.querySelectorAll(".dimensions-unit");
     unitsList.forEach((unit) => {

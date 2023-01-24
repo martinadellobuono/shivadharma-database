@@ -63,20 +63,9 @@
       </div>
     </div>
   </div>
+
   <%- include ("partials/footer") %>
   <%- include ("partials/script") %>
-
-  <script>
-    var triggerTabList = [].slice.call(document.querySelectorAll("ul[role='tablist'] a"))
-    triggerTabList.forEach(function(triggerEl) {
-      var tabTrigger = new bootstrap.Tab(triggerEl)
-
-      triggerEl.addEventListener("click", function(event) {
-        event.preventDefault()
-        tabTrigger.show()
-      })
-    })
-  </script>
 
 </body>
 
