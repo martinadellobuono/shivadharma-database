@@ -53,29 +53,31 @@
         <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
         <% if (typeof translation !== "undefined") { %>
         <% translation.forEach((el) => { %>
-        <div class="p-3 pb-0">
+        <!-- translation full-text -->
+        <div data-type="translation" data-subtype="translation">
+          <!-- location -->
+          <span data-type="translation" data-subtype="location"><%= chapter %>.<%= el.split("___")[0]; %></span>
+          <% var translation = el.split("___")[1]; %>
+          <% translation = translation.split("@")[0]; %>
           <!-- translation full-text -->
-          <div data-type="translation" data-subtype="translation">
-            <!-- location -->
-            <span data-type="translation" data-subtype="location"><%= chapter %>.<%= el.split("___")[0]; %></span>
-            <% var translation = el.split("___")[1]; %>
-            <% translation = translation.split("@")[0]; %>
-            <!-- translation full-text -->
-            <div data-type="translation" data-subtype="full-text"><%- translation; %></div>
+          <div data-type="translation" data-subtype="full-text">
+            <%- translation; %>
           </div>
-          <!-- note on the translation -->
-          <% var note = el.split("@")[1]; %>
-          <% note = note.split("#")[0]; %>
-          <% var id = el.split("#")[1]%>
-          <% if (note) { %>
-          <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= id %>" aria-expanded="false" aria-controls="collapse-<%= id %>"></span>
-          <div class="collapse" id="collapse-<%= id %>">
-            <div class="card card-body">
+        </div>
+        <!-- note on the translation -->
+        <% var note = el.split("@")[1]; %>
+        <% note = note.split("#")[0]; %>
+        <% var id = el.split("#")[1]%>
+        <% if (note) { %>
+        <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-translation-<%= id %>"></span>
+        <div class="collapse" id="collapse-translation-<%= id %>">
+          <div class="card card-body">
+            <div data-type="translation" data-subtype="note">
               <%- note %>
             </div>
           </div>
-          <% }; %>
         </div>
+        <% }; %>
         <% }); %>
         <% }; %>
       </div>
@@ -120,9 +122,43 @@
             <h3 class="h6 nowrap">Commentary</h3>
             <% if (typeof commentary !== "undefined") { %>
             <% commentary.forEach((el) => { %>
-            <div>
-              <%- el %>
+
+            <% var fullText = el.split("@")[0]; %>
+            <% var commentaryNote = el.split("@")[1]; %>
+            <% commentaryNote = commentaryNote.split("#")[0]; %>
+            <% commentaryNote = commentaryNote.split("$")[0]; %>
+            <% var commentaryTranslation = el.split("$")[1]; %>
+            <% commentaryTranslation = commentaryTranslation.split("#")[0]; %>
+            <% commentaryTranslation = commentaryTranslation.split("===")[0]; %>
+            <% var commentaryTranslationNote = el.split("===")[1]; %>
+            <% commentaryTranslationNote = commentaryTranslationNote.split("#")[0]; %>
+            <% var id = el.split("#")[1]; %>
+
+            <!-- commentary full-text -->
+            <div data-type="commentary" data-subtype="full-text">
+              <%- fullText %>
             </div>
+
+            <!-- commentary note -->
+            <% if (commentaryNote) { %><span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-<%= id %>"></span><% }; %><% if (commentaryTranslation) { %><span class="btn-translation mx-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= id %>"></span><% }; %>
+            <!-- commentary note -->
+            <div class="collapse" id="collapse-commentary-note-<%= id %>">
+              <div class="card card-body">
+                <div data-type="commentary" data-subtype="note"><%- commentaryNote %></div>
+              </div>
+            </div>
+            <!-- commentary translation -->
+            <div class="collapse" id="collapse-commentary-translation-<%= id %>">
+              <div class="card card-body">
+                <h3 class="h6">Translation</h3>
+                <div data-type="commentary" data-subtype="translation"><%- commentaryTranslation %></div>
+                <% if (commentaryTranslationNote) { %>
+                <h3 class="h6">Note on the translation</h3>
+                <div data-type="commentary" data-subtype="translation-note"><%- commentaryTranslationNote %></div>
+                <% }; %>
+              </div>
+            </div>
+
             <% }); %>
             <% }; %>
           </div>

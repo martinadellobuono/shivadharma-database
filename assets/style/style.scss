@@ -113,17 +113,49 @@ body {
 }
 
 /* btn captions */
+.btn-commentary {
+    height: 10px;
+    width: 10px;
+    background-color: $indigo-200;
+    border-radius: 50%;
+    display: inline-block;
+};
+
+.btn-commentary::after {
+    content: "Note";
+    color: $indigo-200;
+    font-size: 12px;
+    margin-left: 15px;
+    vertical-align: top;
+}
+
+.btn-note {
+    height: 10px;
+    width: 10px;
+    background-color: $cyan-200;
+    border-radius: 50%;
+    display: inline-block;
+};
+
+.btn-note::after {
+    content: "Note";
+    color: $cyan-200;
+    font-size: 12px;
+    margin-left: 15px;
+    vertical-align: top;
+}
+
 .btn-translation {
     height: 10px;
     width: 10px;
-    background-color: $teal-200;
+    background-color: $yellow-200;
     border-radius: 50%;
     display: inline-block;
 };
 
 .btn-translation::after {
-    content: "Note";
-    color: $teal-400;
+    content: "Translation";
+    color: $yellow;
     font-size: 12px;
     margin-left: 15px;
     vertical-align: top;
@@ -193,14 +225,8 @@ body {
 }
 
 /* tabs */
-.apparatus-scroll.scroll-tab {
+.scroll-tab {
     height: 60vh;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-.scroll-tab:not(.apparatus-scroll) {
-    height: 65vh;
     overflow-x: hidden;
     overflow-y: scroll;
 }

@@ -76,28 +76,28 @@
   </div>
 
   <!-- note on commentary -->
+  <% if (commentaryNote !== "") { %>
   <div class="p-2" data-type="commentary" data-subtype="note-commentary" data-name="commentaryNote" data-fill='<%= commentaryNote; %>' data-input="textarea">
-    <% if (commentaryNote !== "") { %>
     <h6>Note on the commentary</h6>
     <div><%- commentaryNote; %></div>
-    <% }; %>
   </div>
+  <% }; %>
 
   <!-- translation commentary -->
+  <% if (commentaryTranslation !== "") { %>
   <div class="p-2" data-type="commentary" data-subtype="translation-commentary" data-name="commentaryTranslation" data-fill='<%= commentaryTranslation; %>' data-input="textarea">
-    <% if (commentaryTranslation !== "") { %>
     <h6>Translation of the commentary</h6>
     <div><%- commentaryTranslation; %></div>
-    <% }; %>
   </div>
+  <% }; %>
 
   <!-- note on the translation commentary -->
+  <% if (commentaryTranslationNote !== "") { %>
   <div class="p-2" data-type="commentary" data-subtype="translation-note-commentary" data-name="commentaryTranslationNote" data-fill='<%= commentaryTranslationNote; %>' data-input="textarea">
-    <% if (commentaryTranslationNote !== "") { %>
-      <h6>Note on the translation of the commentary</h6>
-      <div><%- commentaryTranslationNote %></div>
-    <% }; %>
+    <h6>Note on the translation of the commentary</h6>
+    <div><%- commentaryTranslationNote %></div>
   </div>
+  <% }; %>
 
   <!-- modify button -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">

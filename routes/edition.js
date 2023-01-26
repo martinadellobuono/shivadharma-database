@@ -41,7 +41,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, translation.value, translation.note, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
+                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
                 `
             )
             .subscribe({
@@ -73,7 +73,7 @@ router.get("/edition/:id", async (req, res) => {
                     /* commentary temp */
                     if (!comm_temp.includes(record.get("commentary.value"))) {
                         if (record.get("commentary.value") !== null) {
-                            comm_temp.push(record.get("commentary.stanzaStart") + "___" + record.get("commentary.value"));
+                            comm_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("commentary.value") + "@" + record.get("commentary.note") + "$" + record.get("commentary.translation") + "===" + record.get("commentary.translationNote") + "#" + record.get("ID(commentary)"));
                         };
                     };
                     /* parallels temp */
@@ -110,7 +110,7 @@ router.get("/edition/:id", async (req, res) => {
                     var commentary = [];
                     comm_temp = comm_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
                     comm_temp.forEach((el) => {
-                        if (!commentary.includes(el.split("___")[1])) {
+                        if (!commentary.includes(el)) {
                             commentary.push(el.split("___")[1]);
                         };
                     });

@@ -12070,17 +12070,49 @@ body {
 }
 
 /* btn captions */
+.btn-commentary {
+  height: 10px;
+  width: 10px;
+  background-color: #c29ffa;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.btn-commentary::after {
+  content: "Note";
+  color: #c29ffa;
+  font-size: 12px;
+  margin-left: 15px;
+  vertical-align: top;
+}
+
+.btn-note {
+  height: 10px;
+  width: 10px;
+  background-color: #9eeaf9;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.btn-note::after {
+  content: "Note";
+  color: #9eeaf9;
+  font-size: 12px;
+  margin-left: 15px;
+  vertical-align: top;
+}
+
 .btn-translation {
   height: 10px;
   width: 10px;
-  background-color: #a6e9d5;
+  background-color: #ffe69c;
   border-radius: 50%;
   display: inline-block;
 }
 
 .btn-translation::after {
-  content: "Note";
-  color: #4dd4ac;
+  content: "Translation";
+  color: #ffc107;
   font-size: 12px;
   margin-left: 15px;
   vertical-align: top;
@@ -12153,14 +12185,8 @@ body {
 }
 
 /* tabs */
-.apparatus-scroll.scroll-tab {
+.scroll-tab {
   height: 60vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-.scroll-tab:not(.apparatus-scroll) {
-  height: 65vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
