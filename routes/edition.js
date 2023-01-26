@@ -21,6 +21,7 @@ router.get("/edition/:id", async (req, res) => {
     var title_temp = [];
     var auth_temp = [];
     var ed_temp = [];
+    var chapter;
     var transl_temp = [];
     var comm_temp = [];
     var paral_temp = [];
@@ -40,7 +41,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), translation.stanzaStart, translation.value, translation.note, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
+                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, translation.stanzaStart, translation.value, translation.note, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
                 `
             )
             .subscribe({
@@ -61,6 +62,8 @@ router.get("/edition/:id", async (req, res) => {
                     if (!ed_temp.includes(record.get("editor.name"))) {
                         ed_temp.push(record.get("editor.name"));
                     };
+                    /* chapter */
+                    chapter = record.get("selectedFragment.chapter");
                     /* translations temp */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
@@ -98,8 +101,8 @@ router.get("/edition/:id", async (req, res) => {
                     var translations = [];
                     transl_temp = transl_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
                     transl_temp.forEach((el) => {
-                        if (!translations.includes(el.split("___")[1])) {
-                            translations.push(el.split("___")[1]);
+                        if (!translations.includes(el)) {
+                            translations.push(el);
                         };
                     });
 
@@ -148,6 +151,7 @@ router.get("/edition/:id", async (req, res) => {
                             author: auth_temp,
                             editor: ed_temp,
                             file: file,
+                            chapter: chapter,
                             translation: translations,
                             commentary: commentary,
                             parallels: parallels,

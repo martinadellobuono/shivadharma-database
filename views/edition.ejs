@@ -56,9 +56,13 @@
         <div class="p-3 pb-0">
           <!-- translation full-text -->
           <div data-type="translation" data-subtype="translation">
-            <%- el.split("@")[0] %>
+            <!-- location -->
+            <span><%= chapter %>.<%= el.split("___")[0]; %></span>
+            <% var translation = el.split("___")[1]; %>
+            <% translation = translation.split("@")[0]; %>
+            <!-- translation full-text -->
+            <span><%- translation; %></span>
           </div>
-          
           <!-- note on the translation -->
           <% var note = el.split("@")[1]; %>
           <% note = note.split("#")[0]; %>
@@ -71,7 +75,6 @@
             </div>
           </div>
           <% }; %>
-
         </div>
         <% }); %>
         <% }; %>
