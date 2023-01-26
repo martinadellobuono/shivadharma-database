@@ -31,6 +31,10 @@
   <% chapter = fragment.split("/") %>
   <% fragment = chapter[0]; %>
   <% chapter = chapter[1]; %>
+  <% chapter = chapter.split("@")[0]; %>
+
+  <!-- note -->
+  <% var note = translations[i].split("@")[1]; %>
 
   <!-- idAnnotation -->
   <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
@@ -45,10 +49,19 @@
   </div>
 
   <!-- fragment -->
-  <div class="bg-teal p-2" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
+  <div class="bg-teal p-2 mb-3" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
 
   <!-- translation -->
-  <div class="p-2" data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= translation; %>' data-input="textarea"><%- translation; %></div>
+  <div class="p-2" data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= translation; %>' data-input="textarea">
+    <h6>Translation</h6>
+    <div><%- translation; %></div>
+  </div>
+
+  <!-- note on translation -->
+  <div class="p-2" data-type="translation" data-subtype="note-translation" data-name="noteTranslation" data-fill='<%= note; %>' data-input="textarea">
+    <h6>Note on translation</h6>
+    <div><%- note; %></div>
+  </div>
 
   <!-- modify button -->
   <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">

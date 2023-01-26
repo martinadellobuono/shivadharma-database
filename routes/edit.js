@@ -341,7 +341,10 @@ router.get("/edit/:id", async (req, res) => {
                             /* translation */
                             var transl = obj["end"]["properties"]["value"];
 
-                            /* id */
+                            /* try */
+                            var note = obj["end"]["properties"]["note"];
+
+                            /* note */
                             var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
                             /* fragment / location */
@@ -364,7 +367,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* tranlation entry */
-                            var translEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter;
+                            var translEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter + "@" + note;
 
                             /* translations array */
                             if (!translArr.includes(translEntry)) {
