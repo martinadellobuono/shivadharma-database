@@ -96,9 +96,9 @@ router.post("/addApparatus/:id",
 
                         MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
                         ON CREATE
-                            SET selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
+                            SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
                         ON MATCH
-                            SET selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
+                            SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
                         MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
 
                         MERGE (lemma:Lemma {idLemma: "${req.body.idLemma}"})

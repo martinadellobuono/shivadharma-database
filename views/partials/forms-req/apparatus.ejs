@@ -173,7 +173,7 @@
                 <!-- lemma -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
                 <!-- lemma id -->
-                <input class="form-control cursor-not-allowed id-input" type="text" aria-describedby="ID of lemma" readonly="true" data-value="apparatus" name="idLemma">
+                <input class="form-control cursor-not-allowed id-input" type="text" data-subtype="id-lemma" aria-describedby="ID of lemma" readonly="true" data-value="apparatus" name="idLemma">
               </div>
             </div>
             <!-- witnesses -->
@@ -186,7 +186,7 @@
               <% wits.push(siglum) %>
               <% }; %>
               <% }); %>
-              <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptLemma">
+              <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptLemma">
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               <% }; %>
             </div>
@@ -199,7 +199,7 @@
             </div>
           </div>
           <!-- variants -->
-          <div class="alert alert-dark alert-dismissible fade show bg-white p-3 mb-3 data-list" data-cloned="variant">
+          <div class="alert alert-primary alert-dismissible fade show bg-blue p-3 mb-3 data-list" data-cloned="variant">
             <label class="form-label">Variant</label>
             <!-- present or omitted -->
             <div class="mb-3">
@@ -237,7 +237,7 @@
                 <!-- variant -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="variant" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
                 <!-- variant id -->
-                <input class="form-control cursor-not-allowed id-input" type="text" aria-describedby="ID of variant" readonly="true" data-value="variant" name="idVariant0">
+                <input class="form-control cursor-not-allowed id-input" type="text" data-subtype="id-variant" aria-describedby="ID of variant" readonly="true" data-value="variant" name="idVariant0">
               </div>
             </div>
             <!-- witnesses -->
@@ -251,7 +251,7 @@
               <% }; %>
               <% }); %>
               <!-- witnesses -->
-              <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" name="manuscriptVariant0">
+              <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptVariant0">
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               <% }; %>
             </div>

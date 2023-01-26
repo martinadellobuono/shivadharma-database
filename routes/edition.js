@@ -20,9 +20,11 @@ router.get("/edition/:id", async (req, res) => {
     var work_temp = [];
     var title_temp = [];
     var auth_temp = [];
-    var ed_temp = [];    
+    var ed_temp = [];
     var transl_temp = [];
     var comm_temp = [];
+    var paral_temp = [];
+
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -30,38 +32,81 @@ router.get("/edition/:id", async (req, res) => {
                 `
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
-                OPTIONAL MATCH ()-[:HAS_COMMENTARY]->(commentary:Commentary)
-                RETURN work.title, edition.title, author.name, editor.name, translation.value, commentary.value
+                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
+                OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
+                RETURN work.title, edition.title, author.name, editor.name, translation.location, translation.value, commentary.location, commentary.value, parallel.location, parallel.value
                 `
             )
             .subscribe({
                 onNext: record => {
+                    /* work */
                     if (!work_temp.includes(record.get("work.title"))) {
                         work_temp.push(record.get("work.title"));
                     };
+                    /* title */
                     if (!title_temp.includes(record.get("edition.title"))) {
                         title_temp.push(record.get("edition.title"));
                     };
+                    /* author */
                     if (!auth_temp.includes(record.get("author.name"))) {
                         auth_temp.push(record.get("author.name"));
                     };
+                    /* editor */
                     if (!ed_temp.includes(record.get("editor.name"))) {
                         ed_temp.push(record.get("editor.name"));
                     };
+                    /* translations temp */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
-                            transl_temp.push(record.get("translation.value"));
+                            transl_temp.push(record.get("translation.location") + "___" + record.get("translation.value"));
                         };
                     };
+                    /* commentary temp */
                     if (!comm_temp.includes(record.get("commentary.value"))) {
                         if (record.get("commentary.value") !== null) {
-                            comm_temp.push(record.get("commentary.value"));
+                            comm_temp.push(record.get("commentary.location") + "___" + record.get("commentary.value"));
                         };
                     };
-                    transl_temp = transl_temp.reverse();
+                    /* parallels temp */
+                    if (!paral_temp.includes(record.get("parallel.value"))) {
+                        if (record.get("parallel.value") !== null) {
+                            paral_temp.push(record.get("parallel.location") + "___" + record.get("parallel.value"));
+                        };
+                    };
                 },
                 onCompleted: () => {
+
+                    console.log(comm_temp);
+
+                    /* ordered translations */
+                    var translations = [];
+                    transl_temp = transl_temp.sort();
+                    transl_temp.forEach((el) => {
+                        if (!translations.includes(el.split("___")[1])) {
+                            translations.push(el.split("___")[1]);
+                        };
+                    });
+
+                    /* ordered commentary */
+                    var commentary = [];
+                    comm_temp = comm_temp.sort();
+                    comm_temp.forEach((el) => {
+                        if (!commentary.includes(el.split("___")[1])) {
+                            commentary.push(el.split("___")[1]);
+                        };
+                    });
+
+                    /* ordered parallels */
+                    var parallels = [];
+                    paral_temp = paral_temp.sort();
+                    paral_temp.forEach((el) => {
+                        if (!parallels.includes(el.split("___")[1])) {
+                            parallels.push(el.split("___")[1]);
+                        };
+                    });
+
                     if (fs.existsSync(path)) {
                         res.render("edition", {
                             id: req.params.id,
@@ -71,8 +116,9 @@ router.get("/edition/:id", async (req, res) => {
                             author: auth_temp,
                             editor: ed_temp,
                             file: file,
-                            translation: transl_temp,
-                            commentary: comm_temp
+                            translation: translations,
+                            commentary: commentary,
+                            parallels: parallels
                         });
                     } else {
                         res.render("edition", {
@@ -83,8 +129,9 @@ router.get("/edition/:id", async (req, res) => {
                             author: auth_temp,
                             editor: ed_temp,
                             file: false,
-                            translation: transl_temp,
-                            commentary: comm_temp
+                            translation: translations,
+                            commentary: comm_temp,
+                            parallels: parallels
                         });
                     };
                 },

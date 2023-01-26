@@ -42,13 +42,13 @@ let popovers = () => {
 /* tabs */
 let tabs = () => {
     var triggerTabList = [].slice.call(document.querySelectorAll("ul[role='tablist'] a"))
-    triggerTabList.forEach(function(triggerEl) {
-      var tabTrigger = new bootstrap.Tab(triggerEl);
+    triggerTabList.forEach(function (triggerEl) {
+        var tabTrigger = new bootstrap.Tab(triggerEl);
 
-      triggerEl.addEventListener("click", function(event) {
-        event.preventDefault();
-        tabTrigger.show();
-      });
+        triggerEl.addEventListener("click", function (event) {
+            event.preventDefault();
+            tabTrigger.show();
+        });
     });
 };
 
@@ -194,7 +194,8 @@ let textarea = () => {
                 /* open the modal to ask to edit an annotated string or add a new annotation */
                 var annotation;
                 var annotationId;
-                
+
+                /* if there are at least one annotation */
                 if (e.target.closest("[data-type='annotation-object']") !== null) {
 
                     annotation = e.target.closest("[data-type='annotation-object']");
@@ -205,7 +206,7 @@ let textarea = () => {
                     var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
                     modal.show();
 
-                    /* add a new annotation */
+                    /* ADD A NEW ANNOTATION */
                     var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
                     addAnnotation.addEventListener("click", () => {
 
@@ -1058,131 +1059,177 @@ let modifyAnnotations = () => {
             var data = dataContainer.querySelectorAll("[data-name]");
 
             /* click on the annotate tab */
-            var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
-            tab.click();
+            let clickTab = () => {
+                var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
+                tab.click();
+            };
+
+            /* clone variant containers */
+            let cloneVariantContainers = () => {
+                var nVariants = dataContainer.querySelectorAll("[data-subtype='variant']").length;
+                for (var i = 0; i < nVariants; i++) {
+                    form.querySelector("[data-clone='variant']").click();
+                };
+            };
 
             /* show the correct category form */
-            var forms = document.querySelectorAll(".annotation-form." + type);
-            forms.forEach((form) => {
-                form.classList.remove("d-none");
-            });
+            let showForm = () => {
+                var forms = document.querySelectorAll(".annotation-form." + type);
+                forms.forEach((form) => {
+                    form.classList.remove("d-none");
+                    /* empty all the inputs but the checkbox */
+                    var inputs = form.querySelectorAll("input:not([type='checkbox'])");
+                    inputs.forEach((input) => {
+                        input.value = "";
+                    });
+                });
+            };
 
             /* input to fill in */
-            data.forEach((el) => {
-                var name = el.getAttribute("data-name");
-                var val = el.getAttribute("data-fill");
+            let fillIn = () => {
+                data.forEach((el) => {
 
-                /* clone variant containers */
-                if (el.getAttribute("data-subtype") == "variant") {
-                    if (el.getAttribute("data-name") !== "variant0") {
-                        form.querySelector("[data-clone='variant']").click();
-                    };
-                };
+                    var name = el.getAttribute("data-name");
+                    var val = el.getAttribute("data-fill");
 
-                /* types of input */
-                /* numbers */
-                let numbers = () => {
-                    var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
-                    numbers.forEach((number) => {
-                        number.value = val;
-                        /* live check */
-                        if (type == "apparatus" && el.getAttribute("data-name") !== "chapter") {
-                            document.getElementById("live-" + name).innerHTML = val;
-                        };
-                    });
-                };
-
-                /* texts */
-                let texts = () => {
-                    var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
-                    texts.forEach((text) => {
-                        text.value = val;
-                        /* selected fragment */
-                        if (name == "lemma") {
-                            form.querySelector("input[name='selectedFragment']").value = val;
-                        };
-                        /* live check */
-                        if (type == "apparatus") {
-                            if (document.getElementById("live-" + name) !== null) {
+                    /* types of input */
+                    /* numbers */
+                    let numbers = () => {
+                        var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
+                        numbers.forEach((number) => {
+                            number.value = val;
+                            /* live check */
+                            if (type == "apparatus" && el.getAttribute("data-name") !== "chapter") {
                                 document.getElementById("live-" + name).innerHTML = val;
                             };
-                        };
-                    });
-                };
+                        });
+                    };
 
-                /* checkbox */
-                let checkbox = () => {
-                    var arr = [];
-                    var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
-                    checkboxes.forEach((checkbox) => {
-                        /* uncheck */
-                        checkbox.checked = false;
-                        /* check */
-                        var values = val.split(",");
-                        values.forEach((v) => {
-                            /* check the checkbox */
-                            if (checkbox.getAttribute("value") == v) {
-                                checkbox.checked = true;
+                    /* texts */
+                    let texts = () => {
+                        var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
+                        texts.forEach((text) => {
+                            /* print value */
+                            text.value = val;
+                            /* selected fragment */
+                            if (name == "lemma") {
+                                form.querySelector("input[name='selectedFragment']").value = val;
                             };
-                            /* fill the array for the live check */
-                            if (arr.includes(v) == false) {
-                                arr.push(v);
+                            /* live check */
+                            if (type == "apparatus") {
+                                if (document.getElementById("live-" + name) !== null) {
+                                    document.getElementById("live-" + name).innerHTML = val;
+                                };
                             };
                         });
-                    });
-                    /* live check */
-                    if (type == "apparatus") {
-                        document.getElementById("live-" + name).innerHTML = arr.join("");
+                    };
+
+                    /* checkbox */
+                    let checkbox = () => {
+                        var arr = [];
+                        var checkboxes = form.querySelectorAll("[type='checkbox'][name='" + name + "']");
+                        checkboxes.forEach((checkbox) => {
+                            /* uncheck */
+                            checkbox.checked = false;
+                            /* check */
+                            var values = val.split(",");
+                            values.forEach((v) => {
+                                /* check the checkbox */
+                                if (checkbox.getAttribute("value") == v) {
+                                    checkbox.checked = true;
+                                };
+                                /* fill the array for the live check */
+                                if (arr.includes(v) == false) {
+                                    arr.push(v);
+                                };
+                            });
+                        });
+                        /* live check */
+                        if (type == "apparatus") {
+                            document.getElementById("live-" + name).innerHTML = arr.join("");
+                        };
+                    };
+
+                    /* lists */
+                    let lists = () => {
+                        var lists = form.querySelectorAll("[data-list][name='" + name + "']");
+                        lists.forEach((list) => {
+                            list.value = val;
+                            /* live check */
+                            if (type == "apparatus") {
+                                document.getElementById("live-" + name).innerHTML = val;
+                            };
+                        });
+                    };
+
+                    /* textareas */
+                    let textareas = () => {
+                        var textareas = form.querySelectorAll("textarea[name='" + name + "']");
+                        textareas.forEach((textarea) => {
+                            let printTxt = () => {
+                                tinyMCE.get(textarea.id).setContent(val);
+                            };
+                            setTimeout(printTxt, 2000);
+                            /* live check */
+                            if (type == "apparatus") {
+                                var idTextarea = name.split("Omission")[0];
+                                if (idTextarea.indexOf("Notes") > -1) {
+                                    idTextarea = name.split("Notes")[0];
+                                    document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                                } else {
+                                    document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
+                                };
+                            };
+                        });
+                    };
+
+                    /* fill the input */
+                    if (el.getAttribute("data-input") == "number") {
+                        numbers();
+                    } else if (el.getAttribute("data-input") == "text") {
+                        texts();
+                    } else if (el.getAttribute("data-input") == "checkbox") {
+                        checkbox();
+                    } else if (el.getAttribute("data-input") == "list") {
+                        lists();
+                    } else {
+                        textareas();
+                    };
+
+                });
+            };
+
+            /* remove empty clones */
+            let removeEmptyClones = () => {
+                var emptyClones = form.querySelectorAll(".cloned-el[data-cloned='variant']");
+                for (var i = 0; i < emptyClones.length; i++) {
+                    if (emptyClones[i].querySelector("input[data-subtype='id-variant']").value == "") {
+                        emptyClones[i].classList.add("d-none");
+                    } else {
+                        emptyClones[i].classList.remove("d-none");
                     };
                 };
-
-                /* lists */
-                let lists = () => {
-                    var lists = form.querySelectorAll("[data-list][name='" + name + "']");
-                    lists.forEach((list) => {
-                        list.value = val;
-                        /* live check */
-                        if (type == "apparatus") {
-                            document.getElementById("live-" + name).innerHTML = val;
-                        };
-                    });
+            };
+            /* let markEmptyClones = () => {
+                var emptyClones = form.querySelectorAll(".cloned-el[data-cloned='variant']");
+                for (var i = 0; i < emptyClones.length; i++) {
+                    if (emptyClones[i].querySelector("input[data-subtype='id-variant']").value == "") {
+                        emptyClones[i].style.color = "#FF1493";
+                        emptyClones[i].classList.add("d-none");
+                    } else {
+                        emptyClones[i].style.color = "#d5df2a";
+                        emptyClones[i].classList.remove("d-none");
+                    };
                 };
+            }; */
 
-                /* textareas */
-                let textareas = () => {
-                    var textareas = form.querySelectorAll("textarea[name='" + name + "']");
-                    textareas.forEach((textarea) => {
-                        let printTxt = () => {
-                            tinyMCE.get(textarea.id).setContent(val);
-                        };
-                        setTimeout(printTxt, 2000);
-                        /* live check */
-                        if (type == "apparatus") {
-                            var idTextarea = name.split("Omission")[0];
-                            if (idTextarea.indexOf("Notes") > -1) {
-                                idTextarea = name.split("Notes")[0];
-                                document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
-                            } else {
-                                document.getElementById("live-" + idTextarea + "-OmissionEditor").innerHTML = val;
-                            };
-                        };
-                    });
-                };
+            /* run all the functions */
+            clickTab();
+            cloneVariantContainers();
+            showForm();
+            fillIn();
+            removeEmptyClones();
 
-                /* fill the input */
-                if (el.getAttribute("data-input") == "number") {
-                    numbers();
-                } else if (el.getAttribute("data-input") == "text") {
-                    texts();
-                } else if (el.getAttribute("data-input") == "checkbox") {
-                    checkbox();
-                } else if (el.getAttribute("data-input") == "list") {
-                    lists();
-                } else {
-                    textareas();
-                };
-
-            });
         });
     });
 };
@@ -1342,12 +1389,12 @@ let liveCheckCloned = () => {
     liveCheckAutocomplete();
 
     /* remove the clone */
-    var alerts = document.querySelectorAll(".cloned-el");
+    /* var alerts = document.querySelectorAll(".cloned-el");
     alerts.forEach((el) => {
         el.addEventListener("closed.bs.alert", () => {
             document.querySelector("[data-ref='" + el.id + "']").remove();
         });
-    });
+    }); */
 };
 
 /* live check autocomplete */

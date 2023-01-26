@@ -18,7 +18,7 @@
       <div class="col-md-4 text-end">
         <!-- download -->
         <div class="btn-group">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             Download
           </button>
           <ul class="dropdown-menu">
@@ -34,7 +34,7 @@
           </ul>
         </div>
         <!-- tutorial -->
-        <button type="button" class="btn btn-light border"><i class="bi bi-question-lg"></i></button>
+        <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-question-lg"></i></button>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@
   <div class="container-fluid bg-white edition-container-vis">
     <div class="row">
       <!-- textus constitutus -->
-      <div class="col-md-5 border p-3 enlarge-col">
+      <div class="col-md-4 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><i class="bi bi-x-lg"></i> Textus constitutus</h3>
         <% if (file) { %>
         <%- include (`../uploads/${file}`) %>
@@ -52,27 +52,51 @@
         <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
         <% if (typeof translation !== "undefined") { %>
         <% translation.forEach((el) => { %>
-        <div class="p-3">
+        <div class="p-3 pb-0">
           <%- el %>
         </div>
         <% }); %>
         <% }; %>
       </div>
-      <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Parallels</h3>
-      </div>
-      <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Citations</h3>
-      </div>
-      <div class="col-md-1 border p-3 enlarge-col">
-        <h3 class="h6 nowrap"><span><i class="bi bi-arrows-angle-expand"></i></span> Commentary</h3>
-        <% if (typeof commentary !== "undefined") { %>
-        <% commentary.forEach((el) => { %>
-        <div class="p-3">
-          <%- el %>
+
+      <div class="col-md-4 border p-3 enlarge-col">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm btn-orange active" data-bs-toggle="pill" data-bs-target="#pills-parallels" type="button" role="tab" aria-controls="pills-parallels" aria-selected="true">Parallels</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm btn-fuchsia mx-1" data-bs-toggle="pill" data-bs-target="#pills-citations" type="button" role="tab" aria-controls="pills-citations" aria-selected="false">Citations</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm btn-indigo" data-bs-toggle="pill" data-bs-target="#pills-commentary" type="button" role="tab" aria-controls="pills-commentary" aria-selected="false">Commentary</button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <!-- parallels -->
+          <div class="tab-pane fade show active" id="pills-parallels" role="tabpanel">
+            <% if (typeof parallels !== "undefined") { %>
+            <% parallels.forEach((el) => { %>
+            <div class="p-3 pb-0">
+              <%- el %>
+            </div>
+            <% }); %>
+            <% }; %>
+          </div>
+          <!-- citations -->
+          <div class="tab-pane fade" id="pills-citations" role="tabpanel">
+            <h3 class="h6 nowrap">Citations</h3>
+          </div>
+          <!-- commentary -->
+          <div class="tab-pane fade" id="pills-commentary" role="tabpanel">
+            <% if (typeof commentary !== "undefined") { %>
+            <% commentary.forEach((el) => { %>
+            <div class="p-3 pb-0">
+              <%- el %>
+            </div>
+            <% }); %>
+            <% }; %>
+          </div>
         </div>
-        <% }); %>
-        <% }; %>
       </div>
     </div>
   </div>
@@ -83,11 +107,11 @@
         <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Apparatus</button>
         <div class="collapse" id="collapseExample">
           <div class="card card-body">
-          
+
           </div>
         </div>
         <!-- notes -->
-        <button type="button" class="btn btn-sm btn-secondary">Notes</button>
+        <button type="button" class="btn btn-sm btn-secondary">Notes on the text</button>
       </div>
     </div>
   </div>
