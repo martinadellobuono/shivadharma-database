@@ -112,6 +112,23 @@ body {
     background-color: $yellow-300;
 }
 
+/* btn captions */
+.btn-translation {
+    height: 10px;
+    width: 10px;
+    background-color: $teal-200;
+    border-radius: 50%;
+    display: inline-block;
+};
+
+.btn-translation::after {
+    content: "Note";
+    color: $teal-400;
+    font-size: 12px;
+    margin-left: 15px;
+    vertical-align: top;
+}
+
 /* cursor */
 .cursor-not-allowed:hover {
     cursor: not-allowed;

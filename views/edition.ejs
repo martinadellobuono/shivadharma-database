@@ -48,12 +48,30 @@
         <%- include (`../uploads/${file}`) %>
         <% }; %>
       </div>
+      <!-- translation -->
       <div class="col-md-4 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
         <% if (typeof translation !== "undefined") { %>
         <% translation.forEach((el) => { %>
         <div class="p-3 pb-0">
-          <%- el %>
+          <!-- translation full-text -->
+          <div data-type="translation" data-subtype="translation">
+            <%- el.split("@")[0] %>
+          </div>
+          
+          <!-- note on the translation -->
+          <% var note = el.split("@")[1]; %>
+          <% note = note.split("#")[0]; %>
+          <% var id = el.split("#")[1]%>
+          <% if (note) { %>
+          <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<%= id %>" aria-expanded="false" aria-controls="collapse-<%= id %>"></span>
+          <div class="collapse" id="collapse-<%= id %>">
+            <div class="card card-body">
+              <%- note %>
+            </div>
+          </div>
+          <% }; %>
+
         </div>
         <% }); %>
         <% }; %>

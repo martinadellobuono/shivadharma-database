@@ -12069,6 +12069,23 @@ body {
   background-color: #ffda6a;
 }
 
+/* btn captions */
+.btn-translation {
+  height: 10px;
+  width: 10px;
+  background-color: #a6e9d5;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.btn-translation::after {
+  content: "Note";
+  color: #4dd4ac;
+  font-size: 12px;
+  margin-left: 15px;
+  vertical-align: top;
+}
+
 /* cursor */
 .cursor-not-allowed:hover {
   cursor: not-allowed;

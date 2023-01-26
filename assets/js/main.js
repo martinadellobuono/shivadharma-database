@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     alerts();
     popovers();
+    tooltips();
     tabs();
     currentDate();
     currentTime();
@@ -37,6 +38,14 @@ let popovers = () => {
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         return new bootstrap.Popover(popoverTriggerEl)
     });
+};
+
+/* tooltips */
+let tooltips = () => {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('span[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 };
 
 /* tabs */
@@ -1210,18 +1219,6 @@ let modifyAnnotations = () => {
                     };
                 };
             };
-            /* let markEmptyClones = () => {
-                var emptyClones = form.querySelectorAll(".cloned-el[data-cloned='variant']");
-                for (var i = 0; i < emptyClones.length; i++) {
-                    if (emptyClones[i].querySelector("input[data-subtype='id-variant']").value == "") {
-                        emptyClones[i].style.color = "#FF1493";
-                        emptyClones[i].classList.add("d-none");
-                    } else {
-                        emptyClones[i].style.color = "#d5df2a";
-                        emptyClones[i].classList.remove("d-none");
-                    };
-                };
-            }; */
 
             /* run all the functions */
             clickTab();
