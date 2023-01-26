@@ -41,7 +41,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
+                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, parallel.value, citation.value, note.value
                 `
             )
             .subscribe({
@@ -79,19 +79,19 @@ router.get("/edition/:id", async (req, res) => {
                     /* parallels temp */
                     if (!paral_temp.includes(record.get("parallel.value"))) {
                         if (record.get("parallel.value") !== null) {
-                            paral_temp.push(record.get("parallel.stanzaStart") + "___" + record.get("parallel.value"));
+                            paral_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("parallel.value"));
                         };
                     };
                     /* citations temp */
                     if (!cit_temp.includes(record.get("citation.value"))) {
                         if (record.get("citation.value") !== null) {
-                            cit_temp.push(record.get("citation.stanzaStart") + "___" + record.get("citation.value"));
+                            cit_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("citation.value"));
                         };
                     };
                     /* notes temp */
                     if (!notes_temp.includes(record.get("note.value"))) {
                         if (record.get("note.value") !== null) {
-                            notes_temp.push(record.get("note.stanzaStart") + "___" + record.get("note.value"));
+                            notes_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("note.value") + "///" + record.get("selectedFragment.padaStart"));
                         };
                     };
                 },
@@ -136,9 +136,10 @@ router.get("/edition/:id", async (req, res) => {
                     /* ordered notes */
                     var notes = [];
                     notes_temp = notes_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
+                    notes_temp = notes_temp.sort((a, b) => a.split("///")[0] - b.split("///")[0]);
                     notes_temp.forEach((el) => {
-                        if (!notes.includes(el.split("___")[1])) {
-                            notes.push(el.split("___")[1]);
+                        if (!notes.includes(el)) {
+                            notes.push(el);
                         };
                     });
 

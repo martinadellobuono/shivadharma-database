@@ -27,9 +27,9 @@ router.post("/addNote/:id", async (req, res) => {
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET note.stanzaStart = "${req.body.stanzaStart}", note.value = '${req.body.note}'
+                    SET note.value = '${req.body.note}'
                 ON MATCH
-                    SET note.stanzaStart = "${req.body.stanzaStart}", note.value = '${req.body.note}'
+                    SET note.value = '${req.body.note}'
                 RETURN *
                 `
             )
