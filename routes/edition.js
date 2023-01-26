@@ -24,6 +24,8 @@ router.get("/edition/:id", async (req, res) => {
     var transl_temp = [];
     var comm_temp = [];
     var paral_temp = [];
+    var cit_temp = [];
+    var notes_temp = [];
 
     const session = driver.session();
     try {
@@ -36,7 +38,9 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
-                RETURN work.title, edition.title, author.name, editor.name, translation.location, translation.value, commentary.location, commentary.value, parallel.location, parallel.value
+                OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
+                OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
+                RETURN work.title, edition.title, author.name, editor.name, translation.stanzaStart, translation.value, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
                 `
             )
             .subscribe({
@@ -60,29 +64,39 @@ router.get("/edition/:id", async (req, res) => {
                     /* translations temp */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
-                            transl_temp.push(record.get("translation.location") + "___" + record.get("translation.value"));
+                            transl_temp.push(record.get("translation.stanzaStart") + "___" + record.get("translation.value"));
                         };
                     };
                     /* commentary temp */
                     if (!comm_temp.includes(record.get("commentary.value"))) {
                         if (record.get("commentary.value") !== null) {
-                            comm_temp.push(record.get("commentary.location") + "___" + record.get("commentary.value"));
+                            comm_temp.push(record.get("commentary.stanzaStart") + "___" + record.get("commentary.value"));
                         };
                     };
                     /* parallels temp */
                     if (!paral_temp.includes(record.get("parallel.value"))) {
                         if (record.get("parallel.value") !== null) {
-                            paral_temp.push(record.get("parallel.location") + "___" + record.get("parallel.value"));
+                            paral_temp.push(record.get("parallel.stanzaStart") + "___" + record.get("parallel.value"));
+                        };
+                    };
+                    /* citations temp */
+                    if (!cit_temp.includes(record.get("citation.value"))) {
+                        if (record.get("citation.value") !== null) {
+                            cit_temp.push(record.get("citation.stanzaStart") + "___" + record.get("citation.value"));
+                        };
+                    };
+                    /* notes temp */
+                    if (!notes_temp.includes(record.get("note.value"))) {
+                        if (record.get("note.value") !== null) {
+                            notes_temp.push(record.get("note.stanzaStart") + "___" + record.get("note.value"));
                         };
                     };
                 },
                 onCompleted: () => {
 
-                    console.log(comm_temp);
-
                     /* ordered translations */
                     var translations = [];
-                    transl_temp = transl_temp.sort();
+                    transl_temp = transl_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
                     transl_temp.forEach((el) => {
                         if (!translations.includes(el.split("___")[1])) {
                             translations.push(el.split("___")[1]);
@@ -91,7 +105,7 @@ router.get("/edition/:id", async (req, res) => {
 
                     /* ordered commentary */
                     var commentary = [];
-                    comm_temp = comm_temp.sort();
+                    comm_temp = comm_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
                     comm_temp.forEach((el) => {
                         if (!commentary.includes(el.split("___")[1])) {
                             commentary.push(el.split("___")[1]);
@@ -100,10 +114,28 @@ router.get("/edition/:id", async (req, res) => {
 
                     /* ordered parallels */
                     var parallels = [];
-                    paral_temp = paral_temp.sort();
+                    paral_temp = paral_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
                     paral_temp.forEach((el) => {
                         if (!parallels.includes(el.split("___")[1])) {
                             parallels.push(el.split("___")[1]);
+                        };
+                    });
+
+                    /* ordered citations */
+                    var citations = [];
+                    cit_temp = cit_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
+                    cit_temp.forEach((el) => {
+                        if (!citations.includes(el.split("___")[1])) {
+                            citations.push(el.split("___")[1]);
+                        };
+                    });
+
+                    /* ordered notes */
+                    var notes = [];
+                    notes_temp = notes_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
+                    notes_temp.forEach((el) => {
+                        if (!notes.includes(el.split("___")[1])) {
+                            notes.push(el.split("___")[1]);
                         };
                     });
 
@@ -118,7 +150,9 @@ router.get("/edition/:id", async (req, res) => {
                             file: file,
                             translation: translations,
                             commentary: commentary,
-                            parallels: parallels
+                            parallels: parallels,
+                            citations: citations,
+                            notes: notes
                         });
                     } else {
                         res.render("edition", {
@@ -131,7 +165,9 @@ router.get("/edition/:id", async (req, res) => {
                             file: false,
                             translation: translations,
                             commentary: comm_temp,
-                            parallels: parallels
+                            parallels: parallels,
+                            citations: citations,
+                            notes: notes
                         });
                     };
                 },

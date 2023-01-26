@@ -27,9 +27,9 @@ router.post("/addParallel/:id", async (req, res) => {
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET parallel.location = "${req.body.chapter}${req.body.stanzaStart}${req.body.padaStart}${req.body.stanzaEnd}${req.body.padaEnd}", parallel.value = '${req.body.parallel}'
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
                 ON MATCH
-                    SET parallel.location = "${req.body.chapter}${req.body.stanzaStart}${req.body.padaStart}${req.body.stanzaEnd}${req.body.padaEnd}", parallel.value = '${req.body.parallel}'
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
                 RETURN *
                 `
             )
