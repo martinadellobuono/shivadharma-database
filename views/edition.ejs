@@ -57,11 +57,11 @@
           <!-- translation full-text -->
           <div data-type="translation" data-subtype="translation">
             <!-- location -->
-            <span><%= chapter %>.<%= el.split("___")[0]; %></span>
+            <span data-type="translation" data-subtype="location"><%= chapter %>.<%= el.split("___")[0]; %></span>
             <% var translation = el.split("___")[1]; %>
             <% translation = translation.split("@")[0]; %>
             <!-- translation full-text -->
-            <span><%- translation; %></span>
+            <div data-type="translation" data-subtype="full-text"><%- translation; %></div>
           </div>
           <!-- note on the translation -->
           <% var note = el.split("@")[1]; %>

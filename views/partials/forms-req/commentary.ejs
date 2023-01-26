@@ -17,9 +17,9 @@
   <div class="tab-pane fade show active scroll-tab" id="annotate-commentary" role="tabpanel" aria-labelledby="annotate-tab">
     <form class="form-annotations textarea-container" id="commentary-req" method="post" action="/addCommentary/<%= id %>">
       <!-- ID -->
-      <div class="d-none">
+      <div class="">
         <label class="form-label">ID of annotation</label>
-        <input class="form-control cursor-not-allowed" type="text" aria-describedby="ID of annotation" readonly="true" data-value="commentary" name="idAnnotation">
+        <input class="form-control cursor-not-allowed id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="commentary" name="idAnnotation">
       </div>
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
@@ -105,6 +105,21 @@
       <div class="mb-3">
         <label class="form-label">Commentary</label>
         <textarea placeholder="Insert the commentary..." name="commentary"></textarea>
+      </div>
+      <!-- note on the commentary -->
+      <div class="mb-3">
+        <label class="form-label">Note on the commentary</label>
+        <textarea placeholder="Insert the note on the commentary..." name="commentaryNote"></textarea>
+      </div>
+      <!-- translation of the commentary -->
+      <div class="mb-3">
+        <label class="form-label">Translation of the commentary</label>
+        <textarea placeholder="Insert the translation of the commentary..." name="commentaryTranslation"></textarea>
+      </div>
+      <!-- note on the translation of the commentary -->
+      <div class="mb-3">
+        <label class="form-label">Note on the translation of the commentary</label>
+        <textarea placeholder="Insert the note on the translation..." name="commentaryTranslationNote"></textarea>
       </div>
       <!-- submit -->
       <div>

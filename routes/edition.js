@@ -41,7 +41,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, translation.stanzaStart, translation.value, translation.note, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
+                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, translation.value, translation.note, commentary.stanzaStart, commentary.value, parallel.stanzaStart, parallel.value, citation.stanzaStart, citation.value, note.stanzaStart, note.value
                 `
             )
             .subscribe({
@@ -67,7 +67,7 @@ router.get("/edition/:id", async (req, res) => {
                     /* translations temp */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
-                            transl_temp.push(record.get("translation.stanzaStart") + "___" + record.get("translation.value") + "@" + record.get("translation.note") + "#" + record.get("ID(translation)"));
+                            transl_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("translation.value") + "@" + record.get("translation.note") + "#" + record.get("ID(translation)"));
                         };
                     };
                     /* commentary temp */

@@ -341,10 +341,10 @@ router.get("/edit/:id", async (req, res) => {
                             /* translation */
                             var transl = obj["end"]["properties"]["value"];
 
-                            /* try */
+                            /* note */
                             var note = obj["end"]["properties"]["note"];
 
-                            /* note */
+                            /* id */
                             var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
                             /* fragment / location */
@@ -427,6 +427,15 @@ router.get("/edit/:id", async (req, res) => {
                             /* commentary */
                             var commentary = obj["end"]["properties"]["value"];
 
+                            /* translation */
+                            var translation = obj["end"]["properties"]["translation"];
+
+                            /* note on the commentary */
+                            var commentaryNote = obj["end"]["properties"]["note"];
+
+                            /* note on the translation of the commentary */
+                            var translationNote = obj["end"]["properties"]["translationNote"];
+
                             /* id */
                             var idAnnotation = obj["end"]["properties"]["idAnnotation"];
 
@@ -450,7 +459,7 @@ router.get("/edit/:id", async (req, res) => {
                             });
 
                             /* commentary entry */
-                            var commEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter;
+                            var commEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter + "@" + commentaryNote + "$" + translation + "***" + translationNote; 
 
                             /* commentary array */
                             if (!commArr.includes(commEntry)) {
