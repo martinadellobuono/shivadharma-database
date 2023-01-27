@@ -9,8 +9,7 @@ const router = express.Router();
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.post("/publish/:id",
-    async (req, res) => {
+router.post("/publish/:id", async (req, res) => {
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;

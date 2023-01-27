@@ -24,12 +24,25 @@ router.post("/addParallel/:id", async (req, res) => {
                     SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
+                
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel {idAnnotation: "${req.body.idAnnotation}"})
+
+                MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
                 ON MATCH
                     SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
+                
+                MERGE (work:Work {title: "${req.body.parallelWork}"})
+
+                MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel)
+                MERGE (parallel)<-[:HAS_FRAGMENT]-(work)
+
+                WITH parallel
+                MATCH (parallel)<-[pw:HAS_FRAGMENT]-(work:Work)
+                WHERE NOT "${req.body.parallelWork}" CONTAINS work.title
+                DELETE pw
+
                 RETURN *
                 `
             )

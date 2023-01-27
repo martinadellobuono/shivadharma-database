@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-          <textarea class="mt-1" placeholder="Insert the text of your edition..." name="fileBaseTxt">
+          <textarea class="mt-1" placeholder="Insert the text of your edition..." data-url-param="<%= id %>" name="fileBaseTxt">
             <% if (file) { %>
                 <%- include (`../uploads/${file}`) %>
             <% }; %>

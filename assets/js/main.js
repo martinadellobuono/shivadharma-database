@@ -587,6 +587,14 @@ let cloneEl = () => {
     });
 };
 
+/* TRY */
+let saveFile = () => {
+
+    console.log("save file");
+
+};
+/* / */
+
 /* annotations */
 let annotations = () => {
 
@@ -601,10 +609,8 @@ let annotations = () => {
             /* type of annotation */
             var category = el.getAttribute("data-value");
 
-            /* TRY */
             /* root ID of annotation */
             var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
-            /* / */
 
             /* get selected text */
             if (document.getSelection) {
@@ -676,191 +682,199 @@ let annotations = () => {
                     });
 
                     /* PRINT MILESTONES AND CONTENT IN THE TEXT */
-                    /* selected string */
-                    var sel = tinymce.activeEditor.selection;
+                    let milestoneContent = () => {
+                        /* selected string */
+                        var sel = tinymce.activeEditor.selection;
 
-                    /* selected range */
-                    var rng = sel.getRng();
+                        /* selected range */
+                        var rng = sel.getRng();
 
-                    /* create the start milestone */
-                    var milestoneStart = document.createElement("span");
-                    milestoneStart.setAttribute("data-type", "milestone");
-                    milestoneStart.setAttribute("data-subtype", annType);
-                    milestoneStart.setAttribute("data-start", "start");
-                    /* assign an id to the annotation */
-                    milestoneStart.setAttribute("data-annotation", "#" + idAnnotation);
-                    /* / */
+                        /* create the start milestone */
+                        var milestoneStart = document.createElement("span");
+                        milestoneStart.setAttribute("data-type", "milestone");
+                        milestoneStart.setAttribute("data-subtype", annType);
+                        milestoneStart.setAttribute("data-start", "start");
+                        /* assign an id to the annotation */
+                        milestoneStart.setAttribute("data-annotation", "#" + idAnnotation);
+                        /* / */
 
-                    /* create the end milestone */
-                    var milestoneEnd = document.createElement("span");
-                    milestoneEnd.setAttribute("data-type", "milestone");
-                    milestoneEnd.setAttribute("data-subtype", annType);
-                    milestoneEnd.setAttribute("data-end", "end");
-                    /* assign an id to the annotation */
-                    milestoneEnd.setAttribute("data-annotation", "#" + idAnnotation);
-                    /* / */
+                        /* create the end milestone */
+                        var milestoneEnd = document.createElement("span");
+                        milestoneEnd.setAttribute("data-type", "milestone");
+                        milestoneEnd.setAttribute("data-subtype", annType);
+                        milestoneEnd.setAttribute("data-end", "end");
+                        /* assign an id to the annotation */
+                        milestoneEnd.setAttribute("data-annotation", "#" + idAnnotation);
+                        /* / */
 
-                    /* insert the start milestone */
-                    var startRng = rng.cloneRange();
-                    startRng.collapse(true);
-                    startRng.insertNode(milestoneStart);
+                        /* insert the start milestone */
+                        var startRng = rng.cloneRange();
+                        startRng.collapse(true);
+                        startRng.insertNode(milestoneStart);
 
-                    /* insert the end milestone */
-                    var endRng = rng.cloneRange();
-                    endRng.collapse(false);
-                    endRng.insertNode(milestoneEnd);
+                        /* insert the end milestone */
+                        var endRng = rng.cloneRange();
+                        endRng.collapse(false);
+                        endRng.insertNode(milestoneEnd);
 
-                    /* COLOR TO ANNOTATIONS */
-                    /* START MILESTONE */
-                    /* first sibling of the start milestone */
-                    var startSibling = milestoneStart.nextSibling;
-                    var startContent = startSibling.textContent;
-                    var startAnnotation = document.createElement("span");
-                    startAnnotation.setAttribute("data-type", "annotation-object");
-                    startAnnotation.setAttribute("data-subtype", annType);
-                    /* assign an id to the sibling */
-                    startAnnotation.setAttribute("data-annotation", "annotation-");// + n);
-                    /* / */
-                    startAnnotation.innerHTML = startContent;
-                    startSibling.replaceWith(startAnnotation);
+                        /* COLOR TO ANNOTATIONS */
+                        /* START MILESTONE */
+                        /* first sibling of the start milestone */
+                        var startSibling = milestoneStart.nextSibling;
+                        var startContent = startSibling.textContent;
+                        var startAnnotation = document.createElement("span");
+                        startAnnotation.setAttribute("data-type", "annotation-object");
+                        startAnnotation.setAttribute("data-subtype", annType);
+                        /* assign an id to the sibling */
+                        startAnnotation.setAttribute("data-annotation", "annotation-");// + n);
+                        /* / */
+                        startAnnotation.innerHTML = startContent;
+                        startSibling.replaceWith(startAnnotation);
 
-                    if (startAnnotation.parentNode.nodeName == "SPAN") {
-                        startAnnotation = startAnnotation.parentNode;
-                        while (startAnnotation = startAnnotation.nextSibling) {
-                            /* FIRST LINE OF A BLOCK */
-                            /* color other siblings if any */
-                            if (startAnnotation !== milestoneEnd) {
-                                if (startAnnotation.innerHTML !== "") {
-                                    if (startAnnotation.nodeName !== "#text") {
-                                        /* already available annotations */
-                                        startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
-                                    } else {
-                                        /* strings */
-                                        var annotation = document.createElement("span");
-                                        annotation.setAttribute("data-type", "annotation-object");
-                                        annotation.setAttribute("data-subtype", annType);
-                                        annotation.innerHTML = startAnnotation.textContent;
-                                        var previousSibling = startAnnotation.previousSibling;
-                                        if (previousSibling !== null) {
-                                            /* insert the annotation after the previous sibling */
-                                            previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
-                                            startAnnotation.textContent = "";
+                        if (startAnnotation.parentNode.nodeName == "SPAN") {
+                            startAnnotation = startAnnotation.parentNode;
+                            while (startAnnotation = startAnnotation.nextSibling) {
+                                /* FIRST LINE OF A BLOCK */
+                                /* color other siblings if any */
+                                if (startAnnotation !== milestoneEnd) {
+                                    if (startAnnotation.innerHTML !== "") {
+                                        if (startAnnotation.nodeName !== "#text") {
+                                            /* already available annotations */
+                                            startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
                                         } else {
-                                            /* insert the annotation as first child */
-                                            var parentNode = startAnnotation.closest("p");
-                                            parentNode.insertBefore(annotation, parentNode.firstChild);
-                                            startAnnotation.textContent = "";
+                                            /* strings */
+                                            var annotation = document.createElement("span");
+                                            annotation.setAttribute("data-type", "annotation-object");
+                                            annotation.setAttribute("data-subtype", annType);
+                                            annotation.innerHTML = startAnnotation.textContent;
+                                            var previousSibling = startAnnotation.previousSibling;
+                                            if (previousSibling !== null) {
+                                                /* insert the annotation after the previous sibling */
+                                                previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                                startAnnotation.textContent = "";
+                                            } else {
+                                                /* insert the annotation as first child */
+                                                var parentNode = startAnnotation.closest("p");
+                                                parentNode.insertBefore(annotation, parentNode.firstChild);
+                                                startAnnotation.textContent = "";
+                                            };
                                         };
                                     };
-                                };
-                            } else {
-                                return false;
-                            };
-                        };
-                    } else {
-                        while (startAnnotation = startAnnotation.nextSibling) {
-                            /* FIRST LINE OF A BLOCK */
-                            /* color other siblings if any */
-                            if (startAnnotation !== milestoneEnd) {
-                                if (startAnnotation.innerHTML !== "") {
-                                    if (startAnnotation.nodeName !== "#text") {
-                                        /* already available annotations */
-                                        startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
-                                    } else {
-                                        /* strings */
-                                        var annotation = document.createElement("span");
-                                        annotation.setAttribute("data-type", "annotation-object");
-                                        annotation.setAttribute("data-subtype", annType);
-                                        annotation.innerHTML = startAnnotation.textContent;
-                                        var previousSibling = startAnnotation.previousSibling;
-                                        if (previousSibling !== null) {
-                                            /* insert the annotation after the previous sibling */
-                                            previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
-                                            startAnnotation.textContent = "";
-                                        } else {
-                                            /* insert the annotation as first child */
-                                            var parentNode = startAnnotation.closest("p");
-                                            parentNode.insertBefore(annotation, parentNode.firstChild);
-                                            startAnnotation.textContent = "";
-                                        };
-                                    };
-                                };
-                            } else {
-                                return false;
-                            };
-                        };
-                    };
-
-                    /* END MILESTONE */
-                    /* first previous sibling of the milestone end */
-                    var endSibling = milestoneEnd.previousSibling;
-                    var endContent = endSibling.textContent;
-                    var endAnnotation = document.createElement("span");
-                    endAnnotation.setAttribute("data-type", "annotation-object");
-                    endAnnotation.setAttribute("data-subtype", annType);
-                    /* assign an id to the sibling */
-                    endAnnotation.setAttribute("data-annotation", "#" + idAnnotation);
-                    /* / */
-                    endAnnotation.innerHTML = endContent;
-                    endSibling.replaceWith(endAnnotation);
-
-                    /* END LINE OF A BLOCK */
-                    /* color other siblings if any */
-                    while (endAnnotation = endAnnotation.previousSibling) {
-                        if (endAnnotation !== milestoneStart) {
-                            if (endAnnotation.innerHTML !== "") {
-                                if (endAnnotation.nodeName !== "#text") {
-                                    /* already available annotations */
-                                    endAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + endAnnotation.innerHTML + "</span>";
                                 } else {
-                                    /* strings */
-                                    var annotation = document.createElement("span");
-                                    annotation.setAttribute("data-type", "annotation-object");
-                                    annotation.setAttribute("data-subtype", annType);
-                                    annotation.innerHTML = endAnnotation.textContent;
-                                    var previousSibling = endAnnotation.previousSibling;
-                                    if (previousSibling !== null) {
-                                        /* insert the annotation after the previous sibling */
-                                        previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
-                                        endAnnotation.textContent = "";
-                                    } else {
-                                        /* insert the annotation as first child */
-                                        var parentNode = endAnnotation.parentNode;
-                                        parentNode.insertBefore(annotation, parentNode.firstChild);
-                                        endAnnotation.textContent = "";
-                                    };
+                                    return false;
                                 };
                             };
                         } else {
-                            return false;
+                            while (startAnnotation = startAnnotation.nextSibling) {
+                                /* FIRST LINE OF A BLOCK */
+                                /* color other siblings if any */
+                                if (startAnnotation !== milestoneEnd) {
+                                    if (startAnnotation.innerHTML !== "") {
+                                        if (startAnnotation.nodeName !== "#text") {
+                                            /* already available annotations */
+                                            startAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + startAnnotation.innerHTML + "</span>"
+                                        } else {
+                                            /* strings */
+                                            var annotation = document.createElement("span");
+                                            annotation.setAttribute("data-type", "annotation-object");
+                                            annotation.setAttribute("data-subtype", annType);
+                                            annotation.innerHTML = startAnnotation.textContent;
+                                            var previousSibling = startAnnotation.previousSibling;
+                                            if (previousSibling !== null) {
+                                                /* insert the annotation after the previous sibling */
+                                                previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                                startAnnotation.textContent = "";
+                                            } else {
+                                                /* insert the annotation as first child */
+                                                var parentNode = startAnnotation.closest("p");
+                                                parentNode.insertBefore(annotation, parentNode.firstChild);
+                                                startAnnotation.textContent = "";
+                                            };
+                                        };
+                                    };
+                                } else {
+                                    return false;
+                                };
+                            };
                         };
-                    };
 
-                    /* PARAGRAPHS IN THE MIDDLE OF THE BLOCK */
-                    var startParent = milestoneStart.closest("p");
-                    var endParent = milestoneEnd.closest("p");
-                    if (startParent !== endParent) {
-                        while (startParent = startParent.nextSibling) {
-                            if (startParent !== endParent) {
-                                var annotation = document.createElement("span");
-                                annotation.innerHTML = startParent.innerHTML;
-                                annotation.setAttribute("data-type", "annotation-object");
-                                annotation.setAttribute("data-subtype", annType);
-                                /* assign an id to the sibling */
-                                annotation.setAttribute("data-annotation", "#" + idAnnotation);
-                                /* / */
-                                startParent.innerHTML = annotation.outerHTML;
+                        /* END MILESTONE */
+                        /* first previous sibling of the milestone end */
+                        var endSibling = milestoneEnd.previousSibling;
+                        var endContent = endSibling.textContent;
+                        var endAnnotation = document.createElement("span");
+                        endAnnotation.setAttribute("data-type", "annotation-object");
+                        endAnnotation.setAttribute("data-subtype", annType);
+                        /* assign an id to the sibling */
+                        endAnnotation.setAttribute("data-annotation", "#" + idAnnotation);
+                        /* / */
+                        endAnnotation.innerHTML = endContent;
+                        endSibling.replaceWith(endAnnotation);
+
+                        /* END LINE OF A BLOCK */
+                        /* color other siblings if any */
+                        while (endAnnotation = endAnnotation.previousSibling) {
+                            if (endAnnotation !== milestoneStart) {
+                                if (endAnnotation.innerHTML !== "") {
+                                    if (endAnnotation.nodeName !== "#text") {
+                                        /* already available annotations */
+                                        endAnnotation.innerHTML = "<span data-type='annotation-object' data-subtype='" + annType + "'>" + endAnnotation.innerHTML + "</span>";
+                                    } else {
+                                        /* strings */
+                                        var annotation = document.createElement("span");
+                                        annotation.setAttribute("data-type", "annotation-object");
+                                        annotation.setAttribute("data-subtype", annType);
+                                        annotation.innerHTML = endAnnotation.textContent;
+                                        var previousSibling = endAnnotation.previousSibling;
+                                        if (previousSibling !== null) {
+                                            /* insert the annotation after the previous sibling */
+                                            previousSibling.insertAdjacentHTML("afterend", annotation.outerHTML);
+                                            endAnnotation.textContent = "";
+                                        } else {
+                                            /* insert the annotation as first child */
+                                            var parentNode = endAnnotation.parentNode;
+                                            parentNode.insertBefore(annotation, parentNode.firstChild);
+                                            endAnnotation.textContent = "";
+                                        };
+                                    };
+                                };
                             } else {
                                 return false;
                             };
                         };
+
+                        /* PARAGRAPHS IN THE MIDDLE OF THE BLOCK */
+                        var startParent = milestoneStart.closest("p");
+                        var endParent = milestoneEnd.closest("p");
+                        if (startParent !== endParent) {
+                            while (startParent = startParent.nextSibling) {
+                                if (startParent !== endParent) {
+                                    var annotation = document.createElement("span");
+                                    annotation.innerHTML = startParent.innerHTML;
+                                    annotation.setAttribute("data-type", "annotation-object");
+                                    annotation.setAttribute("data-subtype", annType);
+                                    /* assign an id to the sibling */
+                                    annotation.setAttribute("data-annotation", "#" + idAnnotation);
+                                    /* / */
+                                    startParent.innerHTML = annotation.outerHTML;
+                                } else {
+                                    return false;
+                                };
+                            };
+                        };
                     };
+                    milestoneContent();
+
+                    /* TRY */
+                    /* SAVE FILE */
+                    saveFile();
+                    /* / */
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
-                    var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
+                    /* var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
                     var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
-                    safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation);
+                    safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation); */
 
                 } else {
                     /* show default settings */
@@ -872,6 +886,7 @@ let annotations = () => {
                 };
 
             };
+
         });
 
     });

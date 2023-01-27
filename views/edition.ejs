@@ -100,8 +100,8 @@
             <h3 class="h6 nowrap">Parallels</h3>
             <% if (typeof parallels !== "undefined") { %>
             <% parallels.forEach((el) => { %>
-            <div data-type="parallel" data-subtype="full-text">
-              <%- el %>
+            <div data-type="parallel" data-subtype="parallel">
+              <span data-type="parallel" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="parallel" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span span data-type="parallel" data-subtype="value"><%- el["value"]; %></span>
             </div>
             <% }); %>
             <% }; %>
@@ -111,8 +111,8 @@
             <h3 class="h6 nowrap">Citations</h3>
             <% if (typeof citations !== "undefined") { %>
             <% citations.forEach((el) => { %>
-            <div data-type="citation" data-subtype="full-text">
-              <%- el %>
+            <div data-type="citation" data-subtype="citation">
+              <span data-type="citation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span span data-type="citation" data-subtype="value"><%- el["value"]; %></span>
             </div>
             <% }); %>
             <% }; %>
@@ -182,13 +182,8 @@
           <div class="card card-body">
             <% if (typeof notes !== "undefined") { %>
             <% notes.forEach((el) => { %>
-            <% var stanza = el.split("___")[0]; %>
-            <% var pada = el.split("///")[1]; %>
-            <% pada = pada.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, "") %>
-            <% var note = el.split("///")[0]; %>
-            <% note = note.split("___")[1]; %>
-            <div data-type="note" data-subtype="note-on-text">
-              <span data-type="note" data-subtype="stanza"><%= stanza %></span><span data-type="note" data-subtype="pada"><%= pada %></span><span data-type="note" data-subtype="full-text"><%- note %></span>
+            <div data-type="note" data-subtype="note">
+              <span data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span><%- el["value"]; %></span>
             </div>
             <% }); %>
             <% }; %>

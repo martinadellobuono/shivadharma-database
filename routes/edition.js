@@ -24,9 +24,9 @@ router.get("/edition/:id", async (req, res) => {
     var chapter;
     var transl_temp = [];
     var comm_temp = [];
-    var paral_temp = [];
-    var cit_temp = [];
-    var notes_temp = [];
+    var parallels = [];
+    var citations = [];
+    var notes = [];
 
     const session = driver.session();
     try {
@@ -77,22 +77,34 @@ router.get("/edition/:id", async (req, res) => {
                         };
                     };
                     /* parallels temp */
-                    if (!paral_temp.includes(record.get("parallel.value"))) {
-                        if (record.get("parallel.value") !== null) {
-                            paral_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("parallel.value"));
-                        };
+                    if (record.get("parallel.value") !== null) {
+                        parallels.push({
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            work: "",
+                            author: "",
+                            book: "",
+                            bookChapter: "",
+                            bookStanza: "",
+                            value: record.get("parallel.value"),
+                            note: ""
+                        });
                     };
                     /* citations temp */
-                    if (!cit_temp.includes(record.get("citation.value"))) {
-                        if (record.get("citation.value") !== null) {
-                            cit_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("citation.value"));
-                        };
+                    if (record.get("citation.value") !== null) {
+                        citations.push({
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            value: record.get("citation.value")
+                        });
                     };
                     /* notes temp */
-                    if (!notes_temp.includes(record.get("note.value"))) {
-                        if (record.get("note.value") !== null) {
-                            notes_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("note.value") + "///" + record.get("selectedFragment.padaStart"));
-                        };
+                    if (record.get("note.value") !== null) {
+                        notes.push({
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            value: record.get("note.value")
+                        });
                     };
                 },
                 onCompleted: () => {
@@ -115,32 +127,28 @@ router.get("/edition/:id", async (req, res) => {
                         };
                     });
 
-                    /* ordered parallels */
-                    var parallels = [];
-                    paral_temp = paral_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
-                    paral_temp.forEach((el) => {
-                        if (!parallels.includes(el.split("___")[1])) {
-                            parallels.push(el.split("___")[1]);
-                        };
+                    /* ordered parallels */                    
+                    parallels.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    parallels.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered citations */
-                    var citations = [];
-                    cit_temp = cit_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
-                    cit_temp.forEach((el) => {
-                        if (!citations.includes(el.split("___")[1])) {
-                            citations.push(el.split("___")[1]);
-                        };
+                    /* ordered citations */                    
+                    citations.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
                     });
-
-                    /* ordered notes */
-                    var notes = [];
-                    notes_temp = notes_temp.sort((a, b) => a.split("___")[0] - b.split("___")[0]);
-                    notes_temp = notes_temp.sort((a, b) => a.split("///")[0] - b.split("///")[0]);
-                    notes_temp.forEach((el) => {
-                        if (!notes.includes(el)) {
-                            notes.push(el);
-                        };
+                    citations.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    }); 
+                    
+                    /* ordered notes */                    
+                    notes.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    notes.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
                     });
 
                     if (fs.existsSync(path)) {
