@@ -35,13 +35,21 @@ router.post("/addParallel/:id", async (req, res) => {
                 
                 MERGE (work:Work {title: "${req.body.parallelWork}"})
 
+                MERGE (author:Author {name: "${req.body.parallelAuthor}"})
+
                 MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel)
                 MERGE (parallel)<-[:HAS_FRAGMENT]-(work)
+                MERGE (work)-[:WRITTEN_BY]->(author)
 
                 WITH parallel
                 MATCH (parallel)<-[pw:HAS_FRAGMENT]-(work:Work)
                 WHERE NOT "${req.body.parallelWork}" CONTAINS work.title
                 DELETE pw
+
+                WITH work
+                MATCH (work)-[wa:WRITTEN_BY]->(author:Author)
+                WHERE NOT "${req.body.parallelWork}" CONTAINS author.name
+                DELETE wa
 
                 RETURN *
                 `
