@@ -53,6 +53,11 @@
       <!-- apparatus form -->
       <div class="annotation-form apparatus d-none apparatus-scroll scroll-tab">
         <form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
+          <!-- ID -->
+          <div class="d-none">
+            <label class="form-label">ID of annotation</label>
+            <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="apparatus" name="idAnnotation">
+          </div>
           <!-- selected fragment -->
           <div class="mb-3 mt-3">
             <label class="form-label">Selected fragment</label>
@@ -173,7 +178,7 @@
                 <!-- lemma -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="truncation" placeholder="Insert lemma" aria-describedby="Insert lemma" name="lemma">
                 <!-- lemma id -->
-                <input class="form-control cursor-not-allowed id-input" type="text" data-subtype="id-lemma" aria-describedby="ID of lemma" readonly="true" data-value="apparatus" name="idLemma">
+                <input class="d-none form-control cursor-not-allowed id-input" type="text" data-subtype="id-lemma" aria-describedby="ID of lemma" readonly="true" data-value="apparatus" name="idLemma">
               </div>
             </div>
             <!-- witnesses -->
@@ -199,7 +204,7 @@
             </div>
           </div>
           <!-- variants -->
-          <div class="alert alert-primary alert-dismissible fade show bg-blue p-3 mb-3 data-list" data-cloned="variant">
+          <div class="alert alert-primary alert-dismissible fade show p-3 mb-3 data-list" data-cloned="variant">
             <label class="form-label">Variant</label>
             <!-- present or omitted -->
             <div class="mb-3">
@@ -237,7 +242,7 @@
                 <!-- variant -->
                 <input class="form-control live-check mb-0 mt-3" type="text" data-subtype="variant" placeholder="Insert variant" aria-describedby="Insert variant" name="variant0">
                 <!-- variant id -->
-                <input class="form-control cursor-not-allowed id-input" type="text" data-subtype="id-variant" aria-describedby="ID of variant" readonly="true" data-value="variant" name="idVariant0">
+                <input class="d-none form-control cursor-not-allowed id-input" type="text" data-subtype="id-variant" aria-describedby="ID of variant" readonly="true" data-value="variant" name="idVariant0">
               </div>
             </div>
             <!-- witnesses -->

@@ -590,9 +590,6 @@ let cloneEl = () => {
 /* annotations */
 let annotations = () => {
 
-    /* n to create an id for the annotations */
-    var n = 0;
-
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
 
         /* annotation type */
@@ -603,6 +600,11 @@ let annotations = () => {
 
             /* type of annotation */
             var category = el.getAttribute("data-value");
+
+            /* TRY */
+            /* root ID of annotation */
+            var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
+            /* / */
 
             /* get selected text */
             if (document.getSelection) {
@@ -660,7 +662,13 @@ let annotations = () => {
                     /* selected fragment form */
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
 
-                    /* generate an ID for each annotation */
+                    /* assign the ID of each annotation to the root ID inputs */
+                    var rootInputs = formToShow.querySelectorAll("input.root-id-input");
+                    rootInputs.forEach((input) => {
+                        input.value = idAnnotation;
+                    });
+
+                    /* assign the ID of each annotation to other inputs - lemma, variants, etc. */
                     var idInputs = formToShow.querySelectorAll("input.id-input");
                     idInputs.forEach((input) => {
                         var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
@@ -674,16 +682,13 @@ let annotations = () => {
                     /* selected range */
                     var rng = sel.getRng();
 
-                    /* n to create an id for the annotations */
-                    n += 1;
-
                     /* create the start milestone */
                     var milestoneStart = document.createElement("span");
                     milestoneStart.setAttribute("data-type", "milestone");
                     milestoneStart.setAttribute("data-subtype", annType);
                     milestoneStart.setAttribute("data-start", "start");
                     /* assign an id to the annotation */
-                    milestoneStart.setAttribute("data-annotation", "annotation-" + n);
+                    milestoneStart.setAttribute("data-annotation", "#" + idAnnotation);
                     /* / */
 
                     /* create the end milestone */
@@ -692,7 +697,7 @@ let annotations = () => {
                     milestoneEnd.setAttribute("data-subtype", annType);
                     milestoneEnd.setAttribute("data-end", "end");
                     /* assign an id to the annotation */
-                    milestoneEnd.setAttribute("data-annotation", "annotation-" + n);
+                    milestoneEnd.setAttribute("data-annotation", "#" + idAnnotation);
                     /* / */
 
                     /* insert the start milestone */
@@ -714,7 +719,7 @@ let annotations = () => {
                     startAnnotation.setAttribute("data-type", "annotation-object");
                     startAnnotation.setAttribute("data-subtype", annType);
                     /* assign an id to the sibling */
-                    startAnnotation.setAttribute("data-annotation", "annotation-" + n);
+                    startAnnotation.setAttribute("data-annotation", "annotation-");// + n);
                     /* / */
                     startAnnotation.innerHTML = startContent;
                     startSibling.replaceWith(startAnnotation);
@@ -794,7 +799,7 @@ let annotations = () => {
                     endAnnotation.setAttribute("data-type", "annotation-object");
                     endAnnotation.setAttribute("data-subtype", annType);
                     /* assign an id to the sibling */
-                    endAnnotation.setAttribute("data-annotation", "annotation-" + n);
+                    endAnnotation.setAttribute("data-annotation", "#" + idAnnotation);
                     /* / */
                     endAnnotation.innerHTML = endContent;
                     endSibling.replaceWith(endAnnotation);
@@ -842,7 +847,7 @@ let annotations = () => {
                                 annotation.setAttribute("data-type", "annotation-object");
                                 annotation.setAttribute("data-subtype", annType);
                                 /* assign an id to the sibling */
-                                annotation.setAttribute("data-annotation", "annotation-" + n);
+                                annotation.setAttribute("data-annotation", "#" + idAnnotation);
                                 /* / */
                                 startParent.innerHTML = annotation.outerHTML;
                             } else {
@@ -855,7 +860,7 @@ let annotations = () => {
                     /* assign the same id to the cancel button */
                     var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
                     var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
-                    safeCancelBtn.setAttribute("data-cancel", "annotation-" + n);
+                    safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation);
 
                 } else {
                     /* show default settings */

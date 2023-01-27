@@ -90,7 +90,7 @@
                   <!-- superscript -->
                   <div class="row g-3 align-items-center mb-2">
                     <div class="col-auto">
-                      <label class="col-form-label">Superscript<sup class="help-symbol" data-bs-toggle="popover" title="Superscript" data-bs-content="Insert here the first capital letter (or first two letters, only the first capital) of the place where the manuscript is kept (see: settlement)."><i class="bi bi-question-lg"></i></sup></label>
+                      <label class="col-form-label">Superscript<sup class="help-symbol" data-bs-toggle="popover" title="Superscript" data-bs-content="Insert here the first capital letter (or first two letters, only the first capital) of the place where the manuscript is kept (see: location)."><i class="bi bi-question-lg"></i></sup></label>
                     </div>
                     <div class="col-auto">
                       <input type="text" class="form-control" name="witnessSiglumSuperscript0">
@@ -129,16 +129,24 @@
                       <label class="form-check-label" for="prov-bengal">Bengal</label>
                     </div>
                     <div class="form-check">
+                      <input class="form-check-input" id="prov-karnataka" type="radio" value="Karnataka" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-karnataka">Karnataka</label>
+                    </div>
+                    <div class="form-check">
                       <input class="form-check-input" id="prov-kashmir" type="radio" value="Kashmir" name="witnessProvenance0">
                       <label class="form-check-label" for="prov-kashmir">Kashmir</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" id="prov-kerala" type="radio" value="Tamil Nadu" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-kerala">Kerala</label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" id="prov-nepal" type="radio" value="Nepal" name="witnessProvenance0">
                       <label class="form-check-label" for="prov-nepal">Nepal</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" id="prov-south-india" type="radio" value="South India" name="witnessProvenance0">
-                      <label class="form-check-label" for="prov-south-india">South India</label>
+                      <input class="form-check-input" id="prov-tamil-nadu" type="radio" value="Tamil Nadu" name="witnessProvenance0">
+                      <label class="form-check-label" for="prov-tamil-nadu">Tamil Nadu</label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" id="prov-unknown" type="radio" value="Unknown" name="witnessProvenance0">
@@ -147,8 +155,8 @@
                     <div class="form-check">
                       <div class="row g-3 align-items-center">
                         <div class="col-auto">
-                          <input class="form-check-input" id="prov-else" type="radio" value="else" name="witnessProvenance0">
-                          <label class="form-check-label" for="prov-else">Else</label>
+                          <input class="form-check-input" id="prov-other" type="radio" value="Other" name="witnessProvenance0">
+                          <label class="form-check-label" for="prov-other">Other</label>
                         </div>
                         <div class="col-auto">
                           <input type="text" class="form-control" name="witnessProvenance0">
@@ -156,17 +164,23 @@
                       </div>
                     </div>
                   </div>
-                  <!-- settlement -->
+                  <!-- location -->
                   <div class="mb-3">
-                    <label class="form-label">Settlement<sup class="help-symbol" data-bs-toggle="popover" title="Settlement" data-bs-content="Insert here the city where the manuscript is currently kept."><i class="bi bi-question-lg"></i></sup></label>
-                    <input type="text" class="form-control" aria-describedby="Settlement" name="witnessSettlement0">
+                    <label class="form-label">Location<sup class="help-symbol" data-bs-toggle="popover" title="Location" data-bs-content="Insert here the city where the manuscript is currently kept."><i class="bi bi-question-lg"></i></sup></label>
+                    <input type="text" class="form-control" aria-describedby="Settlement" name="witnessLocation0">
                     <div class="form-text">e.g., Kathmandu, Oxford, etc.</div>
                   </div>
-                  <!-- collection -->
+                  <!-- repository -->
                   <div class="mb-3">
-                    <label class="form-label">Collection &#x28;present physical location&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Collection" data-bs-content="Insert here the present physical location, library or institute."><i class="bi bi-question-lg"></i></sup></label>
-                    <input type="text" class="form-control" aria-describedby="Collection" name="witnessCollection0">
+                    <label class="form-label">Repository<sup class="help-symbol" data-bs-toggle="popover" title="Repository" data-bs-content="Insert here the present physical repository, library or institute."><i class="bi bi-question-lg"></i></sup></label>
+                    <input type="text" class="form-control" aria-describedby="Repository" name="witnessRepository0">
                     <div class="form-text">e.g., National Archives, Bodleian Library, etc.</div>
+                  </div>
+                  <!-- specific collection of repository -->
+                  <div class="mb-3">
+                    <label class="form-label">Specific collection of repository<sup class="help-symbol" data-bs-toggle="popover" title="Repository" data-bs-content="Insert here the specific collection of the present physical repository, library or institute."><i class="bi bi-question-lg"></i></sup></label>
+                    <input type="text" class="form-control" aria-describedby="Repository" name="witnessSpecificRepository0">
+                    <!--<div class="form-text">e.g., National Archives, Bodleian Library, etc.</div>-->
                   </div>
                   <!-- classmark -->
                   <div class="mb-3">
@@ -195,7 +209,7 @@
                     <div class="mb-3">
                       <label class="form-label">Language&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Language(s)" data-bs-content="Select or insert here the language(s) of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                       <div class="form-check">
-                        <input class="form-check-input" id="lang-sanskrit" type="checkbox" value="Sanskrit" name="witnessLanguage0" checked>
+                        <input class="form-check-input" id="lang-sanskrit" type="checkbox" value="Sanskrit" name="witnessLanguage0">
                         <label class="form-check-label" for="lang-sanskrit">Sanskrit</label>
                       </div>
                       <div class="form-check">
@@ -213,8 +227,8 @@
                       <div class="form-check">
                         <div class="row g-3 align-items-center">
                           <div class="col-auto">
-                            <input class="form-check-input" id="lang-else" type="checkbox" value="else" name="witnessLanguage0">
-                            <label class="form-check-label" for="lang-else">Else</label>
+                            <input class="form-check-input" id="lang-other" type="checkbox" value="other" name="witnessLanguage0">
+                            <label class="form-check-label" for="lang-other">Other</label>
                           </div>
                           <div class="col-auto">
                             <input type="text" class="form-control" name="witnessLanguage0">
@@ -277,8 +291,8 @@
                     <div class="form-check">
                       <div class="row g-3 align-items-center">
                         <div class="col-auto">
-                          <input class="form-check-input" id="form-else" type="radio" value="else" name="witnessFormat0">
-                          <label class="form-check-label" for="form-else">Else</label>
+                          <input class="form-check-input" id="form-other" type="radio" value="other" name="witnessFormat0">
+                          <label class="form-check-label" for="form-other">Other</label>
                         </div>
                         <div class="col-auto">
                           <input type="text" class="form-control" name="witnessFormat0">
@@ -304,8 +318,8 @@
                     <div class="form-check">
                       <div class="row g-3 align-items-center">
                         <div class="col-auto">
-                          <input class="form-check-input" id="mat-material-else" type="radio" value="else" name="witnessMaterial0">
-                          <label class="form-check-label" for="mat-material-else">Else</label>
+                          <input class="form-check-input" id="mat-material-other" type="radio" value="other" name="witnessMaterial0">
+                          <label class="form-check-label" for="mat-material-other">Other</label>
                         </div>
                         <div class="col-auto">
                           <input type="text" class="form-control" name="witnessMaterial0">
@@ -396,8 +410,8 @@
                     <div class="form-check">
                       <div class="row g-3 align-items-center">
                         <div class="col-auto">
-                          <input class="form-check-input" id="lang-else" type="checkbox" value="else" name="witnessPeople0">
-                          <label class="form-check-label" for="lang-else">Else</label>
+                          <input class="form-check-input" id="lang-other" type="checkbox" value="other" name="witnessPeople0">
+                          <label class="form-check-label" for="lang-other">Other</label>
                         </div>
                         <div class="col-auto">
                           <input type="text" class="form-control" name="witnessPeople0">
@@ -407,51 +421,51 @@
                     </div>
                   </div>
                   <!-- marginalia -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Marginalia<sup class="help-symbol" data-bs-toggle="popover" title="Marginalia" data-bs-content="Transcribe here the paratexts found on the cover & guard leaves and the marginalia."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="marginaliaEditor0" data-type="witness-metadata" data-subtype="marginalia" name="witnessMarginalia0"></textarea>
                     </div>
-                  </div>
+                  </div>-->
                   <!-- initial rubric -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Initial Rubric<sup class="help-symbol" data-bs-toggle="popover" title="Initial Rubric" data-bs-content="Transcribe here the initial rubric of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="initialRubricEditor0" data-type="witness-metadata" data-subtype="initial-rubric" name="witnessInitialRubric0"></textarea>
                     </div>
-                  </div>
+                  </div>-->
                   <!-- incipit -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Incipit<sup class="help-symbol" data-bs-toggle="popover" title="Incipit" data-bs-content="Transcribe here the incipit of the work contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="incipitEditor0" data-type="witness-metadata" data-subtype="incipit" name="witnessIncipit0"></textarea>
                     </div>                    
-                  </div>
+                  </div>-->
                   <!-- explicit -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Explicit<sup class="help-symbol" data-bs-toggle="popover" title="Explicit" data-bs-content="Transcribe here the explicit of the work contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="explicitEditor0" data-type="witness-metadata" data-subtype="explicit" name="witnessExplicit0"></textarea>
                     </div>
-                  </div>
+                  </div>-->
                   <!-- final rubric and invocations -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Final Rubric and Invocations<sup class="help-symbol" data-bs-toggle="popover" title="Final Rubric and Invocations" data-bs-content="Transcribe here the final rubric and invocations of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="finalRubricEditor0" data-type="witness-metadata" data-subtype="final-rubric" name="witnessFinalRubric0"></textarea>
                     </div>              
-                  </div>
+                  </div>-->
                   <!-- colophon -->
-                  <div class="mb-3">
+                  <!--<div class="mb-3">
                     <label class="form-label">Colophon<sup class="help-symbol" data-bs-toggle="popover" title="Colophon" data-bs-content="Transcribe here the colophon of the manuscript."><i class="bi bi-question-lg"></i></sup></label>
                     <div class="">
                       <textarea class="mt-1" id="colophonEditor0" data-type="witness-metadata" data-subtype="colophon" name="witnessColophon0"></textarea>
                     </div>
-                  </div>
+                  </div>-->
                   <!-- bibliography -->
                   <div class="mb-3">
                     <label class="form-label">Bibliography<sup class="help-symbol" data-bs-toggle="popover" title="Bibliography" data-bs-content="Insert here works and/or catalogues which mention the manuscript."><i class="bi bi-question-lg"></i></sup></label>
-                    <div class="">
+                    <div class="textarea-container">
                       <textarea class="mt-1" id="bibliographyEditor0" data-type="witness-metadata" data-subtype="bibliography" name="witnessBibliography0"></textarea>
                     </div>
                     <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using &#x22; &#x3b; &#x22;.</div>
@@ -459,16 +473,8 @@
                   <!-- editions -->
                   <div class="mb-3">
                     <label class="form-label">Edition&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Edition&#x28;s&#x29;" data-bs-content="Insert here printed editions based on the manuscript."><i class="bi bi-question-lg"></i></sup></label>
-                    <div class="">
+                    <div class="textarea-container">
                       <textarea class="mt-1" id="editionsEditor0" data-type="witness-metadata" data-subtype="editions" name="witnessEditions0"></textarea>
-                    </div>
-                    <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using &#x22; &#x3b; &#x22;.</div>
-                  </div>
-                  <!-- secondary literature-->
-                  <div class="mb-3">
-                    <label class="form-label">Secondary Literature<sup class="help-symbol" data-bs-toggle="popover" title="Secondary Literature" data-bs-content="Insert here secondary literature on the manuscript."><i class="bi bi-question-lg"></i></sup></label>                    
-                    <div class="">
-                      <textarea class="mt-1" id="secondaryLiteratureEditor0" data-type="witness-metadata" data-subtype="secondary-literature" name="witnessSecondaryLiterature0"></textarea>
                     </div>
                     <div class="form-text">Use the format <b>Author Year: Page.</b> Separate the values by using &#x22; &#x3b; &#x22;.</div>
                   </div>
@@ -486,7 +492,7 @@
                   <!-- notes -->
                   <div class="mb-3">
                     <label class="form-label">Notes &#x28;free text&#x29;</label>
-                    <div class="">
+                    <div class="textarea-container">
                       <textarea class="metadata-textarea mt-1" id="notesEditor0" data-type="witness-metadata" data-subtype="notes" name="witnessNotes0"></textarea>
                     </div>
                   </div>

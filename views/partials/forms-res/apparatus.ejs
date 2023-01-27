@@ -55,7 +55,7 @@
       <% entryDict["variants"].forEach((el) => { %>
 
       <!-- id variant -->
-      <span class="text-primary" data-type="apparatus" data-subtype="idVariant" data-name="idVariant<%= el['numbers'] %>" data-fill='<%= el["idVariant"]; %>' data-input="text"><%= el["idVariant"]; %></span>
+      <span class="d-none text-primary" data-type="apparatus" data-subtype="idVariant" data-name="idVariant<%= el['numbers'] %>" data-fill='<%= el["idVariant"]; %>' data-input="text"><%= el["idVariant"]; %></span>
 
       <!-- variant -->
       <% var variant = el["variant"].split("___")[0] %>

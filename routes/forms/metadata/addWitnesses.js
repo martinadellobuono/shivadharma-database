@@ -15,8 +15,8 @@ router.post("/addWitnesses/:id", async (req, res) => {
 
     var siglum;
     var provenance;
-    var settlement;
-    var collection;
+    var location;
+    var repository;
     var classmark;
     var antigraph;
     var author;
@@ -66,8 +66,8 @@ router.post("/addWitnesses/:id", async (req, res) => {
                 superscript = "witnessSiglumSuperscript" + i;
                 subscript = "witnessSiglumSubscript" + i;
                 provenance = "witnessProvenance" + i;
-                settlement = "witnessSettlement" + i;
-                collection = "witnessCollection" + i;
+                location = "witnessLocation" + i;
+                repository = "witnessRepository" + i;
                 classmark = "witnessClassmark" + i;
                 antigraph = "witnessAntigraph" + i;
                 author = "witnessAuthor" + i;
@@ -107,8 +107,8 @@ router.post("/addWitnesses/:id", async (req, res) => {
                     MERGE (witness:Witness {
                         siglum: "${req.body[base]}" + "<sup>" + "${req.body[superscript]}" + "</sup><sub>" + "${req.body[subscript]}" + "</sub>",
                         provenance: "${req.body[provenance]}",
-                        settlement: "${req.body[settlement]}",
-                        collection: "${req.body[collection]}",
+                        location: "${req.body[location]}",
+                        repository: "${req.body[repository]}",
                         classmark: "${req.body[classmark]}",
                         antigraph: "${req.body[antigraph]}",
                         author: "${req.body[author]}",
