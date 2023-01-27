@@ -27,11 +27,11 @@ router.post("/addParallel/:id", async (req, res) => {
                 
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
 
-                MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}"})
+                MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}", book: "${req.body.parallelBook}", chapter: "${req.body.parallelChapter}", stanza: "${req.body.parallelStanza}"})
                 ON CREATE
-                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.chapter = "${req.body.parallelChapter}", parallel.stanza = "${req.body.parallelStanza}"
                 ON MATCH
-                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}'
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.chapter = "${req.body.parallelChapter}", parallel.stanza = "${req.body.parallelStanza}"
                 
                 MERGE (work:Work {title: "${req.body.parallelWork}"})
 
