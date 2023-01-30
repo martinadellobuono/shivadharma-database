@@ -98,13 +98,25 @@
           <!-- parallels -->
           <div class="tab-pane fade show active" id="pills-parallels" role="tabpanel">
             <h3 class="h6 nowrap">Parallels</h3>
-            <% if (typeof parallels !== "undefined") { %>
-            <% parallels.forEach((el) => { %>
-            <div data-type="parallel" data-subtype="parallel">
-              <span data-type="parallel" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="parallel" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span span data-type="parallel" data-subtype="value"><%- el["value"]; %></span>
+            <% parallels.forEach((parallel) => { %>
+
+            <div class="mb-3" data-type="parallel" data-subtype="parallel">
+              <% for (const [key, value] of Object.entries(parallel)) { %>
+
+              <!-- title -->
+              <span class="d-block h4" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>"><%= key.split("___")[0]; %></span>
+
+              <!-- full-text -->
+              <% value.forEach((el) => { %>
+              <div data-type="parallel" data-subtype="full-text"><%= el["value"]; %></div>
+              <% }); %>
+
+
+
+              <% }; %>
             </div>
+
             <% }); %>
-            <% }; %>
           </div>
           <!-- citations -->
           <div class="tab-pane fade" id="pills-citations" role="tabpanel">

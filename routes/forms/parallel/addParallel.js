@@ -27,11 +27,11 @@ router.post("/addParallel/:id", async (req, res) => {
                 
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
 
-                MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}", book: "${req.body.parallelBook}", chapter: "${req.body.parallelChapter}", stanza: "${req.body.parallelStanza}", note: "${req.body.parallelNote}"})
+                MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}", book: "${req.body.parallelBook}", bookChapter: "${req.body.parallelChapter}", bookStanza: "${req.body.parallelStanza}", note: "${req.body.parallelNote}"})
                 ON CREATE
-                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.chapter = "${req.body.parallelChapter}", parallel.stanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.bookChapter = "${req.body.parallelChapter}", parallel.bookStanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
                 ON MATCH
-                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.chapter = "${req.body.parallelChapter}", parallel.stanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
+                    SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.bookChapter = "${req.body.parallelChapter}", parallel.bookStanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
                 
                 MERGE (work:Work {title: "${req.body.parallelWork}"})
 

@@ -42,7 +42,7 @@ let popovers = () => {
 
 /* tooltips */
 let tooltips = () => {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('span[data-bs-toggle="tooltip"]'))
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('*[data-bs-toggle="tooltip"]'))
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })

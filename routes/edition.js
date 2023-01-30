@@ -39,9 +39,12 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
+
+                OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
+
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, parallel.value, citation.value, note.value
+                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, citation.value, note.value
                 `
             )
             .subscribe({
@@ -78,17 +81,24 @@ router.get("/edition/:id", async (req, res) => {
                     };
                     /* parallels temp */
                     if (record.get("parallel.value") !== null) {
-                        parallels.push({
-                            stanzaStart: record.get("selectedFragment.stanzaStart"),
-                            padaStart: record.get("selectedFragment.padaStart"),
-                            work: "",
-                            author: "",
-                            book: "",
-                            bookChapter: "",
-                            bookStanza: "",
-                            value: record.get("parallel.value"),
-                            note: ""
-                        });
+                        var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
+
+                        var dictionary = {
+                            [work]: {
+                                id: record.get("ID(parallel)"),
+                                stanzaStart: record.get("selectedFragment.stanzaStart"),
+                                padaStart: record.get("selectedFragment.padaStart"),
+                                work: record.get("parallelWork.title"),
+                                author: record.get("parallelAuthor.name"),
+                                book: record.get("parallel.book"),
+                                bookChapter: record.get("parallel.bookChapter"),
+                                bookStanza: record.get("parallel.bookStanza"),
+                                value: record.get("parallel.value"),
+                                note: record.get("parallel.note")
+                            }
+                        };
+
+                        parallels.push(dictionary);
                     };
                     /* citations temp */
                     if (record.get("citation.value") !== null) {
@@ -127,23 +137,70 @@ router.get("/edition/:id", async (req, res) => {
                         };
                     });
 
-                    /* ordered parallels */                    
-                    parallels.sort((a, b) => {
+
+                    /* ordered parallels */
+                    /* create an array of the parallels title */
+                    var parallels_keys = [];
+                    parallels.forEach((parallel) => {
+                        for (const [key, value] of Object.entries(parallel)) {
+                            if (!parallels_keys.includes(key)) {
+                                parallels_keys.push(key);
+                            };
+                        }
+                    });
+
+                    /* create a dictionary for each parallel work / an array containing all the dictionaries */
+                    var all_parallels = [];
+                    parallels_keys.forEach((title) => {
+
+                        /* create a dictionary of parallels for each title */
+                        var work = {
+                            [title]: {}
+                        };
+
+                        /* create an array of parallels values for each title */
+                        var values = [];
+
+                        /* assign the value to the dictionary */
+                        parallels.forEach((parallel) => {
+                            for (const [key, value] of Object.entries(parallel)) {
+                                if (key == title) {
+                                    /* value of the dictionary = full-text of parallels */
+                                    if (!values.includes(value)) {
+                                        values.push(value);
+                                    };
+                                    values.sort((a, b) => {
+                                        return a.book - b.book;
+                                    });
+                                    values.sort((a, b) => {
+                                        return a.bookChapter - b.bookChapter;
+                                    });
+                                    values.sort((a, b) => {
+                                        return a.bookStanza - b.bookStanza;
+                                    });
+
+                                    /* key = title / value = full-text of parallels */
+                                    work[title] = values;
+                                };
+                            };
+                        });
+
+                        /* add the dictionary to the array containing all the parallels divided by title */
+                        all_parallels.push(work);
+
+                    });
+
+
+
+                    /* ordered citations */
+                    citations.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
-                    parallels.sort((a, b) => {
+                    citations.sort((a, b) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered citations */                    
-                    citations.sort((a, b) => {
-                        return a.stanzaStart - b.stanzaStart;
-                    });
-                    citations.sort((a, b) => {
-                        return a.padaStart - b.padaStart;
-                    }); 
-                    
-                    /* ordered notes */                    
+                    /* ordered notes */
                     notes.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
@@ -163,7 +220,7 @@ router.get("/edition/:id", async (req, res) => {
                             chapter: chapter,
                             translation: translations,
                             commentary: commentary,
-                            parallels: parallels,
+                            parallels: all_parallels,
                             citations: citations,
                             notes: notes
                         });
@@ -178,7 +235,7 @@ router.get("/edition/:id", async (req, res) => {
                             file: false,
                             translation: translations,
                             commentary: comm_temp,
-                            parallels: parallels,
+                            parallels: all_parallels,
                             citations: citations,
                             notes: notes
                         });
