@@ -12089,14 +12089,14 @@ body {
 .btn-note {
   height: 10px;
   width: 10px;
-  background-color: #9eeaf9;
+  background-color: #0aa2c0;
   border-radius: 50%;
   display: inline-block;
 }
 
 .btn-note::after {
   content: "Note";
-  color: #9eeaf9;
+  color: #0aa2c0;
   font-size: 12px;
   margin-left: 15px;
   vertical-align: top;

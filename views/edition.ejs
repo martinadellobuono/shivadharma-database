@@ -108,7 +108,19 @@
 
               <!-- full-text -->
               <% value.forEach((el) => { %>
-              <div data-type="parallel" data-subtype="full-text"><%= el["value"]; %></div>
+              <div data-type="parallel" data-subtype="full-text"><%- el["value"]; %><span data-type="parallel" data-subtype="book"><%= el["book"]; %></span>.<span data-type="parallel" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><span data-type="parallel" data-subtype="bookStanza"><%= el["bookStanza"]; %></span></div>
+
+              <% if (el["note"] !== "") { %>
+              <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= el['id']; %>"></span>
+              <div class="collapse" id="collapse-parallel-<%= el['id']; %>">
+                <div class="card card-body">
+                  <div data-type="parallel" data-subtype="note">
+                    <%- el["note"]; %>
+                  </div>
+                </div>
+              </div>
+              <% }; %>
+
               <% }); %>
 
 

@@ -132,14 +132,14 @@ body {
 .btn-note {
     height: 10px;
     width: 10px;
-    background-color: $cyan-200;
+    background-color: $cyan-600;
     border-radius: 50%;
     display: inline-block;
 };
 
 .btn-note::after {
     content: "Note";
-    color: $cyan-200;
+    color: $cyan-600;
     font-size: 12px;
     margin-left: 15px;
     vertical-align: top;
