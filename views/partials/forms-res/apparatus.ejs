@@ -71,14 +71,14 @@
         <% }; %>
 
         <!-- witnesses -->
-        <span class="d-none" data-name="manuscriptVariant<%= el['numbers'] %>" data-fill='<%= el["witnesses"]; %>' data-input="list"><%= el["witnesses"]; %></span>
+        <span class="d-none" data-name="manuscriptVariant<%= el['numbers'] %>" data-fill='<%= el["witnesses"]; %>' data-input="list"><%- el["witnesses"]; %></span>
 
         <% if (el["witnesses"].split(" ; ").length > 1) { %>
         <% el["witnesses"].split(" ; ").forEach((witness) => { %>
-        <span data-type="apparatus" data-subtype="witness"><%= witness %></span>
+          <span data-type="apparatus" data-subtype="witness"><%- witness %></span>
         <% }); %>
         <% } else { %>
-        <span data-type="apparatus" data-subtype="witness"><%= el["witnesses"]; %></span>
+          <span data-type="apparatus" data-subtype="witness"><%- el["witnesses"]; %></span>
         <% }; %>
 
         <!-- omission notes -->

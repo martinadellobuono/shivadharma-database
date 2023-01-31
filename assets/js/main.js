@@ -1570,7 +1570,7 @@ let inlineLocation = () => {
         /* append the position into the element before / after */
         if (location.getAttribute("data-subtype") == "location-bottom") {
             /* starting position of the location > bottom */
-            var elToAppendTo = location.previousElementSibling;
+            var elToAppendTo = location.previousElementSibling.firstElementChild;
             elToAppendTo.insertAdjacentHTML("beforeend", locationHtml);
             location.remove();
         } else if (location.getAttribute("data-subtype") == "location-top") {

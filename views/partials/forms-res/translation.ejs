@@ -62,7 +62,8 @@
   <!-- translation -->
   <div class="p-2" data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= translation; %>' data-input="textarea">
     <h6>Translation</h6>
-    <span><%= chapter %>.<%= stanzaStart %></span></span><%- translation; %></span>
+    <span class="me-2" data-type="location" data-subtype="location-top"><%= chapter %>.<%= stanzaStart %></span>
+    <span data-type="translation" data-subtype="full-text"><%- translation; %></span>
   </div>
 
   <!-- note on translation -->

@@ -12091,6 +12091,11 @@ body {
   vertical-align: top;
 }
 
+/* titles */
+.title-subsection:hover {
+  color: #343a40;
+}
+
 /* caret */
 .caret[aria-expanded="false"]::after {
   content: "\25BC";

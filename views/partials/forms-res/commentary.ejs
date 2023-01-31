@@ -72,7 +72,8 @@
   <!-- commentary -->
   <div class="p-2" data-type="commentary" data-subtype="commentary" data-name="commentary" data-fill='<%= commentary; %>' data-input="textarea">
     <h6>Commentary</h6>
-    <span><%= chapter %>.<%= stanzaStart %></span></span><%- commentary; %></span>
+    <span class="me-2" data-type="location" data-subtype="location-top"><span class="me-2" data-type="location" data-subtype="chapter"><%= chapter %></span><span class="me-2" data-type="location" data-subtype="point-separator">.</span><span class="me-2" data-type="location" data-subtype="stanza-start"><%= stanzaStart %></span></span>
+    <span data-type="commentary" data-subtype="full-text"><%- commentary; %></span>
   </div>
 
   <!-- note on commentary -->

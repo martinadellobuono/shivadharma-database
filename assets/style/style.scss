@@ -134,6 +134,11 @@ body {
     vertical-align: top;
 }
 
+/* titles */
+.title-subsection:hover {
+    color: $gray-800;
+}
+
 /* caret */
 .caret[aria-expanded="false"]::after {
     content: "\25BC";
