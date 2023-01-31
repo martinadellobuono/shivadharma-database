@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     lemmaVariantPresence();
     witnessDimensions();
     /* previewCheck(); */
+    inlineLocation();
 });
 
 /* alerts */
@@ -1556,4 +1557,28 @@ let previewCheck = () => {
             };
         });
     });
+};
+
+/* inline location */
+let inlineLocation = () => {
+    var locations = document.querySelectorAll('[data-type="location"]');
+    for (var i = 0; i < locations.length; i++) {
+        /* location */
+        var location = locations[i];
+        var locationHtml = location.outerHTML;
+
+        /* append the position into the element before / after */
+        if (location.getAttribute("data-subtype") == "location-bottom") {
+            /* starting position of the location > bottom */
+            var elToAppendTo = location.previousElementSibling;
+            elToAppendTo.insertAdjacentHTML("beforeend", locationHtml);
+            location.remove();
+        } else if (location.getAttribute("data-subtype") == "location-top") {
+            /* starting position of the location > top */
+            var elToAppendTo = location.nextElementSibling.firstElementChild;
+            elToAppendTo.insertAdjacentHTML("afterbegin", locationHtml);
+            location.remove();
+        };
+
+    };
 };

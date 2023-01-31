@@ -17,8 +17,8 @@ router.get("/edition/:id", async (req, res) => {
     const idEditor = req.params.id.split("/").pop().split("-")[1];
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    var work_temp = [];
-    var title_temp = [];
+    var work;
+    var title;
     var auth_temp = [];
     var ed_temp = [];
     var chapter;
@@ -39,9 +39,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
-
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
-
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
                 RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, citation.value, note.value
@@ -50,35 +48,38 @@ router.get("/edition/:id", async (req, res) => {
             .subscribe({
                 onNext: record => {
                     /* work */
-                    if (!work_temp.includes(record.get("work.title"))) {
-                        work_temp.push(record.get("work.title"));
-                    };
+                    work = record.get("work.title");
+
                     /* title */
-                    if (!title_temp.includes(record.get("edition.title"))) {
-                        title_temp.push(record.get("edition.title"));
-                    };
+                    title = record.get("edition.title");
+
                     /* author */
                     if (!auth_temp.includes(record.get("author.name"))) {
                         auth_temp.push(record.get("author.name"));
                     };
+
                     /* editor */
                     if (!ed_temp.includes(record.get("editor.name"))) {
                         ed_temp.push(record.get("editor.name"));
                     };
+
                     /* chapter */
                     chapter = record.get("selectedFragment.chapter");
+
                     /* translations temp */
                     if (!transl_temp.includes(record.get("translation.value"))) {
                         if (record.get("translation.value") !== null) {
                             transl_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("translation.value") + "@" + record.get("translation.note") + "#" + record.get("ID(translation)"));
                         };
                     };
+
                     /* commentary temp */
                     if (!comm_temp.includes(record.get("commentary.value"))) {
                         if (record.get("commentary.value") !== null) {
                             comm_temp.push(record.get("selectedFragment.stanzaStart") + "___" + record.get("commentary.value") + "@" + record.get("commentary.note") + "$" + record.get("commentary.translation") + "===" + record.get("commentary.translationNote") + "#" + record.get("ID(commentary)"));
                         };
                     };
+
                     /* parallels temp */
                     if (record.get("parallel.value") !== null) {
                         var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
@@ -100,6 +101,7 @@ router.get("/edition/:id", async (req, res) => {
 
                         parallels.push(dictionary);
                     };
+
                     /* citations temp */
                     if (record.get("citation.value") !== null) {
                         citations.push({
@@ -108,6 +110,7 @@ router.get("/edition/:id", async (req, res) => {
                             value: record.get("citation.value")
                         });
                     };
+
                     /* notes temp */
                     if (record.get("note.value") !== null) {
                         notes.push({
@@ -190,8 +193,6 @@ router.get("/edition/:id", async (req, res) => {
 
                     });
 
-
-
                     /* ordered citations */
                     citations.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
@@ -212,8 +213,8 @@ router.get("/edition/:id", async (req, res) => {
                         res.render("edition", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work_temp,
-                            title: title_temp,
+                            work: work,
+                            title: title,
                             author: auth_temp,
                             editor: ed_temp,
                             file: file,
@@ -228,8 +229,8 @@ router.get("/edition/:id", async (req, res) => {
                         res.render("edition", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work_temp,
-                            title: title_temp,
+                            work: work,
+                            title: title,
                             author: auth_temp,
                             editor: ed_temp,
                             file: false,

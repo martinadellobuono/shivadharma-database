@@ -113,52 +113,36 @@ body {
 }
 
 /* btn captions */
-.btn-commentary {
-    height: 10px;
-    width: 10px;
-    background-color: $indigo-200;
-    border-radius: 50%;
-    display: inline-block;
-};
-
 .btn-commentary::after {
-    content: "Note";
+    content: "\25CF  Comment";
     color: $indigo-200;
     font-size: 12px;
-    margin-left: 15px;
     vertical-align: top;
 }
-
-.btn-note {
-    height: 10px;
-    width: 10px;
-    background-color: $cyan-600;
-    border-radius: 50%;
-    display: inline-block;
-};
 
 .btn-note::after {
-    content: "Note";
+    content: "\25CF  Note";
     color: $cyan-600;
     font-size: 12px;
-    margin-left: 15px;
     vertical-align: top;
 }
 
-.btn-translation {
-    height: 10px;
-    width: 10px;
-    background-color: $yellow-200;
-    border-radius: 50%;
-    display: inline-block;
-};
-
 .btn-translation::after {
-    content: "Translation";
+    content: "\25CF  Translation";
     color: $yellow;
     font-size: 12px;
-    margin-left: 15px;
     vertical-align: top;
+}
+
+/* caret */
+.caret[aria-expanded="false"]::after {
+    content: "\25BC";
+    font-size: 10px;
+}
+
+.caret[aria-expanded="true"]::after {
+    content: "\25B2";
+    font-size: 10px;
 }
 
 /* cursor */
@@ -172,6 +156,11 @@ body {
 }
 
 /* layout */
+/* paragraphs */
+p {
+    margin-bottom: 10px !important;
+}
+
 /* cols */
 .specific-cols.col-md-1 {
     width: 3% !important;

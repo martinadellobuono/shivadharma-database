@@ -42,92 +42,103 @@
   <div class="container-fluid bg-white edition-container-vis">
     <div class="row">
       <!-- textus constitutus -->
-      <div class="col-md-4 border p-3 enlarge-col">
+      <div class="col-md-6 border p-3 enlarge-col">
         <h3 class="h6 nowrap"><i class="bi bi-x-lg"></i> Textus constitutus</h3>
         <% if (file) { %>
         <%- include (`../uploads/${file}`) %>
         <% }; %>
       </div>
-      <!-- translation -->
-      <div class="col-md-4 border p-3 enlarge-col">
-        <h3 class="h6 nowrap"><span><i class="bi bi-x-lg"></i></span> Translation</h3>
-        <% if (typeof translation !== "undefined") { %>
-        <% translation.forEach((el) => { %>
-        <!-- translation full-text -->
-        <div data-type="translation" data-subtype="translation">
-          <!-- location -->
-          <span data-type="translation" data-subtype="location"><%= chapter %>.<%= el.split("___")[0]; %></span>
-          <% var translation = el.split("___")[1]; %>
-          <% translation = translation.split("@")[0]; %>
-          <!-- translation full-text -->
-          <div data-type="translation" data-subtype="full-text">
-            <%- translation; %>
-          </div>
-        </div>
-        <!-- note on the translation -->
-        <% var note = el.split("@")[1]; %>
-        <% note = note.split("#")[0]; %>
-        <% var id = el.split("#")[1]%>
-        <% if (note) { %>
-        <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-translation-<%= id %>"></span>
-        <div class="collapse" id="collapse-translation-<%= id %>">
-          <div class="card card-body">
-            <div data-type="translation" data-subtype="note">
-              <%- note %>
-            </div>
-          </div>
-        </div>
-        <% }; %>
-        <% }); %>
-        <% }; %>
-      </div>
-
-      <div class="col-md-4 border p-3 enlarge-col">
+      
+      <!-- other components -->
+      <div class="col-md-6 border p-3 enlarge-col">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="btn btn-sm btn-orange active" data-bs-toggle="pill" data-bs-target="#pills-parallels" type="button" role="tab" aria-controls="pills-parallels" aria-selected="true">Parallels</button>
+            <button class="btn btn-sm btn-teal me-1 active" data-bs-toggle="pill" data-bs-target="#pills-translation" type="button" role="tab" aria-controls="pills-translation" aria-selected="true">Translation</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="btn btn-sm btn-fuchsia mx-1" data-bs-toggle="pill" data-bs-target="#pills-citations" type="button" role="tab" aria-controls="pills-citations" aria-selected="false">Citations</button>
+            <button class="btn btn-sm btn-orange me-1" data-bs-toggle="pill" data-bs-target="#pills-parallels" type="button" role="tab" aria-controls="pills-parallels" aria-selected="false">Parallels</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="btn btn-sm btn-indigo" data-bs-toggle="pill" data-bs-target="#pills-commentary" type="button" role="tab" aria-controls="pills-commentary" aria-selected="false">Commentary</button>
+            <button class="btn btn-sm btn-fuchsia me-1" data-bs-toggle="pill" data-bs-target="#pills-citations" type="button" role="tab" aria-controls="pills-citations" aria-selected="false">Citations</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="btn btn-sm btn-indigo me-1" data-bs-toggle="pill" data-bs-target="#pills-commentary" type="button" role="tab" aria-controls="pills-commentary" aria-selected="false">Commentary</button>
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-          <!-- parallels -->
-          <div class="tab-pane fade show active" id="pills-parallels" role="tabpanel">
-            <h3 class="h6 nowrap">Parallels</h3>
-            <% parallels.forEach((parallel) => { %>
-
-            <div class="mb-3" data-type="parallel" data-subtype="parallel">
-              <% for (const [key, value] of Object.entries(parallel)) { %>
-
-              <!-- title -->
-              <span class="h4" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>"><%= key.split("___")[0]; %></span>
-
-              <!-- full-text -->
-              <% value.forEach((el) => { %>
-              <div data-type="parallel" data-subtype="full-text"><%- el["value"]; %><span data-type="danda" data-subtype="double-danda">||</span><span data-type="parallel" data-subtype="book"><%= el["book"]; %></span>.<span data-type="parallel" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><span data-type="parallel" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><span data-type="danda" data-subtype="double-danda">||</span></div>
-
-              <% if (el["note"] !== "") { %>
-              <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= el['id']; %>"></span>
-              <div class="collapse" id="collapse-parallel-<%= el['id']; %>">
-                <div class="card card-body">
-                  <div data-type="parallel" data-subtype="note">
-                    <%- el["note"]; %>
+          <!-- translation -->
+          <div class="tab-pane fade show active" id="pills-translation" role="tabpanel">
+            <% if (typeof translation !== "undefined") { %>
+              <% translation.forEach((el) => { %>
+                <!-- translation full-text -->
+                <div data-type="translation" data-subtype="translation">
+                  <!-- location -->
+                  <span class="me-2" data-type="location" data-subtype="location-top"><%= chapter %>.<%= el.split("___")[0]; %></span>
+                  <% var translation = el.split("___")[1]; %>
+                  <% translation = translation.split("@")[0]; %>
+                  <!-- translation full-text -->
+                  <div data-type="translation" data-subtype="full-text">
+                    <%- translation; %>
                   </div>
                 </div>
-              </div>
-              <% }; %>
-
+                <!-- note on the translation -->
+                <% var note = el.split("@")[1]; %>
+                <% note = note.split("#")[0]; %>
+                <% var id = el.split("#")[1]%>
+                <% if (note) { %>
+                  <span class="mb-3 btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-translation-<%= id %>"></span>
+                  <div class="collapse" id="collapse-translation-<%= id %>">
+                    <div class="card card-body">
+                      <div data-type="translation" data-subtype="note">
+                        <%- note %>
+                      </div>
+                    </div>
+                  </div>
+                <% }; %>
               <% }); %>
-              
-              <% }; %>
-            </div>
+            <% }; %>
+          </div>
 
+          <!-- parallels -->
+          <div class="tab-pane fade" id="pills-parallels" role="tabpanel">
+            <% parallels.forEach((parallel) => { %>
+
+              <div class="mb-3" data-type="parallel" data-subtype="parallel">
+                <% for (const [key, value] of Object.entries(parallel)) { %>
+
+                <!-- title -->
+                <span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>"><%= key.split("___")[0]; %></span>
+
+                <!-- collapse the parallel full-text -->
+                <span class="caret" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= key; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= key; %>"></span>
+
+                <!-- full-text -->
+                <div class="collapse" id="collapse-parallel-<%= key; %>">
+                  <div class="card card-body">
+                    <!-- full-text -->
+                    <% value.forEach((el) => { %>
+                    <div data-type="parallel" data-subtype="full-text">
+                      <%- el["value"]; %>
+                      <span data-type="location" data-subtype="location-bottom">
+                        <span data-type="danda" data-subtype="double-danda">||</span><% if (el["book"] !== "") { %><span data-type="parallel" data-subtype="book"><%= el["book"]; %></span><span data-type="separator" data-subtype="point">.</span><% }; %><span data-type="parallel" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="point">.</span><span data-type="parallel" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="danda" data-subtype="double-danda">||</span>
+                      </span>
+                    </div>
+                    <% if (el["note"] !== "") { %>
+                      <span class="mb-3 btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= el['id']; %>"></span>
+                      <div class="collapse" id="collapse-parallel-note-<%= el['id']; %>">
+                        <div class="card card-body">
+                          <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
+                        </div>
+                      </div>
+                    <% }; %>
+                    <% }); %>
+                  </div>
+                </div>
+                <% }; %>
+              </div>
             <% }); %>
           </div>
+
           <!-- citations -->
           <div class="tab-pane fade" id="pills-citations" role="tabpanel">
             <h3 class="h6 nowrap">Citations</h3>
@@ -139,6 +150,7 @@
             <% }); %>
             <% }; %>
           </div>
+
           <!-- commentary -->
           <div class="tab-pane fade" id="pills-commentary" role="tabpanel">
             <h3 class="h6 nowrap">Commentary</h3>
@@ -162,13 +174,14 @@
             </div>
 
             <!-- commentary note -->
-            <% if (commentaryNote) { %><span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-<%= id %>"></span><% }; %><% if (commentaryTranslation) { %><span class="btn-translation mx-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= id %>"></span><% }; %>
+            <% if (commentaryNote) { %><span class="mb-3 btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-<%= id %>"></span><% }; %><% if (commentaryTranslation) { %><span class="btn-translation mx-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= id %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= id %>"></span><% }; %>
             <!-- commentary note -->
             <div class="collapse" id="collapse-commentary-note-<%= id %>">
               <div class="card card-body">
                 <div data-type="commentary" data-subtype="note"><%- commentaryNote %></div>
               </div>
             </div>
+            
             <!-- commentary translation -->
             <div class="collapse" id="collapse-commentary-translation-<%= id %>">
               <div class="card card-body">
