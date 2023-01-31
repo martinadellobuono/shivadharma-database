@@ -104,11 +104,11 @@
               <% for (const [key, value] of Object.entries(parallel)) { %>
 
               <!-- title -->
-              <span class="d-block h4" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>"><%= key.split("___")[0]; %></span>
+              <span class="h4" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>"><%= key.split("___")[0]; %></span>
 
               <!-- full-text -->
               <% value.forEach((el) => { %>
-              <div data-type="parallel" data-subtype="full-text"><%- el["value"]; %><span data-type="parallel" data-subtype="book"><%= el["book"]; %></span>.<span data-type="parallel" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><span data-type="parallel" data-subtype="bookStanza"><%= el["bookStanza"]; %></span></div>
+              <div data-type="parallel" data-subtype="full-text"><%- el["value"]; %><span data-type="danda" data-subtype="double-danda">||</span><span data-type="parallel" data-subtype="book"><%= el["book"]; %></span>.<span data-type="parallel" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><span data-type="parallel" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><span data-type="danda" data-subtype="double-danda">||</span></div>
 
               <% if (el["note"] !== "") { %>
               <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= el['id']; %>"></span>
@@ -122,9 +122,7 @@
               <% }; %>
 
               <% }); %>
-
-
-
+              
               <% }; %>
             </div>
 
