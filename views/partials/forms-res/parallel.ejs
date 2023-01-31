@@ -1,61 +1,59 @@
-<% for (var i = 0; i < parallels.length; i++) { %>
+<!-- parallels -->
+<% parallels.forEach((parallel) => { %>
+    <div class="mb-3" data-type="parallel" data-subtype="parallel">
+    <% for (const [key, value] of Object.entries(parallel)) { %>
 
-<!-- parallel entry -->
-<div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
+    <!-- title -->
+    <span class="fw-bold title-subsection" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
+        <!-- title with tooltip -->
+        <%= key.split("___")[0]; %>
+    </span>
 
-  <!-- id annotation -->
-  <% var idAnnotation = parallels[i].split("+")[0]; %>
+    <% value.forEach((el) => { %>
+        <div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
+            
+            <!-- hidden ID -->
+            <span class="d-none" data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-  <!-- stanzas -->
-  <% var stanzaStart = parallels[i].split("+")[1]; %>
-  <% stanzaStart = stanzaStart.split("-")[0]; %>
-  <% stanzaStart = stanzaStart.split("#")[0]; %>
-  <% var stanzaEnd = parallels[i].split("-")[1]; %>
-  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+            <!-- fragment -->
+            <div class="bg-orange mb-3 p-2" data-type="parallel" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
 
-  <!-- padas -->
-  <% var padaStart = parallels[i].split("-")[0]; %>
-  <% padaStart = padaStart.split("#")[1]; %>
-  <% padaStart = padaStart %>
-  <% var padaEnd = parallels[i].split("-")[1]; %>
-  <% padaEnd = padaEnd.split("___")[0]; %>
-  <% padaEnd = padaEnd.split("#")[1]; %>
+            <!-- hidden work and author -->
+            <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelWork" data-fill='<%= el["work"]; %>' data-input="text"></span>
+            <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelAuthor" data-fill='<%= el["author"]; %>' data-input="text"></span>
 
-  <!-- parallel -->
-  <% var parallel = parallels[i].split("___")[1]; %>
-  <% parallel = parallel.split("===")[0]; %>
+            <!-- location / parallel -->   
+            <div data-type="parallel" data-subtype="parallel">
+                <span data-type="parallel" data-subtype="full-text" data-name="parallel" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+                <span class="me-2" data-type="location" data-subtype="location-bottom">
+                    <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book" data-name="parallelBook" data-fill='<%= el["book"]; %>' data-input="number"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter" data-name="parallelChapter" data-fill='<%= el["bookChapter"]; %>' data-input="number"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza" data-name="parallelStanza" data-fill='<%= el["bookStanza"]; %>' data-input="number"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
+                </span>
+            </div>
 
-  <!-- fragment / chapter -->
-  <% var fragment = parallels[i].split("___")[1]; %>
-  <% var chapter; %>
-  <% fragment = fragment.split("===")[1] %>
-  <% chapter = fragment.split("/") %>
-  <% fragment = chapter[0]; %>
-  <% chapter = chapter[1]; %>
+            <!-- hidden location -->
+            <span class="d-none" data-type="parallel" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="parallel" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="parallel" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="parallel" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+            <span class="d-none" data-type="parallel" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-  <!-- idAnnotation -->
-  <span class="d-none" data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
+            <!-- note -->
+            <% if (el["note"] !== "") { %>
+                <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
+                <div class="collapse mb-3" id="collapse-parallel-note-<%= el['id']; %>">
+                    <div class="card card-body">
+                    <div data-type="parallel" data-subtype="note" data-name="parallelNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+                    </div>
+                </div>
+            <% }; %>
 
-  <!-- location -->
-  <div class="p-2" data-type="parallel" data-subtype="location">
-  <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="parallel" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="parallel" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="parallel" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span data-type="parallel" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="parallel" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-  <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="parallel" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="parallel" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="parallel" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span>&#x2013;</span><span data-type="parallel" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="parallel" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span></span>
-  <% }; %>
-  </div>
-
-  <!-- fragment -->
-  <div class="bg-orange p-2" data-type="parallel" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
-
-  <!-- parallel -->
-  <div class="p-2" data-type="parallel" data-subtype="parallel" data-name="parallel" data-fill='<%= parallel; %>' data-input="textarea"><%- parallel; %></div>
-
-  <!-- modify button -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-orange modify-btn" type="button" data-type="parallel">Modify</button>
-  </div>
-
-</div>
-
-<% }; %>
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-orange modify-btn" type="button" data-type="parallel">Modify</button>
+            </div>
+        </div>
+    <% }); %>
+        
+    <% }; %>
+    </div>
+<% }); %>

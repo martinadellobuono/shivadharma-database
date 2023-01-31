@@ -1579,6 +1579,5 @@ let inlineLocation = () => {
             elToAppendTo.insertAdjacentHTML("afterbegin", locationHtml);
             location.remove();
         };
-
     };
 };

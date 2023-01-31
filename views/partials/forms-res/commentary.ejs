@@ -1,110 +1,59 @@
-<% for (var i = 0; i < commentaries.length; i++) { %>
+<% if (typeof commentary !== "undefined") { %>
+    <% commentary.forEach((el) => { %>
 
-<!-- commentary entry -->
-<div class="p-3 mt-3 bg-white container-commentary" data-type="commentary" data-subtype="commentary-entry">
+        <div class="p-3 mt-3 bg-white container-commentary" data-type="commentary" data-subtype="commentary-entry">
 
-  <!-- id annotation -->
-  <% var idAnnotation = commentaries[i].split("+")[0]; %>
+            <!-- hidden ID -->
+            <span class="d-none" data-type="commentary" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-  <!-- stanzas -->
-  <% var stanzaStart = commentaries[i].split("+")[1]; %>
-  <% stanzaStart = stanzaStart.split("-")[0]; %>
-  <% stanzaStart = stanzaStart.split("#")[0]; %>
-  <% var stanzaEnd = commentaries[i].split("-")[1]; %>
-  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+            <!-- fragment -->
+            <div class="bg-indigo p-2 mb-3" data-type="commentary" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
 
-  <!-- padas -->
-  <% var padaStart = commentaries[i].split("-")[0]; %>
-  <% padaStart = padaStart.split("#")[1]; %>
-  <% padaStart = padaStart %>
-  <% var padaEnd = commentaries[i].split("-")[1]; %>
-  <% padaEnd = padaEnd.split("___")[0]; %>
-  <% padaEnd = padaEnd.split("#")[1]; %>
+            <!-- commentary -->
+            <div data-type="commentary" data-subtype="commentary">
+                <span data-type="commentary" data-subtype="full-text" data-name="commentary" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+            </div>
 
-  <!-- commentary -->
-  <% var commentary = commentaries[i].split("___")[1]; %>
-  <% commentary = commentary.split("===")[0]; %>
+            <!-- hidden location -->
+            <span class="d-none" data-type="commentary" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="commentary" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+            <span class="d-none" data-type="commentary" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-  <!-- fragment / chapter -->
-  <% var fragment = commentaries[i].split("___")[1]; %>
-  <% var chapter; %>
-  <% fragment = fragment.split("===")[1] %>
-  <% chapter = fragment.split("/") %>
-  <% fragment = chapter[0]; %>
-  <% chapter = chapter[1]; %>
-  <% chapter = chapter.split("@")[0]; %>
+            <!-- note -->
+            <% if (el["note"] !== "") { %>
+                <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-note-<%= el['id']; %>"></span>
+                <div class="collapse mb-3" id="collapse-commentary-note-<%= el['id']; %>">
+                <div class="card card-body">
+                    <div data-type="commentary" data-subtype="note" data-name="commentaryNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+                </div>
+                </div>
+            <% }; %>
 
-  <!-- commentary note -->
-  <% var commentaryNote = commentaries[i].split("@")[1]; %>
-  <% commentaryNote = commentaryNote.split("$")[0]; %>
+            <!-- translation -->
+            <% if (el["translation"] !== "") { %>
+                <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= el['id']; %>"></span>
+                <div class="collapse mb-3" id="collapse-commentary-translation-<%= el['id']; %>">
+                    <div class="card card-body">
+                        <div class="mb-2" data-type="commentary" data-subtype="translation" data-name="commentaryTranslation" data-fill='<%= el["translation"]; %>' data-input="textarea">
+                            <h5 class="h6">Translation</h5>
+                            <%- el["translation"]; %>
+                        </div>
+                        <% if (el["translationNote"] !== "") { %>
+                        <div data-type="commentary" data-subtype="translationNote" data-name="commentaryTranslationNote" data-fill='<%= el["translationNote"]; %>' data-input="textarea">
+                            <h5 class="h6">Notes on the translation</h5>
+                            <%- el["translationNote"]; %>
+                        </div>
+                        <% }; %>
+                    </div>
+                </div>
+            <% }; %>
 
-  <!-- commentary translation -->
-  <% var commentaryTranslation = commentaries[i].split("$")[1]; %>
-  <% commentaryTranslation = commentaryTranslation.split("***")[0]; %>
-
-  <!-- note on translation commentary -->
-  <% var commentaryTranslationNote = commentaries[i].split("$")[1]; %>
-  <% commentaryTranslationNote = commentaryTranslationNote.split("***")[1]; %>
-
-  <!-- idAnnotation -->
-  <span class="d-none" data-type="commentary" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
-
-  <!-- location -->
-  <div class="p-2" data-type="translation" data-subtype="location">
-    <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else if (stanzaStart == stanzaEnd && padaStart !== padaEnd) { %>
-    <% var sumPadas = padaStart + padaEnd %>
-    <% sumPadas = sumPadas.replace(/,/g, ""); %>
-    <% if (sumPadas == "abcd" || sumPadas == "abcdef") { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span></span>
-    <% }; %>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span>&#x2013;</span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/#|,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span></span>
-    <% }; %>
-  </div>
-
-  <!-- fragment -->
-  <div class="bg-indigo mb-3 p-2" data-type="commentary" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
-
-  <!-- commentary -->
-  <div class="p-2" data-type="commentary" data-subtype="commentary" data-name="commentary" data-fill='<%= commentary; %>' data-input="textarea">
-    <h6>Commentary</h6>
-    <span class="me-2" data-type="location" data-subtype="location-top"><span class="me-2" data-type="location" data-subtype="chapter"><%= chapter %></span><span class="me-2" data-type="location" data-subtype="point-separator">.</span><span class="me-2" data-type="location" data-subtype="stanza-start"><%= stanzaStart %></span></span>
-    <span data-type="commentary" data-subtype="full-text"><%- commentary; %></span>
-  </div>
-
-  <!-- note on commentary -->
-  <% if (commentaryNote !== "") { %>
-  <div class="p-2" data-type="commentary" data-subtype="note-commentary" data-name="commentaryNote" data-fill='<%= commentaryNote; %>' data-input="textarea">
-    <h6>Note on the commentary</h6>
-    <div><%- commentaryNote; %></div>
-  </div>
-  <% }; %>
-
-  <!-- translation commentary -->
-  <% if (commentaryTranslation !== "") { %>
-  <div class="p-2" data-type="commentary" data-subtype="translation-commentary" data-name="commentaryTranslation" data-fill='<%= commentaryTranslation; %>' data-input="textarea">
-    <h6>Translation of the commentary</h6>
-    <div><%- commentaryTranslation; %></div>
-  </div>
-  <% }; %>
-
-  <!-- note on the translation commentary -->
-  <% if (commentaryTranslationNote !== "") { %>
-  <div class="p-2" data-type="commentary" data-subtype="translation-note-commentary" data-name="commentaryTranslationNote" data-fill='<%= commentaryTranslationNote; %>' data-input="textarea">
-    <h6>Note on the translation of the commentary</h6>
-    <div><%- commentaryTranslationNote %></div>
-  </div>
-  <% }; %>
-
-  <!-- modify button -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-indigo modify-btn" type="button" data-type="commentary">Modify</button>
-  </div>
-
-</div>
-
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-indigo modify-btn" type="button" data-type="commentary">Modify</button>
+            </div>
+        </div>
+    <% }); %>
 <% }; %>

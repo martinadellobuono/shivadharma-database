@@ -1,84 +1,46 @@
-<% for (var i = 0; i < translations.length; i++) { %>
+<% if (typeof translation !== "undefined") { %>
+  <% translation.forEach((el) => { %>
+    <div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
 
-<!-- translation entry -->
-<div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
+      <!-- hidden ID -->
+      <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+      
+      <!-- chapter -->
+      <div class="mb-3" data-type="translation" data-subtype="chapter">
+        <span class="fw-bold">Chapter</span>
+        <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span>
+      </div>
 
-  <!-- id annotation -->
-  <% var idAnnotation = translations[i].split("+")[0]; %>
+      <!-- fragment -->
+      <div class="bg-teal mb-3 p-2" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
 
-  <!-- stanzas -->
-  <% var stanzaStart = translations[i].split("+")[1]; %>
-  <% stanzaStart = stanzaStart.split("-")[0]; %>
-  <% stanzaStart = stanzaStart.split("#")[0]; %>
-  <% var stanzaEnd = translations[i].split("-")[1]; %>
-  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+      <!-- location / translation -->
+      <div data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= el["value"]; %>' data-input="textarea">
+        <span class="me-1" data-type="location" data-subtype="location-top">
+          <span data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span>        
+        </span>
+        <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+      </div>
 
-  <!-- padas -->
-  <% var padaStart = translations[i].split("-")[0]; %>
-  <% padaStart = padaStart.split("#")[1]; %>
-  <% var padaEnd = translations[i].split("-")[1]; %>
-  <% padaEnd = padaEnd.split("___")[0]; %>
-  <% padaEnd = padaEnd.split("#")[1]; %>
+      <!-- hidden location -->
+      <span class="d-none" data-type="translation" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+      <span class="d-none" data-type="translation" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+      <span class="d-none" data-type="translation" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-  <!-- translation -->
-  <% var translation = translations[i].split("___")[1]; %>
-  <% translation = translation.split("===")[0]; %>
+      <!-- note -->
+      <% if (el["note"] !== "") { %>
+        <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']; %>"></span>
+        <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
+          <div class="card card-body">
+            <div data-type="translation" data-subtype="note" data-name="noteTranslation" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+          </div>
+        </div>
+      <% }; %>
 
-  <!-- fragment / chapter -->
-  <% var fragment = translations[i].split("___")[1]; %>
-  <% var chapter; %>
-  <% fragment = fragment.split("===")[1] %>
-  <% chapter = fragment.split("/") %>
-  <% fragment = chapter[0]; %>
-  <% chapter = chapter[1]; %>
-  <% chapter = chapter.split("@")[0]; %>
-
-  <!-- note -->
-  <% var note = translations[i].split("@")[1]; %>
-
-  <!-- idAnnotation -->
-  <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
-
-  <!-- location -->
-  <div class="p-2" data-type="translation" data-subtype="location">
-    <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else if (stanzaStart == stanzaEnd && padaStart !== padaEnd) { %>
-    <% var sumPadas = padaStart + padaEnd %>
-    <% sumPadas = sumPadas.replace(/,/g, ""); %>
-    <% if (sumPadas == "abcd" || sumPadas == "abcdef") { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span></span>
-    <% }; %>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="translation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="translation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><span>&#x2013;</span><span data-type="translation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="translation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/#|,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span></span>
-    <% }; %>
-  </div>
-
-  <!-- fragment -->
-  <div class="bg-teal p-2 mb-3" data-type="translation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
-
-  <!-- translation -->
-  <div class="p-2" data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= translation; %>' data-input="textarea">
-    <h6>Translation</h6>
-    <span class="me-2" data-type="location" data-subtype="location-top"><%= chapter %>.<%= stanzaStart %></span>
-    <span data-type="translation" data-subtype="full-text"><%- translation; %></span>
-  </div>
-
-  <!-- note on translation -->
-  <div class="p-2" data-type="translation" data-subtype="note-translation" data-name="noteTranslation" data-fill='<%= note; %>' data-input="textarea">
-    <% if (note !== "") { %>
-    <h6>Note on the translation</h6>
-    <div><%- note; %></div>
-    <% }; %>
-  </div>
-
-  <!-- modify button -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
-  </div>
-
-</div>
-
+      <!-- modify button -->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+        <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
+      </div>
+    </div>
+  <% }); %>
 <% }; %>

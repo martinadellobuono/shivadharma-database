@@ -1,61 +1,32 @@
-<% for (var i = 0; i < citations.length; i++) { %>
+<!-- citations -->
+<% if (typeof citations !== "undefined") { %>
+    <% citations.forEach((el) => { %>
+        <div class="p-3 mt-3 bg-white container-citation" data-type="citation" data-subtype="citation-entry">
 
-<!-- citation entry -->
-<div class="p-3 mt-3 bg-white container-citation" data-type="citation" data-subtype="citation-entry">
+            <!-- hidden ID -->
+            <span class="d-none" data-type="citation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-  <!-- id annotation -->
-  <% var idAnnotation = citations[i].split("+")[0]; %>
+            <!-- fragment -->
+            <div class="bg-fuchsia mb-3 p-2" data-type="citation" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
 
-  <!-- stanzas -->
-  <% var stanzaStart = citations[i].split("+")[1]; %>
-  <% stanzaStart = stanzaStart.split("-")[0]; %>
-  <% stanzaStart = stanzaStart.split("#")[0]; %>
-  <% var stanzaEnd = citations[i].split("-")[1]; %>
-  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+            <!-- location / citation -->
+            <div data-type="citation" data-subtype="citation">
+                <span class="me-1" data-type="location" data-subtype="location-top">
+                    <span data-type="citation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                </span>
+                <span data-type="citations" data-subtype="full-text" data-name="citation" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+            </div>
 
-  <!-- padas -->
-  <% var padaStart = citations[i].split("-")[0]; %>
-  <% padaStart = padaStart.split("#")[1]; %>
-  <% padaStart = padaStart %>
-  <% var padaEnd = citations[i].split("-")[1]; %>
-  <% padaEnd = padaEnd.split("___")[0]; %>
-  <% padaEnd = padaEnd.split("#")[1]; %>
+            <!-- hidden location -->
+            <span class="d-none" data-type="citations" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="citations" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="citations" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+            <span class="d-none" data-type="citations" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-  <!-- citation -->
-  <% var citation = citations[i].split("___")[1]; %>
-  <% citation = citation.split("===")[0]; %>
-
-  <!-- fragment / chapter -->
-  <% var fragment = citations[i].split("___")[1]; %>
-  <% var chapter; %>
-  <% fragment = fragment.split("===")[1] %>
-  <% chapter = fragment.split("/") %>
-  <% fragment = chapter[0]; %>
-  <% chapter = chapter[1]; %>
-
-  <!-- idAnnotation -->
-  <span class="d-none" data-type="citation" data-subtype="ID" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
-
-  <!-- location -->
-  <div class="p-2" data-type="citation" data-subtype="location">
-    <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="citation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="citation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="citation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span data-type="citation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="citation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="citation" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="citation" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="citation" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span data-type="citation" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="citation" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/#|,|a\,b\,c\,d\,e\,f/g, ""); %></span></span>
-    <% }; %>
-  </div>
-
-  <!-- fragment -->
-  <div class="bg-fuchsia p-2" data-type="citation" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
-
-  <!-- citation -->
-  <div class="p-2" data-type="citation" data-subtype="citation" data-name="citation" data-fill='<%= citation; %>' data-input="textarea"><%- citation; %></div>
-
-  <!-- modify button -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-fuchsia modify-btn" type="button" data-type="citation">Modify</button>
-  </div>
-
-</div>
-
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-fuchsia modify-btn" type="button" data-type="citation">Modify</button>
+            </div>
+        </div>
+    <% }); %>
 <% }; %>

@@ -19,22 +19,14 @@ router.get("/edit/:id", async (req, res) => {
 
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    var work_temp = [];
-    var title_temp = [];
-    var editionOf;
-    var authorCommentary_temp = [];
-    var auth_temp = [];
-    var ed_temp = [];
-    var date_temp = [];
-    var wit_temp = [];
-    var apparatus_entry = [];
-    var witnesses_relations = [];
-    var translation_temp = [];
-    var parallel_temp = [];
-    var commentary_temp = [];
-    var citation_temp = [];
-    var note_temp = [];
+    var work;
+    var title;
     var chapter;
+    var translation = [];
+    var commentary = [];
+    var parallels = [];
+    var citations = [];
+    var notes = [];
 
     const session = driver.session();
     try {
@@ -43,556 +35,249 @@ router.get("/edit/:id", async (req, res) => {
                 `
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-                OPTIONAL MATCH apparatus_entry = (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:HAS_VARIANT]->(variant:Variant)
-                OPTIONAL MATCH witnesses_relations = ()-[:ATTESTED_IN]->()
-                OPTIONAL MATCH (witness)-[:USED_IN]->(edition)
-                OPTIONAL MATCH translation_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_TRANSLATION]->(translation:Translation)
-                OPTIONAL MATCH parallel_entry = (edition)-[:HAS_FRAGMENT]->()-[:HAS_PARALLEL]->(parallel:Parallel)
-                OPTIONAL MATCH commentary_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_COMMENTED_IN]->(commentary:Commentary)
-                OPTIONAL MATCH citation_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_A_CITATION_OF]->(citation:Citation)
-                OPTIONAL MATCH note_entry = (edition)-[:HAS_FRAGMENT]->()-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, author.name, editor.name, selectedFragment.chapter, witness.siglum, date.on, apparatus_entry, witnesses_relations, translation_entry, parallel_entry, commentary_entry, citation_entry, note_entry
+                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
+                OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
+                OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
+                OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
+                OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
+                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value
                 `
             )
             .subscribe({
                 onNext: record => {
-                    /* witness sigla */
-                    if (!wit_temp.includes(record.get("witness.siglum"))) {
-                        wit_temp.push(record.get("witness.siglum"));
-                    };
-                    /* work */
-                    if (!work_temp.includes(record.get("work.title"))) {
-                        work_temp.push(record.get("work.title"));
-                    };
-                    /* edition of */
-                    editionOf = record.get("edition.editionOf");
-                    /* author of commentary */
-                    if (!authorCommentary_temp.includes(record.get("edition.authorCommentary"))) {
-                        authorCommentary_temp.push(record.get("edition.authorCommentary"));
-                    };
-                    /* title */
-                    if (!title_temp.includes(record.get("edition.title"))) {
-                        title_temp.push(record.get("edition.title"));
-                    };
-                    /* author */
-                    if (!auth_temp.includes(record.get("author.name"))) {
-                        auth_temp.push(record.get("author.name"));
-                    };
-                    /* editor */
-                    if (!ed_temp.includes(record.get("editor.name"))) {
-                        ed_temp.push(record.get("editor.name"));
-                    };
-                    /* date */
-                    if (!date_temp.includes(record.get("date.on"))) {
-                        date_temp.push(record.get("date.on"));
-                    };
-                    /* apparatus */
-                    if (!apparatus_entry.includes(record.get("apparatus_entry"))) {
-                        if (record.get("apparatus_entry") !== null) {
-                            apparatus_entry.push(record.get("apparatus_entry"));
-                        };
-                    };
-                    /* witnesses relations array */
-                    if (!witnesses_relations.includes(record.get("witnesses_relations"))) {
-                        if (record.get("witnesses_relations") !== null) {
-                            witnesses_relations.push(record.get("witnesses_relations"));
-                        };
-                    };
+                    /* chapter */
+                    chapter = record.get("selectedFragment.chapter")
+
                     /* translations */
-                    if (!translation_temp.includes(record.get("translation_entry"))) {
-                        if (record.get("translation_entry") !== null) {
-                            translation_temp.push(record.get("translation_entry"));
-                        };
+                    if (record.get("translation.value") !== null) {
+                        translation.push({
+                            id: record.get("ID(translation)"),
+                            idAnnotation: record.get("translation.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("translation.value"),
+                            note: record.get("translation.note")
+                        });
                     };
-                    /* parallels */
-                    if (!parallel_temp.includes(record.get("parallel_entry"))) {
-                        if (record.get("parallel_entry") !== null) {
-                            parallel_temp.push(record.get("parallel_entry"));
-                        };
-                    };
+
                     /* commentary */
-                    if (!commentary_temp.includes(record.get("commentary_entry"))) {
-                        if (record.get("commentary_entry") !== null) {
-                            commentary_temp.push(record.get("commentary_entry"));
-                        };
+                    if (record.get("commentary.value") !== null) {
+                        commentary.push({
+                            id: record.get("ID(commentary)"),
+                            idAnnotation: record.get("commentary.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("commentary.value"),
+                            note: record.get("commentary.note"),
+                            translation: record.get("commentary.translation"),
+                            translationNote: record.get("commentary.translationNote")
+                        });
                     };
+
+                    /* parallels */
+                    if (record.get("parallel.value") !== null) {
+                        var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
+
+                        var dictionary = {
+                            [work]: {
+                                id: record.get("ID(parallel)"),
+                                idAnnotation: record.get("parallel.idAnnotation"),
+                                chapter: chapter,
+                                stanzaStart: record.get("selectedFragment.stanzaStart"),
+                                stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                                padaStart: record.get("selectedFragment.padaStart"),
+                                padaEnd: record.get("selectedFragment.padaEnd"),
+                                fragment: record.get("selectedFragment.value"),
+                                work: record.get("parallelWork.title"),
+                                author: record.get("parallelAuthor.name"),
+                                book: record.get("parallel.book"),
+                                bookChapter: record.get("parallel.bookChapter"),
+                                bookStanza: record.get("parallel.bookStanza"),
+                                value: record.get("parallel.value"),
+                                note: record.get("parallel.note")
+                            }
+                        };
+
+                        parallels.push(dictionary);
+                    };
+
                     /* citations */
-                    if (!citation_temp.includes(record.get("citation_entry"))) {
-                        if (record.get("citation_entry") !== null) {
-                            citation_temp.push(record.get("citation_entry"));
-                        };
+                    if (record.get("citation.value") !== null) {
+                        citations.push({
+                            id: record.get("ID(citation)"),
+                            idAnnotation: record.get("citation.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("citation.value")
+                        });
                     };
+
                     /* notes */
-                    if (!note_temp.includes(record.get("note_entry"))) {
-                        if (record.get("note_entry") !== null) {
-                            note_temp.push(record.get("note_entry"));
-                        };
+                    if (record.get("note.value") !== null) {
+                        notes.push({
+                            id: record.get("ID(note)"),
+                            idAnnotation: record.get("note.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("note.value")
+                        });
                     };
                 },
                 onCompleted: () => {
-                    /* APPARATUS */
-                    /* lemmas */
-                    var lemmas = [];
 
-                    /* all entries dict */
-                    var appEntryDict = [];
+                    /* ordered translations */
+                    translation.sort((a, b) => {
+                        return a.chapter - b.chapter;
+                    });
+                    translation.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    translation.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
 
-                    if (apparatus_entry.length > 0) {
+                    /* ordered commentary */
+                    commentary.sort((a, b) => {
+                        return a.chapter - b.chapter;
+                    });
+                    commentary.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    commentary.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
 
-                        if (witnesses_relations.length > 0) {
-
-                            /* lemmas */
-                            for (var i = 0; i < apparatus_entry.length; i++) {
-                                var obj = apparatus_entry[i];
-                                /* selected fragment */
-                                var selectedFragment = obj["segments"][0]["end"]["properties"]["value"];
-                                /* lemma */
-                                var lemma = obj["segments"][1]["end"]["properties"]["value"];
-                                /* id lemma */
-                                var idLemma = obj["segments"][1]["end"]["properties"]["idLemma"];
-                                /* array of lemmas */
-                                if (!lemmas.includes(lemma + "#" + idLemma)) {
-                                    lemmas.push(lemma + "#" + idLemma);
-                                };
+                    /* ordered parallels */
+                    /* create an array of the parallels title */
+                    var parallels_keys = [];
+                    parallels.forEach((parallel) => {
+                        for (const [key, value] of Object.entries(parallel)) {
+                            if (!parallels_keys.includes(key)) {
+                                parallels_keys.push(key);
                             };
+                        }
+                    });
 
-                            /* lemma / variants */
-                            lemmas.forEach((el) => {
-                                /* lemma */
-                                var lemma = el.split("#")[0];
+                    /* create a dictionary for each parallel work / an array containing all the dictionaries */
+                    var all_parallels = [];
+                    parallels_keys.forEach((title) => {
 
-                                /* id lemma */
-                                var idLemma = el.split("#")[1];
+                        /* create a dictionary of parallels for each title */
+                        var work = {
+                            [title]: {}
+                        };
 
-                                /* chapter / stanza start / pada start / stanza end / pada end / truncation / notes / lemma dictionary */
-                                var chapter;
-                                var stanzaStart;
-                                var padaStart;
-                                var stanzaEnd;
-                                var padaEnd;
-                                var truncation = [];
-                                var notes = [];
-                                var lemmaDict = []
+                        /* create an array of parallels values for each title */
+                        var values = [];
 
-                                /* witnesses */
-                                var witnesses = [];
-
-                                for (var i = 0; i < apparatus_entry.length; i++) {
-                                    var obj = apparatus_entry[i];
-                                    if (lemma.replace(/°/g, "") == obj["segments"][0]["end"]["properties"]["value"]) {
-                                        obj["segments"].forEach((el) => {
-                                            if (el["relationship"]["type"] == "HAS_LEMMA") {
-                                                /* chapter */
-                                                chapter = el["start"]["properties"]["chapter"];
-                                                /* stanza start */
-                                                stanzaStart = el["start"]["properties"]["stanzaStart"];
-                                                /* pada start */
-                                                padaStart = el["start"]["properties"]["padaStart"];
-                                                /* stanza end */
-                                                stanzaEnd = el["start"]["properties"]["stanzaEnd"];
-                                                /* pada end */
-                                                padaEnd = el["start"]["properties"]["padaEnd"];
-                                                /* truncation */
-                                                var truncationVal = el["end"]["properties"]["truncation"];
-                                                if (truncationVal !== undefined) {
-                                                    if (!truncation.includes(truncationVal)) {
-                                                        truncation.push(truncationVal);
-                                                    };
-                                                };
-                                                /* notes */
-                                                var note = el["end"]["properties"]["notes"];
-                                                if (!notes.includes(note)) {
-                                                    notes.push(note);
-                                                };
-                                            };
-                                        });
+                        /* assign the value to the dictionary */
+                        parallels.forEach((parallel) => {
+                            for (const [key, value] of Object.entries(parallel)) {
+                                if (key == title) {
+                                    /* value of the dictionary = full-text of parallels */
+                                    if (!values.includes(value)) {
+                                        values.push(value);
                                     };
-                                };
-
-                                /* lemma witnesses */
-                                for (var i = 0; i < witnesses_relations.length; i++) {
-                                    var obj = witnesses_relations[i];
-                                    if (obj["start"]["labels"] == "Lemma") {
-                                        if (lemma.replace(/°/g, "") == obj["start"]["properties"]["value"]) {
-                                            var witness = obj["end"]["properties"]["siglum"];
-                                            if (!witnesses.includes(witness)) {
-                                                witnesses.push(witness);
-                                            };
-                                        };
-                                    };
-                                };
-
-                                /* lemma / witnesses / stanza / pada dict */
-                                lemmaDict.push({
-                                    selectedFragment: selectedFragment,
-                                    idLemma: idLemma,
-                                    lemma: lemma,
-                                    witnesses: witnesses.join(" ; "),
-                                    chapter: chapter,
-                                    stanzaStart: stanzaStart,
-                                    padaStart: padaStart,
-                                    stanzaEnd: stanzaEnd,
-                                    padaEnd: padaEnd,
-                                    truncation: truncation,
-                                    notes: notes
-                                });
-
-                                /* variant / witnesses dict */
-                                var variantDict = [];
-
-                                /* apparatus entry dict */
-                                var entryDict = [];
-
-                                /* variants */
-                                var variants = [];
-                                for (var i = 0; i < apparatus_entry.length; i++) {
-                                    var obj = apparatus_entry[i];
-                                    if (lemma.replace(/°/g, "") == obj["segments"][0]["end"]["properties"]["value"]) {
-                                        obj["segments"].forEach((el) => {
-                                            if (el["relationship"]["type"] == "HAS_VARIANT") {
-                                                /* variant */
-                                                var variant = el["end"]["properties"]["value"];
-                                                /* id variant */
-                                                var idVariant = el["end"]["properties"]["idVariant"];
-                                                /* array of variants */
-                                                if (!variants.includes(variant + "#" + idVariant)) {
-                                                    variants.push(variant + "#" + idVariant);
-                                                };
-                                            };
-                                        });
-                                    };
-                                };
-
-                                /* witnesses */
-                                variants.forEach((el) => {
-                                    /* variant */
-                                    var variant = el.split("#")[0];
-                                    
-                                    /* id variant */
-                                    var idVariant = el.split("#")[1];
-
-                                    /* witnesses */
-                                    var witnesses = [];
-                                    var numbers = [];
-                                    var notes = [];
-
-                                    for (var i = 0; i < witnesses_relations.length; i++) {
-                                        var obj = witnesses_relations[i];
-
-                                        /* variant / witnesses / notes */
-                                        if (obj["start"]["labels"] == "Variant") {
-                                            if (obj["start"]["properties"]["value"] == variant) {
-                                                /* witness */
-                                                var witness = obj["end"]["properties"]["siglum"];
-                                                /* witnesses array */
-                                                if (!witnesses.includes(witness)) {
-                                                    witnesses.push(witness);
-                                                };
-                                                /* number */
-                                                var number = obj["start"]["properties"]["number"];
-                                                if (!numbers.includes(number)) {
-                                                    numbers.push(number);
-                                                };
-                                                /* notes */
-                                                var note = obj["start"]["properties"]["notes"];
-                                                if (note !== "") {
-                                                    if (!notes.includes(note)) {
-                                                        notes.push(note);
-                                                    };
-                                                };
-                                            };
-                                        };
-                                    };
-
-                                    /* variant / witness dict */
-                                    variantDict.push({
-                                        idVariant: idVariant,
-                                        variant: variant,
-                                        witnesses: witnesses.join(" ; "),
-                                        numbers: numbers,
-                                        notes: notes
+                                    values.sort((a, b) => {
+                                        return a.book - b.book;
+                                    });
+                                    values.sort((a, b) => {
+                                        return a.bookChapter - b.bookChapter;
+                                    });
+                                    values.sort((a, b) => {
+                                        return a.bookStanza - b.bookStanza;
                                     });
 
-                                });
-
-                                /* lemma / variant / witnesses dict */
-                                entryDict.push({
-                                    lemma: lemmaDict,
-                                    variants: variantDict
-                                });
-
-                                /* list of all the entries dict */
-                                if (!appEntryDict.includes(entryDict)) {
-                                    appEntryDict.push(entryDict);
+                                    /* key = title / value = full-text of parallels */
+                                    work[title] = values;
                                 };
-                            });
-                        };
-                    } else {
-                        appEntryDict = [];
-                    };
-
-                    /* TRANSLATIONS */
-                    var translArr = [];
-                    if (translation_temp.length > 0) {
-                        for (var i = 0; i < translation_temp.length; i++) {
-                            var obj = translation_temp[i];
-
-                            /* translation */
-                            var transl = obj["end"]["properties"]["value"];
-
-                            /* note */
-                            var note = obj["end"]["properties"]["note"];
-
-                            /* id */
-                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
-
-                            /* fragment / location */
-                            var fragment;
-                            var chapter;
-                            var stanzaStart;
-                            var stanzaEnd;
-                            var padaStart;
-                            var padaEnd;
-
-                            obj["segments"].forEach((el) => {
-                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
-                                    fragment = el["end"]["properties"]["value"];
-                                    chapter = el["end"]["properties"]["chapter"];
-                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
-                                    padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaEnd"];
-                                };
-                            });
-
-                            /* tranlation entry */
-                            var translEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + transl + "===" + fragment + "/" + chapter + "@" + note;
-
-                            /* translations array */
-                            if (!translArr.includes(translEntry)) {
-                                translArr.push(translEntry);
                             };
-                        };
-                    };
+                        });
 
-                    /* PARALLELS */
-                    var paralArr = [];
-                    if (parallel_temp.length > 0) {
-                        for (var i = 0; i < parallel_temp.length; i++) {
-                            var obj = parallel_temp[i];
+                        /* add the dictionary to the array containing all the parallels divided by title */
+                        all_parallels.push(work);
 
-                            /* parallel */
-                            var parallel = obj["end"]["properties"]["value"];
+                    });
 
-                            /* id */
-                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
+                    /* ordered citations */
+                    citations.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    citations.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
 
-                            /* fragment / location */
-                            var fragment;
-                            var chapter;
-                            var stanzaStart;
-                            var stanzaEnd;
-                            var padaStart;
-                            var padaEnd;
-
-                            obj["segments"].forEach((el) => {
-                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
-                                    fragment = el["end"]["properties"]["value"];
-                                    chapter = el["end"]["properties"]["chapter"];
-                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
-                                    padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaEnd"];
-                                };
-                            });
-
-                            /* parallel entry */
-                            var paralEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + parallel + "===" + fragment + "/" + chapter;
-
-                            /* parallels array */
-                            if (!paralArr.includes(paralEntry)) {
-                                paralArr.push(paralEntry);
-                            };
-
-                        };
-                    };
-
-                    /* COMMENTARY */
-                    var commArr = [];
-                    if (commentary_temp.length > 0) {
-                        for (var i = 0; i < commentary_temp.length; i++) {
-                            var obj = commentary_temp[i];
-
-                            /* commentary */
-                            var commentary = obj["end"]["properties"]["value"];
-
-                            /* translation */
-                            var translation = obj["end"]["properties"]["translation"];
-
-                            /* note on the commentary */
-                            var commentaryNote = obj["end"]["properties"]["note"];
-
-                            /* note on the translation of the commentary */
-                            var translationNote = obj["end"]["properties"]["translationNote"];
-
-                            /* id */
-                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
-
-                            /* fragment / location */
-                            var fragment;
-                            var chapter;
-                            var stanzaStart;
-                            var stanzaEnd;
-                            var padaStart;
-                            var padaEnd;
-
-                            obj["segments"].forEach((el) => {
-                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
-                                    fragment = el["end"]["properties"]["value"];
-                                    chapter = el["end"]["properties"]["chapter"];
-                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
-                                    padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaEnd"];
-                                };
-                            });
-
-                            /* commentary entry */
-                            var commEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + commentary + "===" + fragment + "/" + chapter + "@" + commentaryNote + "$" + translation + "***" + translationNote; 
-
-                            /* commentary array */
-                            if (!commArr.includes(commEntry)) {
-                                commArr.push(commEntry);
-                            };
-
-                        };
-                    };
-
-                    /* CITATIONS */
-                    var citArr = [];
-                    if (citation_temp.length > 0) {
-                        for (var i = 0; i < citation_temp.length; i++) {
-                            var obj = citation_temp[i];
-
-                            /* citation */
-                            var citation = obj["end"]["properties"]["value"];
-
-                            /* id */
-                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
-
-                            /* fragment / location */
-                            var fragment;
-                            var chapter;
-                            var stanzaStart;
-                            var stanzaEnd;
-                            var padaStart;
-                            var padaEnd;
-
-                            obj["segments"].forEach((el) => {
-                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
-                                    fragment = el["end"]["properties"]["value"];
-                                    chapter = el["end"]["properties"]["chapter"];
-                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
-                                    padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaEnd"];
-                                };
-                            });
-
-                            /* citation entry */
-                            var citEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + citation + "===" + fragment + "/" + chapter;
-
-                            /* commentary array */
-                            if (!citArr.includes(citEntry)) {
-                                citArr.push(citEntry);
-                            };
-
-                        };
-                    };
-
-                    /* NOTES */
-                    var notesArr = [];
-                    if (note_temp.length > 0) {
-                        for (var i = 0; i < note_temp.length; i++) {
-                            var obj = note_temp[i];
-
-                            /* note */
-                            var note = obj["end"]["properties"]["value"];
-
-                            /* id */
-                            var idAnnotation = obj["end"]["properties"]["idAnnotation"];
-
-                            /* fragment / location */
-                            var fragment;
-                            var chapter;
-                            var stanzaStart;
-                            var stanzaEnd;
-                            var padaStart;
-                            var padaEnd;
-
-                            obj["segments"].forEach((el) => {
-                                if (el["relationship"]["type"] == "HAS_FRAGMENT") {
-                                    fragment = el["end"]["properties"]["value"];
-                                    chapter = el["end"]["properties"]["chapter"];
-                                    stanzaStart = el["end"]["properties"]["stanzaStart"];
-                                    stanzaEnd = el["end"]["properties"]["stanzaEnd"];
-                                    padaStart = el["end"]["properties"]["padaStart"];
-                                    padaEnd = el["end"]["properties"]["padaEnd"];
-                                };
-                            });
-
-                            /* note entry */
-                            var noteEntry = idAnnotation + "+" + stanzaStart + "#" + padaStart + "-" + stanzaEnd + "#" + padaEnd + "___" + note + "===" + fragment + "/" + chapter;
-
-                            /* commentary array */
-                            if (!notesArr.includes(noteEntry)) {
-                                notesArr.push(noteEntry);
-                            };
-
-                        };
-                    };
+                    /* ordered notes */
+                    notes.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    notes.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
 
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work_temp,
-                            title: title_temp,
-                            editionOf: editionOf,
-                            authorCommentary: authorCommentary_temp,
-                            author: auth_temp,
-                            editor: ed_temp,
-                            date: date_temp,
-                            sigla: wit_temp,
+                            work: work,
+                            title: title,
                             file: file,
-                            appEntryDict: appEntryDict,
-                            translations: translArr,
-                            parallels: paralArr,
-                            commentaries: commArr,
-                            citations: citArr,
-                            notes: notesArr
+                            chapter: chapter,
+                            translation: translation,
+                            commentary: commentary,
+                            parallels: all_parallels,
+                            citations: citations,
+                            notes: notes,
+
+                            editionOf: "", // cambia
+                            authorCommentary: "", // cambia
+                            author: "", // cambia
+                            editor: "", // cambia
+                            date: "", // cambia
+                            sigla: "", // cambia
+                            appEntryDict: "", // cambia
+                            translations: "", // cambia
+                            commentaries: "" // cambia
                         });
                     } else {
                         res.render("edit", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work_temp,
-                            title: title_temp,
-                            editionOf: editionOf,
-                            authorCommentary: authorCommentary_temp,
-                            author: auth_temp,
-                            editor: ed_temp,
-                            date: date_temp,
-                            sigla: wit_temp,
+                            work: work,
+                            title: title,
+                            editionOf: "", // cambia
+                            authorCommentary: "", // cambia
+                            author: "", // cambia
+                            editor: "", // cambia
+                            date: "", // cambia
+                            sigla: "", // cambia
                             file: false,
-                            appEntryDict: appEntryDict,
-                            translations: translArr,
-                            parallels: paralArr,
-                            commentaries: commArr,
-                            citations: citArr,
-                            notes: notesArr
+                            chapter: chapter,
+                            translation: translation,
+                            appEntryDict: "", // cambia
+                            translations: "", // cambia
+                            commentaries: "", // cambia
+                            citations: "", // cmabia
+                            notes: "" // cambia
                         });
                     };
                 },

@@ -42,7 +42,7 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, ID(translation), selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.value, ID(note), note.value
+                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, ID(translation), translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.value, ID(note), note.value
                 `
             )
             .subscribe({
@@ -70,7 +70,7 @@ router.get("/edition/:id", async (req, res) => {
                     if (record.get("translation.value") !== null) {
                         translation.push({
                             id: record.get("ID(translation)"),
-                            chapter: chapter,
+                            chapter: record.get("selectedFragment.chapter"),
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
                             padaStart: record.get("selectedFragment.padaStart"),
                             value: record.get("translation.value"),

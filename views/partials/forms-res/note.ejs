@@ -1,61 +1,31 @@
-<% for (var i = 0; i < notes.length; i++) { %>
+<% if (typeof notes !== "undefined") { %>
+    <% notes.forEach((el) => { %>
+        <div class="p-3 mt-3 bg-white container-note" data-type="note" data-subtype="note-entry">
+            
+            <!-- hidden ID -->
+            <span class="d-none" data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-<!-- note entry -->
-<div class="p-3 mt-3 bg-white container-note" data-type="note" data-subtype="note-entry">
+            <!-- fragment -->
+            <div class="bg-blue mb-3 p-2" data-type="note" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
 
-  <!-- id annotation -->
-  <% var idAnnotation = notes[i].split("+")[0]; %>
+            <!-- note / location -->
+            <div data-type="note" data-subtype="note">
+                <span class="me-1" data-type="location" data-subtype="location-top">
+                    <span data-type="note" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                </span>
+                <span data-type="note" data-subtype="full-text" data-name="note" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+            </div>
 
-  <!-- stanzas -->
-  <% var stanzaStart = notes[i].split("+")[1]; %>
-  <% stanzaStart = stanzaStart.split("-")[0]; %>
-  <% stanzaStart = stanzaStart.split("#")[0]; %>
-  <% var stanzaEnd = notes[i].split("-")[1]; %>
-  <% stanzaEnd = stanzaEnd.split("#")[0]; %>
+            <!-- hidden location -->
+            <span class="d-none" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="note" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="note" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+            <span class="d-none" data-type="note" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-  <!-- padas -->
-  <% var padaStart = notes[i].split("-")[0]; %>
-  <% padaStart = padaStart.split("#")[1]; %>
-  <% padaStart = padaStart %>
-  <% var padaEnd = notes[i].split("-")[1]; %>
-  <% padaEnd = padaEnd.split("___")[0]; %>
-  <% padaEnd = padaEnd.split("#")[1]; %>
-
-  <!-- note -->
-  <% var note = notes[i].split("___")[1]; %>
-  <% note = note.split("===")[0]; %>
-
-  <!-- fragment / chapter -->
-  <% var fragment = notes[i].split("___")[1]; %>
-  <% var chapter; %>
-  <% fragment = fragment.split("===")[1] %>
-  <% chapter = fragment.split("/") %>
-  <% fragment = chapter[0]; %>
-  <% chapter = chapter[1]; %>
-
-  <!-- idAnnotation -->
-  <span class="d-none" data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill="<%= idAnnotation; %>" data-input="text"><%= idAnnotation; %></span>
-
-  <!-- location -->
-  <div class="p-2" data-type="note" data-subtype="location">
-    <% if (stanzaStart + padaStart == stanzaEnd + padaEnd) { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="note" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="note" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span data-type="note" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"></span><span data-type="note" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"></span></span>
-    <% } else { %>
-    <span class="fw-bold">Chapter</span> <span class="fw-bold" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= chapter %>' data-input="number"><%= chapter %></span> <span class="fst-italic"><span data-type="note" data-subtype="stanza-start" data-name="stanzaStart" data-fill='<%= stanzaStart; %>' data-input="number">Stanza <%= stanzaStart; %></span><span data-type="note" data-subtype="pada-start" data-name="padaStart" data-fill='<%= padaStart; %>' data-input="checkbox"><%= padaStart.replace(/,|a\,b\,c\,d\,e\,f/g, ""); %></span><span>&#x2013;</span><span data-type="note" data-subtype="stanza-end" data-name="stanzaEnd" data-fill='<%= stanzaEnd; %>' data-input="number"><%= stanzaEnd; %></span><span data-type="note" data-subtype="pada-end" data-name="padaEnd" data-fill='<%= padaEnd; %>' data-input="checkbox"><%= padaEnd.replace(/#|,|a\,b\,c\,d\,e\,f/g, ""); %></span></span>
-    <% }; %>
-  </div>
-
-  <!-- fragment -->
-  <div class="bg-blue p-2" data-type="note" data-subtype="selected-fragment" data-name="selectedFragment" data-fill='<%= fragment; %>' data-input="text"><%= fragment; %></div>
-
-  <!-- note -->
-  <div class="p-2" data-type="note" data-subtype="note" data-name="note" data-fill='<%= note; %>' data-input="textarea"><%- note; %></div>
-
-  <!-- modify button -->
-  <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-    <button class="btn btn-sm btn-blue modify-btn" type="button" data-type="note">Modify</button>
-  </div>
-
-</div>
-
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-blue modify-btn" type="button" data-type="note">Modify</button>
+            </div>
+        </div>
+    <% }); %>
 <% }; %>
