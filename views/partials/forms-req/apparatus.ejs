@@ -1,4 +1,13 @@
   <!-- apparatus -->
+
+  <!-- witnesses -->
+  <% var witnessesArray = []; %>
+  <% witnesses.forEach((witness) => { %>
+    <% if (!witnessesArray.includes(witness["siglum"])) { %>
+      <% witnessesArray.push(witness["siglum"]); %>
+    <% }; %>
+  <% }); %>
+
   <button type="button" class="btn-close float-end" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-apparatus" data-type="cancel-annotation"></button>
   <h3 class="h6">Apparatus entry</h3>
   <ul class="nav nav-tabs" role="tablist">
@@ -184,16 +193,8 @@
             <!-- witnesses -->
             <div class="p-3 bg-light">
               <label class="form-label">Witness&#x28;es&#x29;</label>
-              <% if (sigla) { %>
-              <% var wits = []; %>
-              <% sigla.forEach((siglum) => { %>
-              <% if (wits.includes(siglum) === false) { %>
-              <% wits.push(siglum) %>
-              <% }; %>
-              <% }); %>
-              <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptLemma">
+              <input class="form-control live-check" id="witsLemma" data-list="<%= JSON.stringify(witnessesArray); %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptLemma">
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
-              <% }; %>
             </div>
             <!-- additional notes -->
             <div class="p-3 bg-light">
@@ -248,17 +249,9 @@
             <!-- witnesses -->
             <div class="p-3 bg-light">
               <label class="form-label">Witness&#x28;es&#x29;</label>
-              <% if (sigla) { %>
-              <% var wits = []; %>
-              <% sigla.forEach((siglum) => { %>
-              <% if (wits.includes(siglum) === false) { %>
-              <% wits.push(siglum) %>
-              <% }; %>
-              <% }); %>
               <!-- witnesses -->
-              <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(wits) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptVariant0">
+              <input class="form-control live-check" id="witsVariant" data-list="<%= JSON.stringify(witnessesArray); %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" name="manuscriptVariant0">
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
-              <% }; %>
             </div>
             <!-- additional notes -->
             <div class="p-3 bg-light">

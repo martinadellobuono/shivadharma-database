@@ -10,10 +10,25 @@
       <!-- title -->
       <div class="col-md-8">
         <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></button>
-        <% if (typeof title !== "undefined") { %>
-        <h1 class="h4 d-inline"><%= title %><span>, </span><%= author %></h1>
-        <h2 class="d-inline h5 text-secondary">Curated by <%= editor %></h2>
-        <% }; %>
+        <h1 class="h4 d-inline">
+          <% if (title) { %>
+            <span data-type="header" data-subtype="title"><%= title; %></span>
+            <span data-type="separator" data-subtype="coma">, </span>
+          <% }; %>
+          <% if (authors) { %>
+            <% authors.forEach((author) => { %>
+              <span data-type="header" data-subtype="author"><%= author; %></span>
+            <% }); %>
+          <% }; %>
+        </h1>
+        <h2 class="d-inline h5 text-secondary">
+          <span data-type="header" data-subtype="curated-by">Curated by </span>
+          <% if (editors) { %>
+            <% editors.forEach((editor) => { %>
+              <span data-type="header" data-subtype="editor"><%= editor %></span>
+            <% }); %>
+          <% }; %>
+        </h2>
       </div>
       <div class="col-md-4 text-end">
         <!-- metadata -->

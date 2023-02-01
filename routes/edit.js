@@ -21,12 +21,15 @@ router.get("/edit/:id", async (req, res) => {
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     var work;
     var title;
+    var authors = [];
+    var editors = [];
     var chapter;
     var translation = [];
     var commentary = [];
     var parallels = [];
     var citations = [];
     var notes = [];
+    var witnesses_temp = [];
 
     const session = driver.session();
     try {
@@ -42,13 +45,30 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value
+                
+                OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
+
+                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
                 `
             )
             .subscribe({
                 onNext: record => {
+
+                    /* title */
+                    title = record.get("edition.title");
+
+                    /* author(s) */
+                    if (!authors.includes(record.get("author.name"))) {
+                        authors.push(record.get("author.name"));
+                    };
+
+                    /* editor(s) */
+                    if (!editors.includes(record.get("editor.name"))) {
+                        editors.push(record.get("editor.name"));
+                    };
+
                     /* chapter */
-                    chapter = record.get("selectedFragment.chapter")
+                    chapter = record.get("selectedFragment.chapter");
 
                     /* translations */
                     if (record.get("translation.value") !== null) {
@@ -140,6 +160,12 @@ router.get("/edit/:id", async (req, res) => {
                             value: record.get("note.value")
                         });
                     };
+
+                    /* witnesses */
+                    if (!witnesses_temp.includes(record.get("witness"))) {
+                        witnesses_temp.push(record.get("witness"));
+                    };
+
                 },
                 onCompleted: () => {
 
@@ -233,6 +259,14 @@ router.get("/edit/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
+                    /* ordered witnesses */
+                    var witnesses = [];
+                    witnesses_temp.forEach((witness) => {
+                        if (!witnesses.includes(witness["properties"])) {
+                            witnesses.push(witness["properties"]);
+                        };
+                    });
+
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
@@ -240,6 +274,8 @@ router.get("/edit/:id", async (req, res) => {
                             name: req.user.name,
                             work: work,
                             title: title,
+                            authors: authors,
+                            editors: editors,
                             file: file,
                             chapter: chapter,
                             translation: translation,
@@ -247,16 +283,13 @@ router.get("/edit/:id", async (req, res) => {
                             parallels: all_parallels,
                             citations: citations,
                             notes: notes,
+                            witnesses: witnesses,
 
                             editionOf: "", // cambia
                             authorCommentary: "", // cambia
-                            author: "", // cambia
-                            editor: "", // cambia
                             date: "", // cambia
                             sigla: "", // cambia
-                            appEntryDict: "", // cambia
-                            translations: "", // cambia
-                            commentaries: "" // cambia
+
                         });
                     } else {
                         res.render("edit", {
@@ -264,22 +297,25 @@ router.get("/edit/:id", async (req, res) => {
                             name: req.user.name,
                             work: work,
                             title: title,
-                            editionOf: "", // cambia
-                            authorCommentary: "", // cambia
-                            author: "", // cambia
-                            editor: "", // cambia
-                            date: "", // cambia
-                            sigla: "", // cambia
+                            authors: authors,
+                            editors: editors,
                             file: false,
                             chapter: chapter,
                             translation: translation,
-                            appEntryDict: "", // cambia
-                            translations: "", // cambia
-                            commentaries: "", // cambia
-                            citations: "", // cmabia
-                            notes: "" // cambia
+                            commentary: commentary,
+                            parallels: all_parallels,
+                            citations: citations,
+                            notes: notes,
+                            witnesses: witnesses,
+                            
+                            editionOf: "", // cambia
+                            authorCommentary: "", // cambia
+                            date: "", // cambia
+                            sigla: "", // cambia
+
                         });
                     };
+
                 },
                 onError: err => {
                     console.log("Error related to the upload to Neo4j: " + err)

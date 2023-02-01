@@ -35,12 +35,12 @@
               <!-- author -->
               <div class="mb-3">
                 <label class="form-label">Author of the edited work</label>
-                <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= author %>" name="author">
+                <input type="text" class="form-control" aria-describedby="Author of the edited work" value="<%= authors %>" name="author">
               </div>
               <!-- editor -->
               <div class="mb-3">
                 <label class="form-label">Editor</label>
-                <input type="text" class="form-control" aria-describedby="Editor" value="<%= editor %>" name="editor">
+                <input type="text" class="form-control" aria-describedby="Editor" value="<%= editors %>" name="editor">
               </div>
               <!-- edition of -->
               <div class="mb-3">
@@ -82,6 +82,18 @@
           </div>
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
+            
+            <!-- already entered witnesses -->
+            <div class="mb-3" data-type="witnesses" data-subtype="enteredWitnesses">
+              <span>Already entered witnesses: </span>
+
+              <% witnesses.forEach((witness) => { %>
+                <button type="button" class="btn btn-sm btn-light"><%- witness["siglum"]; %></button>
+              <% }); %>
+
+            </div>
+
+            <!-- form -->
             <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
               <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3 wit-clone" data-cloned="witness">
                 <!-- siglum -->
@@ -196,7 +208,7 @@
                   <!-- author -->
                   <div class="mb-3">
                     <label class="form-label">Author&#x28;s&#x29;<sup class="help-symbol" data-bs-toggle="popover" title="Author(s)" data-bs-content="Insert here the name of the author(s) of the work(s) contained in the manuscript."><i class="bi bi-question-lg"></i></sup></label>
-                    <input class="form-control" id="witnessAuthor0" data-list="<%= JSON.stringify(author) %>" data-type="author" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for author..." aria-activedescendant="" name="witnessAuthor0">
+                    <input class="form-control" id="witnessAuthor0" data-list="<%= JSON.stringify(authors) %>" data-type="author" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for author..." aria-activedescendant="" name="witnessAuthor0">
                   </div>
                   <!-- title -->
                   <div class="mb-3">
@@ -481,7 +493,7 @@
                   <!-- author of the record -->
                   <div class="mb-3">
                     <label class="form-label">Author&#x28;s&#x29; of the Record<sup class="help-symbol" data-bs-toggle="popover" title="Author&#x28;s&#x29; of the Record" data-bs-content="Insert here your name and surname / name and surname of your collaborator."><i class="bi bi-question-lg"></i></sup></label>
-                    <input class="form-control" id="witnessAuthorRecord0" data-list="<%= JSON.stringify(editor) %>" data-type="authors of the record" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for authors..." aria-activedescendant="" name="witnessAuthorRecord0">
+                    <input class="form-control" id="witnessAuthorRecord0" data-list="<%= JSON.stringify(editors) %>" data-type="authors of the record" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for authors..." aria-activedescendant="" name="witnessAuthorRecord0">
                     <div class="form-text">Insert name and surname. Separate the values by using &#x22; &#x3b; &#x22;.</div>
                   </div>
                   <!-- siglum tex -->
