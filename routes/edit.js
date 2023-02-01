@@ -27,7 +27,7 @@ router.get("/edit/:id", async (req, res) => {
     var translation_temp = [];
     var commentary_temp = [];
     var parallels_temp = [];
-    var citations = [];
+    var citations_temp = [];
     var notes = [];
     var witnesses_temp = [];
 
@@ -148,7 +148,8 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* citations */
                     if (record.get("citation.value") !== null) {
-                        citations.push({
+                        /* citation entry */
+                        var citations_entry = JSON.stringify({
                             id: record.get("ID(citation)"),
                             idAnnotation: record.get("citation.idAnnotation"),
                             chapter: chapter,
@@ -159,6 +160,11 @@ router.get("/edit/:id", async (req, res) => {
                             fragment: record.get("selectedFragment.value"),
                             value: record.get("citation.value")
                         });
+
+                        /* array of citation entries */
+                        if (!citations_temp.includes(citations_entry)) {
+                            citations_temp.push(citations_entry);
+                        };
                     };
 
                     /* notes */
@@ -276,6 +282,13 @@ router.get("/edit/:id", async (req, res) => {
                         /* add the dictionary to the array containing all the parallels divided by title */
                         parallels.push(work);
 
+                    });
+
+                    /* CITATIONS */
+                    /* parse each citation in the array / string > JSON */
+                    var citations = [];
+                    citations_temp.forEach((el) => {
+                        citations.push(JSON.parse(el));
                     });
 
                     /* ordered citations */
