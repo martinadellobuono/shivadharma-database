@@ -22,7 +22,6 @@ router.post("/addApparatus/:id",
         /* manuscripts / notes to complete with i */
         var manuscriptVariant;
         var notesVariant;
-        var idWitnessVariant;
 
         /* lemma / variant var to distinguish the omissions */
         var lemmaReq;
@@ -147,8 +146,3 @@ router.post("/addApparatus/:id",
     });
 
 module.exports = router;
-
-/* WITH lemma, variant
-MATCH (l:Witness)<-[rl:ATTESTED_IN]-(lemma)-[:HAS_VARIANT]->(variant)-[rv:ATTESTED_IN]->(v:Witness)
-WHERE NOT "${req.body.manuscriptLemma}" CONTAINS l.siglum AND NOT "${req.body[manuscriptVariant]}" CONTAINS v.siglum
-DELETE rl, rv */

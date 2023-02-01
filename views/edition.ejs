@@ -78,7 +78,7 @@
 
           <!-- translation -->
           <div class="tab-pane fade show active" id="pills-translation" role="tabpanel">
-            <% if (typeof translation !== "undefined") { %>
+            <% if (translation) { %>
               <% translation.forEach((el) => { %>
                 <div data-type="translation" data-subtype="translation">
                   <span class="me-1" data-type="location" data-subtype="location-top">
@@ -87,7 +87,7 @@
                   <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                 </div>
                 <% if (el["note"] !== "") { %>
-                  <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']; %>"></span>
+                  <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']['low']; %>"></span>
                   <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
                     <div class="card card-body">
                       <div data-type="translation" data-subtype="note"><%- el["note"]; %></div>

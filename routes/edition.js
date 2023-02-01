@@ -15,18 +15,22 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 router.get("/edition/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
+
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    var work;
+    var workMatrix;
     var title;
+    var editionOf;
     var authors = [];
+    var date;
     var editors = [];
     var chapter;
-    var translation = [];
-    var commentary = [];
-    var parallels = [];
-    var citations = [];
-    var notes = [];
+    var translation_temp = [];
+    var commentary_temp = [];
+    var parallels_temp = [];
+    var citations_temp = [];
+    var notes_temp = [];
+    var witnesses_temp = [];
 
     const session = driver.session();
     try {
@@ -35,6 +39,7 @@ router.get("/edition/:id", async (req, res) => {
                 `
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
@@ -42,23 +47,35 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
-                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.padaStart, ID(translation), translation.value, translation.note, ID(commentary), commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.value, ID(note), note.value
+                OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
+
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
                 `
             )
             .subscribe({
                 onNext: record => {
+
                     /* work */
-                    work = record.get("work.title");
+                    workMatrix = record.get("work.title");
 
                     /* title */
                     title = record.get("edition.title");
 
-                    /* author */
+                    /* editionOf */
+                    editionOf = record.get("edition.editionOf");
+
+                    /* author(s) */
                     if (!authors.includes(record.get("author.name"))) {
                         authors.push(record.get("author.name"));
                     };
 
-                    /* editor */
+                    /* author of the commentary */
+                    authorCommentary = record.get("edition.authorCommentary");
+
+                    /* date */
+                    date = record.get("date.on");
+
+                    /* editor(s) */
                     if (!editors.includes(record.get("editor.name"))) {
                         editors.push(record.get("editor.name"));
                     };
@@ -68,40 +85,65 @@ router.get("/edition/:id", async (req, res) => {
 
                     /* translations */
                     if (record.get("translation.value") !== null) {
-                        translation.push({
-                            id: record.get("ID(translation)"),
-                            chapter: record.get("selectedFragment.chapter"),
+                        /* translation entry */
+                        var translation_entry = JSON.stringify({
+                            id: record.get("ID(translation)")["low"],
+                            idAnnotation: record.get("translation.idAnnotation"),
+                            chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
                             padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
                             value: record.get("translation.value"),
                             note: record.get("translation.note")
                         });
+
+                        /* array of translation entries */
+                        if (!translation_temp.includes(translation_entry)) {
+                            translation_temp.push(translation_entry);
+                        };
                     };
 
                     /* commentary */
                     if (record.get("commentary.value") !== null) {
-                        commentary.push({
-                            id: record.get("ID(commentary)"),
+                        /* commentary entry */
+                        var commentary_entry = JSON.stringify({
+                            id: record.get("ID(commentary)")["low"],
+                            idAnnotation: record.get("commentary.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
                             padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
                             value: record.get("commentary.value"),
                             note: record.get("commentary.note"),
                             translation: record.get("commentary.translation"),
                             translationNote: record.get("commentary.translationNote")
                         });
+
+                        /* array of commentary entries */
+                        if (!commentary_temp.includes(commentary_entry)) {
+                            commentary_temp.push(commentary_entry);
+                        };
                     };
 
                     /* parallels */
                     if (record.get("parallel.value") !== null) {
                         var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
-
-                        var dictionary = {
+                        
+                        /* parallels entry */
+                        var parallels_entry = JSON.stringify({
                             [work]: {
-                                id: record.get("ID(parallel)"),
+                                id: record.get("ID(parallel)")["low"],
+                                idAnnotation: record.get("parallel.idAnnotation"),
                                 chapter: chapter,
                                 stanzaStart: record.get("selectedFragment.stanzaStart"),
+                                stanzaEnd: record.get("selectedFragment.stanzaEnd"),
                                 padaStart: record.get("selectedFragment.padaStart"),
+                                padaEnd: record.get("selectedFragment.padaEnd"),
+                                fragment: record.get("selectedFragment.value"),
                                 work: record.get("parallelWork.title"),
                                 author: record.get("parallelAuthor.name"),
                                 book: record.get("parallel.book"),
@@ -110,36 +152,72 @@ router.get("/edition/:id", async (req, res) => {
                                 value: record.get("parallel.value"),
                                 note: record.get("parallel.note")
                             }
-                        };
+                        });
 
-                        parallels.push(dictionary);
+                        /* array of commentary entries */
+                        if (!parallels_temp.includes(parallels_entry)) {
+                            parallels_temp.push(parallels_entry);
+                        };
                     };
 
                     /* citations */
                     if (record.get("citation.value") !== null) {
-                        citations.push({
-                            id: record.get("ID(citation)"),
+                        /* citation entry */
+                        var citations_entry = JSON.stringify({
+                            id: record.get("ID(citation)")["low"],
+                            idAnnotation: record.get("citation.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
                             padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
                             value: record.get("citation.value")
                         });
+
+                        /* array of citation entries */
+                        if (!citations_temp.includes(citations_entry)) {
+                            citations_temp.push(citations_entry);
+                        };
                     };
 
                     /* notes */
                     if (record.get("note.value") !== null) {
-                        notes.push({
-                            id: record.get("ID(note)"),
+                        /* notes entry */
+                        var notes_entry = JSON.stringify({
+                            id: record.get("ID(note)")["low"],
+                            idAnnotation: record.get("note.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
                             padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
                             value: record.get("note.value")
                         });
+
+                        /* array of citation entries */
+                        if (!notes_temp.includes(notes_entry)) {
+                            notes_temp.push(notes_entry);
+                        };
                     };
+
+                    /* witnesses */
+                    if (!witnesses_temp.includes(record.get("witness"))) {
+                        witnesses_temp.push(record.get("witness"));
+                    };
+
                 },
                 onCompleted: () => {
 
-                    /* ordered translations */
+                    /* TRANSLATIONS */
+                    /* parse each translation in the array / string > JSON */
+                    var translation = [];
+                    translation_temp.forEach((el) => {
+                        translation.push(JSON.parse(el));
+                    });
+
+                    /* order translations */
                     translation.sort((a, b) => {
                         return a.chapter - b.chapter;
                     });
@@ -150,7 +228,14 @@ router.get("/edition/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered commentary */
+                    /* COMMENTARY */
+                    /* parse each commentary in the array / string > JSON */
+                    var commentary = [];
+                    commentary_temp.forEach((el) => {
+                        commentary.push(JSON.parse(el));
+                    });
+
+                    /* order commentary */
                     commentary.sort((a, b) => {
                         return a.chapter - b.chapter;
                     });
@@ -161,10 +246,16 @@ router.get("/edition/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered parallels */
+                    /* PARALLELS */
+                    /* parse each parallel in the array / string > JSON */
+                    var all_parallels = [];
+                    parallels_temp.forEach((el) => {
+                        all_parallels.push(JSON.parse(el));
+                    });
+
                     /* create an array of the parallels title */
                     var parallels_keys = [];
-                    parallels.forEach((parallel) => {
+                    all_parallels.forEach((parallel) => {
                         for (const [key, value] of Object.entries(parallel)) {
                             if (!parallels_keys.includes(key)) {
                                 parallels_keys.push(key);
@@ -173,7 +264,7 @@ router.get("/edition/:id", async (req, res) => {
                     });
 
                     /* create a dictionary for each parallel work / an array containing all the dictionaries */
-                    var all_parallels = [];
+                    var parallels = [];
                     parallels_keys.forEach((title) => {
 
                         /* create a dictionary of parallels for each title */
@@ -185,7 +276,7 @@ router.get("/edition/:id", async (req, res) => {
                         var values = [];
 
                         /* assign the value to the dictionary */
-                        parallels.forEach((parallel) => {
+                        all_parallels.forEach((parallel) => {
                             for (const [key, value] of Object.entries(parallel)) {
                                 if (key == title) {
                                     /* value of the dictionary = full-text of parallels */
@@ -209,11 +300,18 @@ router.get("/edition/:id", async (req, res) => {
                         });
 
                         /* add the dictionary to the array containing all the parallels divided by title */
-                        all_parallels.push(work);
+                        parallels.push(work);
 
                     });
 
-                    /* ordered citations */
+                    /* CITATIONS */
+                    /* parse each citation in the array / string > JSON */
+                    var citations = [];
+                    citations_temp.forEach((el) => {
+                        citations.push(JSON.parse(el));
+                    });
+
+                    /* order citations */
                     citations.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
@@ -221,7 +319,14 @@ router.get("/edition/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered notes */
+                    /* NOTES */
+                    /* parse each note in the array / string > JSON */
+                    var notes = [];
+                    notes_temp.forEach((el) => {
+                        notes.push(JSON.parse(el));
+                    });
+
+                    /* order notes */
                     notes.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
@@ -229,38 +334,60 @@ router.get("/edition/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
+                    /* WITNESSES */
+                    /* order witnesses */
+                    var witnesses = [];
+                    witnesses_temp.forEach((witness) => {
+                        if (witness) {
+                            if (!witnesses.includes(witness["properties"])) {
+                                witnesses.push(witness["properties"]);
+                            };
+                        };
+                    });
+
+                    /* PAGE RENDERING */
                     if (fs.existsSync(path)) {
                         res.render("edition", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work,
+                            work: workMatrix,
                             title: title,
+                            editionOf: editionOf,
                             authors: authors,
+                            authorCommentary: authorCommentary,
+                            date: date,
                             editors: editors,
                             file: file,
                             chapter: chapter,
                             translation: translation,
                             commentary: commentary,
-                            parallels: all_parallels,
+                            parallels: parallels,
                             citations: citations,
-                            notes: notes
+                            notes: notes,
+                            witnesses: witnesses
                         });
                     } else {
                         res.render("edition", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work,
+                            work: workMatrix,
                             title: title,
+                            editionOf: editionOf,
                             authors: authors,
+                            authorCommentary: authorCommentary,
+                            date: date,
                             editors: editors,
                             file: false,
+                            chapter: chapter,
                             translation: translation,
-                            commentary: comm_temp,
-                            parallels: all_parallels,
+                            commentary: commentary,
+                            parallels: parallels,
                             citations: citations,
-                            notes: notes
+                            notes: notes,
+                            witnesses: witnesses
                         });
                     };
+
                 },
                 onError: err => {
                     console.log("Error related to the upload to Neo4j: " + err)
