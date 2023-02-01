@@ -1,3 +1,11 @@
+<!-- witnesses -->
+<% var witnessesArray = []; %>
+<% witnesses.forEach((witness) => { %>
+  <% if (!witnessesArray.includes(witness["siglum"])) { %>
+    <% witnessesArray.push(witness["siglum"]); %>
+  <% }; %>
+<% }); %>
+
 <!-- metadata modal -->
 <button type="button" class="btn btn-secondary me-3" data-bs-toggle="modal" data-bs-target="#add-metadata">Add metadata</button>
 <!-- metadata modal -->
@@ -40,7 +48,7 @@
               <!-- editor -->
               <div class="mb-3">
                 <label class="form-label">Editor</label>
-                <input type="text" class="form-control" aria-describedby="Editor" value="<%= editors %>" name="editor">
+                <input type="text" class="form-control" readonly="true" value="<%= editors %>" name="editor">
               </div>
               <!-- edition of -->
               <div class="mb-3">
@@ -70,10 +78,10 @@
               <!-- date -->
               <div class="mb-3">
                 <label class="form-label">Date of publication of the edition</label>
-                <% if (typeof date !== "undefined") { %>
-                <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
+                <% if (date) { %>
+                  <input type="date" class="form-control" aria-describedby="Date of publication" value="<%= date %>" name="date">
                 <% } else { %>
-                <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
+                  <input type="date" class="form-control" aria-describedby="Date of publication" value="" name="date">
                 <% }; %>
               </div>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -85,11 +93,13 @@
             
             <!-- already entered witnesses -->
             <div class="mb-3" data-type="witnesses" data-subtype="enteredWitnesses">
-              <span>Already entered witnesses: </span>
 
-              <% witnesses.forEach((witness) => { %>
-                <button type="button" class="btn btn-sm btn-light"><%- witness["siglum"]; %></button>
-              <% }); %>
+              <% if (witnessesArray.length > 0) { %>
+                <span>Already entered witnesses: </span>
+                <% witnessesArray.forEach((witness) => { %>
+                  <button type="button" class="btn btn-sm btn-light"><%- witness; %></button>
+                <% }); %>
+              <% }; %>
 
             </div>
 
@@ -203,7 +213,7 @@
                   <!-- antigraph -->
                   <div class="mb-3">
                     <label class="form-label">Antigraph<sup class="help-symbol" data-bs-toggle="popover" title="Antigraph" data-bs-content="Insert here the siglum of the manuscript of which the present manuscript is a copy (i.e., an apograph)."><i class="bi bi-question-lg"></i></sup></label>
-                    <input class="form-control" id="witnessAntigraph0" data-list="<%= JSON.stringify(sigla) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for witness..." aria-activedescendant="" name="witnessAntigraph0">
+                    <input class="form-control" id="witnessAntigraph0" data-list="<%= JSON.stringify(witnessesArray) %>" data-type="witness" type="search" dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off" maxlength="2048" tabindex="1" aria-controls="autoComplete_list_0" aria-autocomplete="both" placeholder="Search for witness..." aria-activedescendant="" name="witnessAntigraph0">
                   </div>
                   <!-- author -->
                   <div class="mb-3">

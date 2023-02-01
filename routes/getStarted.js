@@ -11,7 +11,6 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.post("/getstarted",
     async (req, res) => {
-        /* post data */
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
@@ -21,9 +20,9 @@ router.post("/getstarted",
                     MERGE (edition:Edition {title: $title, editionOf: $editionOf, authorCommentary: $authorCommentary})
                     MERGE (author:Author {name: $author})
                     MERGE (editor:Editor {name: $editor})
-                    MERGE (work)-[h:HAS_MANIFESTATION]->(edition)
-                    MERGE (work)-[w:WRITTEN_BY]->(author)
-                    MERGE (edition)-[e:EDITED_BY]->(editor)
+                    MERGE (work)-[:HAS_MANIFESTATION]->(edition)
+                    MERGE (work)-[:WRITTEN_BY]->(author)
+                    MERGE (edition)-[:EDITED_BY]->(editor)
                     RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name
                     `,
                     {

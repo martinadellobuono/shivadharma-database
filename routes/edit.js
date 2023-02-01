@@ -19,9 +19,11 @@ router.get("/edit/:id", async (req, res) => {
 
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    var work;
+    var workMatrix;
     var title;
+    var editionOf;
     var authors = [];
+    var date;
     var editors = [];
     var chapter;
     var translation_temp = [];
@@ -38,6 +40,7 @@ router.get("/edit/:id", async (req, res) => {
                 `
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
@@ -47,19 +50,31 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 
-                RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
                 `
             )
             .subscribe({
                 onNext: record => {
 
+                    /* work */
+                    workMatrix = record.get("work.title");
+
                     /* title */
                     title = record.get("edition.title");
+
+                    /* editionOf */
+                    editionOf = record.get("edition.editionOf");
 
                     /* author(s) */
                     if (!authors.includes(record.get("author.name"))) {
                         authors.push(record.get("author.name"));
                     };
+
+                    /* author of the commentary */
+                    authorCommentary = record.get("edition.authorCommentary");
+
+                    /* date */
+                    date = record.get("date.on");
 
                     /* editor(s) */
                     if (!editors.includes(record.get("editor.name"))) {
@@ -336,9 +351,12 @@ router.get("/edit/:id", async (req, res) => {
                         res.render("edit", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work,
+                            work: workMatrix,
                             title: title,
+                            editionOf: editionOf,
                             authors: authors,
+                            authorCommentary: authorCommentary,
+                            date: date,
                             editors: editors,
                             file: file,
                             chapter: chapter,
@@ -347,21 +365,18 @@ router.get("/edit/:id", async (req, res) => {
                             parallels: parallels,
                             citations: citations,
                             notes: notes,
-                            witnesses: witnesses,
-
-                            editionOf: "", // cambia
-                            authorCommentary: "", // cambia
-                            date: "", // cambia
-                            sigla: "", // cambia
-
+                            witnesses: witnesses
                         });
                     } else {
                         res.render("edit", {
                             id: req.params.id,
                             name: req.user.name,
-                            work: work,
+                            work: workMatrix,
                             title: title,
+                            editionOf: editionOf,
                             authors: authors,
+                            authorCommentary: authorCommentary,
+                            date: date,
                             editors: editors,
                             file: false,
                             chapter: chapter,
@@ -370,13 +385,7 @@ router.get("/edit/:id", async (req, res) => {
                             parallels: parallels,
                             citations: citations,
                             notes: notes,
-                            witnesses: witnesses,
-
-                            editionOf: "", // cambia
-                            authorCommentary: "", // cambia
-                            date: "", // cambia
-                            sigla: "", // cambia
-
+                            witnesses: witnesses
                         });
                     };
 
@@ -401,23 +410,18 @@ router.post("/edit/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor), (work:Work)-[h:HAS_MANIFESTATION]->(edition), (work)-[w:WRITTEN_BY]->(author:Author)  
+                MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                OPTIONAL MATCH (file:File)-[pr:PRODUCED_BY]->(editor)
-                OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
                 MERGE (date:Date)
-                MERGE (edition)-[p:PUBLISHED_ON]->(date)
+                MERGE (edition)-[:PUBLISHED_ON]->(date)
                 ON CREATE
-                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
+                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
                 ON MATCH 
-                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", date.on = "${req.body.date}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}"
+                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
                 RETURN *
                 `
             )
             .subscribe({
-                onNext: () => {
-                    res.redirect("../edit/" + idEdition + "-" + idEditor);
-                },
                 onCompleted: () => {
                     console.log("Data added to the database")
                 },
@@ -430,6 +434,7 @@ router.post("/edit/:id", async (req, res) => {
         console.log("Error related to Neo4j: " + err);
     } finally {
         await session.close();
+        res.redirect("../edit/" + idEdition + "-" + idEditor);
     };
 });
 
