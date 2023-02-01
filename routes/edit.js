@@ -25,8 +25,8 @@ router.get("/edit/:id", async (req, res) => {
     var editors = [];
     var chapter;
     var translation_temp = [];
-    var commentary = [];
-    var parallels = [];
+    var commentary_temp = [];
+    var parallels_temp = [];
     var citations = [];
     var notes = [];
     var witnesses_temp = [];
@@ -71,7 +71,6 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* translations */
                     if (record.get("translation.value") !== null) {
-
                         /* translation entry */
                         var translation_entry = JSON.stringify({
                             id: record.get("ID(translation)"),
@@ -90,12 +89,12 @@ router.get("/edit/:id", async (req, res) => {
                         if (!translation_temp.includes(translation_entry)) {
                             translation_temp.push(translation_entry);
                         };
-
                     };
 
                     /* commentary */
                     if (record.get("commentary.value") !== null) {
-                        commentary.push({
+                        /* commentary entry */
+                        var commentary_entry = JSON.stringify({
                             id: record.get("ID(commentary)"),
                             idAnnotation: record.get("commentary.idAnnotation"),
                             chapter: chapter,
@@ -109,13 +108,19 @@ router.get("/edit/:id", async (req, res) => {
                             translation: record.get("commentary.translation"),
                             translationNote: record.get("commentary.translationNote")
                         });
+
+                        /* array of commentary entries */
+                        if (!commentary_temp.includes(commentary_entry)) {
+                            commentary_temp.push(commentary_entry);
+                        };
                     };
 
                     /* parallels */
                     if (record.get("parallel.value") !== null) {
                         var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
-
-                        var dictionary = {
+                        
+                        /* parallels entry */
+                        var parallels_entry = JSON.stringify({
                             [work]: {
                                 id: record.get("ID(parallel)"),
                                 idAnnotation: record.get("parallel.idAnnotation"),
@@ -133,9 +138,12 @@ router.get("/edit/:id", async (req, res) => {
                                 value: record.get("parallel.value"),
                                 note: record.get("parallel.note")
                             }
-                        };
+                        });
 
-                        parallels.push(dictionary);
+                        /* array of commentary entries */
+                        if (!parallels_temp.includes(parallels_entry)) {
+                            parallels_temp.push(parallels_entry);
+                        };
                     };
 
                     /* citations */
@@ -183,7 +191,7 @@ router.get("/edit/:id", async (req, res) => {
                         translation.push(JSON.parse(el));
                     });
 
-                    /* ordered translations */
+                    /* order translations */
                     translation.sort((a, b) => {
                         return a.chapter - b.chapter;
                     });
@@ -195,7 +203,13 @@ router.get("/edit/:id", async (req, res) => {
                     });
 
                     /* COMMENTARY */
-                    /* ordered commentary */
+                    /* parse each commentary in the array / string > JSON */
+                    var commentary = [];
+                    commentary_temp.forEach((el) => {
+                        commentary.push(JSON.parse(el));
+                    });
+
+                    /* order commentary */
                     commentary.sort((a, b) => {
                         return a.chapter - b.chapter;
                     });
@@ -206,10 +220,16 @@ router.get("/edit/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered parallels */
+                    /* PARALLELS */
+                    /* parse each parallel in the array / string > JSON */
+                    var all_parallels = [];
+                    parallels_temp.forEach((el) => {
+                        all_parallels.push(JSON.parse(el));
+                    });
+
                     /* create an array of the parallels title */
                     var parallels_keys = [];
-                    parallels.forEach((parallel) => {
+                    all_parallels.forEach((parallel) => {
                         for (const [key, value] of Object.entries(parallel)) {
                             if (!parallels_keys.includes(key)) {
                                 parallels_keys.push(key);
@@ -218,7 +238,7 @@ router.get("/edit/:id", async (req, res) => {
                     });
 
                     /* create a dictionary for each parallel work / an array containing all the dictionaries */
-                    var all_parallels = [];
+                    var parallels = [];
                     parallels_keys.forEach((title) => {
 
                         /* create a dictionary of parallels for each title */
@@ -230,7 +250,7 @@ router.get("/edit/:id", async (req, res) => {
                         var values = [];
 
                         /* assign the value to the dictionary */
-                        parallels.forEach((parallel) => {
+                        all_parallels.forEach((parallel) => {
                             for (const [key, value] of Object.entries(parallel)) {
                                 if (key == title) {
                                     /* value of the dictionary = full-text of parallels */
@@ -254,7 +274,7 @@ router.get("/edit/:id", async (req, res) => {
                         });
 
                         /* add the dictionary to the array containing all the parallels divided by title */
-                        all_parallels.push(work);
+                        parallels.push(work);
 
                     });
 
@@ -295,7 +315,7 @@ router.get("/edit/:id", async (req, res) => {
                             chapter: chapter,
                             translation: translation,
                             commentary: commentary,
-                            parallels: all_parallels,
+                            parallels: parallels,
                             citations: citations,
                             notes: notes,
                             witnesses: witnesses,
@@ -318,7 +338,7 @@ router.get("/edit/:id", async (req, res) => {
                             chapter: chapter,
                             translation: translation,
                             commentary: commentary,
-                            parallels: all_parallels,
+                            parallels: parallels,
                             citations: citations,
                             notes: notes,
                             witnesses: witnesses,
