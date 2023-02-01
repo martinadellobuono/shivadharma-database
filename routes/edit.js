@@ -28,7 +28,7 @@ router.get("/edit/:id", async (req, res) => {
     var commentary_temp = [];
     var parallels_temp = [];
     var citations_temp = [];
-    var notes = [];
+    var notes_temp = [];
     var witnesses_temp = [];
 
     const session = driver.session();
@@ -169,7 +169,8 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* notes */
                     if (record.get("note.value") !== null) {
-                        notes.push({
+                        /* notes entry */
+                        var notes_entry = JSON.stringify({
                             id: record.get("ID(note)"),
                             idAnnotation: record.get("note.idAnnotation"),
                             chapter: chapter,
@@ -180,6 +181,11 @@ router.get("/edit/:id", async (req, res) => {
                             fragment: record.get("selectedFragment.value"),
                             value: record.get("note.value")
                         });
+
+                        /* array of citation entries */
+                        if (!notes_temp.includes(notes_entry)) {
+                            notes_temp.push(notes_entry);
+                        };
                     };
 
                     /* witnesses */
@@ -291,7 +297,7 @@ router.get("/edit/:id", async (req, res) => {
                         citations.push(JSON.parse(el));
                     });
 
-                    /* ordered citations */
+                    /* order citations */
                     citations.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
@@ -299,7 +305,14 @@ router.get("/edit/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered notes */
+                    /* NOTES */
+                    /* parse each note in the array / string > JSON */
+                    var notes = [];
+                    notes_temp.forEach((el) => {
+                        notes.push(JSON.parse(el));
+                    });
+
+                    /* order notes */
                     notes.sort((a, b) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
@@ -307,7 +320,8 @@ router.get("/edit/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
-                    /* ordered witnesses */
+                    /* WITNESSES */
+                    /* order witnesses */
                     var witnesses = [];
                     witnesses_temp.forEach((witness) => {
                         if (!witnesses.includes(witness["properties"])) {
