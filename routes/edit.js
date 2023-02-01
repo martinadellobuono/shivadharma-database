@@ -24,7 +24,7 @@ router.get("/edit/:id", async (req, res) => {
     var authors = [];
     var editors = [];
     var chapter;
-    var translation = [];
+    var translation_temp = [];
     var commentary = [];
     var parallels = [];
     var citations = [];
@@ -45,9 +45,8 @@ router.get("/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
+                OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 
-                OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-
                 RETURN work.title, edition.title, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
                 `
             )
@@ -72,7 +71,9 @@ router.get("/edit/:id", async (req, res) => {
 
                     /* translations */
                     if (record.get("translation.value") !== null) {
-                        translation.push({
+
+                        /* translation entry */
+                        var translation_entry = JSON.stringify({
                             id: record.get("ID(translation)"),
                             idAnnotation: record.get("translation.idAnnotation"),
                             chapter: chapter,
@@ -84,6 +85,12 @@ router.get("/edit/:id", async (req, res) => {
                             value: record.get("translation.value"),
                             note: record.get("translation.note")
                         });
+
+                        /* array of translation entries */
+                        if (!translation_temp.includes(translation_entry)) {
+                            translation_temp.push(translation_entry);
+                        };
+
                     };
 
                     /* commentary */
@@ -169,6 +176,13 @@ router.get("/edit/:id", async (req, res) => {
                 },
                 onCompleted: () => {
 
+                    /* TRANSLATIONS */
+                    /* parse each translation in the array / string > JSON */
+                    var translation = [];
+                    translation_temp.forEach((el) => {
+                        translation.push(JSON.parse(el));
+                    });
+
                     /* ordered translations */
                     translation.sort((a, b) => {
                         return a.chapter - b.chapter;
@@ -180,6 +194,7 @@ router.get("/edit/:id", async (req, res) => {
                         return a.padaStart - b.padaStart;
                     });
 
+                    /* COMMENTARY */
                     /* ordered commentary */
                     commentary.sort((a, b) => {
                         return a.chapter - b.chapter;
@@ -307,7 +322,7 @@ router.get("/edit/:id", async (req, res) => {
                             citations: citations,
                             notes: notes,
                             witnesses: witnesses,
-                            
+
                             editionOf: "", // cambia
                             authorCommentary: "", // cambia
                             date: "", // cambia
