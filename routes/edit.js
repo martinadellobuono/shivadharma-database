@@ -324,8 +324,10 @@ router.get("/edit/:id", async (req, res) => {
                     /* order witnesses */
                     var witnesses = [];
                     witnesses_temp.forEach((witness) => {
-                        if (!witnesses.includes(witness["properties"])) {
-                            witnesses.push(witness["properties"]);
+                        if (witness) {
+                            if (!witnesses.includes(witness["properties"])) {
+                                witnesses.push(witness["properties"]);
+                            };
                         };
                     });
 
