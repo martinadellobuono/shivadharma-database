@@ -26,29 +26,53 @@
             <!-- lemma -->
             <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]["lemma"]; %>' data-input="text"><%= el["lemma"]["lemma"]; %></span>
 
+            <!-- hidden lemmaID -->
+            <span class="d-none" data-type="apparatus" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["lemma"]["idAnnotation"]; %>' data-input="text"><%= el["lemma"]["idAnnotation"]; %></span>
+
             <!-- lemma witnesses -->
-            <% var witnesses_list = []; %>
+            <% var lemma_witnesses_list = []; %>
 
             <% el["witnessesLemma"].forEach((witness) => { %>
-                <% witnesses_list.push(witness["siglum"]); %>
+                <% lemma_witnesses_list.push(witness["siglum"]); %>
             <% }); %>
 
-            <span data-name="manuscriptLemma" data-fill='<%= witnesses_list.join(" ; ") %>' data-input="list"></span>
+            <span data-name="manuscriptLemma" data-fill='<%= lemma_witnesses_list.join(" ; ") %>' data-input="list"></span>
             <% el["witnessesLemma"].forEach((witness) => { %>
                 <span data-type="apparatus" data-subtype="manuscriptLemma"><%= witness["siglum"]; %></span>
             <% }); %>
 
             <!-- lemma note -->
             <% if (el["lemma"]["notes"] !== "") { %>
-                <div class="mt-3">
-                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-apparatus-note-<%= el["lemma"]["id"]; %>" aria-expanded="false" aria-controls="collapse-apparatus-note-<%= el["lemma"]["id"]; %>"></span>
-                    <div class="collapse" id="collapse-apparatus-note-<%= el["lemma"]["id"]; %>">
-                        <div class="card card-body">
-                            <div data-type="apparatus" data-subtype="note" data-name="lemmaNotes" data-fill='<%= el["lemma"]["notes"]; %>' data-input="textarea"><%- el["lemma"]["notes"]; %></div>
-                        </div>
-                    </div>
-                </div>
+                <span class="note" data-type="apparatus" data-subtype="note" data-name="lemmaNotes" data-fill='<%= el["lemma"]["notes"]; %>' data-input="textarea"><%- el["lemma"]["notes"]; %></span>
             <% }; %>
+
+            <!-- variants -->
+            <% el["variants"].forEach((variant) => { %>
+
+                <!-- variant -->
+                <span class="ms-4 fst-italic" data-type="apparatus" data-subtype="variant" data-name='variant<%= variant["variant"]["number"]; %>' data-fill='<%= variant["variant"]["variant"]; %>' data-input="text"><%= variant["variant"]["variant"]; %></span>
+                
+                <!-- hidden variantID -->
+                <span class="d-none text-primary" data-type="apparatus" data-subtype="idVariant" data-name="idVariant<%= el['number'] %>" data-fill='<%= variant["variant"]["idAnnotation"]; %>' data-input="text"><%= variant["variant"]["idAnnotation"]; %></span>
+
+                <!-- witnesses-->
+                <% var variant_witnesses_list = []; %>
+
+                <% variant["witnessesVariant"].forEach((witness) => { %>
+                    <% variant_witnesses_list.push(witness["siglum"]); %>
+                <% }); %>
+
+                <span class="" data-name="manuscriptVariant<%= variant['variant']['number'] %>" data-fill='<%= variant_witnesses_list.join(" ; "); %>' data-input="list"></span>
+                <% variant["witnessesVariant"].forEach((witness) => { %>
+                    <span data-type="apparatus" data-subtype="witnessesVariant"><%= witness["siglum"]; %></span>
+                <% }); %>
+
+                <!-- notes -->
+                <% if (variant["variant"]["notes"] !== "") { %>
+                    <span class="note" data-type="apparatus" data-subtype="variantNotes" data-name="variant<%= variant['variant']['number'] %>Omission" data-fill='<%= variant["variant"]["notes"]; %>' data-input="textarea"><%- variant["variant"]["notes"]; %></span>
+                <% }; %>
+
+            <% }); %>
 
          <% }); %>
         

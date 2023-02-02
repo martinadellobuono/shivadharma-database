@@ -385,6 +385,7 @@ router.get("/edition/:id", async (req, res) => {
                                     /* lemma dict */
                                     var lemmaDict = JSON.stringify({
                                         id: segment["start"]["identity"]["low"],
+                                        idAnnotation: segment["start"]["properties"]["idLemma"],
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,

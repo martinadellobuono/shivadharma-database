@@ -386,6 +386,7 @@ router.get("/edit/:id", async (req, res) => {
                                     /* lemma dict */
                                     var lemmaDict = JSON.stringify({
                                         id: segment["start"]["identity"]["low"],
+                                        idAnnotation: segment["start"]["properties"]["idLemma"],
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,
@@ -450,7 +451,9 @@ router.get("/edit/:id", async (req, res) => {
 
                                             /* variant dict */
                                             var variantDict = JSON.stringify({
+                                                idAnnotation: segment["start"]["properties"]["idVariant"],
                                                 variant: variant,
+                                                number: segment["start"]["properties"]["number"],
                                                 notes: segment["start"]["properties"]["notes"]
                                             })
 
