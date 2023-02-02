@@ -216,9 +216,19 @@
                     <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
                     <!-- square bracket -->
                     <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
-                    <!-- lemma witnesses -->
+                    <!-- witnesses -->
                     <% el["witnessesLemma"].forEach((witness) => { %>
                       <span data-type="apparatus" data-subtype="witnessesLemma"><%= witness["siglum"]; %></span>
+                    <% }); %>
+
+                    <!-- variants -->
+                    <% el["variants"].forEach((variant) => { %>
+                      <!-- variant -->
+                      <span class="fst-italic ms-5" data-type="apparatus" data-subtype="variant"><%= variant["variant"]; %></span>
+                      <!-- witnesses -->
+                      <% variant["witnessesVariant"].forEach((witness) => { %>
+                        <span data-type="apparatus" data-subtype="variant"><%= witness["siglum"]; %></span>
+                      <% }); %>
                     <% }); %>
 
                   <% }); %>
