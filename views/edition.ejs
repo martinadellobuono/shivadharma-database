@@ -218,6 +218,7 @@
               <% apparatus.forEach((entry) => { %>
                 <div data-type="apparatus" data-subtype="entry">
                   <% entry.forEach((el) => { %>
+
                     <!-- location -->
                     <span data-type="apparatus" data-subtype="stanzaStart"><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
 
@@ -247,6 +248,7 @@
                         <span class="note" data-type="apparatus" data-subtype="variantNotes"><%- variant["variant"]["notes"]; %></span>
                       <% }; %>
                     <% }); %>
+                    
                   <% }); %>
                 </div>
               <% }); %>

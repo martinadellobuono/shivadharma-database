@@ -1,0 +1,62 @@
+<% apparatus.forEach((entry) => { %>
+
+    <div class="p-3 mt-3 bg-white container-apparatus" data-type="apparatus" data-subtype="apparatus-entry">
+        
+        <% entry.forEach((el) => { %>
+            
+            <!-- location -->
+            <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="number"><%= el["lemma"]["stanzaStart"]; %></span>
+            <span data-type="apparatus" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["lemma"]["padaStart"]; %>' data-input="checkbox"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+            
+            <span data-type="apparatus" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["lemma"]["stanzaEnd"]; %>' data-input="number">
+                <% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %>
+                    <span data-type="separator" data-subtype="enDash">&#x2013;</span><%= el["lemma"]["stanzaEnd"]; %>
+                <% }; %>
+            </span>
+
+            <span data-type="apparatus" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["lemma"]["padaEnd"]; %>' data-input="checkbox">
+                <% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %>
+                    <%= el["lemma"]["padaEnd"]; %>
+                <% }; %>
+            </span>
+
+            <!-- hidden location -->
+            <span class="d-none" data-type="apparatus" data-subtype="chapter" data-name="chapter" data-fill='<%= el["lemma"]["chapter"]; %>' data-input="number"></span>
+
+            <!-- lemma -->
+            <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]["lemma"]; %>' data-input="text"><%= el["lemma"]["lemma"]; %></span>
+
+            <!-- lemma witnesses -->
+            <% var witnesses_list = []; %>
+
+            <% el["witnessesLemma"].forEach((witness) => { %>
+                <% witnesses_list.push(witness["siglum"]); %>
+            <% }); %>
+
+            <span data-name="manuscriptLemma" data-fill='<%= witnesses_list.join(" ; ") %>' data-input="list"></span>
+            <% el["witnessesLemma"].forEach((witness) => { %>
+                <span data-type="apparatus" data-subtype="manuscriptLemma"><%= witness["siglum"]; %></span>
+            <% }); %>
+
+            <!-- lemma note -->
+            <% if (el["lemma"]["notes"] !== "") { %>
+                <div class="mt-3">
+                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-apparatus-note-<%= el["lemma"]["id"]; %>" aria-expanded="false" aria-controls="collapse-apparatus-note-<%= el["lemma"]["id"]; %>"></span>
+                    <div class="collapse" id="collapse-apparatus-note-<%= el["lemma"]["id"]; %>">
+                        <div class="card card-body">
+                            <div data-type="apparatus" data-subtype="note" data-name="lemmaNotes" data-fill='<%= el["lemma"]["notes"]; %>' data-input="textarea"><%- el["lemma"]["notes"]; %></div>
+                        </div>
+                    </div>
+                </div>
+            <% }; %>
+
+         <% }); %>
+        
+        <!-- modify button -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+            <button class="btn btn-sm btn-warning modify-btn" type="button" data-type="apparatus">Modify</button>
+        </div>
+
+    </div>
+
+<% }); %>

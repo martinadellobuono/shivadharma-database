@@ -384,6 +384,7 @@ router.get("/edition/:id", async (req, res) => {
 
                                     /* lemma dict */
                                     var lemmaDict = JSON.stringify({
+                                        id: segment["start"]["identity"]["low"],
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,
@@ -447,12 +448,10 @@ router.get("/edition/:id", async (req, res) => {
                                             var variant = segment["start"]["properties"]["value"];
 
                                             /* variant dict */
-                                            /* try */
                                             var variantDict = JSON.stringify({
                                                 variant: variant,
                                                 notes: segment["start"]["properties"]["notes"]
                                             })
-                                            /* / */
 
                                             /* array of variants */
                                             if (!variants_arr.includes(variantDict)) {
