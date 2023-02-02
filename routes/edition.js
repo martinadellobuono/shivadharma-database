@@ -368,43 +368,47 @@ router.get("/edition/:id", async (req, res) => {
                     var lemmas = [];
                     var lemmas_attested_in_relations = [];
                     lemmaWitness_temp.forEach((el) => {
+                        if (el !== null) {
+                            /* location */
+                            var chapter = el["start"]["properties"]["chapter"];
+                            var stanzaStart = el["start"]["properties"]["stanzaStart"];
+                            var stanzaEnd = el["start"]["properties"]["stanzaEnd"];
+                            var padaStart = el["start"]["properties"]["padaStart"];
+                            var padaEnd = el["start"]["properties"]["padaEnd"];
 
-                        /* location */
-                        var chapter = el["start"]["properties"]["chapter"];
-                        var stanzaStart = el["start"]["properties"]["stanzaStart"];
-                        var stanzaEnd = el["start"]["properties"]["stanzaEnd"];
-                        var padaStart = el["start"]["properties"]["padaStart"];
-                        var padaEnd = el["start"]["properties"]["padaEnd"];
+                            el["segments"].forEach((segment) => {
+                                if (segment["start"]["labels"] == "Lemma") {
 
-                        el["segments"].forEach((segment) => {
-                            if (segment["start"]["labels"] == "Lemma") {
+                                    /* lemma */
+                                    var lemma = segment["start"]["properties"]["value"];
 
-                                /* array of lemmas */
-                                var lemma = segment["start"]["properties"]["value"];
+                                    /* lemma dict */
+                                    var lemmaDict = JSON.stringify({
+                                        lemma: lemma,
+                                        chapter: chapter,
+                                        stanzaStart: stanzaStart,
+                                        stanzaEnd: stanzaEnd,
+                                        padaStart: padaStart,
+                                        padaEnd: padaEnd,
+                                        notes: segment["start"]["properties"]["notes"]
+                                    })
 
-                                var lemmaDict = JSON.stringify({
-                                    chapter: chapter,
-                                    lemma: lemma,
-                                    stanzaStart: stanzaStart,
-                                    stanzaEnd: stanzaEnd,
-                                    padaStart: padaStart,
-                                    padaEnd: padaEnd
-                                })
-
-                                if (!lemmas.includes(lemmaDict)) {
-                                    lemmas.push(lemmaDict);
-                                };
-
-                                /* array of attested in relation of lemma with witnesses */
-                                if (segment["relationship"]["type"] == "ATTESTED_IN") {
-                                    var witness_relations = JSON.stringify(segment);
-                                    if (!lemmas_attested_in_relations.includes(witness_relations)) {
-                                        lemmas_attested_in_relations.push(witness_relations);
+                                    /* array of lemmas */
+                                    if (!lemmas.includes(lemmaDict)) {
+                                        lemmas.push(lemmaDict);
                                     };
-                                };
 
-                            };
-                        });
+                                    /* array of attested in relation of lemma with witnesses */
+                                    if (segment["relationship"]["type"] == "ATTESTED_IN") {
+                                        var witness_relations = JSON.stringify(segment);
+                                        if (!lemmas_attested_in_relations.includes(witness_relations)) {
+                                            lemmas_attested_in_relations.push(witness_relations);
+                                        };
+                                    };
+
+                                };
+                            });
+                        };
                     });
 
                     /* create a lemma / witnesses dict */
@@ -439,10 +443,20 @@ router.get("/edition/:id", async (req, res) => {
                                     el["segments"].forEach((segment) => {
                                         if (segment["start"]["labels"] == "Variant") {
 
-                                            /* array of variants */
+                                            /* variant */
                                             var variant = segment["start"]["properties"]["value"];
-                                            if (!variants_arr.includes(variant)) {
-                                                variants_arr.push(variant);
+
+                                            /* variant dict */
+                                            /* try */
+                                            var variantDict = JSON.stringify({
+                                                variant: variant,
+                                                notes: segment["start"]["properties"]["notes"]
+                                            })
+                                            /* / */
+
+                                            /* array of variants */
+                                            if (!variants_arr.includes(variantDict)) {
+                                                variants_arr.push(variantDict);
                                             };
 
                                             /* array of attested in relation of variant with witnesses */
@@ -459,7 +473,11 @@ router.get("/edition/:id", async (req, res) => {
                             };
                         });
 
-                        variants_arr.forEach((variant) => {
+                        variants_arr.forEach((el) => {
+
+                            el = JSON.parse(el);
+                            var variant = el["variant"];
+                            var variantDict = el;
                             var variant_witnesses_arr = [];
 
                             /* witnesses for each variant */
@@ -477,7 +495,7 @@ router.get("/edition/:id", async (req, res) => {
 
                             /* array of variant entry dict */
                             variants_dict.push({
-                                variant: variant,
+                                variant: variantDict,
                                 witnessesVariant: variant_witnesses_arr
                             });
                         });

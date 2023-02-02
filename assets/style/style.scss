@@ -166,6 +166,10 @@ p {
     margin-bottom: 10px !important;
 }
 
+.note p {
+    display: inline;
+}
+
 /* cols */
 .specific-cols.col-md-1 {
     width: 3% !important;
