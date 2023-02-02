@@ -368,7 +368,7 @@ router.get("/edition/:id", async (req, res) => {
                     var lemmas = [];
                     var lemmas_attested_in_relations = [];
                     lemmaWitness_temp.forEach((el) => {
-                        
+
                         /* location */
                         var chapter = el["start"]["properties"]["chapter"];
                         var stanzaStart = el["start"]["properties"]["stanzaStart"];
@@ -381,7 +381,7 @@ router.get("/edition/:id", async (req, res) => {
 
                                 /* array of lemmas */
                                 var lemma = segment["start"]["properties"]["value"];
-                                
+
                                 var lemmaDict = JSON.stringify({
                                     chapter: chapter,
                                     lemma: lemma,
@@ -409,10 +409,10 @@ router.get("/edition/:id", async (req, res) => {
 
                     /* create a lemma / witnesses dict */
                     lemmas.forEach((el) => {
-                        
+
                         el = JSON.parse(el);
                         var lemma = el["lemma"];
-                        var lemmaDict = el;                        
+                        var lemmaDict = el;
                         var lemma_witnesses_arr = [];
                         var variants_arr = [];
                         var variant_witnesses_data_arr = [];
@@ -492,6 +492,23 @@ router.get("/edition/:id", async (req, res) => {
                         /* array of app entry */
                         apparatus.push(app_entry);
 
+                    });
+
+                    /* order the apparatus */
+                    apparatus.sort((a, b) => {
+                        return a[0]["lemma"]["chapter"] - b[0]["lemma"]["chapter"];
+                    });
+                    apparatus.sort((a, b) => {
+                        return a[0]["lemma"]["stanzaStart"] - b[0]["lemma"]["stanzaStart"];
+                    });
+                    apparatus.sort((a, b) => {
+                        return a[0]["lemma"]["padaStart"] - b[0]["lemma"]["padaStart"];
+                    });
+                    apparatus.sort((a, b) => {
+                        return a[0]["lemma"]["stanzaEnd"] - b[0]["lemma"]["stanzaEnd"];
+                    });
+                    apparatus.sort((a, b) => {
+                        return a[0]["lemma"]["padaEnd"] - b[0]["lemma"]["padaEnd"];
                     });
 
                     /* PAGE RENDERING */
