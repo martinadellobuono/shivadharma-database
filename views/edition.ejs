@@ -204,7 +204,27 @@
         <button type="button" class="btn btn-sm btn-yellow" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="collapse-apparatus">Apparatus</button>
         <div class="collapse" id="collapse-apparatus">
           <div class="card card-body">
+            <% if (apparatus) { %>
+              <% apparatus.forEach((entry) => { %>
+                <div data-type="apparatus" data-subtype="entry">
+                  <% entry.forEach((el) => { %>
 
+                    <!-- location -->
+                    <span data-type="apparatus" data-subtype="stanzaStart"><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
+
+                    <!-- lemma -->
+                    <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
+                    <!-- square bracket -->
+                    <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
+                    <!-- lemma witnesses -->
+                    <% el["witnessesLemma"].forEach((witness) => { %>
+                      <span data-type="apparatus" data-subtype="witnessesLemma"><%= witness["siglum"]; %></span>
+                    <% }); %>
+
+                  <% }); %>
+                </div>
+              <% }); %>
+            <% }; %>
           </div>
         </div>
 
@@ -212,7 +232,7 @@
         <button type="button" class="btn btn-sm btn-blue" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="collapse-notes">Notes</button>
         <div class="collapse" id="collapse-notes">
           <div class="card card-body">
-            <% if (typeof notes !== "undefined") { %>
+            <% if (notes) { %>
               <% notes.forEach((el) => { %>
               <div data-type="note" data-subtype="note">
                 <span class="me-1" data-type="location" data-subtype="location-top">
