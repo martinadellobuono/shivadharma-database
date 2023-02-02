@@ -88,7 +88,7 @@ router.get("/edit/:id", async (req, res) => {
                     if (record.get("translation.value") !== null) {
                         /* translation entry */
                         var translation_entry = JSON.stringify({
-                            id: record.get("ID(translation)"),
+                            id: record.get("ID(translation)")["low"],
                             idAnnotation: record.get("translation.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
@@ -110,7 +110,7 @@ router.get("/edit/:id", async (req, res) => {
                     if (record.get("commentary.value") !== null) {
                         /* commentary entry */
                         var commentary_entry = JSON.stringify({
-                            id: record.get("ID(commentary)"),
+                            id: record.get("ID(commentary)")["low"],
                             idAnnotation: record.get("commentary.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
@@ -137,7 +137,7 @@ router.get("/edit/:id", async (req, res) => {
                         /* parallels entry */
                         var parallels_entry = JSON.stringify({
                             [work]: {
-                                id: record.get("ID(parallel)"),
+                                id: record.get("ID(parallel)")["low"],
                                 idAnnotation: record.get("parallel.idAnnotation"),
                                 chapter: chapter,
                                 stanzaStart: record.get("selectedFragment.stanzaStart"),
@@ -165,7 +165,7 @@ router.get("/edit/:id", async (req, res) => {
                     if (record.get("citation.value") !== null) {
                         /* citation entry */
                         var citations_entry = JSON.stringify({
-                            id: record.get("ID(citation)"),
+                            id: record.get("ID(citation)")["low"],
                             idAnnotation: record.get("citation.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),
@@ -186,7 +186,7 @@ router.get("/edit/:id", async (req, res) => {
                     if (record.get("note.value") !== null) {
                         /* notes entry */
                         var notes_entry = JSON.stringify({
-                            id: record.get("ID(note)"),
+                            id: record.get("ID(note)")["low"],
                             idAnnotation: record.get("note.idAnnotation"),
                             chapter: chapter,
                             stanzaStart: record.get("selectedFragment.stanzaStart"),

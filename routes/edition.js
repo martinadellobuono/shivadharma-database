@@ -32,6 +32,11 @@ router.get("/edition/:id", async (req, res) => {
     var notes_temp = [];
     var witnesses_temp = [];
 
+    //////////////////////////////////
+    var lemmaWitness_temp = [];
+    var lemmaVariantWitness_temp = [];
+    //////////////////////////////////
+
     const session = driver.session();
     try {
         await session.readTransaction(tx => tx
@@ -49,7 +54,12 @@ router.get("/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
 
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness
+                OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
+                OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
+
+
+
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness
                 `
             )
             .subscribe({
@@ -132,7 +142,7 @@ router.get("/edition/:id", async (req, res) => {
                     /* parallels */
                     if (record.get("parallel.value") !== null) {
                         var work = record.get("parallelWork.title") + "___" + record.get("parallelAuthor.name");
-                        
+
                         /* parallels entry */
                         var parallels_entry = JSON.stringify({
                             [work]: {
@@ -207,8 +217,129 @@ router.get("/edition/:id", async (req, res) => {
                         witnesses_temp.push(record.get("witness"));
                     };
 
+                    /* lemma / witnesses */
+                    if (!lemmaWitness_temp.includes(record.get("lemmaWitness"))) {
+                        lemmaWitness_temp.push(record.get("lemmaWitness"));
+                    };
+
+                    /* lemma / variant / witnesses */
+                    if (!lemmaVariantWitness_temp.includes(record.get("lemmaVariantWitness"))) {
+                        lemmaVariantWitness_temp.push(record.get("lemmaVariantWitness"));
+                    };
+
                 },
                 onCompleted: () => {
+
+                    ////////////////////////////////////////////////////////////
+                    /* create an array of lemmas */
+                    var lemmas = [];
+                    var lemmas_attested_in_relations = [];
+                    lemmaWitness_temp.forEach((el) => {
+                        el["segments"].forEach((segment) => {
+                            if (segment["start"]["labels"] == "Lemma") {
+
+                                /* array of lemmas */
+                                var lemma = segment["start"]["properties"]["value"];
+                                if (!lemmas.includes(lemma)) {
+                                    lemmas.push(lemma);
+                                };
+
+                                /* array of attested in relation of lemma with witnesses */
+                                if (segment["relationship"]["type"] == "ATTESTED_IN") {
+                                    var witness_relations = JSON.stringify(segment);
+                                    if (!lemmas_attested_in_relations.includes(witness_relations)) {
+                                        lemmas_attested_in_relations.push(witness_relations);
+                                    };
+                                };
+
+                            };
+                        });
+                    });
+
+                    /* create a lemma / witnesses dict */
+                    lemmas.forEach((lemma) => {
+
+                        var app_entry = [];
+                        var lemma_witnesses_arr = [];
+                        var variants_arr = [];
+                        var variant_witnesses_data_arr = [];
+                        var variants_dict = [];
+
+                        /* witnesses for each lemma */
+                        lemmas_attested_in_relations.forEach((relation) => {
+                            /* relation of lemma with witnesses / string > JSON */
+                            relation = JSON.parse(relation);
+
+                            /* array of witnesses for each lemma */
+                            if (relation["start"]["properties"]["value"] == lemma) {
+                                if (!lemma_witnesses_arr.includes(relation["end"]["properties"]["siglum"])) {
+                                    lemma_witnesses_arr.push(relation["end"]["properties"]["siglum"]);
+                                };
+                            };
+                        });
+
+                        /* try */
+                        /* array of variants for each lemma */
+                        lemmaVariantWitness_temp.forEach((el) => {
+                            if (el["start"]["labels"] == "Lemma") {
+                                if (el["start"]["properties"]["value"] == lemma) {
+                                    el["segments"].forEach((segment) => {
+                                        if (segment["start"]["labels"] == "Variant") {
+
+                                            /* array of variants */
+                                            var variant = segment["start"]["properties"]["value"];
+                                            if (!variants_arr.includes(variant)) {
+                                                variants_arr.push(variant);
+                                            };
+
+                                            /* array of attested in relation of variant with witnesses */
+                                            if (segment["relationship"]["type"] == "ATTESTED_IN") {
+                                                var witness_relations = JSON.stringify(segment);
+                                                if (!variant_witnesses_data_arr.includes(witness_relations)) {
+                                                    variant_witnesses_data_arr.push(witness_relations);
+                                                };
+                                            };
+
+                                        };
+                                    });
+                                };
+                            };
+                        });
+
+                        variants_arr.forEach((variant) => {
+
+                            var variant_witnesses_arr = [];
+
+                            /* witnesses for each variant */
+                            variant_witnesses_data_arr.forEach((relation) => {
+                                /* relation of variant with witnesses / string > JSON */
+                                relation = JSON.parse(relation);
+
+                                /* array of witnesses for each variant */
+                                if (relation["start"]["properties"]["value"] == variant) {
+                                    if (!variant_witnesses_arr.includes(relation["end"]["properties"]["siglum"])) {
+                                        variant_witnesses_arr.push(relation["end"]["properties"]["siglum"]);
+                                    };
+                                };
+                            });
+
+                            /* array of variant entry dict */
+                            variants_dict.push({
+                                variant: variant,
+                                witnesses: variant_witnesses_arr
+                            });
+                        });
+
+                        /* app entry dict */
+                        app_entry.push({
+                            lemma: lemma,
+                            witnessesLemma: lemma_witnesses_arr,
+                            variants: variants_dict
+                        });
+
+                    });
+                    ////////////////////////////////////////////////////////////
+
 
                     /* TRANSLATIONS */
                     /* parse each translation in the array / string > JSON */
