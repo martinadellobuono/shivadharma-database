@@ -98,6 +98,7 @@ router.post("/addApparatus/:id",
                             SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
                         ON MATCH
                             SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
+                        
                         MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
 
                         MERGE (lemma:Lemma {idLemma: "${req.body.idLemma}"})
@@ -105,7 +106,9 @@ router.post("/addApparatus/:id",
                             SET lemma.value = "${lemmaReq}", lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
                         ON MATCH
                             SET lemma.value = "${lemmaReq}", lemma.truncation = "${req.body.lemmaTruncation}", lemma.notes = "${req.body.lemmaNotes}"
+                        
                         MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
+
                         FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
                             MERGE (witness:Witness {siglum: wit})
                             MERGE (lemma)-[:ATTESTED_IN]->(witness)
@@ -118,10 +121,16 @@ router.post("/addApparatus/:id",
                             SET variant.value = "${variantReq}", variant.number = "${i}", variant.notes = "${req.body[notesVariant]}"
                         
                         MERGE (lemma)-[:HAS_VARIANT]->(variant)
+                        
                         FOREACH (wit IN split("${req.body[manuscriptVariant]}", " ; ") |
                             MERGE (witness:Witness {siglum: wit})
                             MERGE (variant)-[:ATTESTED_IN]->(witness)
                         )
+
+                        WITH lemma
+                        OPTIONAL MATCH (lemma)-[wl:ATTESTED_IN]->(l:Witness)
+                        WHERE lemma.idLemma = "${req.body.idLemma}" AND NOT "${req.body.manuscriptLemma}" CONTAINS l.siglum
+                        DELETE wl
 
                         RETURN *
                         `

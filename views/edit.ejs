@@ -12,8 +12,7 @@
         <button type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></button>
         <h1 class="h4 d-inline">
           <% if (title) { %>
-            <span data-type="header" data-subtype="title"><%= title; %></span>
-            <span data-type="separator" data-subtype="coma">, </span>
+            <span data-type="header" data-subtype="title"><%= title; %></span><span data-type="separator" data-subtype="coma">, </span>
           <% }; %>
           <% if (authors) { %>
             <% authors.forEach((author) => { %>

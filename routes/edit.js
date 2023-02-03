@@ -370,6 +370,13 @@ router.get("/edit/:id", async (req, res) => {
                     var lemmas_attested_in_relations = [];
                     lemmaWitness_temp.forEach((el) => {
                         if (el !== null) {
+
+                            /* selected fragment */
+                            var selectedFragment;
+                            if (el["start"]["labels"] == "SelectedFragment") {
+                                selectedFragment = el["start"]["properties"]["value"];
+                            };
+
                             /* location */
                             var chapter = el["start"]["properties"]["chapter"];
                             var stanzaStart = el["start"]["properties"]["stanzaStart"];
@@ -387,6 +394,7 @@ router.get("/edit/:id", async (req, res) => {
                                     var lemmaDict = JSON.stringify({
                                         id: segment["start"]["identity"]["low"],
                                         idAnnotation: segment["start"]["properties"]["idLemma"],
+                                        selectedFragment: selectedFragment,
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,

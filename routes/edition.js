@@ -450,6 +450,7 @@ router.get("/edition/:id", async (req, res) => {
 
                                             /* variant dict */
                                             var variantDict = JSON.stringify({
+                                                idAnnotation: segment["start"]["properties"]["idVariant"],
                                                 variant: variant,
                                                 notes: segment["start"]["properties"]["notes"]
                                             })

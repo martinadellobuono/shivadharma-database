@@ -110,58 +110,23 @@ let textarea = () => {
         selector: ".textarea-container textarea",
         resize: "both",
         width: "100%",
-        plugins: "preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons",
+        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
-        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
-        toolbar_sticky: true,
+        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+        toolbar_sticky: false,
         autosave_ask_before_unload: true,
         autosave_interval: "30s",
         autosave_prefix: "{path}{query}-{id}-",
         autosave_restore_when_empty: false,
         autosave_retention: "2m",
         image_advtab: true,
-        link_list: [
-            { title: "My page 1", value: "https://www.tiny.cloud" },
-            { title: "My page 2", value: "http://www.moxiecode.com" }
-        ],
-        image_list: [
-            { title: "My page 1", value: "https://www.tiny.cloud" },
-            { title: "My page 2", value: "http://www.moxiecode.com" }
-        ],
-        image_class_list: [
-            { title: "None", value: "" },
-            { title: "Some class", value: "class-name" }
-        ],
-        importcss_append: true,
-        file_picker_callback: function (callback, value, meta) {
-            /* Provide file and text for the link dialog */
-            if (meta.filetype === "file") {
-                callback("https://www.google.com/logos/google.jpg", { text: "My text" });
-            };
-            /* Provide image and alt text for the image dialog */
-            if (meta.filetype === "image") {
-                callback("https://www.google.com/logos/google.jpg", { alt: "My alt text" });
-            };
-            /* Provide alternative source and posted for the media dialog */
-            if (meta.filetype === "media") {
-                callback("movie.mp4", { source2: "alt.ogg", poster: "https://www.google.com/logos/google.jpg" });
-            };
-        },
-        templates: [
-            { title: "New Table", description: "creates a new table", content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
-            { title: "Starting my story", description: "A cure for writers block", content: "Once upon a time..." },
-            { title: "New list with dates", description: "New List with dates", content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
-        ],
         template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
         template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
         height: "65vh",
         image_caption: true,
         quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
-        noneditable_noneditable_class: "mceNonEditable",
         toolbar_mode: "sliding",
         contextmenu: "link image table",
-        skin: useDarkMode ? "oxide-dark" : "oxide",
-        content_css: useDarkMode ? "dark" : "default",
         content_style: "body {font-family:Helvetica,Arial,sans-serif; font-size:16px}" +
             "[data-type='milestone'][data-start='start']::before {content: '\u25CF';}" +
             "[data-type='annotation-object'] {display: inline;}" +
@@ -1096,8 +1061,9 @@ let modifyAnnotations = () => {
 
             /* clone variant containers */
             let cloneVariantContainers = () => {
-                var nVariants = dataContainer.querySelectorAll("[data-subtype='variant']").length;
-                for (var i = 0; i < nVariants; i++) {
+                var variants = dataContainer.querySelectorAll("[data-subtype='variant']");
+
+                for (var i = 0; i < variants.length; i++) {
                     form.querySelector("[data-clone='variant']").click();
                 };
             };
@@ -1127,7 +1093,9 @@ let modifyAnnotations = () => {
                     let numbers = () => {
                         var numbers = form.querySelectorAll("[type='number'][name='" + name + "']");
                         numbers.forEach((number) => {
+                            /* fill the number */
                             number.value = val;
+
                             /* live check */
                             if (type == "apparatus" && el.getAttribute("data-name") !== "chapter") {
                                 document.getElementById("live-" + name).innerHTML = val;
@@ -1139,12 +1107,9 @@ let modifyAnnotations = () => {
                     let texts = () => {
                         var texts = form.querySelectorAll("[type='text'][name='" + name + "']");
                         texts.forEach((text) => {
-                            /* print value */
+                            /* fill the text */
                             text.value = val;
-                            /* selected fragment */
-                            if (name == "lemma") {
-                                form.querySelector("input[name='selectedFragment']").value = val;
-                            };
+                            
                             /* live check */
                             if (type == "apparatus") {
                                 if (document.getElementById("live-" + name) !== null) {
@@ -1184,7 +1149,9 @@ let modifyAnnotations = () => {
                     let lists = () => {
                         var lists = form.querySelectorAll("[data-list][name='" + name + "']");
                         lists.forEach((list) => {
+                            /* fill the list */
                             list.value = val;
+                            
                             /* live check */
                             if (type == "apparatus") {
                                 document.getElementById("live-" + name).innerHTML = val;
@@ -1196,10 +1163,13 @@ let modifyAnnotations = () => {
                     let textareas = () => {
                         var textareas = form.querySelectorAll("textarea[name='" + name + "']");
                         textareas.forEach((textarea) => {
+
+                            /* fill the textarea */
                             let printTxt = () => {
-                                tinyMCE.get(textarea.id).setContent(val);
+                                tinyMCE.get(textarea.id).setContent(val)
                             };
-                            setTimeout(printTxt, 2000);
+                            setTimeout(printTxt, 3000);
+
                             /* live check */
                             if (type == "apparatus") {
                                 var idTextarea = name.split("Omission")[0];
@@ -1231,6 +1201,8 @@ let modifyAnnotations = () => {
 
             /* remove empty clones */
             let removeEmptyClones = () => {
+                var emptyClones = form.querySelectorAll(".cloned-el[data-cloned='variant']");
+
                 var emptyClones = form.querySelectorAll(".cloned-el[data-cloned='variant']");
                 for (var i = 0; i < emptyClones.length; i++) {
                     if (emptyClones[i].querySelector("input[data-subtype='id-variant']").value == "") {
