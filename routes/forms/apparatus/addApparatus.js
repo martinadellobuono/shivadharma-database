@@ -127,10 +127,10 @@ router.post("/addApparatus/:id",
                             MERGE (variant)-[:ATTESTED_IN]->(witness)
                         )
 
-                        WITH lemma
-                        OPTIONAL MATCH (lemma)-[wl:ATTESTED_IN]->(l:Witness)
-                        WHERE lemma.idLemma = "${req.body.idLemma}" AND NOT "${req.body.manuscriptLemma}" CONTAINS l.siglum
-                        DELETE wl
+                        WITH lemma, variant
+                        OPTIONAL MATCH variant_relation = (lemma)-[:HAS_VARIANT]->(variant)-->()
+                        WHERE variant.idVariant = ""
+                        DELETE variant_relation
 
                         RETURN *
                         `

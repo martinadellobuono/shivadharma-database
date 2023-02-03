@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs();
     currentDate();
     currentTime();
-    textarea();
     autocomplete();
     dependingForms();
     cloneEl();
@@ -103,11 +102,11 @@ let currentTime = () => {
     window.setInterval(time, 1000);
 }
 
-/* textarea */
-let textarea = () => {
+/* file textarea */
+let fileTextarea = () => {
     var useDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     tinymce.init({
-        selector: ".textarea-container textarea",
+        selector: ".file-container textarea",
         resize: "both",
         width: "100%",
         plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
@@ -151,17 +150,15 @@ let textarea = () => {
 
             /* KEYUP */
             /* omissions */
-            ed.on("keyup", (e) => {
-                /* lemma */
+            /* ed.on("keyup", (e) => {
                 if (ed.id == "lemmaOmissionEditor") {
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                 } else {
-                    /* variant */
                     if (document.getElementById("live-" + ed.id) != null) {
                         document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                     };
                 };
-            });
+            }); */
 
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
@@ -416,12 +413,12 @@ let cloneEl = () => {
                     };
                 });
 
-                /* omission comment blocks */
+                /* notes */
                 /* remove the cloned textarea */
                 var omissionTextarea = cloned.querySelector("[data-subtype='omissionComment']");
                 omissionTextarea.remove();
                 /* create a new textarea */
-                var container = cloned.querySelector(".textarea-container");
+                var container = cloned.querySelector(".apparatus-container");
                 var newTextarea = document.createElement("textarea");
                 container.innerHTML = "";
                 container.appendChild(newTextarea);
@@ -434,7 +431,33 @@ let cloneEl = () => {
                 newTextarea.setAttribute("name", "variant" + i + "Omission");
                 newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
                 /* initialize the new textarea */
-                setTimeout("textarea()", 500);
+                let textarea = () => {
+                    /* init textareas */
+                    var selector = ".apparatus-container textarea";
+                    tinymce.init({
+                        selector: selector,
+                        resize: "both",
+                        width: "100%",
+                        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+                        menubar: "file edit view insert format tools table help",
+                        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+                        toolbar_sticky: false,
+                        autosave_ask_before_unload: true,
+                        autosave_interval: "30s",
+                        autosave_prefix: "{path}{query}-{id}-",
+                        autosave_restore_when_empty: false,
+                        autosave_retention: "2m",
+                        image_advtab: true,
+                        template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+                        template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+                        height: "50vh",
+                        image_caption: true,
+                        quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+                        toolbar_mode: "sliding",
+                        contextmenu: "link image table"
+                    });
+                };
+                setTimeout(textarea, 500);
 
                 /* generate an ID for each annotation */
                 var idInputs = cloned.querySelectorAll("input.id-input");
@@ -484,8 +507,34 @@ let cloneEl = () => {
                     newTextarea.setAttribute("aria-hidden", "true");
                     newTextarea.setAttribute("name", name);
                     newTextarea.setAttribute("id", name);
+
                     /* initialize the new textarea */
-                    setTimeout("textarea()", 500);
+                    /* let textarea = () => {
+                        var selector = ".apparatus-container textarea";
+                        tinymce.init({
+                            selector: selector,
+                            resize: "both",
+                            width: "100%",
+                            plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+                            menubar: "file edit view insert format tools table help",
+                            toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+                            toolbar_sticky: false,
+                            autosave_ask_before_unload: true,
+                            autosave_interval: "30s",
+                            autosave_prefix: "{path}{query}-{id}-",
+                            autosave_restore_when_empty: false,
+                            autosave_retention: "2m",
+                            image_advtab: true,
+                            template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+                            template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+                            height: "50vh",
+                            image_caption: true,
+                            quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+                            toolbar_mode: "sliding",
+                            contextmenu: "link image table"
+                        });
+                    };
+                    setTimeout(textarea, 500); */
                 });
             };
 
@@ -842,6 +891,31 @@ let annotations = () => {
                     var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
                     safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation); */
 
+                    /* init textareas */
+                    var selector = "." + category + "-container textarea";
+                    tinymce.init({
+                        selector: selector,
+                        resize: "both",
+                        width: "100%",
+                        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+                        menubar: "file edit view insert format tools table help",
+                        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+                        toolbar_sticky: false,
+                        autosave_ask_before_unload: true,
+                        autosave_interval: "30s",
+                        autosave_prefix: "{path}{query}-{id}-",
+                        autosave_restore_when_empty: false,
+                        autosave_retention: "2m",
+                        image_advtab: true,
+                        template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+                        template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+                        height: "50vh",
+                        image_caption: true,
+                        quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+                        toolbar_mode: "sliding",
+                        contextmenu: "link image table"
+                    });
+
                 } else {
                     /* show default settings */
                     var formToHide = document.querySelector(".annotation-form." + category);
@@ -1053,6 +1127,31 @@ let modifyAnnotations = () => {
             var dataContainer = btn.closest(".container-" + type);
             var data = dataContainer.querySelectorAll("[data-name]");
 
+            /* init textareas */
+            var selector = "." + type + "-container textarea";
+            tinymce.init({
+                selector: selector,
+                resize: "both",
+                width: "100%",
+                plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+                menubar: "file edit view insert format tools table help",
+                toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+                toolbar_sticky: false,
+                autosave_ask_before_unload: true,
+                autosave_interval: "30s",
+                autosave_prefix: "{path}{query}-{id}-",
+                autosave_restore_when_empty: false,
+                autosave_retention: "2m",
+                image_advtab: true,
+                template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+                template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+                height: "50vh",
+                image_caption: true,
+                quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+                toolbar_mode: "sliding",
+                contextmenu: "link image table"
+            });
+
             /* click on the annotate tab */
             let clickTab = () => {
                 var tab = document.querySelector("[data-bs-target='#annotate-" + type + "']");
@@ -1109,7 +1208,7 @@ let modifyAnnotations = () => {
                         texts.forEach((text) => {
                             /* fill the text */
                             text.value = val;
-                            
+
                             /* live check */
                             if (type == "apparatus") {
                                 if (document.getElementById("live-" + name) !== null) {
@@ -1151,7 +1250,7 @@ let modifyAnnotations = () => {
                         lists.forEach((list) => {
                             /* fill the list */
                             list.value = val;
-                            
+
                             /* live check */
                             if (type == "apparatus") {
                                 document.getElementById("live-" + name).innerHTML = val;

@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body>
+<body onload="fileTextarea()">
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -51,7 +51,7 @@
           <input class="btn btn-sm btn-light border" type="submit" value="Submit">
         </form>
         <!-- file -->
-        <form class="textarea-container" id="base-text" method="post" action="/publish/<%= id %>">
+        <form class="file-container" id="base-text" method="post" action="/publish/<%= id %>">
           <!-- check modifications -->
           <div class="modal fade" id="check-modifications" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
