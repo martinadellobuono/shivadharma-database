@@ -51,19 +51,11 @@ router.post("/addApparatus/:id",
 
                     if (padaStartArr == undefined) {
                         padaStartArr = [];
-                    } else {
-                        if (padaStartArr.includes("a") && padaStartArr.includes("b") && padaStartArr.includes("c") && padaStartArr.includes("d") && padaStartArr.includes("e") && padaStartArr.includes("f")) {
-                            padaStartArr = [];
-                        };
                     };
 
                     var padaEndArr = req.body.padaEnd;
                     if (padaEndArr == undefined) {
                         padaEndArr = [];
-                    } else {
-                        if (padaEndArr.includes("a") && padaEndArr.includes("b") && padaEndArr.includes("c") && padaEndArr.includes("d") && padaEndArr.includes("e") && padaEndArr.includes("f")) {
-                            padaEndArr = [];
-                        };
                     };
 
                     /* id variant */
@@ -126,11 +118,6 @@ router.post("/addApparatus/:id",
                             MERGE (witness:Witness {siglum: wit})
                             MERGE (variant)-[:ATTESTED_IN]->(witness)
                         )
-
-                        WITH lemma, variant
-                        OPTIONAL MATCH variant_relation = (lemma)-[:HAS_VARIANT]->(variant)-->()
-                        WHERE variant.idVariant = ""
-                        DELETE variant_relation
 
                         RETURN *
                         `
