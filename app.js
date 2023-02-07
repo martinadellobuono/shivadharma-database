@@ -46,14 +46,24 @@ app.use("/views", express.static("views"));
 /* body parsing limits */
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: false, parameterLimit: 50000 })); /* extended: true */
+app.use(bodyParser.urlencoded({
+    limit: "50mb",
+    extended: false,
+    parameterLimit: 50000
+}));
 
-/* express flash / session */
+/* express flash */
 app.use(flash());
+
+/* sessions */
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        maxAge: oneDay
+    }
 }));
 
 /* passport */
@@ -164,7 +174,7 @@ app.get("/login", checkNotAuthenticated, async (req, res) => {
                         });
                     },
                     onCompleted: () => {
-                        console.log("List of users ready")
+                        console.log("List of users ready");
                     },
                     onError: err => {
                         console.log(err)
@@ -183,11 +193,21 @@ app.get("/login", checkNotAuthenticated, async (req, res) => {
     };
 });
 
-app.post("/login", checkNotAuthenticated, passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true
-}));
+app.post("/login", checkNotAuthenticated,
+
+    /* if the user is not authenticates, send her to login */
+    passport.authenticate("local", {
+        failureRedirect: "/login",
+        failureFlash: true
+    }),
+
+    /* cookie */
+    (req, res) => {
+        req.session.user = req.body.email;
+        res.cookie("session", req.session, { expire: 500000 + Date.now() });
+        res.redirect("/");
+    }
+);
 
 /* logout */
 app.delete("/logout", (req, res) => {

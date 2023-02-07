@@ -13,9 +13,20 @@ router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.get("/edition/:id", async (req, res) => {
+
+    /* get the url of the last visited page */
+    const prevUrl = req.cookies["prevUrl"];
+
+    /* get the url of the last visited page */
+    if (req.originalUrl == req.cookies["prevUrl"]) {
+        res.cookie("prevUrl", req.originalUrl);
+    };
+
+    /* url of the current page */
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
 
+    /* data of the edition */
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     var workMatrix;
@@ -533,6 +544,7 @@ router.get("/edition/:id", async (req, res) => {
                     /* PAGE RENDERING */
                     if (fs.existsSync(path)) {
                         res.render("edition", {
+                            prevUrl: prevUrl,
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,
@@ -554,6 +566,7 @@ router.get("/edition/:id", async (req, res) => {
                         });
                     } else {
                         res.render("edition", {
+                            prevUrl: prevUrl,
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,

@@ -12,6 +12,15 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended:false}));
 
 router.get("/editions", async (req, res) => {
+
+    /* get the url of the last visited page */
+    const prevUrl = req.cookies["prevUrl"];
+
+    /* get the url of the last visited page */
+    if (req.originalUrl == req.cookies["prevUrl"]) {
+        res.cookie("prevUrl", req.originalUrl);
+    };
+
     const session = driver.session();
     try {
         const data = await session.readTransaction(tx => tx
