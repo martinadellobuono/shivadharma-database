@@ -13,6 +13,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/editions", async (req, res) => {
 
+    /* previous url */
     var prevUrl;
 
     /* update the second url to become the previous one in the next page */
@@ -35,7 +36,7 @@ router.get("/editions", async (req, res) => {
         else res.locals.cookie = {};
 
         prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
-    }
+    };
 
     /* editions */
     const session = driver.session();

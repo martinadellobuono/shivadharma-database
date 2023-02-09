@@ -98,16 +98,30 @@ app.get("/", checkAuthenticated, (req, res) => {
         test_url_2 = res.cookie["test_url_2"];
     };
 
-    /* refresh the page */
-    if (req.originalUrl == test_url_2) {
-        prevUrl = test_url_1;
+    /* update the second url to become the previous one in the next page */
+    res.cookie("test_url_1", req.cookies["test_url_2"], { overwrite: true });
+    res.cookie("test_url_2", req.originalUrl, { overwrite: true });
+
+    /* store the current url in a cookie */
+    if (req.originalUrl !== req.cookies["test_url_2"]) {
+        req.cookies["test_url_1"] = req.cookies["test_url_2"];
+        prevUrl = req.cookies["test_url_1"];
     } else {
-        prevUrl = test_url_2;
+        const { headers: { cookie } } = req;
+        if (cookie) {
+            const values = cookie.split(';').reduce((res, item) => {
+                const data = item.trim().split('=');
+                return { ...res, [data[0]]: data[1] };
+            }, {});
+            res.locals.cookie = values;
+        }
+        else res.locals.cookie = {};
+
+        prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
     };
 
     res.render("index", { name: req.user.name });
 
-    console.log(req.cookies);
 });
 
 /* login system */

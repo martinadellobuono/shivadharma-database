@@ -14,6 +14,7 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 
 router.get("/edition/:id", async (req, res) => {
 
+    /* previous url */
     var prevUrl;
 
     /* update the second url to become the previous one in the next page */
@@ -25,9 +26,18 @@ router.get("/edition/:id", async (req, res) => {
         req.cookies["test_url_1"] = req.cookies["test_url_2"];
         prevUrl = req.cookies["test_url_1"];
     } else {
-        console.log("EDITION");
-        console.log(req.cookies);
-    }
+        const { headers: { cookie } } = req;
+        if (cookie) {
+            const values = cookie.split(';').reduce((res, item) => {
+                const data = item.trim().split('=');
+                return { ...res, [data[0]]: data[1] };
+            }, {});
+            res.locals.cookie = values;
+        }
+        else res.locals.cookie = {};
+
+        prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
+    };
 
     /* url of the current page */
     const idEdition = req.params.id.split("/").pop().split("-")[0];
