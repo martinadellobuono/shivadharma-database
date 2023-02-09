@@ -78,7 +78,36 @@ app.use(cookieParser());
 
 /* index */
 app.get("/", checkAuthenticated, (req, res) => {
+
+    /* store the current url in a cookie */
+    var test_url_1 = res.cookie["test_url_1"];
+    var test_url_2 = res.cookie["test_url_2"];
+    var prevUrl;
+
+    /* test_url_1 */
+    if (test_url_1 == undefined) {
+        res.cookie("test_url_1", req.originalUrl, { overwrite: true });
+    } else {
+        test_url_1 = res.cookie["test_url_1"];
+    };
+
+    /* test_url_2 */
+    if (test_url_2 == undefined) {
+        res.cookie("test_url_2", req.originalUrl, { overwrite: true });
+    } else {
+        test_url_2 = res.cookie["test_url_2"];
+    };
+
+    /* refresh the page */
+    if (req.originalUrl == test_url_2) {
+        prevUrl = test_url_1;
+    } else {
+        prevUrl = test_url_2;
+    };
+
     res.render("index", { name: req.user.name });
+
+    console.log(req.cookies);
 });
 
 /* login system */
@@ -305,6 +334,7 @@ app.use("/", edition);
 
 /* get the list of editions */
 const editions = require("./routes/editions");
+const { Console } = require("console");
 app.use("/", editions);
 
 const port = process.env.PORT || 3000;

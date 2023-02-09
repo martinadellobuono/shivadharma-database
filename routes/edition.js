@@ -14,13 +14,20 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 
 router.get("/edition/:id", async (req, res) => {
 
-    /* get the url of the last visited page */
-    const prevUrl = req.cookies["prevUrl"];
+    var prevUrl;
 
-    /* get the url of the last visited page */
-    if (req.originalUrl == req.cookies["prevUrl"]) {
-        res.cookie("prevUrl", req.originalUrl);
-    };
+    /* update the second url to become the previous one in the next page */
+    res.cookie("test_url_1", req.cookies["test_url_2"], { overwrite: true });
+    res.cookie("test_url_2", req.originalUrl, { overwrite: true });
+
+    /* store the current url in a cookie */
+    if (req.originalUrl !== req.cookies["test_url_2"]) {
+        req.cookies["test_url_1"] = req.cookies["test_url_2"];
+        prevUrl = req.cookies["test_url_1"];
+    } else {
+        console.log("EDITION");
+        console.log(req.cookies);
+    }
 
     /* url of the current page */
     const idEdition = req.params.id.split("/").pop().split("-")[0];

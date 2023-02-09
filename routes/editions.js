@@ -9,21 +9,39 @@ const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "
 const router = express.Router();
 
 router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({extended:false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get("/editions", async (req, res) => {
 
-    /* get the url of the last visited page */
-    const prevUrl = req.cookies["prevUrl"];
+    var prevUrl;
 
-    /* get the url of the last visited page */
-    if (req.originalUrl == req.cookies["prevUrl"]) {
-        res.cookie("prevUrl", req.originalUrl);
-    };
+    /* update the second url to become the previous one in the next page */
+    res.cookie("test_url_1", req.cookies["test_url_2"], { overwrite: true });
+    res.cookie("test_url_2", req.originalUrl, { overwrite: true });
 
+    /* store the current url in a cookie */
+    if (req.originalUrl !== req.cookies["test_url_2"]) {
+        req.cookies["test_url_1"] = req.cookies["test_url_2"];
+        prevUrl = req.cookies["test_url_1"];
+    } else {
+        const { headers: { cookie } } = req;
+        if (cookie) {
+            const values = cookie.split(';').reduce((res, item) => {
+                const data = item.trim().split('=');
+                return { ...res, [data[0]]: data[1] };
+            }, {});
+            res.locals.cookie = values;
+        }
+        else res.locals.cookie = {};
+
+        prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
+    }
+
+    /* editions */
     const session = driver.session();
+    var data;
     try {
-        const data = await session.readTransaction(tx => tx
+        data = await session.readTransaction(tx => tx
             .run(
                 `
                 MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[h:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
@@ -32,16 +50,22 @@ router.get("/editions", async (req, res) => {
                 `
             )
         );
+    } catch (err) {
+        console.log("Error related to the upload of the editions: " + err);
+    } finally {
+
+        /* close session */
+        await session.close();
+
+        /* editions */
         res.render("editions", {
+            prevUrl: prevUrl,
             editions: data.records.map(row => {
                 return row;
             }),
             name: req.user.name
         });
-    } catch (err) {
-        console.log("Error related to the upload of the editions: " + err);
-    } finally {
-        await session.close();
+
     };
 });
 

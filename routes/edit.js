@@ -14,9 +14,15 @@ router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.get("/edit/:id", async (req, res) => {
+
+    /* cookie */
+    res.cookie("testURL", req.originalUrl, { overwrite: true });
+
+    /* url of the current page */
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
 
+    /* data of the edition */
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
     var workMatrix;
@@ -543,6 +549,7 @@ router.get("/edit/:id", async (req, res) => {
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
+                            prevUrl: req.cookies["testURL2"],
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,
@@ -564,6 +571,7 @@ router.get("/edit/:id", async (req, res) => {
                         });
                     } else {
                         res.render("edit", {
+                            prevUrl: req.cookies["testURL2"],
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,
