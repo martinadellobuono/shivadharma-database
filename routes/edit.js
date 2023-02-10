@@ -15,8 +15,30 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 
 router.get("/edit/:id", async (req, res) => {
 
-    /* cookie */
-    res.cookie("testURL", req.originalUrl, { overwrite: true });
+    /* previous url */
+    var prevUrl;
+
+    /* update the second url to become the previous one in the next page */
+    res.cookie("test_url_1", req.cookies["test_url_2"], { overwrite: true });
+    res.cookie("test_url_2", req.originalUrl, { overwrite: true });
+
+    /* store the current url in a cookie */
+    if (req.originalUrl !== req.cookies["test_url_2"]) {
+        req.cookies["test_url_1"] = req.cookies["test_url_2"];
+        prevUrl = req.cookies["test_url_1"];
+    } else {
+        const { headers: { cookie } } = req;
+        if (cookie) {
+            const values = cookie.split(';').reduce((res, item) => {
+                const data = item.trim().split('=');
+                return { ...res, [data[0]]: data[1] };
+            }, {});
+            res.locals.cookie = values;
+        }
+        else res.locals.cookie = {};
+
+        prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
+    };
 
     /* url of the current page */
     const idEdition = req.params.id.split("/").pop().split("-")[0];
@@ -549,7 +571,7 @@ router.get("/edit/:id", async (req, res) => {
                     /* page rendering */
                     if (fs.existsSync(path)) {
                         res.render("edit", {
-                            prevUrl: req.cookies["testURL2"],
+                            prevUrl: prevUrl,
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,
@@ -571,7 +593,7 @@ router.get("/edit/:id", async (req, res) => {
                         });
                     } else {
                         res.render("edit", {
-                            prevUrl: req.cookies["testURL2"],
+                            prevUrl: prevUrl,
                             id: req.params.id,
                             name: req.user.name,
                             work: workMatrix,
