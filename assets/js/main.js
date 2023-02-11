@@ -104,14 +104,15 @@ let currentTime = () => {
 
 /* file textarea */
 let fileTextarea = () => {
-    var useDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    /* create textarea */
     tinymce.init({
         selector: ".file-container textarea",
         resize: "both",
         width: "100%",
         plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
-        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+        toolbar: "save | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
         toolbar_sticky: false,
         autosave_ask_before_unload: true,
         autosave_interval: "30s",
@@ -150,15 +151,20 @@ let fileTextarea = () => {
 
             /* KEYUP */
             /* omissions */
-            /* ed.on("keyup", (e) => {
-                if (ed.id == "lemmaOmissionEditor") {
+            ed.on("keyup", (e) => {
+
+                /* save automatically */
+                var saveBtn = document.querySelector('div[role="toolbar"] button[aria-label="Save"]');
+                console.log(saveBtn);
+                saveBtn.click();
+                /* if (ed.id == "lemmaOmissionEditor") {
                     document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                 } else {
                     if (document.getElementById("live-" + ed.id) != null) {
                         document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
                     };
-                };
-            }); */
+                }; */
+            });
 
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
@@ -225,6 +231,9 @@ let fileTextarea = () => {
         }
 
     });
+
+    /* update file */
+    saveFile();
 };
 
 /* autocomplete */
@@ -605,7 +614,64 @@ let cloneEl = () => {
 /* TRY */
 let saveFile = () => {
 
-    console.log("save file");
+    /* var text;
+    var file = document.querySelector("textarea[name='fileBaseTxt']").getAttribute("data-url-param") + ".html";
+
+    setInterval(async () => {
+        text = tinymce.get("mce_0").getContent();
+        
+        console.log(window.location.href);
+
+        /* fetch */
+    /* fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            textFile: newContent
+        })
+    })
+        .then((res) => {
+            return res.blob();
+        })
+        .then((data) => {
+            data.textfile = newContent;
+            console.log(data);
+        })
+        .catch((err) => {
+            console.log("Error related to the fetch: " + err);
+        }) */
+
+    /* }, 2000); */
+
+    /* const url = "http://localhost:3000/edit/" + document.querySelector("textarea[name='fileBaseTxt']").getAttribute("data-url-param");
+    console.log(url);
+
+    setInterval(async () => {
+        var newContent = document.querySelector("textarea[name='fileBaseTxt']").textContent;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                textFile: newContent
+            })
+        })
+            .then((res) => {
+                return res.blob();
+            })
+            .then((data) => {
+                data.textfile = newContent;
+                console.log(data);
+            })
+            .catch((err) => {
+                console.log("Error related to the fetch: " + err);
+            })
+
+    }, 2000); */
 
 };
 /* / */

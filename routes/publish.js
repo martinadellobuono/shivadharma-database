@@ -26,7 +26,7 @@ router.post("/publish/:id", async (req, res) => {
         } catch (error) {
             console.log("Error in rewriting the file: " + error);
         } finally {
-            res.redirect("../edition/" + idEdition + "-" + idEditor);
+            console.log("Overwriting phase finished!")
         };
     });
 
