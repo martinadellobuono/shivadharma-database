@@ -17,6 +17,7 @@ The project works with:
 - [**express-validator**](https://www.npmjs.com/package/express-validator) > express-validator@6.14.0
 - [**formidable**](https://www.npmjs.com/package/formidable) > formidable@1.2.6 
 - [**neo4j-driver**](https://www.npmjs.com/package/neo4j-driver) > neo4j-driver@4.4.4
+- [**@tarekraafat/autocomplete.js**](https://www.npmjs.com/package/neo4j-driver) > tarekraafat/autocomplete.js@^10.2.7
 
 Packages can be installed with [**NPM**](https://www.npmjs.com/).
 
