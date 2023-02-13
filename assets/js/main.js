@@ -204,7 +204,6 @@ let fileTextarea = () => {
                                     };
                                 });
                             };
-
                         });
 
                     });
@@ -610,7 +609,8 @@ let saveFile = () => {
     setTimeout(() => {
         saveMess.classList.add("d-none");
     }, 2500);
-    
+
+    return false;
 };
 
 /* save file every 2 seconds */
