@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
+    saveFileInterval();
     annotations();
     previewAnnotations();
     /* cancelAnnotations(); */
@@ -149,23 +150,6 @@ let fileTextarea = () => {
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
 
-            /* KEYUP */
-            /* omissions */
-            ed.on("keyup", (e) => {
-
-                /* save automatically */
-                var saveBtn = document.querySelector('div[role="toolbar"] button[aria-label="Save"]');
-                console.log(saveBtn);
-                saveBtn.click();
-                /* if (ed.id == "lemmaOmissionEditor") {
-                    document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
-                } else {
-                    if (document.getElementById("live-" + ed.id) != null) {
-                        document.getElementById("live-" + ed.id).innerHTML = ed.getContent();
-                    };
-                }; */
-            });
-
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
 
@@ -232,8 +216,6 @@ let fileTextarea = () => {
 
     });
 
-    /* update file */
-    saveFile();
 };
 
 /* autocomplete */
@@ -439,6 +421,7 @@ let cloneEl = () => {
                 newTextarea.setAttribute("aria-hidden", "true");
                 newTextarea.setAttribute("name", "variant" + i + "Omission");
                 newTextarea.setAttribute("id", "variant" + i + "-OmissionEditor");
+
                 /* initialize the new textarea */
                 let textarea = () => {
                     /* init textareas */
@@ -611,70 +594,31 @@ let cloneEl = () => {
     });
 };
 
-/* TRY */
+/* save file */
 let saveFile = () => {
 
-    /* var text;
-    var file = document.querySelector("textarea[name='fileBaseTxt']").getAttribute("data-url-param") + ".html";
+    var saveBtn = document.getElementById("automatically-save-btn");
+    var saveMess = document.getElementById("automatically-save-mess");
 
-    setInterval(async () => {
-        text = tinymce.get("mce_0").getContent();
-        
-        console.log(window.location.href);
+    /* click the save btn */
+    saveBtn.click();
 
-        /* fetch */
-    /* fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            textFile: newContent
-        })
-    })
-        .then((res) => {
-            return res.blob();
-        })
-        .then((data) => {
-            data.textfile = newContent;
-            console.log(data);
-        })
-        .catch((err) => {
-            console.log("Error related to the fetch: " + err);
-        }) */
+    /* show the automatically saved message */
+    saveMess.classList.remove("d-none");
 
-    /* }, 2000); */
-
-    /* const url = "http://localhost:3000/edit/" + document.querySelector("textarea[name='fileBaseTxt']").getAttribute("data-url-param");
-    console.log(url);
-
-    setInterval(async () => {
-        var newContent = document.querySelector("textarea[name='fileBaseTxt']").textContent;
-
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                textFile: newContent
-            })
-        })
-            .then((res) => {
-                return res.blob();
-            })
-            .then((data) => {
-                data.textfile = newContent;
-                console.log(data);
-            })
-            .catch((err) => {
-                console.log("Error related to the fetch: " + err);
-            })
-
-    }, 2000); */
-
+    /* hide the automatically saved message */
+    setTimeout(() => {
+        saveMess.classList.add("d-none");
+    }, 2500);
+    
 };
-/* / */
+
+/* save file every 2 seconds */
+let saveFileInterval = () => {
+    window.setInterval(() => {
+        saveFile();
+    }, 10000);
+};
 
 /* annotations */
 let annotations = () => {
@@ -946,10 +890,8 @@ let annotations = () => {
                     };
                     milestoneContent();
 
-                    /* TRY */
-                    /* SAVE FILE */
+                    /* save automatically */
                     saveFile();
-                    /* / */
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
