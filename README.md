@@ -12,6 +12,9 @@ The project works with:
 
 - [**Node.js**](https://nodejs.org/en/) v16.14.2
 - [**Express**](https://www.npmjs.com/package/express) > express@4.17.1
+```
+npm i express
+```
 - [**body-parser**](https://www.npmjs.com/package/body-parser) > body-parser@1.19.0
 - [**ejs**](https://www.npmjs.com/package/ejs) > ejs@3.1.6
 - [**express-validator**](https://www.npmjs.com/package/express-validator) > express-validator@6.14.0
