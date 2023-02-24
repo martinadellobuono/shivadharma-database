@@ -148,10 +148,12 @@ let fileTextarea = () => {
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
 
+            /* save file json to send to backend */
             var data;
 
             /* KEYUP */
-            ed.on("keyup", async (e) => {
+            /* save in a json the content to overwrite the file of the textus */
+            ed.on("keydown", async (e) => {
                 var url = window.location.href;
                 var idEdition = url.split("/").pop().split("-")[0];
                 var idEditor = url.split("/").pop().split("-")[1];
@@ -163,13 +165,6 @@ let fileTextarea = () => {
                     content: content
                 }
 
-                /* fetch("http://localhost:3000/saveFile", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
-                })
-                    .then(response => response.json())
-                    .catch(err => console.log(err)); */
             });
 
             /* MOUSEDOWN */
@@ -233,8 +228,10 @@ let fileTextarea = () => {
 
             });
 
+            /* SAVE FILE */
             /* save file every 5 seconds */
             let saveFile = () => {
+                /* fetch data */
                 fetch("http://localhost:3000/saveFile", {
                     method: "POST",
                     body: JSON.stringify(data),
@@ -242,8 +239,13 @@ let fileTextarea = () => {
                 })
                     .then(response => response.json())
                     .catch(err => console.log(err));
-            };
 
+                /* saved message */
+                document.getElementById("autosaved-message").classList.remove("d-none");
+                setTimeout(() => {
+                    document.getElementById("autosaved-message").classList.add("d-none");
+                }, 2000);
+            };
             setInterval(saveFile, 5000);
 
         }
@@ -909,6 +911,11 @@ let annotations = () => {
                             });
                         }
                     });
+
+                    /* TRY */
+                    
+                    console.log(tinymce.get("fileBaseTxt").getContent());
+                    /* / */
 
                 } else {
                     /* show default settings */

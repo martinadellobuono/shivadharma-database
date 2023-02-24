@@ -70,13 +70,13 @@
               </div>
             </div>
           </div>
-          <textarea class="mt-1" placeholder="Insert the text of your edition..." data-url-param="<%= id %>" data-autosave-url="http://localhost:3000/saveFile" name="fileBaseTxt">
+          <textarea class="mt-1" id="fileBaseTxt" placeholder="Insert the text of your edition..." data-url-param="<%= id %>" name="fileBaseTxt">
             <% if (file) { %>
                 <%- include (`../uploads/${file}`) %>
             <% }; %>
           </textarea>
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <span class="text-success autosaved-message"></span>
+            <span class="text-secondary d-none" id="autosaved-message">All changes saved.</span>
           </div>
         </form>
       </div>

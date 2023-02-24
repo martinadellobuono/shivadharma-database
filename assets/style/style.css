@@ -12306,7 +12306,7 @@ p {
 }
 
 /* automatically save */
-.autosaved-message {
+.autosaved-message--success {
   color: #198754;
   font-size: 15px;
 }
