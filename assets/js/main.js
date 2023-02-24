@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     dependingForms();
     cloneEl();
     annotations();
-    setInterval(saveFile, 5000);
     previewAnnotations();
     /* cancelAnnotations(); */
     closeBtn();
@@ -939,6 +938,7 @@ let saveFile = () => {
         document.getElementById("autosaved-message").classList.add("d-none");
     }, 2000);
 };
+setInterval(saveFile, 5000);
 
 /* preview annotations */
 let previewAnnotations = () => {
