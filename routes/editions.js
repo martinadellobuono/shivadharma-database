@@ -41,32 +41,34 @@ router.get("/editions", async (req, res) => {
     /* editions */
     const session = driver.session();
     var data;
+
     try {
-        data = await session.readTransaction(tx => tx
-            .run(
-                `
-                MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[h:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                RETURN author.name, edition.title, editor.name, ID(edition), ID(editor)
-                ORDER BY edition.title, author.name, editor.name
-                `
-            )
-        );
+        try {
+            data = await session.readTransaction(tx => tx
+                .run(
+                    `
+                    MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[h:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                    RETURN author.name, edition.title, editor.name, ID(edition), ID(editor), editor.email
+                    ORDER BY edition.title, author.name, editor.name
+                    `
+                )
+            );
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await session.close();
+        };
     } catch (err) {
-        console.log("Error related to the upload of the editions: " + err);
+        console.log(err);
     } finally {
-
-        /* close session */
-        await session.close();
-
-        /* editions */
         res.render("editions", {
             prevUrl: prevUrl,
             editions: data.records.map(row => {
                 return row;
             }),
-            name: req.user.name
+            name: req.user.name,
+            email: req.user.email
         });
-
     };
 });
 

@@ -24,9 +24,9 @@ router.post("/publish/:id", async (req, res) => {
             });
         });
     } catch (error) {
-        console.log("Error in rewriting the file: " + error);
+        console.log(error);
     } finally {
-        console.log("Overwriting phase finished!");
+        res.redirect("../edition/" + idEdition + "-" + idEditor);
     };
 });
 

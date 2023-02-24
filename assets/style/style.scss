@@ -344,6 +344,12 @@ p {
 }
 
 /* automatically save */
-#automatically-save-mess {
+.autosaved-message {
+    color: $success;
+    font-size: 15px;
+}
+
+.autosaved-message--saving {
+    color: $secondary;
     font-size: 15px;
 }

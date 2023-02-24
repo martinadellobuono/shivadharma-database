@@ -48,34 +48,37 @@ router.get("/account", async (req, res) => {
     var idEditor;
 
     const session = driver.session();
-    try {
-        const data = await session.readTransaction(tx => tx
-            .run(
-                `
-                MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                WHERE editor.name = "${user}"
-                RETURN edition.title, id(edition), id(editor)
-                ORDER BY edition.title
-                `
-            )
-            .subscribe({
-                onNext: record => {
-                    /* editions */
-                    if (!editions.includes(record.get("edition.title") + "___" + record.get("id(edition)"))) {
-                        editions.push(record.get("edition.title") + "___" + record.get("id(edition)"));
-                    };
-                    /* editor id */
-                    idEditor = record.get("id(editor)");
-                }
-            })
-        );
-    } catch (err) {
-        console.log("Error related to the upload of the editions: " + err);
-    } finally {
-        /* session */
-        await session.close();
 
-        /* account */
+    try {
+        try {
+            const data = await session.readTransaction(tx => tx
+                .run(
+                    `
+                    MATCH (edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                    WHERE editor.name = "${user}"
+                    RETURN edition.title, id(edition), id(editor)
+                    ORDER BY edition.title
+                    `
+                )
+                .subscribe({
+                    onNext: record => {
+                        /* editions */
+                        if (!editions.includes(record.get("edition.title") + "___" + record.get("id(edition)"))) {
+                            editions.push(record.get("edition.title") + "___" + record.get("id(edition)"));
+                        };
+                        /* editor id */
+                        idEditor = record.get("id(editor)");
+                    }
+                })
+            );
+        } catch (err) {
+            console.log("Error related to the upload of the editions: " + err);
+        } finally {
+            await session.close();
+        };
+    } catch (err) {
+        console.log(err);
+    } finally {
         res.render("account", {
             prevUrl: prevUrl,
             idEditor: idEditor,
@@ -84,6 +87,7 @@ router.get("/account", async (req, res) => {
             email: req.user.email
         });
     };
+
 });
 
 module.exports = router;

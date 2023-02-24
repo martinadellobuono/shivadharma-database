@@ -633,33 +633,38 @@ router.post("/edit/:id", async (req, res) => {
     const idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
     try {
-        await session.writeTransaction(tx => tx
-            .run(
-                `
-                MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (date:Date)
-                MERGE (edition)-[:PUBLISHED_ON]->(date)
-                ON CREATE
-                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
-                ON MATCH 
-                    SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
-                RETURN *
-                `
-            )
-            .subscribe({
-                onCompleted: () => {
-                    console.log("Data added to the database")
-                },
-                onError: err => {
-                    console.log("Error related to Neo4j action /edit/:id: " + err)
-                }
-            })
-        );
+        try {
+            await session.writeTransaction(tx => tx
+                .run(
+                    `
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                    WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                    MERGE (date:Date)
+                    MERGE (edition)-[:PUBLISHED_ON]->(date)
+                    ON CREATE
+                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
+                    ON MATCH 
+                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
+                    RETURN *
+                    `
+                )
+                .subscribe({
+                    onCompleted: () => {
+                        console.log("Data added to the database")
+                    },
+                    onError: err => {
+                        console.log(err);
+                    }
+                })
+            );
+        } catch (err) {
+            console.log(err);
+        } finally {
+            await session.close();
+        };
     } catch (err) {
-        console.log("Error related to Neo4j: " + err);
+        console.log(err);
     } finally {
-        await session.close();
         res.redirect("../edit/" + idEdition + "-" + idEditor);
     };
 });

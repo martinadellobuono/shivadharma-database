@@ -12304,4 +12304,15 @@ p {
 .help-symbol:hover {
   color: #495057;
 }
+
+/* automatically save */
+.autosaved-message {
+  color: #198754;
+  font-size: 15px;
+}
+
+.autosaved-message--saving {
+  color: #6c757d;
+  font-size: 15px;
+}
 /*# sourceMappingURL=style.css.map */

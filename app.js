@@ -304,7 +304,7 @@ function checkNotAuthenticated(req, res, next) {
 
 /* edit */
 const edit = require("./routes/edit");
-app.use("/", edit);
+app.use("/", edit, checkAuthenticated);
 
 /* add file */
 const addFile = require("./routes/addFile");
@@ -338,18 +338,23 @@ app.use("/", addCitation);
 const addNote = require("./routes/forms/note/addNote");
 app.use("/", addNote);
 
+/* TRY */
+/* save file */
+const saveFile = require("./routes/saveFile");
+app.use("/", saveFile);
+
 /* publish */
 const publish = require("./routes/publish");
 app.use("/", publish);
 
 /* get the edition */
 const edition = require("./routes/edition");
-app.use("/", edition);
+app.use("/", edition, checkAuthenticated);
 
 /* get the list of editions */
 const editions = require("./routes/editions");
 const { Console } = require("console");
-app.use("/", editions);
+app.use("/", editions, checkAuthenticated);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Shivadharma listening on port localhost:${port}`));

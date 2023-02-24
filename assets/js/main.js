@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    saveFileInterval();
     annotations();
     previewAnnotations();
     /* cancelAnnotations(); */
@@ -105,7 +104,6 @@ let currentTime = () => {
 
 /* file textarea */
 let fileTextarea = () => {
-
     /* create textarea */
     tinymce.init({
         selector: ".file-container textarea",
@@ -149,6 +147,30 @@ let fileTextarea = () => {
 
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
+
+            var data;
+
+            /* KEYUP */
+            ed.on("keyup", async (e) => {
+                var url = window.location.href;
+                var idEdition = url.split("/").pop().split("-")[0];
+                var idEditor = url.split("/").pop().split("-")[1];
+                var content = ed.getContent();
+
+                data = {
+                    idEdition: idEdition,
+                    idEditor: idEditor,
+                    content: content
+                }
+
+                /* fetch("http://localhost:3000/saveFile", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+                    .then(response => response.json())
+                    .catch(err => console.log(err)); */
+            });
 
             /* MOUSEDOWN */
             ed.on("mousedown", (e) => {
@@ -211,10 +233,21 @@ let fileTextarea = () => {
 
             });
 
+            /* save file every 5 seconds */
+            let saveFile = () => {
+                fetch("http://localhost:3000/saveFile", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+                    .then(response => response.json())
+                    .catch(err => console.log(err));
+            };
+
+            setInterval(saveFile, 5000);
+
         }
-
     });
-
 };
 
 /* autocomplete */
@@ -498,34 +531,6 @@ let cloneEl = () => {
                     newTextarea.setAttribute("aria-hidden", "true");
                     newTextarea.setAttribute("name", name);
                     newTextarea.setAttribute("id", name);
-
-                    /* initialize the new textarea */
-                    /* let textarea = () => {
-                        var selector = ".apparatus-container textarea";
-                        tinymce.init({
-                            selector: selector,
-                            resize: "both",
-                            width: "100%",
-                            plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
-                            menubar: "file edit view insert format tools table help",
-                            toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
-                            toolbar_sticky: false,
-                            autosave_ask_before_unload: true,
-                            autosave_interval: "30s",
-                            autosave_prefix: "{path}{query}-{id}-",
-                            autosave_restore_when_empty: false,
-                            autosave_retention: "2m",
-                            image_advtab: true,
-                            template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
-                            template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
-                            height: "50vh",
-                            image_caption: true,
-                            quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
-                            toolbar_mode: "sliding",
-                            contextmenu: "link image table"
-                        });
-                    };
-                    setTimeout(textarea, 500); */
                 });
             };
 
@@ -591,33 +596,6 @@ let cloneEl = () => {
             truncation();
         });
     });
-};
-
-/* save file */
-let saveFile = () => {
-
-    var saveBtn = document.getElementById("automatically-save-btn");
-    var saveMess = document.getElementById("automatically-save-mess");
-
-    /* click the save btn */
-    saveBtn.click();
-
-    /* show the automatically saved message */
-    saveMess.classList.remove("d-none");
-
-    /* hide the automatically saved message */
-    setTimeout(() => {
-        saveMess.classList.add("d-none");
-    }, 2500);
-
-    return false;
-};
-
-/* save file every 2 seconds */
-let saveFileInterval = () => {
-    window.setInterval(() => {
-        saveFile();
-    }, 10000);
 };
 
 /* annotations */
@@ -890,9 +868,6 @@ let annotations = () => {
                     };
                     milestoneContent();
 
-                    /* save automatically */
-                    saveFile();
-
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
                     /* var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
@@ -901,6 +876,9 @@ let annotations = () => {
 
                     /* init textareas */
                     var selector = "." + category + "-container textarea";
+                    var name = document.querySelector(selector).getAttribute("name");
+                    var content;
+
                     tinymce.init({
                         selector: selector,
                         resize: "both",
@@ -921,7 +899,15 @@ let annotations = () => {
                         image_caption: true,
                         quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
                         toolbar_mode: "sliding",
-                        contextmenu: "link image table"
+                        contextmenu: "link image table",
+                        setup: (ed) => {
+
+                            /* LIVE CHECK */
+                            ed.on("keyup", (e) => {
+                                content = ed.getContent();
+                                document.getElementById("live-" + name).innerHTML = content;
+                            });
+                        }
                     });
 
                 } else {
@@ -1273,7 +1259,7 @@ let modifyAnnotations = () => {
 
                             /* fill the textarea */
                             let printTxt = () => {
-                                tinyMCE.get(textarea.id).setContent(val)
+                                tinyMCE.get(textarea.id).setContent(val);
                             };
                             setTimeout(printTxt, 3000);
 
@@ -1335,82 +1321,161 @@ let modifyAnnotations = () => {
 /* textarea live check in textarea() */
 let liveCheck = () => {
     var input = document.querySelectorAll(".live-check");
+    var stanzaStartInput;
+    var stanzaEndInput;
     var padaStart = [];
     var padaEnd = [];
 
     input.forEach((el) => {
         "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
-                /* radios */
-                var radiosParents = el.parentNode.querySelectorAll(".form-check");
-                radiosParents.forEach((radioParent) => {
-                    var radios = radioParent.querySelectorAll("[type='radio']");
-                    radios.forEach((radio) => {
-                        radio.addEventListener("change", () => {
-                            /* truncation */
-                            document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+
+                /* RADIOS */
+                if (el.getAttribute("type") == "radio") {
+                    var radiosParents = el.parentNode.querySelectorAll(".form-check");
+                    radiosParents.forEach((radioParent) => {
+                        var radios = radioParent.querySelectorAll("[type='radio']");
+                        radios.forEach((radio) => {
+                            radio.addEventListener("change", () => {
+                                /* truncation */
+                                document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+                            });
                         });
                     });
-                });
-                /* lemma */
-                if (el.getAttribute("name") == "stanzaEnd") {
-                    if (el.value !== "") {
-                        /* add dash */
-                        document.getElementById("stanza-dash").classList.remove("d-none");
-                    } else {
-                        /* remove dash */
-                        document.getElementById("stanza-dash").classList.add("d-none");
+                };
+
+                /* NUMBER */
+                if (el.getAttribute("type") == "number") {
+
+                    /* stanza start */
+                    if (el.getAttribute("name") == "stanzaStart") {
+                        /* value of stanza start to reuse to handle padas */
+                        stanzaStartInput = el.value;
+                        /* print value of stanza */
+                        document.getElementById("live-stanzaStart").innerHTML = el.value;
+                    };
+
+                    /* stanza end */
+                    if (el.getAttribute("name") == "stanzaEnd") {
+
+                        /* value of stanza end to reuse to handle padas */
+                        stanzaEndInput = el.value;
+
+                        if (el.value !== "") {
+                            var stanzaStart = document.getElementById("live-stanzaStart").innerHTML;
+                            if (stanzaStart !== el.value) {
+                                /* print value of stanza */
+                                document.getElementById("live-stanzaEnd").innerHTML = el.value;
+                                /* add dash */
+                                document.getElementById("stanza-dash").classList.remove("d-none");
+                            } else {
+                                /* print value of stanza */
+                                document.getElementById("live-stanzaEnd").innerHTML = "";
+                                /* remove dash */
+                                document.getElementById("stanza-dash").classList.add("d-none");
+                            };
+
+                        } else {
+                            /* print value of stanza */
+                            document.getElementById("live-stanzaEnd").innerHTML = "";
+                            /* remove dash */
+                            document.getElementById("stanza-dash").classList.add("d-none");
+                        };
+                    };
+
+                };
+
+                /* TEXT */
+                if (el.getAttribute("type") == "text") {
+                    /* lemma */
+                    if (el.getAttribute("name") == "lemma") {
+                        /* print value of lemma */
+                        document.getElementById("live-lemma").innerHTML = el.value;
+                        /* bracket */
+                        document.getElementById("lemma-bracket").classList.remove("d-none");
                     };
                 };
-                /* lemma */
-                if (el.getAttribute("name") == "lemma") {
-                    /* bracket */
-                    document.getElementById("lemma-bracket").classList.remove("d-none");
-                };
-                /* checkbox */
+
+                /* CHECKBOX */
                 if (el.getAttribute("type") == "checkbox") {
-                    /* pada start */
-                    if (el.getAttribute("name") == "padaStart") {
-                        /* add value */
-                        if (el.checked === true) {
-                            if (padaStart.includes(el.value) === false) {
-                                padaStart.push(el.value);
-                            };
-                        } else {
-                            /* remove value */
-                            if (padaStart.includes(el.value) === true) {
-                                var index = padaStart.indexOf(el.value);
-                                if (index !== -1) {
-                                    padaStart.splice(index, 1);
+                    /* if the stanzas are the same */
+                    if (stanzaStartInput !== stanzaEndInput) {
+                        /* pada start */
+                        if (el.getAttribute("name") == "padaStart") {
+                            /* add value */
+                            if (el.checked === true) {
+                                if (padaStart.includes(el.value) === false) {
+                                    padaStart.push(el.value);
+                                };
+                            } else {
+                                /* remove value */
+                                if (padaStart.includes(el.value) === true) {
+                                    var index = padaStart.indexOf(el.value);
+                                    if (index !== -1) {
+                                        padaStart.splice(index, 1);
+                                    };
                                 };
                             };
+                            /* print value of pada start */
+                            document.getElementById("live-padaStart").innerHTML = JSON.stringify(padaStart).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+
+                        } else {
+                            /* pada end */
+                            /* add value */
+                            if (el.checked === true) {
+                                if (padaEnd.includes(el.value) === false) {
+                                    padaEnd.push(el.value);
+                                };
+                            } else {
+                                /* remove value */
+                                if (padaEnd.includes(el.value) === true) {
+                                    var index = padaEnd.indexOf(el.value);
+                                    if (index !== -1) {
+                                        padaEnd.splice(index, 1);
+                                    };
+                                };
+                            };
+                            /* print value of pada end */
+                            document.getElementById("live-padaEnd").innerHTML = JSON.stringify(padaEnd).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                         };
-                        document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(padaStart).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                     } else {
-                        /* pada end */
-                        /* add value */
-                        if (el.checked === true) {
-                            if (padaEnd.includes(el.value) === false) {
-                                padaEnd.push(el.value);
-                            };
-                        } else {
-                            /* remove value */
-                            if (padaEnd.includes(el.value) === true) {
-                                var index = padaEnd.indexOf(el.value);
-                                if (index !== -1) {
-                                    padaEnd.splice(index, 1);
+                        /* pada start */
+                        if (el.getAttribute("name") == "padaStart") {
+                            /* add value */
+                            if (el.checked === true) {
+                                if (padaStart.includes(el.value) === false) {
+                                    padaStart.push(el.value);
+                                };
+                            } else {
+                                /* remove value */
+                                if (padaStart.includes(el.value) === true) {
+                                    var index = padaStart.indexOf(el.value);
+                                    if (index !== -1) {
+                                        padaStart.splice(index, 1);
+                                    };
                                 };
                             };
+                            /* print value of pada start */
+                            document.getElementById("live-padaStart").innerHTML = JSON.stringify(padaStart).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
                         };
-                        document.getElementById("live-" + el.getAttribute("name")).innerHTML = JSON.stringify(padaEnd).replace(/[[\]]/g, '').replace(/"/g, "").replace(/,/g, "");
+
+                        /* pada end */
+                        document.getElementById("live-padaEnd").innerHTML = "";
                     };
-                } else {
-                    /* other elements */
+                };
+
+                /* DATALIST */
+                if (el.getAttribute("type") == "search") {
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[;]/g, " ");
                 };
+
+                /* TEXTAREA */
+                /* in annotations(); */
+
             });
         });
     });
+
     liveCheckAutocomplete();
 };
 

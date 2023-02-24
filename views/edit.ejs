@@ -33,7 +33,7 @@
         <!-- metadata -->
         <%- include ("partials/metadata") %>
         <!-- publish -->
-        <button type="submit" class="btn btn-primary" form="">Publish</button>
+        <button type="submit" class="btn btn-primary" form="base-text">Publish</button>
         <!-- save as draft -->
         <button type="button" class="btn btn-light border">Save as draft</button>
       </div>
@@ -70,14 +70,13 @@
               </div>
             </div>
           </div>
-          <textarea class="mt-1" placeholder="Insert the text of your edition..." data-url-param="<%= id %>" name="fileBaseTxt">
+          <textarea class="mt-1" placeholder="Insert the text of your edition..." data-url-param="<%= id %>" data-autosave-url="http://localhost:3000/saveFile" name="fileBaseTxt">
             <% if (file) { %>
                 <%- include (`../uploads/${file}`) %>
             <% }; %>
           </textarea>
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <span class="text-secondary d-none" id="automatically-save-mess">Automatically saved</span>
-            <button type="submit" class="btn btn-sm btn-primary d-none" id="automatically-save-btn">Save text</button>
+            <span class="text-success autosaved-message"></span>
           </div>
         </form>
       </div>

@@ -54,34 +54,41 @@ router.post("/addFile/:id",
                         /* put in the database and visualize it in the editor */
                         var fileName = `${idEdition}-${idEditor}.html`
                         const session = driver.session();
+
                         try {
-                            await session.writeTransaction(tx => tx
-                                .run(
-                                    `
-                                    MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
-                                    WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                                    OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
-                                    OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
-                                    MERGE (file:File {name: $file})
-                                    MERGE (file)-[pr:PRODUCED_BY]->(editor)
-                                    RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
-                                    `, { file: fileName }
-                                )
-                                .subscribe({
-                                    onCompleted: () => {
-                                        console.log("Data added to the database")
-                                    },
-                                    onError: err => {
-                                        console.log("Error related to Neo4j action /addFile/:id: " + err)
-                                    }
-                                })
-                            );
+                            try {
+                                await session.writeTransaction(tx => tx
+                                    .run(
+                                        `
+                                        MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                                        WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                                        OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                                        OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
+                                        MERGE (file:File {name: $file})
+                                        MERGE (file)-[pr:PRODUCED_BY]->(editor)
+                                        RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
+                                        `, { file: fileName }
+                                    )
+                                    .subscribe({
+                                        onCompleted: () => {
+                                            console.log("Data added to the database");
+                                        },
+                                        onError: err => {
+                                            console.log("Error related to Neo4j action /addFile/:id: " + err);
+                                        }
+                                    })
+                                );
+                            } catch (err) {
+                                console.log("Error related to Neo4j: " + err);
+                            } finally {
+                                await session.close();
+                            };
                         } catch (err) {
-                            console.log("Error related to Neo4j: " + err);
+                            console.log(err);
                         } finally {
-                            await session.close();
                             res.redirect("/edit/" + idEdition + "-" + idEditor);
                         };
+
                     });
             } else {
                 fs.rename(file.path, url, (err) => {

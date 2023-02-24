@@ -21,7 +21,7 @@
         <li class="p-2">
           <span class="fw-bold"><%= edition.get("edition.title") %></span>, <span><%= edition.get("author.name") %></span> <span class="text-muted">curated by <%= edition.get("editor.name") %></span>
           <a href="/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-          <% if (edition.get("editor.name") == name) { %>
+          <% if (edition.get("editor.email") == email) { %>
           <a href="/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
           <% }; %>
         </li>
