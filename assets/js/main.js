@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dependingForms();
     cloneEl();
     annotations();
+    setInterval(saveFile, 5000);
     previewAnnotations();
     /* cancelAnnotations(); */
     closeBtn();
@@ -103,6 +104,9 @@ let currentTime = () => {
 }
 
 /* file textarea */
+/* save file json to send to backend */
+var data;
+
 let fileTextarea = () => {
     /* create textarea */
     tinymce.init({
@@ -148,10 +152,7 @@ let fileTextarea = () => {
         /* CHECK THE ANNOTATED FRAGMENTS */
         setup: (ed) => {
 
-            /* save file json to send to backend */
-            var data;
-
-            /* KEYUP */
+            /* SAVE FILE */
             /* save in a json the content to overwrite the file of the textus */
             ed.on("keydown", async (e) => {
                 var url = window.location.href;
@@ -164,10 +165,9 @@ let fileTextarea = () => {
                     idEditor: idEditor,
                     content: content
                 }
-
             });
 
-            /* MOUSEDOWN */
+            /* CHECK PRE-ANNOTATED STRINGS */
             ed.on("mousedown", (e) => {
 
                 /* open the modal to ask to edit an annotated string or add a new annotation */
@@ -227,26 +227,6 @@ let fileTextarea = () => {
                 };
 
             });
-
-            /* SAVE FILE */
-            /* save file every 5 seconds */
-            let saveFile = () => {
-                /* fetch data */
-                fetch("http://localhost:3000/saveFile", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: { "Content-type": "application/json; charset=UTF-8" }
-                })
-                    .then(response => response.json())
-                    .catch(err => console.log(err));
-
-                /* saved message */
-                document.getElementById("autosaved-message").classList.remove("d-none");
-                setTimeout(() => {
-                    document.getElementById("autosaved-message").classList.add("d-none");
-                }, 2000);
-            };
-            setInterval(saveFile, 5000);
 
         }
     });
@@ -912,10 +892,18 @@ let annotations = () => {
                         }
                     });
 
-                    /* TRY */
-                    
-                    console.log(tinymce.get("fileBaseTxt").getContent());
-                    /* / */
+                    /* SAVE FILE */
+                    /* save in a json the content to overwrite the file of the textus */
+                    var url = window.location.href;
+                    var idEdition = url.split("/").pop().split("-")[0];
+                    var idEditor = url.split("/").pop().split("-")[1];
+                    var content = tinymce.get("fileBaseTxt").getContent();
+
+                    data = {
+                        idEdition: idEdition,
+                        idEditor: idEditor,
+                        content: content
+                    }
 
                 } else {
                     /* show default settings */
@@ -931,6 +919,25 @@ let annotations = () => {
         });
 
     });
+};
+
+/* SAVE FILE */
+/* save file every 5 seconds */
+let saveFile = () => {
+    /* fetch data */
+    fetch("http://localhost:3000/saveFile", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+
+    /* saved message */
+    document.getElementById("autosaved-message").classList.remove("d-none");
+    setTimeout(() => {
+        document.getElementById("autosaved-message").classList.add("d-none");
+    }, 2000);
 };
 
 /* preview annotations */
