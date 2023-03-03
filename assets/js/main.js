@@ -178,15 +178,17 @@ let fileTextarea = () => {
 
                 /* detect the change of node on the text-cursor moving */
                 var currentNode = ed.selection.getNode();
-                var fragId = currentNode.getAttribute("data-annotation");
-                var fragContent = currentNode.textContent;
+                var id = currentNode.getAttribute("data-annotation");
+                var content = currentNode.textContent;
 
                 /* if the id is not null > there is an annotation */
-                if (fragId !== null) {
-                    console.log(fragId.replace("#", ""));
-                    console.log(fragContent);
+                if (id !== null) {
+                    /* create the json to send to the database > id annotation + new fragment */
+                    fragment = {
+                        id: id.replace("#", ""),
+                        content: content
+                    }
                 };
-                /* / */
 
             });
 
