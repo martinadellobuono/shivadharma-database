@@ -103,8 +103,10 @@ let currentTime = () => {
 }
 
 /* SAVE DATA TO PASS TO BACKEND */
-/* save file json to send to backend */
+/* save file json to send to the database */
 var data;
+/* save fragment id to change in the database */
+var fragment;
 
 let fileTextarea = () => {
     /* create textarea */
@@ -168,14 +170,6 @@ let fileTextarea = () => {
                         content: content
                     }
 
-                    /* CHECK PRE-ANNOTATED FRAGMENTS */
-                    /* if (e.target.closest("[data-type='annotation-object']") !== null) {
-                        var modalContainer = document.querySelector("#check-modifications");
-                        var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
-                        modal.show();
-                    }; */
-                    /* / */
-
                 });
             });
 
@@ -183,8 +177,17 @@ let fileTextarea = () => {
             ed.on("keyup", (e) => {
 
                 /* detect the change of node on the text-cursor moving */
-                console.log(ed.selection.getNode());
-                
+                var currentNode = ed.selection.getNode();
+                var fragId = currentNode.getAttribute("data-annotation");
+                var fragContent = currentNode.textContent;
+
+                /* if the id is not null > there is an annotation */
+                if (fragId !== null) {
+                    console.log(fragId.replace("#", ""));
+                    console.log(fragContent);
+                };
+                /* / */
+
             });
 
         }
