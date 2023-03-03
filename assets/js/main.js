@@ -102,7 +102,7 @@ let currentTime = () => {
     window.setInterval(time, 1000);
 }
 
-/* file textarea */
+/* SAVE DATA TO PASS TO BACKEND */
 /* save file json to send to backend */
 var data;
 
@@ -148,83 +148,39 @@ let fileTextarea = () => {
             "[data-type='annotation-object'][data-subtype='textStructure'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 14px;}",
         verify_html: false,
 
-        /* CHECK THE ANNOTATED FRAGMENTS */
+        /* OPERATIONS ON THE TEXTUS */
         setup: (ed) => {
 
-            /* SAVE FILE */
-            /* save in a json the content to overwrite the file of the textus */
-            ed.on("keydown", async (e) => {
-                var url = window.location.href;
-                var idEdition = url.split("/").pop().split("-")[0];
-                var idEditor = url.split("/").pop().split("-")[1];
-                var content = ed.getContent();
+            /* when the text changes */
+            "input mousedown paste".split(" ").forEach((event) => {
+                ed.on(event, async (e) => {
 
-                data = {
-                    idEdition: idEdition,
-                    idEditor: idEditor,
-                    content: content
-                }
-            });
+                    /* CHECK PRE-ANNOTATED FRAGMENTS */
+                    console.log(tinyMCE.activeEditor.dom);
+                    /* / */
 
-            /* CHECK PRE-ANNOTATED STRINGS */
-            ed.on("mousedown", (e) => {
+                    /* SAVE FILE */
+                    /* save in a json the content to overwrite the file of the textus */
+                    var url = window.location.href;
+                    var idEdition = url.split("/").pop().split("-")[0];
+                    var idEditor = url.split("/").pop().split("-")[1];
+                    var content = ed.getContent();
 
-                /* open the modal to ask to edit an annotated string or add a new annotation */
-                var annotation;
-                var annotationId;
+                    data = {
+                        idEdition: idEdition,
+                        idEditor: idEditor,
+                        content: content
+                    }
 
-                /* if there are at least one annotation */
-                if (e.target.closest("[data-type='annotation-object']") !== null) {
+                    /* CHECK PRE-ANNOTATED FRAGMENTS */
+                    /* if (e.target.closest("[data-type='annotation-object']") !== null) {
+                        var modalContainer = document.querySelector("#check-modifications");
+                        var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
+                        modal.show();
+                    }; */
+                    /* / */
 
-                    annotation = e.target.closest("[data-type='annotation-object']");
-                    annotationId = annotation.getAttribute("data-annotation");
-
-                    /* show the modal */
-                    var modalContainer = document.querySelector("#check-modifications");
-                    var modal = bootstrap.Modal.getOrCreateInstance(modalContainer);
-                    modal.show();
-
-                    /* ADD A NEW ANNOTATION */
-                    var addAnnotation = modalContainer.querySelector("[data-role='add-annotation']");
-                    addAnnotation.addEventListener("click", () => {
-
-                        /* close the modal */
-                        modal.hide();
-                        var allowOpenModal = false;
-                        modalContainer.addEventListener("show.bs.modal", (e) => {
-                            if (!allowOpenModal) {
-                                e.preventDefault();
-                                modal.hide();
-                                allowOpenModal = true;
-                            };
-                        });
-
-                        /* click in the textarea again */
-                        ed.on("mousedown", (e) => {
-                            var el = e.target.closest("[data-type='annotation-object']");
-                            var elId = el.getAttribute("data-annotation");
-
-                            /* click not on the previously clicked element */
-                            if (annotationId !== elId) {
-                                allowOpenModal = true;
-                                modal.show();
-                                annotationId = elId;
-                                allowOpenModal = false;
-                            } else {
-                                /* click on the previously clicked element */
-                                allowOpenModal = false;
-                                modalContainer.addEventListener("show.bs.modal", (e) => {
-                                    if (!allowOpenModal) {
-                                        e.preventDefault();
-                                        modal.hide();
-                                    };
-                                });
-                            };
-                        });
-
-                    });
-                };
-
+                });
             });
 
         }
@@ -710,7 +666,7 @@ let annotations = () => {
                         startAnnotation.setAttribute("data-type", "annotation-object");
                         startAnnotation.setAttribute("data-subtype", annType);
                         /* assign an id to the sibling */
-                        startAnnotation.setAttribute("data-annotation", "annotation-");// + n);
+                        startAnnotation.setAttribute("data-annotation", "#" + idAnnotation);
                         /* / */
                         startAnnotation.innerHTML = startContent;
                         startSibling.replaceWith(startAnnotation);
@@ -938,7 +894,12 @@ let saveFile = () => {
         document.getElementById("autosaved-message").classList.add("d-none");
     }, 2000);
 };
-setInterval(saveFile, 5000);
+
+/* ONLOAD EDIT PAGE */
+let onloadEdit = () => {
+    fileTextarea();
+    setInterval(saveFile, 5000);
+}
 
 /* preview annotations */
 let previewAnnotations = () => {

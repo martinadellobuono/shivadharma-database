@@ -12252,12 +12252,6 @@ p {
   rotate: 270deg;
 }
 
-#check-modifications .modal-footer {
-  -webkit-box-pack: center !important;
-      -ms-flex-pack: center !important;
-          justify-content: center !important;
-}
-
 /* account */
 .account-sidebar li {
   padding: 0;

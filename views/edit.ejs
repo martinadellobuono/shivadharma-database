@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body onload="fileTextarea()">
+<body onload="onloadEdit()">
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -64,8 +64,8 @@
                   <p>What would you like to do?</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-role="add-annotation">Add a new annotation</button>
-                  <button type="button" class="btn btn-primary" data-role="modify-annotation">Edit the annotated fragment</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                  <button type="button" class="btn btn-primary" data-role="modify-annotation">Modify the fragment</button>
                 </div>
               </div>
             </div>
