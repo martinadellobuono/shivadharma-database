@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    /* annotations(); */
+    annotations();
     previewAnnotations();
     /* cancelAnnotations(); */
     closeBtn();
@@ -170,6 +170,7 @@ let fileTextarea = () => {
 
                     /* if the id is not null > there is an annotation */
                     if (idFragment !== null) {
+
                         /* create the json to send to the database > id annotation + new fragment */
                         data = {
                             idEdition: idEdition,
@@ -178,12 +179,21 @@ let fileTextarea = () => {
                             idFragment: idFragment,
                             contentFragment: contentFragment
                         }
+
+                        /* show the message that the new fragment has been saved */
+                        document.getElementById("fragment-message").classList.remove("d-none");
+                        setTimeout(() => {
+                            document.getElementById("fragment-message").classList.add("d-none");
+                        }, 5000);
+
                     } else {
+
                         data = {
                             idEdition: idEdition,
                             idEditor: idEditor,
                             contentFile: contentFile
                         }
+
                     };
 
                 });
@@ -858,12 +868,12 @@ let annotations = () => {
                     var url = window.location.href;
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
-                    var content = tinymce.get("fileBaseTxt").getContent();
+                    var contentFile = tinymce.get("fileBaseTxt").getContent();
 
                     data = {
                         idEdition: idEdition,
                         idEditor: idEditor,
-                        content: content
+                        contentFile: contentFile
                     }
 
                 } else {
@@ -894,10 +904,6 @@ let saveFile = () => {
         .then(response => response.json())
         .catch(err => console.log(err));
 
-    /* try */
-    console.log(data);
-    /* / */
-
     /* saved message */
     document.getElementById("autosaved-message").classList.remove("d-none");
     setTimeout(() => {
@@ -908,7 +914,6 @@ let saveFile = () => {
 /* ONLOAD EDIT PAGE */
 let onloadEdit = () => {
     fileTextarea();
-    annotations();
     setInterval(saveFile, 5000);
 }
 
