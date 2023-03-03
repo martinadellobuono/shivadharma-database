@@ -105,8 +105,6 @@ let currentTime = () => {
 /* SAVE DATA TO PASS TO BACKEND */
 /* save file json to send to the database */
 var data;
-/* save fragment id to change in the database */
-var fragment;
 
 let fileTextarea = () => {
     /* create textarea */
@@ -154,7 +152,7 @@ let fileTextarea = () => {
         setup: (ed) => {
 
             /* when the text changes */
-            "input mousedown paste".split(" ").forEach((event) => {
+            "input keyup mousedown paste".split(" ").forEach((event) => {
                 ed.on(event, async (e) => {
 
                     /* SAVE FILE */
@@ -162,34 +160,33 @@ let fileTextarea = () => {
                     var url = window.location.href;
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
-                    var content = ed.getContent();
+                    var contentFile = ed.getContent();
 
-                    data = {
-                        idEdition: idEdition,
-                        idEditor: idEditor,
-                        content: content
-                    }
+                    /* DETECT CHANGES IN PRE-ANNOTATED FRAGMENT */
+                    /* detect the change of node on the text-cursor moving */
+                    var currentNode = ed.selection.getNode();
+                    var idFragment = currentNode.getAttribute("data-annotation");
+                    var contentFragment = currentNode.textContent;
+
+                    /* if the id is not null > there is an annotation */
+                    if (idFragment !== null) {
+                        /* create the json to send to the database > id annotation + new fragment */
+                        data = {
+                            idEdition: idEdition,
+                            idEditor: idEditor,
+                            contentFile: contentFile,
+                            idFragment: idFragment,
+                            contentFragment: contentFragment
+                        }
+                    } else {
+                        data = {
+                            idEdition: idEdition,
+                            idEditor: idEditor,
+                            contentFile: contentFile
+                        }
+                    };
 
                 });
-            });
-
-            /* DETECT THE CHANGES OF PRE-ANNOTATED FRAGMENTS */
-            ed.on("keyup", (e) => {
-
-                /* detect the change of node on the text-cursor moving */
-                var currentNode = ed.selection.getNode();
-                var id = currentNode.getAttribute("data-annotation");
-                var content = currentNode.textContent;
-
-                /* if the id is not null > there is an annotation */
-                if (id !== null) {
-                    /* create the json to send to the database > id annotation + new fragment */
-                    fragment = {
-                        id: id.replace("#", ""),
-                        content: content
-                    }
-                };
-
             });
 
         }
@@ -896,6 +893,10 @@ let saveFile = () => {
     })
         .then(response => response.json())
         .catch(err => console.log(err));
+
+    /* try */
+    console.log(data);
+    /* / */
 
     /* saved message */
     document.getElementById("autosaved-message").classList.remove("d-none");

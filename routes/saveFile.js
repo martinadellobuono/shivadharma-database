@@ -10,12 +10,13 @@ router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit
 router.post("/saveFile", async (req, res) => { 
     var idEdition = req.body.idEdition;
     var idEditor = req.body.idEditor;
-    var content = req.body.content;
+    var contentFile = req.body.contentFile;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
-    if (content !== undefined) { /* it avoids errors when uploading a new file */
+    if (contentFile !== undefined) { /* it avoids errors when uploading a new file */
         try {
+            /* SAVE THE FILE */
             fs.access(path, fs.F_OK, () => {
-                fs.writeFile(path, content, "utf8", (err) => {
+                fs.writeFile(path, contentFile, "utf8", (err) => {
                     if (err) {
                         console.log(err);
                     } else {

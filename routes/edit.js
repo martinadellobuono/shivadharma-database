@@ -477,7 +477,7 @@ router.get("/edit/:id", async (req, res) => {
 
                         /* array of variants for each lemma */
                         lemmaVariantWitness_temp.forEach((el) => {
-                            if (el["start"]["labels"] == "Lemma") {
+                            //if (el["start"]["labels"] == "Lemma") {
                                 if (el["start"]["properties"]["value"] == lemma) {
                                     el["segments"].forEach((segment) => {
                                         if (segment["start"]["labels"] == "Variant") {
@@ -509,7 +509,7 @@ router.get("/edit/:id", async (req, res) => {
                                         };
                                     });
                                 };
-                            };
+                            //};
                         });
 
                         variants_arr.forEach((el) => {

@@ -10,7 +10,7 @@ const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
 router.post("/addTranslation/:id", async (req, res) => {
-
+    
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     
@@ -21,7 +21,7 @@ router.post("/addTranslation/:id", async (req, res) => {
                 `
                 MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}", idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
