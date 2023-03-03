@@ -84,11 +84,11 @@ router.post("/addApparatus/:id", async (req, res) => {
                         MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
 
-                        MERGE (selectedFragment:SelectedFragment {value: "${req.body.selectedFragment}"})
+                        MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                         ON CREATE
-                            SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
+                            SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                         ON MATCH
-                            SET selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${padaStartArr}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${padaEndArr}"
+                            SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                         
                         MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
 
