@@ -120,6 +120,7 @@ app.get("/", checkAuthenticated, (req, res) => {
         prevUrl = res.locals.cookie["test_url_1"].replace(/%2F/g, "/");
     };
 
+    /* page rendering */
     res.render("index", { name: req.user.name });
 
 });
@@ -355,6 +356,10 @@ app.use("/", edition, checkAuthenticated);
 const editions = require("./routes/editions");
 const { Console } = require("console");
 app.use("/", editions, checkAuthenticated);
+
+/* documentation */
+const documentation = require("./routes/documentation");
+app.use("/", documentation, checkAuthenticated);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Shivadharma listening on port localhost:${port}`));

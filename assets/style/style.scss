@@ -199,6 +199,16 @@ p {
     width: initial;
 }
 
+/* links */
+.link-light {
+    color: $light;
+    text-decoration: none;
+}
+
+.link-light:hover {
+    color: rgba(255, 255, 255, 0.55);
+}
+
 /* edit */
 .edition-container,
 .edition-container .row {

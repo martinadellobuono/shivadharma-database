@@ -12159,6 +12159,16 @@ p {
   width: initial;
 }
 
+/* links */
+.link-light {
+  color: #f8f9fa;
+  text-decoration: none;
+}
+
+.link-light:hover {
+  color: rgba(255, 255, 255, 0.55);
+}
+
 /* edit */
 .edition-container,
 .edition-container .row {
