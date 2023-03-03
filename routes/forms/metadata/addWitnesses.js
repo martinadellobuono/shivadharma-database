@@ -149,14 +149,14 @@ router.post("/addWitnesses/:id", async (req, res) => {
                             console.log("Data added to the database")
                         },
                         onError: err => {
-                            console.log("Error related to Neo4j action /addWitnesses/:id: " + err)
+                            console.log(err)
                         }
                     })
                 i++;
             });
         });
     } catch (err) {
-        console.log("Error related to Neo4j action /addWitnesses/:id: " + err);
+        console.log(err);
     } finally {
         res.redirect(`../edit/${idEdition}-${idEditor}`);
         await session.close();

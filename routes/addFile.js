@@ -50,7 +50,6 @@ router.post("/addFile/:id", async (req, res) => {
                     /* put in the database and visualize it in the editor */
                     var fileName = `${idEdition}-${idEditor}.html`
                     const session = driver.session();
-
                     try {
                         try {
                             await session.writeTransaction(tx => tx
@@ -84,7 +83,6 @@ router.post("/addFile/:id", async (req, res) => {
                     } finally {
                         res.redirect("/edit/" + idEdition + "-" + idEditor);
                     };
-
                 });
         } else {
             fs.rename(file.path, url, (err) => {

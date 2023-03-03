@@ -10,8 +10,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
-router.post("/addApparatus/:id",
-    async (req, res) => {
+router.post("/addApparatus/:id", async (req, res) => {
         var idEdition = req.params.id.split("/").pop().split("-")[0];
         var idEditor = req.params.id.split("/").pop().split("-")[1];
         var i = 0;
@@ -127,14 +126,14 @@ router.post("/addApparatus/:id",
                                 console.log("Data added to the graph");
                             },
                             onError: err => {
-                                console.log("Error related to the upload to Neo4j: " + err)
+                                console.log(err)
                             }
                         })
                     i++;
                 });
             });
         } catch (err) {
-            console.log("Error related to Neo4j in adding the apparatus: " + err);
+            console.log(err);
         } finally {
             await session.close();
             res.redirect(`../edit/${idEdition}-${idEditor}`);

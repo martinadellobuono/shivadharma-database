@@ -176,7 +176,7 @@ let fileTextarea = () => {
                             idEdition: idEdition,
                             idEditor: idEditor,
                             contentFile: contentFile,
-                            idFragment: idFragment,
+                            idFragment: idFragment.replace("#", ""),
                             contentFragment: contentFragment
                         }
 

@@ -38,12 +38,12 @@ router.post("/addCommentary/:id", async (req, res) => {
                     console.log("Data added to the graph");
                 },
                 onError: err => {
-                    console.log("Error related to the upload to Neo4j: " + err)
+                    console.log(err)
                 }
             })
         );
     } catch (err) {
-        console.log("Error related to Neo4j in adding the translation: " + err);
+        console.log(err);
     } finally {
         await session.close();
         res.redirect(`../edit/${idEdition}-${idEditor}`);
