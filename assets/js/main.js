@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    annotations();
+    /* annotations(); */
     previewAnnotations();
     /* cancelAnnotations(); */
     closeBtn();
@@ -155,10 +155,6 @@ let fileTextarea = () => {
             "input mousedown paste".split(" ").forEach((event) => {
                 ed.on(event, async (e) => {
 
-                    /* CHECK PRE-ANNOTATED FRAGMENTS */
-                    console.log(tinyMCE.activeEditor.dom);
-                    /* / */
-
                     /* SAVE FILE */
                     /* save in a json the content to overwrite the file of the textus */
                     var url = window.location.href;
@@ -181,6 +177,14 @@ let fileTextarea = () => {
                     /* / */
 
                 });
+            });
+
+            /* DETECT THE CHANGES OF PRE-ANNOTATED FRAGMENTS */
+            ed.on("keyup", (e) => {
+
+                /* detect the change of node on the text-cursor moving */
+                console.log(ed.selection.getNode());
+                
             });
 
         }
@@ -898,6 +902,7 @@ let saveFile = () => {
 /* ONLOAD EDIT PAGE */
 let onloadEdit = () => {
     fileTextarea();
+    annotations();
     setInterval(saveFile, 5000);
 }
 
