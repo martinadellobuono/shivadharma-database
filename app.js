@@ -361,6 +361,10 @@ app.use("/", editions, checkAuthenticated);
 const documentation = require("./routes/documentation");
 app.use("/", documentation, checkAuthenticated);
 
+/* credits */
+const credits = require("./routes/credits");
+app.use("/", credits, checkAuthenticated);
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Shivadharma listening on port localhost:${port}`));
 
