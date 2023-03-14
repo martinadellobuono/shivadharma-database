@@ -1,5 +1,3 @@
-  <!-- apparatus -->
-
   <!-- witnesses -->
   <% var witnessesArray = []; %>
   <% witnesses.forEach((witness) => { %>
@@ -7,8 +5,27 @@
       <% witnessesArray.push(witness["siglum"]); %>
     <% }; %>
   <% }); %>
-
+  <!-- cancel annotations -->
   <button type="button" class="btn-close float-end" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-apparatus" data-type="cancel-annotation"></button>
+  <div class="modal fade" id="cancel-apparatus" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-apparatus" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Are you sure to cancel this annotation?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Please type <b>cancel-annotation</b> to confirm.</p>
+          <input type="text" class="form-control" data-role="safe-deletion">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-role="safe-deletion-btn" disabled>Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- apparatus -->
   <h3 class="h6">Apparatus entry</h3>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -17,48 +34,10 @@
     <li class="nav-item" role="presentation">
       <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-apparatus" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
     </li>
-    <!-- cancel -->
-    <!--<button type="button" class="btn btn-sm btn-pink" data-bs-toggle="modal" data-bs-target="#cancel-apparatus" data-type="cancel-annotation">
-      <i class="bi bi-eraser-fill"></i> Cancel
-    </button>
-    <div class="modal fade" id="cancel-apparatus" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-annotation" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Are you sure to cancel this annotation?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Please type <b>martinadellobuono</b> to confirm.</p>
-            <input type="text" class="form-control" data-role="safe-deletion">
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-role="safe-deletion-btn" disabled>Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>-->
   </ul>
   <div class="tab-content">
     <!-- ANNOTATE -->
     <div class="tab-pane fade show active" id="annotate-apparatus" role="tabpanel" aria-labelledby="annotate-tab">
-      <!-- error handling -->
-      <% if (typeof errors !== "undefined") { %>
-      <% if (errors.length == 0) { %>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <p>Data saved!</p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <% } else { %>
-      <% errors.forEach((error) => { %>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <p>Please insert the <strong><%= error.msg %></strong>.</p>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      <% }); %>
-      <% }; %>
-      <% }; %>
       <!-- apparatus form -->
       <div class="annotation-form apparatus d-none apparatus-scroll scroll-tab">
         <form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
@@ -73,7 +52,7 @@
             <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="apparatus" name="selectedFragment">
           </div>
           <!-- location -->
-          <div class="bg-white p-3 mb-3">
+          <div class="location bg-white p-3 mb-3">
             <!-- chapter -->
             <div class="mb-3">
               <label class="form-label">Chapter</label>

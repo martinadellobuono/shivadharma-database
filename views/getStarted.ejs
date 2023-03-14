@@ -31,7 +31,7 @@
       <!-- metadata -->
       <div class="row mt-4">
         <div class="col-md-12">
-          <form method="post" action="/getstarted">
+          <form method="post" action="<%= process.env.URL_PATH %>/getstarted">
             <div class="mb-3">
               <label>Work</label>
               <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work" required>

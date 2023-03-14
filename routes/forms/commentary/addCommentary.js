@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const neo4j = require("neo4j-driver");
-const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
+const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -46,7 +46,7 @@ router.post("/addCommentary/:id", async (req, res) => {
         console.log(err);
     } finally {
         await session.close();
-        res.redirect(`../edit/${idEdition}-${idEditor}`);
+        res.redirect(process.env.URL_PATH + `/edit/${idEdition}-${idEditor}`);
     };
 });
 

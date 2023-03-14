@@ -1,19 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-
-const passport = require("passport");
-
 const neo4j = require("neo4j-driver");
+const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const { Console } = require("console");
-const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
-
 const router = express.Router();
 
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.get("/edit/:id", async (req, res) => {
+router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
     /* previous url */
     var prevUrl;
@@ -47,6 +43,8 @@ router.get("/edit/:id", async (req, res) => {
     /* data of the edition */
     var file = `${idEdition}-${idEditor}.html`;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
+    var philologicalNote = `note-${idEdition}-${idEditor}.html`;
+    var phPath = `${__dirname}/../uploads/philologicalNote/note-${idEdition}-${idEditor}.html`;
     var workMatrix;
     var title;
     var editionOf;
@@ -478,37 +476,37 @@ router.get("/edit/:id", async (req, res) => {
                         /* array of variants for each lemma */
                         lemmaVariantWitness_temp.forEach((el) => {
                             //if (el["start"]["labels"] == "Lemma") {
-                                if (el["start"]["properties"]["value"] == lemma) {
-                                    el["segments"].forEach((segment) => {
-                                        if (segment["start"]["labels"] == "Variant") {
+                            if (el["start"]["properties"]["value"] == lemma) {
+                                el["segments"].forEach((segment) => {
+                                    if (segment["start"]["labels"] == "Variant") {
 
-                                            /* variant */
-                                            var variant = segment["start"]["properties"]["value"];
+                                        /* variant */
+                                        var variant = segment["start"]["properties"]["value"];
 
-                                            /* variant dict */
-                                            var variantDict = JSON.stringify({
-                                                idAnnotation: segment["start"]["properties"]["idVariant"],
-                                                variant: variant,
-                                                number: segment["start"]["properties"]["number"],
-                                                notes: segment["start"]["properties"]["notes"]
-                                            })
+                                        /* variant dict */
+                                        var variantDict = JSON.stringify({
+                                            idAnnotation: segment["start"]["properties"]["idVariant"],
+                                            variant: variant,
+                                            number: segment["start"]["properties"]["number"],
+                                            notes: segment["start"]["properties"]["notes"]
+                                        })
 
-                                            /* array of variants */
-                                            if (!variants_arr.includes(variantDict)) {
-                                                variants_arr.push(variantDict);
-                                            };
-
-                                            /* array of attested in relation of variant with witnesses */
-                                            if (segment["relationship"]["type"] == "ATTESTED_IN") {
-                                                var witness_relations = JSON.stringify(segment);
-                                                if (!variant_witnesses_data_arr.includes(witness_relations)) {
-                                                    variant_witnesses_data_arr.push(witness_relations);
-                                                };
-                                            };
-
+                                        /* array of variants */
+                                        if (!variants_arr.includes(variantDict)) {
+                                            variants_arr.push(variantDict);
                                         };
-                                    });
-                                };
+
+                                        /* array of attested in relation of variant with witnesses */
+                                        if (segment["relationship"]["type"] == "ATTESTED_IN") {
+                                            var witness_relations = JSON.stringify(segment);
+                                            if (!variant_witnesses_data_arr.includes(witness_relations)) {
+                                                variant_witnesses_data_arr.push(witness_relations);
+                                            };
+                                        };
+
+                                    };
+                                });
+                            };
                             //};
                         });
 
@@ -569,52 +567,47 @@ router.get("/edit/:id", async (req, res) => {
                     });
 
                     /* page rendering */
+                    /* file textus */
+                    var textus;
                     if (fs.existsSync(path)) {
-                        res.render("edit", {
-                            prevUrl: prevUrl,
-                            id: req.params.id,
-                            name: req.user.name,
-                            work: workMatrix,
-                            title: title,
-                            editionOf: editionOf,
-                            authors: authors,
-                            authorCommentary: authorCommentary,
-                            date: date,
-                            editors: editors,
-                            file: file,
-                            chapter: chapter,
-                            translation: translation,
-                            commentary: commentary,
-                            parallels: parallels,
-                            citations: citations,
-                            notes: notes,
-                            witnesses: witnesses,
-                            apparatus: apparatus
-                        });
+                        textus = file;
                     } else {
-                        res.render("edit", {
-                            prevUrl: prevUrl,
-                            id: req.params.id,
-                            name: req.user.name,
-                            work: workMatrix,
-                            title: title,
-                            editionOf: editionOf,
-                            authors: authors,
-                            authorCommentary: authorCommentary,
-                            date: date,
-                            editors: editors,
-                            file: false,
-                            chapter: chapter,
-                            translation: translation,
-                            commentary: commentary,
-                            parallels: parallels,
-                            citations: citations,
-                            notes: notes,
-                            witnesses: witnesses,
-                            apparatus: apparatus
-                        });
+                        textus = false
                     };
 
+                    /* file philological note */
+                    var phNote;
+                    if (fs.existsSync(phPath)) {
+                        phNote = philologicalNote;
+                    } else {
+                        phNote = false
+                    };
+
+                    /* rendering */
+                    res.render("edit", {
+                        idEdition: idEdition,
+                        idEditor: idEditor,
+                        prevUrl: prevUrl,
+                        id: req.params.id,
+                        name: req.user.name,
+                        work: workMatrix,
+                        title: title,
+                        editionOf: editionOf,
+                        authors: authors,
+                        authorCommentary: authorCommentary,
+                        date: date,
+                        editors: editors,
+                        file: textus,
+                        philologicalNote: phNote,
+                        chapter: chapter,
+                        translation: translation,
+                        commentary: commentary,
+                        parallels: parallels,
+                        citations: citations,
+                        notes: notes,
+                        witnesses: witnesses,
+                        apparatus: apparatus
+                    });
                 },
                 onError: err => {
                     console.log("Error related to the upload to Neo4j: " + err)
@@ -628,7 +621,7 @@ router.get("/edit/:id", async (req, res) => {
     };
 });
 
-router.post("/edit/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
@@ -665,7 +658,7 @@ router.post("/edit/:id", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-        res.redirect("../edit/" + idEdition + "-" + idEditor);
+        res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
     };
 });
 

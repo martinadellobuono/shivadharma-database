@@ -5,12 +5,12 @@ const bodyParser = require("body-parser");
 const mammoth = require("mammoth");
 const fs = require("fs");
 const neo4j = require("neo4j-driver");
-const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
+const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.post("/addFile/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/addFile/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
 
@@ -29,21 +29,21 @@ router.post("/addFile/:id", async (req, res) => {
                         fs.access(file.path, fs.F_OK, () => {
                             fs.writeFile(file.path, result.value, "utf8", (err) => {
                                 if (err) {
-                                    console.log("Error related to rewriting the file: " + err);
+                                    console.log(err);
                                 } else {
                                     console.log("The file has been overwritten");
                                 };
                             });
                             fs.rename(file.path, url, (err) => {
                                 if (err) {
-                                    console.log("Error related to renaming the file: " + err);
+                                    console.log(err);
                                 } else {
                                     console.log("The file has been renamed: " + `${idEdition}-${idEditor}.html`);
                                 };
                             });
                         });
                     } catch (error) {
-                        console.log("Error in converting the file: " + error);
+                        console.log(error);
                     };
                 })
                 .done(async () => {
@@ -69,27 +69,27 @@ router.post("/addFile/:id", async (req, res) => {
                                         console.log("Data added to the database");
                                     },
                                     onError: err => {
-                                        console.log("Error related to Neo4j action /addFile/:id: " + err);
+                                        console.log(err);
                                     }
                                 })
                             );
                         } catch (err) {
-                            console.log("Error related to Neo4j: " + err);
+                            console.log(err);
                         } finally {
                             await session.close();
                         };
                     } catch (err) {
                         console.log(err);
                     } finally {
-                        res.redirect("/edit/" + idEdition + "-" + idEditor);
+                        res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
                     };
                 });
         } else {
             fs.rename(file.path, url, (err) => {
                 if (err) {
-                    console.log("Error related to renaming the file: " + err);
+                    console.log(err);
                 } else {
-                    console.log("The file has been renamed: " + file.name);
+                    console.log(file.name);
                 };
             });
         };

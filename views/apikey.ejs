@@ -16,7 +16,7 @@
     </div>
     <% }; %>
     <!-- api key -->
-    <form class="login-form" action="/apikey" method="POST">
+    <form class="login-form" action="<%= process.env.URL_PATH %>/apikey" method="POST">
       <div class="mb-3">
         <label for="password">Key to access</label>
         <input class="form-control" type="password" name="apikey" required>

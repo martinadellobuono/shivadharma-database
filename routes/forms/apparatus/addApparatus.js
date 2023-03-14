@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const fs = require("fs");
 const neo4j = require("neo4j-driver");
-const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
+const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -11,76 +11,91 @@ const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
 router.post("/addApparatus/:id", async (req, res) => {
-        var idEdition = req.params.id.split("/").pop().split("-")[0];
-        var idEditor = req.params.id.split("/").pop().split("-")[1];
-        var i = 0;
+    
+    var idEdition = req.params.id.split("/").pop().split("-")[0];
+    var idEditor = req.params.id.split("/").pop().split("-")[1];
+    var i = 0;
 
-        /* id variant */
-        var idVariant = "idVariant" + i;
+    /* id variant */
+    var idVariant = "idVariant" + i;
 
-        /* manuscripts / notes to complete with i */
-        var manuscriptVariant;
-        var notesVariant;
+    /* manuscripts / notes to complete with i */
+    var manuscriptVariant;
+    var notesVariant;
 
-        /* lemma / variant var to distinguish the omissions */
-        var lemmaReq;
-        var variantReq;
+    /* lemma / variant var to distinguish the omissions */
+    var lemmaReq;
+    var variantReq;
 
-        /* array of the variants */
-        let keys = Object.keys(req.body);
-        var variants = [];
-        keys.forEach((el) => {
-            if (el.indexOf("variant") > -1) {
-                if (!variants.includes(el)) {
-                    if (!el.includes("presence") && !el.includes("Omission") && !el.includes("radios")) {
-                        variants.push(el);
-                    };
+    /* array of the variants */
+    let keys = Object.keys(req.body);
+    var variants = [];
+    keys.forEach((el) => {
+        if (el.indexOf("variant") > -1) {
+            if (!variants.includes(el)) {
+                if (!el.includes("presence") && !el.includes("Omission") && !el.includes("radios")) {
+                    variants.push(el);
                 };
             };
-        });
+        };
+    });
 
-        /* save data */
-        const session = driver.session();
-        try {
-            await session.writeTransaction((tx) => {
-                variants.forEach((variant) => {
+    /* save data */
+    const session = driver.session();
+    try {
+        await session.writeTransaction((tx) => {
+            variants.forEach((variant) => {
 
-                    /* remove "all" from padas arrays */
-                    var padaStartArr = req.body.padaStart;
+                /* remove "all" from padas arrays */
+                var padaStartArr = req.body.padaStart;
 
-                    if (padaStartArr == undefined) {
-                        padaStartArr = [];
+                if (padaStartArr == undefined) {
+                    padaStartArr = [];
+                };
+
+                var padaEndArr = req.body.padaEnd;
+                if (padaEndArr == undefined) {
+                    padaEndArr = [];
+                };
+
+                /* id variant */
+                idVariant = "idVariant" + i;
+
+                /* variant additions */
+                manuscriptVariant = "manuscriptVariant" + i;
+                notesVariant = "variant" + i + "Omission";
+                idWitnessVariant = "idWitnessVariant" + i;
+
+                /* lemma omission */
+                if (req.body.lemma == "") {
+                    lemmaReq = "lemmaOmission___" + Math.random().toString(16).slice(2)
+                } else {
+                    lemmaReq = req.body.lemma;
+                };
+
+                /* variant omission */
+                if (req.body[variant] == "") {
+                    variantReq = "variantOmission___" + Math.random().toString(16).slice(2)
+                } else {
+                    variantReq = req.body[variant];
+                };
+
+                /* array of lemma witnesses > remove empty siglum */
+                var lemmaWits = [];
+                req.body.manuscriptLemma.split(" ; ").forEach((wit) => {
+                    if (!lemmaWits.includes(wit)) {
+                        if (wit !== "") {
+                            lemmaWits.push(wit);
+                        };
                     };
+                });
 
-                    var padaEndArr = req.body.padaEnd;
-                    if (padaEndArr == undefined) {
-                        padaEndArr = [];
-                    };
+                /* array of variant witnesses */
 
-                    /* id variant */
-                    idVariant = "idVariant" + i;
+                /* / */
 
-                    /* variant additions */
-                    manuscriptVariant = "manuscriptVariant" + i;
-                    notesVariant = "variant" + i + "Omission";
-                    idWitnessVariant = "idWitnessVariant" + i;
-
-                    /* lemma omission */
-                    if (req.body.lemma == "") {
-                        lemmaReq = "lemmaOmission___" + Math.random().toString(16).slice(2)
-                    } else {
-                        lemmaReq = req.body.lemma;
-                    };
-
-                    /* variant omission */
-                    if (req.body[variant] == "") {
-                        variantReq = "variantOmission___" + Math.random().toString(16).slice(2)
-                    } else {
-                        variantReq = req.body[variant];
-                    };
-
-                    tx.run(
-                        `
+                tx.run(
+                    `
                         MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
 
@@ -100,7 +115,7 @@ router.post("/addApparatus/:id", async (req, res) => {
                         
                         MERGE (selectedFragment)-[:HAS_LEMMA]->(lemma)
 
-                        FOREACH (wit IN split("${req.body.manuscriptLemma}", " ; ") |
+                        FOREACH (wit IN split("${lemmaWits}", ",") |
                             MERGE (witness:Witness {siglum: wit})
                             MERGE (lemma)-[:ATTESTED_IN]->(witness)
                         )
@@ -120,24 +135,24 @@ router.post("/addApparatus/:id", async (req, res) => {
 
                         RETURN *
                         `
-                    )
-                        .subscribe({
-                            onCompleted: () => {
-                                console.log("Data added to the graph");
-                            },
-                            onError: err => {
-                                console.log(err)
-                            }
-                        })
-                    i++;
-                });
+                )
+                    .subscribe({
+                        onCompleted: () => {
+                            console.log("Data added to the graph");
+                        },
+                        onError: err => {
+                            console.log(err)
+                        }
+                    })
+                i++;
             });
-        } catch (err) {
-            console.log(err);
-        } finally {
-            await session.close();
-            res.redirect(`../edit/${idEdition}-${idEditor}`);
-        };
-    });
+        });
+    } catch (err) {
+        console.log(err);
+    } finally {
+        await session.close();
+        res.redirect(process.env.URL_PATH + `/edit/${idEdition}-${idEditor}`);
+    };
+});
 
 module.exports = router;

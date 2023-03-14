@@ -25,11 +25,15 @@
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#meta-witnesses" type="button" role="tab" aria-controls="profile" aria-selected="false">Witnesses</button>
           </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#meta-philological-note" type="button" role="tab" aria-controls="profile" aria-selected="false">Philological note</button>
+          </li>
         </ul>
         <div class="tab-content">
+
           <!-- title and responsibility -->
           <div class="tab-pane mb-3 mt-3 fade show active" id="meta-title" role="tabpanel" aria-labelledby="meta-title">
-            <form method="post" action="/edit/<%= id %>">
+            <form method="post" action="<%= process.env.URL_PATH %>/edit/<%= id %>">
               <!-- work -->
               <div class="mb-3">
                 <label class="form-label">Work</label>
@@ -88,23 +92,22 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
+
           <!-- witnesses -->
           <div class="tab-pane mb-3 mt-3 fade" id="meta-witnesses" role="tabpanel" aria-labelledby="meta-witnesses">
             
             <!-- already entered witnesses -->
             <div class="mb-3" data-type="witnesses" data-subtype="enteredWitnesses">
-
               <% if (witnessesArray.length > 0) { %>
                 <span>Already entered witnesses: </span>
                 <% witnessesArray.forEach((witness) => { %>
                   <button type="button" class="btn btn-sm btn-light"><%- witness; %></button>
                 <% }); %>
               <% }; %>
-
             </div>
 
             <!-- form -->
-            <form id="addWitnesses" method="post" action="/addWitnesses/<%= id %>">
+            <form id="addWitnesses" method="post" action="<%= process.env.URL_PATH %>/addWitnesses/<%= id %>">
               <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3 wit-clone" data-cloned="witness">
                 <!-- siglum -->
                 <div class="mb-3">
@@ -534,6 +537,24 @@
               <button type="submit" class="btn btn-primary" form="addWitnesses">Submit</button>
             </div>
           </div>
+
+          <!-- philological note -->
+          <div class="tab-pane mb-3 mt-3 fade" id="meta-philological-note" role="tabpanel" aria-labelledby="meta-title">
+            <form method="post" action="<%= process.env.URL_PATH %>/addPhilologicalNote/<%= id %>">
+              <div class="metadata-container">
+                <textarea class="mt-1" placeholder="Insert the philological note of your edition..." name="philologicalNote">
+                <% if (philologicalNote) { %>
+                  <%- include (`../uploads/philologicalNote/${philologicalNote}`) %>
+                <% }; %>
+                </textarea>
+              </div>
+              <div class="mt-3">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+
         </div>
       </div>
     </div>

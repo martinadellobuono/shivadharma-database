@@ -23,7 +23,7 @@
     "express-session": "^1.17.3",
     "express-validator": "*",
     "formidable": "*",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mammoth": "^1.5.1",
     "method-override": "^3.0.0",
     "neo4j-driver": "*",

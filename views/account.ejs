@@ -50,13 +50,17 @@
           <h2>Editions</h2>
           <ul>
             <% if (editions) { %>
-            <% editions.forEach(function(edition) { %>
-            <li class="p-2">
-              <span class="fw-bold"><%= edition.split("___")[0] %></span>
-              <a href="/edition/<%= edition.split('___')[1] %>-<%= idEditor %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-              <a href="/edit/<%= edition.split('___')[1] %>-<%= idEditor %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
-            </li>
-            <% }); %>
+              <% editions.forEach(function(edition) { %>
+                <% var e = edition.split('___')[1]; %>
+                <% var editionId = e.split('---')[0]; %>
+                <% var publishType = e.split('---')[1]; %>
+                <li class="p-2">
+                  <span class="fw-bold"><%= edition.split("___")[0] %></span>
+                  <a href="/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+                  <a href="/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+                  <span class="text-secondary fst-italic"><%= publishType; %></span>
+                </li>
+              <% }); %>
             <% } %>
           </ul>
         </div>

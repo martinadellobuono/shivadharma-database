@@ -10,15 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
     cloneEl();
     annotations();
     previewAnnotations();
-    /* cancelAnnotations(); */
     closeBtn();
     modifyAnnotations();
-    liveCheck();
-    liveCheckPresence();
     truncation();
     lemmaVariantPresence();
     witnessDimensions();
-    /* previewCheck(); */
     inlineLocation();
 });
 
@@ -553,7 +549,6 @@ let cloneEl = () => {
 
 /* annotations */
 let annotations = () => {
-
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
 
         /* annotation type */
@@ -562,8 +557,20 @@ let annotations = () => {
         /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
         el.addEventListener("click", () => {
 
+            /* block all the buttons */
+            const btns = document.querySelectorAll(".btn-set-annotation button");
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].setAttribute("disabled", "disabled");
+            };
+
             /* type of annotation */
             var category = el.getAttribute("data-value");
+
+            /* live check if apparatus */
+            if (category == "apparatus") {
+                liveCheck();
+                liveCheckPresence();
+            };
 
             /* root ID of annotation */
             var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
@@ -823,14 +830,11 @@ let annotations = () => {
 
                     /* CANCEL BUTTON */
                     /* assign the same id to the cancel button */
-                    /* var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
-                    var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
-                    safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation); */
+                    var safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
+                    safeCancelBtn.setAttribute("data-cancel", "#" + idAnnotation);
 
                     /* init textareas */
                     var selector = "." + category + "-container textarea";
-                    var name = document.querySelector(selector).getAttribute("name");
-                    var content;
 
                     tinymce.init({
                         selector: selector,
@@ -852,15 +856,7 @@ let annotations = () => {
                         image_caption: true,
                         quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
                         toolbar_mode: "sliding",
-                        contextmenu: "link image table",
-                        setup: (ed) => {
-
-                            /* LIVE CHECK */
-                            ed.on("keyup", (e) => {
-                                content = ed.getContent();
-                                document.getElementById("live-" + name).innerHTML = content;
-                            });
-                        }
+                        contextmenu: "link image table"
                     });
 
                     /* SAVE FILE */
@@ -870,11 +866,37 @@ let annotations = () => {
                     var idEditor = url.split("/").pop().split("-")[1];
                     var contentFile = tinymce.get("fileBaseTxt").getContent();
 
-                    data = {
-                        idEdition: idEdition,
-                        idEditor: idEditor,
-                        contentFile: contentFile
-                    }
+                    var form = document.querySelector("#" + category + "-req");
+                    var location = form.querySelector(".location");
+                    var inputs = location.querySelectorAll("input[type='number']");
+                    var submitBtn = form.querySelector("button[type='submit']");
+
+                    let detectEmptyForms = () => {
+                        for (var i = 0; i < inputs.length; i++) {
+                            if (inputs[i].value !== "") {
+                                return true;
+                            } else {
+                                return false;
+                            };
+                        };
+                    };
+
+                    submitBtn.addEventListener("click", () => {
+                        if (detectEmptyForms()) {
+                            /* send the file new content to the server */
+                            data = {
+                                idEdition: idEdition,
+                                idEditor: idEditor,
+                                contentFile: contentFile
+                            }
+
+                            /* unblock all the buttons */
+                            const btns = document.querySelectorAll(".btn-set-annotation button");
+                            for (var i = 0; i < btns.length; i++) {
+                                btns[i].removeAttribute("disabled");
+                            };
+                        };
+                    });
 
                 } else {
                     /* show default settings */
@@ -896,7 +918,7 @@ let annotations = () => {
 /* save file every 5 seconds */
 let saveFile = () => {
     /* fetch data */
-    fetch("http://localhost:3000/saveFile", {
+    fetch("http://localhost:8080/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -911,10 +933,68 @@ let saveFile = () => {
     }, 2000);
 };
 
+/* metadata textareas */
+let metadataTextareas = () => {
+    tinymce.init({
+        selector: ".metadata-container textarea",
+        resize: "both",
+        width: "100%",
+        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+        menubar: "file edit view insert format tools table help",
+        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+        toolbar_sticky: false,
+        autosave_ask_before_unload: true,
+        autosave_interval: "30s",
+        autosave_prefix: "{path}{query}-{id}-",
+        autosave_restore_when_empty: false,
+        autosave_retention: "2m",
+        image_advtab: true,
+        template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+        template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+        height: "50vh",
+        image_caption: true,
+        quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+        toolbar_mode: "sliding",
+        contextmenu: "link image table"
+    });
+};
+
+/* publish or save as draft */
+let publishEdition = () => {
+    var publishBtn = document.querySelectorAll(".publish-btn");
+    for (var i = 0; i < publishBtn.length; i++) {
+        publishBtn[i].addEventListener("click", (e) => {
+
+            var url = window.location.href;
+            var idEdition = url.split("/").pop().split("-")[0];
+            var idEditor = url.split("/").pop().split("-")[1];
+            var publishType = e.target.getAttribute("data-value");
+
+            /* type of publishment > draft or publishment */
+            var publishType = {
+                publishType: publishType
+            }
+
+            /* fetch the type of publishment */
+            var route = "http://localhost:8080/publish/" + idEdition + "-" + idEditor;
+            fetch(route, {
+                method: "POST",
+                body: JSON.stringify(publishType),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+            })
+                .then(response => response.json())
+                .catch(err => console.log(err));
+
+        });
+    };
+};
+
 /* ONLOAD EDIT PAGE */
 let onloadEdit = () => {
     fileTextarea();
+    metadataTextareas();
     setInterval(saveFile, 5000);
+    publishEdition();
 }
 
 /* preview annotations */
@@ -980,7 +1060,6 @@ let previewAnnotations = () => {
 
 /* cancel annotations */
 let cancelAnnotations = () => {
-
     /* modal */
     var modals = document.querySelectorAll("div[data-role='cancel-annotation']");
     modals.forEach((modal) => {
@@ -991,37 +1070,43 @@ let cancelAnnotations = () => {
             /* typing in the input */
             safeDeletionInput.addEventListener("keyup", () => {
                 /* check the value of the input */
-                if (safeDeletionInput.value == "martinadellobuono") {
+                if (safeDeletionInput.value == "cancel-annotation") {
                     /* enable the save changes button */
                     saveChangesBtn.removeAttribute("disabled");
                     /* save changes */
                     saveChangesBtn.addEventListener("click", () => {
-
                         /* CANCEL THE ANNOTATION */
-                        var annotationForm = document.querySelector(".annotation-form:not(.d-none)");
-                        var safeCancelBtn = annotationForm.querySelector("button[data-type='cancel-annotation']");
+                        var safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
                         var annotationId = safeCancelBtn.getAttribute("data-cancel");
                         /* search all elements with the annotation id */
-                        var annotationDiv = tinymce.activeEditor.dom.select('div[data-annotation="' + annotationId + '"]');
+                        var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
+
                         /* reinsert the original content without annotation tags */
                         var newContent = "";
                         annotationDiv.forEach((annotation) => {
-                            var annotationChildren = annotation.childNodes;
-                            annotationChildren.forEach((el) => {
-                                if (el.tagName == "SPAN") {
-                                    /* it will be automatically removed */
-                                } else if (el.tagName == "P") {
-                                    newContent = newContent + el.outerHTML;
-                                } else {
-                                    var txt = el.textContent
-                                    annotation.outerHTML = "" + txt;
-                                    newContent = "";
+                            /* remove milestones */
+                            if (annotation.getAttribute("data-type") == "milestone") {
+                                annotation.remove();
+                            } else {
+                                /* remove annotations */
+                                var annotationChildren = annotation.childNodes;
+                                annotationChildren.forEach((el) => {
+                                    if (el.tagName == "SPAN") {
+
+                                    } else if (el.tagName == "P") {
+                                        newContent = newContent + el.outerHTML;
+                                    } else {
+                                        var txt = el.textContent
+                                        annotation.outerHTML = "" + txt;
+                                        newContent = "";
+                                    };
+                                });
+                                if (newContent !== "") {
+                                    annotation.outerHTML = newContent;
                                 };
-                            });
-                            if (newContent !== "") {
-                                annotation.outerHTML = newContent;
                             };
                         });
+
                         /* close the modal */
                         let modalToClose = bootstrap.Modal.getInstance(modal);
                         modalToClose.hide();
@@ -1030,6 +1115,11 @@ let cancelAnnotations = () => {
                         var defaultSettings = document.querySelector(".default-settings");
                         defaultSettings.classList.remove("d-none");
 
+                        /* unblock the annotation buttons */
+                        const btns = document.querySelectorAll(".btn-set-annotation button");
+                        for (var i = 0; i < btns.length; i++) {
+                            btns[i].removeAttribute("disabled");
+                        };
                     });
                 } else {
                     /* disable the save changes button */
@@ -1044,15 +1134,12 @@ let cancelAnnotations = () => {
                 /* empty the input */
                 safeDeletionInput.value = "";
             });
-
         });
     });
-
 };
 
 /* close annotation box when clicking on another annotation button */
 let closeAnnotationBox = () => {
-
     /* reset the empty annotation box */
     var defaultAnnotationBox = document.querySelector(".annotations-box-below");
     defaultAnnotationBox.classList.remove("d-none");
@@ -1067,7 +1154,6 @@ let closeAnnotationBox = () => {
     if (smaller.length > 0) {
         if (smaller.length > 0) {
             smaller.forEach((el) => {
-
                 /* reset the col */
                 el.classList.add("col-md-1");
                 el.classList.remove("col-md-4");
@@ -1079,16 +1165,12 @@ let closeAnnotationBox = () => {
 
                 /* hide the close button */
                 el.querySelector(".btn-close").classList.add("d-none");
-
             });
         };
     } else {
-
         /* hide the forms */
         document.querySelector(".annotation-form").classList.add("d-none");
-
     };
-
 };
 
 /* close annotation box when clicking on another annotation button */
@@ -1146,7 +1228,6 @@ let modifyAnnotations = () => {
             /* clone variant containers */
             let cloneVariantContainers = () => {
                 var variants = dataContainer.querySelectorAll("[data-subtype='variant']");
-
                 for (var i = 0; i < variants.length; i++) {
                     form.querySelector("[data-clone='variant']").click();
                 };
@@ -1233,12 +1314,16 @@ let modifyAnnotations = () => {
                     let lists = () => {
                         var lists = form.querySelectorAll("[data-list][name='" + name + "']");
                         lists.forEach((list) => {
+
                             /* fill the list */
                             list.value = val;
 
                             /* live check */
                             if (type == "apparatus") {
-                                document.getElementById("live-" + name).innerHTML = val;
+                                var vals = [];
+                                vals.push(val);
+                                console.log(vals);
+                                document.getElementById("live-" + name).innerHTML = val.replace(" ; ", " ");
                             };
                         });
                     };
@@ -1320,7 +1405,6 @@ let liveCheck = () => {
     input.forEach((el) => {
         "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
-
                 /* RADIOS */
                 if (el.getAttribute("type") == "radio") {
                     var radiosParents = el.parentNode.querySelectorAll(".form-check");
@@ -1378,10 +1462,11 @@ let liveCheck = () => {
 
                 /* TEXT */
                 if (el.getAttribute("type") == "text") {
+                    /* print value of lemma and variants */
+                    document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value;
+
                     /* lemma */
                     if (el.getAttribute("name") == "lemma") {
-                        /* print value of lemma */
-                        document.getElementById("live-lemma").innerHTML = el.value;
                         /* bracket */
                         document.getElementById("lemma-bracket").classList.remove("d-none");
                     };
@@ -1459,10 +1544,6 @@ let liveCheck = () => {
                 if (el.getAttribute("type") == "search") {
                     document.getElementById("live-" + el.getAttribute("name")).innerHTML = el.value.replace(/[;]/g, " ");
                 };
-
-                /* TEXTAREA */
-                /* in annotations(); */
-
             });
         });
     });

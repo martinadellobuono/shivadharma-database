@@ -228,7 +228,7 @@
                     <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
                     <!-- witnesses -->
                     <% el["witnessesLemma"].forEach((witness) => { %>
-                      <span data-type="apparatus" data-subtype="witnessesLemma"><%= witness["siglum"]; %></span>
+                      <span data-type="apparatus" data-subtype="witnessesLemma"><%- witness["siglum"]; %></span>
                     <% }); %>
                     <!-- notes -->
                     <% if (el["lemma"]["notes"] !== "") { %>
@@ -241,7 +241,7 @@
                       <span class="ms-5 fst-italic" data-type="apparatus" data-subtype="variant"><%= variant["variant"]["variant"]; %></span>
                       <!-- witnesses-->
                       <% variant["witnessesVariant"].forEach((witness) => { %>
-                        <span data-type="apparatus" data-subtype="witnessesVariant"><%= witness["siglum"]; %></span>
+                        <span data-type="apparatus" data-subtype="witnessesVariant"><%- witness["siglum"]; %></span>
                       <% }); %>
                       <!-- notes -->
                       <% if (variant["variant"]["notes"] !== "") { %>

@@ -16,7 +16,7 @@ const cookieParser = require("cookie-parser");
 
 /* db */
 const neo4j = require("neo4j-driver");
-const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic("neo4j", "shivadharma_temp_editions"));
+const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 
 /* login system */
 const passport = require("passport");
@@ -77,7 +77,7 @@ app.use(methodOverride("_method"));
 app.use(cookieParser());
 
 /* index */
-app.get("/", checkAuthenticated, (req, res) => {
+app.get(process.env.URL_PATH + "/", checkAuthenticated, (req, res) => {
 
     /* store the current url in a cookie */
     var test_url_1 = res.cookie["test_url_1"];
@@ -127,11 +127,11 @@ app.get("/", checkAuthenticated, (req, res) => {
 
 /* login system */
 /* register */
-app.get("/register", checkNotAuthenticated, async (req, res) => {
+app.get(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, res) => {
     res.render("register");
 });
 
-app.post("/register", checkNotAuthenticated, async (req, res) => {
+app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, res) => {
     try {
         /* crypt the password */
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -181,12 +181,12 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-        res.redirect("/login");
+        res.redirect(process.env.URL_PATH + "/login");
     };
 });
 
 /* login */
-app.get("/login", checkNotAuthenticated, async (req, res) => {
+app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res) => {
     try {
         /* get users from the db */
         const session = driver.session();
@@ -237,11 +237,11 @@ app.get("/login", checkNotAuthenticated, async (req, res) => {
     };
 });
 
-app.post("/login", checkNotAuthenticated,
+app.post(process.env.URL_PATH + "/login", checkNotAuthenticated,
 
     /* if the user is not authenticates, send her to login */
     passport.authenticate("local", {
-        failureRedirect: "/login",
+        failureRedirect: process.env.URL_PATH + "/login",
         failureFlash: true
     }),
 
@@ -249,15 +249,15 @@ app.post("/login", checkNotAuthenticated,
     (req, res) => {
         req.session.user = req.body.email;
         res.cookie("session", req.session, { expire: 500000 + Date.now() });
-        res.redirect("/");
+        res.redirect(process.env.URL_PATH + "/");
     }
 );
 
 /* logout */
-app.delete("/logout", (req, res) => {
+app.delete(process.env.URL_PATH + "/logout", (req, res) => {
     req.logOut((err) => {
         if (err) { return next(err); };
-        res.redirect("login");
+        res.redirect(process.env.URL_PATH + "/login");
     });
 });
 
@@ -266,42 +266,12 @@ const account = require("./routes/account");
 app.use("/", account, checkAuthenticated);
 
 /* get started */
-app.get("/getstarted", checkAuthenticated, (req, res) => {
-    res.render("getstarted", { name: req.user.name });
-});
-
 const getStarted = require("./routes/getStarted");
 app.use("/", getStarted);
 
 /* api key */
-app.get("/apikey", checkAuthenticated, (req, res) => {
-    res.render("apikey", { name: req.user.name });
-});
-
-app.post("/apikey", checkAuthenticated, async (req, res) => {
-    /* check if the api key is correct */
-    if (req.body.apikey == process.env.API_KEY) {
-        res.render("getStarted", { name: req.user.name });
-    } else {
-        res.render("apikey", { name: req.user.name, errorMessage: "Incorrect access key" });
-    };
-});
-
-/* do not allow non-authenticated users */
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    };
-    res.redirect("/login");
-};
-
-/* do not go back to login if logged users */
-function checkNotAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return res.redirect("/");
-    };
-    next();
-};
+const apikey = require("./routes/apikey");
+app.use("/", apikey, checkAuthenticated);
 
 /* edit */
 const edit = require("./routes/edit");
@@ -315,57 +285,76 @@ app.use("/", addFile);
 const addWitnesses = require("./routes/forms/metadata/addWitnesses");
 app.use("/", addWitnesses);
 
+/* add philological note */
+const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
+app.use("/", addPhilologicalNote);
+
 /* add apparatus */
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
-app.use("/", addApparatus);
+app.use(process.env.URL_PATH + "/", addApparatus);
 
 /* add translation */
 const addTranslation = require("./routes/forms/translation/addTranslation");
-app.use("/", addTranslation);
+app.use(process.env.URL_PATH + "/", addTranslation);
 
 /* add parallel */
 const addParallel = require("./routes/forms/parallel/addParallel");
-app.use("/", addParallel);
+app.use(process.env.URL_PATH + "/", addParallel);
 
 /* add commentary */
 const addCommentary = require("./routes/forms/commentary/addCommentary");
-app.use("/", addCommentary);
+app.use(process.env.URL_PATH + "/", addCommentary);
 
 /* add citation */
 const addCitation = require("./routes/forms/citation/addCitation");
-app.use("/", addCitation);
+app.use(process.env.URL_PATH + "/", addCitation);
 
 /* add note */
 const addNote = require("./routes/forms/note/addNote");
-app.use("/", addNote);
+app.use(process.env.URL_PATH + "/", addNote);
 
-/* TRY */
 /* save file */
 const saveFile = require("./routes/saveFile");
-app.use("/", saveFile);
+app.use(process.env.URL_PATH + "/", saveFile);
 
 /* publish */
 const publish = require("./routes/publish");
-app.use("/", publish);
+app.use(process.env.URL_PATH + "/", publish);
 
 /* get the edition */
 const edition = require("./routes/edition");
-app.use("/", edition, checkAuthenticated);
+app.use(process.env.URL_PATH + "/", edition, checkAuthenticated);
 
 /* get the list of editions */
 const editions = require("./routes/editions");
 const { Console } = require("console");
-app.use("/", editions, checkAuthenticated);
+app.use(process.env.URL_PATH + "/", editions, checkAuthenticated);
 
 /* documentation */
 const documentation = require("./routes/documentation");
-app.use("/", documentation, checkAuthenticated);
+app.use(process.env.URL_PATH + "/", documentation, checkAuthenticated);
 
 /* credits */
 const credits = require("./routes/credits");
-app.use("/", credits, checkAuthenticated);
+app.use(process.env.URL_PATH + "/", credits, checkAuthenticated);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Shivadharma listening on port localhost:${port}`));
+/* do not allow non-authenticated users */
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    };
+    res.redirect(process.env.URL_PATH + "/login");
+};
+
+/* do not go back to login if logged users */
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect(process.env.URL_PATH + "/");
+    };
+    next();
+};
+
+const port = process.env.PORT || 80;
+app.listen(port, () => console.log(`Shivadharma listening on port localhost:${port}${process.env.URL_PATH}`));
 
 module.exports = app;
