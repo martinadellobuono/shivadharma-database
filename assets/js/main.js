@@ -916,14 +916,20 @@ let annotations = () => {
 
 /* SAVE FILE */
 /* save file every 5 seconds */
-let saveFile = () => {
+let saveFile = async () => {
     /* fetch data */
-    fetch("http://localhost:8080/saveFile", {
+    await fetch("http://localhost:80/shivadharma-database/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
-        .then(response => response.json())
+        .then((response) => {
+            console.log(response);
+            response.json();
+        })
+        .then(json => {
+            console.log(json);
+        })
         .catch(err => console.log(err));
 
     /* saved message */
@@ -963,7 +969,7 @@ let metadataTextareas = () => {
 let publishEdition = () => {
     var publishBtn = document.querySelectorAll(".publish-btn");
     for (var i = 0; i < publishBtn.length; i++) {
-        publishBtn[i].addEventListener("click", (e) => {
+        publishBtn[i].addEventListener("click", async (e) => {
 
             var url = window.location.href;
             var idEdition = url.split("/").pop().split("-")[0];
@@ -976,13 +982,16 @@ let publishEdition = () => {
             }
 
             /* fetch the type of publishment */
-            var route = "http://localhost:8080/publish/" + idEdition + "-" + idEditor;
-            fetch(route, {
+            var route = "http://localhost:80/shivadharma-database/publish/" + idEdition + "-" + idEditor;
+            await fetch(route, {
                 method: "POST",
                 body: JSON.stringify(publishType),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             })
                 .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                })
                 .catch(err => console.log(err));
 
         });

@@ -146,7 +146,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
                 )
                     .subscribe({
                         onCompleted: () => {
-                            console.log("Data added to the database")
+                            console.log("Witness added to the database")
                         },
                         onError: err => {
                             console.log(err)

@@ -1,7 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const path = require("path");
-const fs = require("fs");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
@@ -10,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
-router.post("/addApparatus/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/addApparatus/:id", async (req, res) => {
     
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
@@ -90,10 +88,6 @@ router.post("/addApparatus/:id", async (req, res) => {
                     };
                 });
 
-                /* array of variant witnesses */
-
-                /* / */
-
                 tx.run(
                     `
                         MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
@@ -138,7 +132,7 @@ router.post("/addApparatus/:id", async (req, res) => {
                 )
                     .subscribe({
                         onCompleted: () => {
-                            console.log("Data added to the graph");
+                            console.log("Apparatus entry added to the graph");
                         },
                         onError: err => {
                             console.log(err)

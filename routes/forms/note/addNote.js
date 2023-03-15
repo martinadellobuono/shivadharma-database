@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const fs = require("fs");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
@@ -9,7 +8,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
-router.post("/addNote/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/addNote/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
@@ -35,7 +34,7 @@ router.post("/addNote/:id", async (req, res) => {
             )
             .subscribe({
                 onCompleted: () => {
-                    console.log("Data added to the graph");
+                    console.log("Note added to the graph");
                 },
                 onError: err => {
                     console.log(err)

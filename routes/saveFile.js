@@ -1,6 +1,4 @@
 const express = require("express");
-const path = require("path");
-const formidable = require("formidable");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const neo4j = require("neo4j-driver");
@@ -9,7 +7,7 @@ const router = express.Router();
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.post("/saveFile", async (req, res) => {
+router.post(process.env.URL_PATH + "/saveFile", async (req, res) => {
     var idEdition = req.body.idEdition;
     var idEditor = req.body.idEditor;
     var contentFile = req.body.contentFile;
@@ -53,7 +51,7 @@ router.post("/saveFile", async (req, res) => {
                                 console.log("Annotated fragment updated.");
                             },
                             onError: err => {
-                                console.log("Error related to the upload to Neo4j: " + err)
+                                console.log(err)
                             }
                         })
                     );

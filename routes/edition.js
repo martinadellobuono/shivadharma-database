@@ -1,14 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-const passport = require("passport");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost:7687", neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.get("/edition/:id", async (req, res) => {
+router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
     
     /* previous url */
     var prevUrl;

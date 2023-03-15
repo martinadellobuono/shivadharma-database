@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.post("/publish/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/publish/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     var publishType = req.body.publishType;
@@ -23,7 +23,7 @@ router.post("/publish/:id", async (req, res) => {
             )
             .subscribe({
                 onCompleted: () => {
-                    console.log("Published as " + publishType);
+                    console.log("Edition published as " + publishType);
                 },
                 onError: err => {
                     console.log(err)

@@ -40,7 +40,7 @@
     <div class="tab-pane fade show active" id="annotate-apparatus" role="tabpanel" aria-labelledby="annotate-tab">
       <!-- apparatus form -->
       <div class="annotation-form apparatus d-none apparatus-scroll scroll-tab">
-        <form class="form-annotations" id="apparatus-req" method="post" action="/addApparatus/<%= id %>">
+        <form class="form-annotations" id="apparatus-req" method="post" action="<%= process.env.URL_PATH %>/addApparatus/<%= id %>">
           <!-- ID -->
           <div class="d-none">
             <label class="form-label">ID of annotation</label>

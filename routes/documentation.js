@@ -1,11 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const passport = require("passport");
 const router = express.Router();
 router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
-router.get("/documentation", async (req, res) => {
+router.get(process.env.URL_PATH + "/documentation", async (req, res) => {
 
     /* store the current url in a cookie */
     /* previous url */

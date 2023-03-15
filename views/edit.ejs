@@ -33,9 +33,9 @@
         <!-- metadata -->
         <%- include ("partials/metadata") %>
         <!-- publish -->
-        <a href="/edition/<%= idEdition %>-<%= idEditor %>" class="btn btn-primary publish-btn" data-value="Published">Publish</a>
+        <a href="<%= process.env.URL_PATH %>/edition/<%= idEdition %>-<%= idEditor %>" class="btn btn-primary publish-btn" data-value="Published">Publish</a>
         <!-- save as draft -->
-        <a href="/edition/<%= idEdition %>-<%= idEditor %>" class="btn btn-light border publish-btn" data-value="Saved as draft">Save as draft</a>
+        <a href="<%= process.env.URL_PATH %>/edition/<%= idEdition %>-<%= idEditor %>" class="btn btn-light border publish-btn" data-value="Saved as draft">Save as draft</a>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/editions", async (req, res) => {
+router.get(process.env.URL_PATH + "/editions", async (req, res) => {
 
     /* previous url */
     var prevUrl;

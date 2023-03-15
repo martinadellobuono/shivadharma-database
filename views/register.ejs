@@ -7,7 +7,7 @@
     <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
     <h1>Register</h1>
   </div>
-  <form class="login-form" action="/register" method="POST">
+  <form class="login-form" action="<%= process.env.URL_PATH %>/register" method="POST">
     <div class="mb-3">
       <label for="name">Full name</label>
       <input class="form-control" type="text" name="name" required>
@@ -28,7 +28,7 @@
   </form>
   <hr>
   <span>Already have an account?</span>
-  <a href="/login" title="Login">Login</a>
+  <a href="<%= process.env.URL_PATH %>/login" title="Login">Login</a>
 </div>
 
 </html>

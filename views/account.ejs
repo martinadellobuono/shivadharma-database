@@ -56,8 +56,8 @@
                 <% var publishType = e.split('---')[1]; %>
                 <li class="p-2">
                   <span class="fw-bold"><%= edition.split("___")[0] %></span>
-                  <a href="/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                  <a href="/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+                  <a href="<%= process.env.URL_PATH %>/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+                  <a href="<%= process.env.URL_PATH %>/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
                   <span class="text-secondary fst-italic"><%= publishType; %></span>
                 </li>
               <% }); %>

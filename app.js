@@ -76,6 +76,13 @@ app.use(methodOverride("_method"));
 /* cookies */
 app.use(cookieParser());
 
+/* cors */
+const cors = require("cors");
+app.use(cors({
+    origin: "*",
+    methods: ["GET","POST","DELETE","UPDATE", "PUT", "PATCH"]
+}));
+
 /* index */
 app.get(process.env.URL_PATH + "/", checkAuthenticated, (req, res) => {
 
@@ -291,52 +298,52 @@ app.use("/", addPhilologicalNote);
 
 /* add apparatus */
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
-app.use(process.env.URL_PATH + "/", addApparatus);
+app.use("/", addApparatus);
 
 /* add translation */
 const addTranslation = require("./routes/forms/translation/addTranslation");
-app.use(process.env.URL_PATH + "/", addTranslation);
+app.use("/", addTranslation);
 
 /* add parallel */
 const addParallel = require("./routes/forms/parallel/addParallel");
-app.use(process.env.URL_PATH + "/", addParallel);
+app.use("/", addParallel);
 
 /* add commentary */
 const addCommentary = require("./routes/forms/commentary/addCommentary");
-app.use(process.env.URL_PATH + "/", addCommentary);
+app.use("/", addCommentary);
 
 /* add citation */
 const addCitation = require("./routes/forms/citation/addCitation");
-app.use(process.env.URL_PATH + "/", addCitation);
+app.use("/", addCitation);
 
 /* add note */
 const addNote = require("./routes/forms/note/addNote");
-app.use(process.env.URL_PATH + "/", addNote);
+app.use("/", addNote);
 
 /* save file */
 const saveFile = require("./routes/saveFile");
-app.use(process.env.URL_PATH + "/", saveFile);
+app.use("/", saveFile, cors());
 
 /* publish */
 const publish = require("./routes/publish");
-app.use(process.env.URL_PATH + "/", publish);
+app.use("/", publish);
 
 /* get the edition */
 const edition = require("./routes/edition");
-app.use(process.env.URL_PATH + "/", edition, checkAuthenticated);
+app.use("/", edition, checkAuthenticated);
 
 /* get the list of editions */
 const editions = require("./routes/editions");
 const { Console } = require("console");
-app.use(process.env.URL_PATH + "/", editions, checkAuthenticated);
+app.use("/", editions, checkAuthenticated);
 
 /* documentation */
 const documentation = require("./routes/documentation");
-app.use(process.env.URL_PATH + "/", documentation, checkAuthenticated);
+app.use("/", documentation, checkAuthenticated);
 
 /* credits */
 const credits = require("./routes/credits");
-app.use(process.env.URL_PATH + "/", credits, checkAuthenticated);
+app.use("/", credits, checkAuthenticated);
 
 /* do not allow non-authenticated users */
 function checkAuthenticated(req, res, next) {
