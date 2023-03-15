@@ -15,7 +15,6 @@ const jwb = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 /* db */
-//const db = "bolt://" + process.env.NEO4J_URL + ":7687";
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver(process.env.NEO4J_URL, neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 
@@ -246,7 +245,6 @@ app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res)
 });
 
 app.post(process.env.URL_PATH + "/login", checkNotAuthenticated,
-
     /* if the user is not authenticates, send her to login */
     passport.authenticate("local", {
         failureRedirect: process.env.URL_PATH + "/login",
@@ -350,16 +348,18 @@ app.use("/", credits, checkAuthenticated);
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
+    } else {
+        res.redirect(process.env.URL_PATH + "/login");
     };
-    res.redirect(process.env.URL_PATH + "/login");
 };
 
 /* do not go back to login if logged users */
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect(process.env.URL_PATH + "/");
+    } else {
+        next();
     };
-    next();
 };
 
 const port = process.env.PORT || 80;

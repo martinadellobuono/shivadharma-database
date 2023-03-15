@@ -23,7 +23,7 @@
         <!-- time -->
         <div class="current-time d-inline mx-2 p-4 text-white"></div>
         <!-- logout -->
-        <form class="d-inline" action="/logout?_method=DELETE" method="POST">
+        <form class="d-inline" action="<%= process.env.URL_PATH %>/logout?_method=DELETE" method="POST">
           <button type="submit" class="btn btn-light btn-sm">Log out</button>
         </form>
         <!-- personal account -->
