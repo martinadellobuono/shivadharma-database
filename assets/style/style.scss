@@ -359,3 +359,17 @@ p {
     color: $secondary;
     font-size: 15px;
 }
+
+/* SM DEVICES */
+@include media-breakpoint-down(md) {
+    .logo {
+        width: 15%;
+        height: auto;
+    }
+    .edition-container, .edition-container .row {
+        height: auto;
+    }
+    .specific-cols.col-md-2 {
+        width: 100% !important;
+    }
+}

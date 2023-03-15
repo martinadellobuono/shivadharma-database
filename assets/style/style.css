@@ -12319,4 +12319,19 @@ p {
   color: #6c757d;
   font-size: 15px;
 }
+
+/* SM DEVICES */
+@media (max-width: 767.98px) {
+  .logo {
+    width: 15%;
+    height: auto;
+  }
+  .edition-container,
+  .edition-container .row {
+    height: auto;
+  }
+  .specific-cols.col-md-2 {
+    width: 100% !important;
+  }
+}
 /*# sourceMappingURL=style.css.map */
