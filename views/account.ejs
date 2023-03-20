@@ -32,12 +32,12 @@
           <form action="" method="POST">
             <div class="mb-3">
               <label for="name">Full name</label>
-              <input type="text" value="<%- name %>" name="name">
+              <input class="form-control" type="text" value="<%- name %>" name="name">
               <div id="emailHelp" class="form-text">Insert your name first, then your surname.</div>
             </div>
             <div class="mb-3">
               <label for="email">Email</label>
-              <input type="email" value="<%- email %>" name="email">
+              <input class="form-control" type="email" value="<%- email %>" name="email">
               <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
@@ -48,21 +48,28 @@
         <!-- editions -->
         <div class="tab-pane fade" id="account-editions">
           <h2>Editions</h2>
-          <ul>
             <% if (editions) { %>
-              <% editions.forEach(function(edition) { %>
-                <% var e = edition.split('___')[1]; %>
-                <% var editionId = e.split('---')[0]; %>
-                <% var publishType = e.split('---')[1]; %>
-                <li class="p-2">
-                  <span class="fw-bold"><%= edition.split("___")[0] %></span>
-                  <a href="<%= process.env.URL_PATH %>/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                  <a href="<%= process.env.URL_PATH %>/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
-                  <span class="text-secondary fst-italic"><%= publishType; %></span>
-                </li>
-              <% }); %>
-            <% } %>
-          </ul>
+              <% if (editions.lenght > 0) { %>
+                <ul>
+                  <% editions.forEach(function(edition) { %>
+                    <% var e = edition.split('___')[1]; %>
+                    <% var editionId = e.split('---')[0]; %>
+                    <% var publishType = e.split('---')[1]; %>
+                    <li class="p-2">
+                      <span class="fw-bold"><%= edition.split("___")[0] %></span>
+                      <a href="<%= process.env.URL_PATH %>/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+                      <a href="<%= process.env.URL_PATH %>/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+                      <span class="text-secondary fst-italic"><%= publishType; %></span>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% } else { %>
+                <div class="mt-3">
+                  <p>No edition is available for now.</p>
+                  <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
+                </div>
+              <% }; %>
+            <% }; %>
         </div>
       </div>
     </div>

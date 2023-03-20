@@ -12322,14 +12322,17 @@ p {
 
 /* SM DEVICES */
 @media (max-width: 767.98px) {
+  /* logo */
   .logo {
     width: 15%;
     height: auto;
   }
+  /* textus container */
   .edition-container,
   .edition-container .row {
     height: auto;
   }
+  /* annotator container */
   .specific-cols.col-md-2 {
     width: 100% !important;
   }

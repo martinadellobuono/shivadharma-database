@@ -13,6 +13,11 @@ router.get(process.env.URL_PATH + "/getstarted", async (req, res) => {
 router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     var idEdition;
     var idEditor;
+
+    /* try */
+    var collaborators = req.body.collaborators;
+    /* / */
+
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
@@ -27,6 +32,12 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                     MERGE (edition)-[:EDITED_BY]->(editor)
                     ON CREATE
                         SET edition.publishType = "Save as draft"
+
+                    FOREACH (name IN split("${collaborators}", " ; ") |
+                        MERGE (collaborator:Collaborator {name: name})
+                        MERGE (collaborator)-[:IS_CONTRIBUTOR_OF]->(edition)
+                    )
+
                     RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name
                     `,
                 {
