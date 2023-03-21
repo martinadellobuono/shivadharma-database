@@ -11,6 +11,7 @@ router.get(process.env.URL_PATH + "/getstarted", async (req, res) => {
 });
 
 router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
+    /* edition url */
     var idEdition;
     var idEditor;
 
@@ -47,7 +48,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH editors = (x:Editor)
+                MATCH editors = (users:Editor)
                 MERGE (work:Work {title: "${req.body.work}"})
                 MERGE (edition:Edition {title: "${req.body.title}", editionOf: "${req.body.editionOf}", authorCommentary: "${req.body.authorCommentary}"})
                 MERGE (author:Author {name: "${req.body.author}"})
@@ -76,7 +77,9 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                 onNext: record => {
                     /* email of all the users */
                     if (!userEmails.includes(record.get("editors")["end"]["properties"]["email"])) {
-                        userEmails.push(record.get("editors")["end"]["properties"]["email"]);
+                        if (record.get("editors")["end"]["properties"]["email"] !== undefined) {
+                            userEmails.push(record.get("editors")["end"]["properties"]["email"]);
+                        };
                     };
 
                     /* id for url of the edition */
@@ -98,18 +101,25 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
         await session.close();
 
         /* check if the inserted editors' mails exists */
+        var notExistingUsers = [];
         otherEditorsArr.forEach((email) => {
             if (!userEmails.includes(email)) {
-                /* the mail does not exist */
-                res.render("getstarted", {
-                    name: currentUser,
-                    errorMessage: "There is not an editor with the email " + email
-                });
-            } else {
-                /* the mail exist */
-                res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
+                if (!notExistingUsers.includes(email)) {
+                    notExistingUsers.push(email);
+                };
             };
         });
+
+        if (notExistingUsers.length > 0) {
+            /* the mails do not exist */
+            res.render("getStarted", {
+                name: currentUser,
+                errorMessage: "The editor's mails " + notExistingUsers.join(", ") + " do not exist." 
+            });
+        } else {
+            /* the mails exist */
+            res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
+        };
     };
 }
 );
