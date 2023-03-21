@@ -35,6 +35,10 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     };
 
     /* editions */
+    /* editions data */
+    var titles = [];
+    /* / */
+
     const session = driver.session();
     var data;
 
@@ -43,11 +47,20 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
             data = await session.readTransaction(tx => tx
                 .run(
                     `
-                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                    RETURN author.name, edition.publishType, edition.title, editor.name, ID(edition), ID(editor), editor.email
-                    ORDER BY edition.title, author.name, editor.name
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
+                    MATCH (edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                    RETURN author.name, edition.title, editors
                     `
                 )
+                .subscribe({
+                    onNext: record => {
+
+                        /* titles */
+                        if (!titles.includes(record.get("edition.title"))) {
+                            titles.push(record.get("edition.title"));
+                        };
+                    }
+                })
             );
         } catch (err) {
             console.log(err);
@@ -57,11 +70,14 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
+
+        /* try */
+        console.log(titles);
+        /* / */
+
         res.render("editions", {
             prevUrl: prevUrl,
-            editions: data.records.map(row => {
-                return row;
-            }),
+            editions: "",
             name: req.user.name,
             email: req.user.email
         });

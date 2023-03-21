@@ -33,13 +33,17 @@
           <ul>
             <% publishedEditions.forEach((edition) => { %>
               <!-- list of editions -->
-              <li class="p-2">
-                <span class="fw-bold"><%= edition.get("edition.title"); %></span>, <span><%= edition.get("author.name"); %></span> <span class="text-muted">curated by <%= edition.get("editor.name"); %></span>
+              
+              <%= JSON.stringify(edition); %>
+
+              <!--<li class="p-2">
+                <span class="fw-bold"><%= edition.get("edition.title"); %></span>, <span><%= edition.get("author.name"); %></span> <span class="text-muted">curated by <%= edition.get("editors.name"); %></span>
                 <a href="<%= process.env.URL_PATH %>/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
                 <% if (edition.get("editor.email") == email) { %>
                   <a href="<%= process.env.URL_PATH %>/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
                 <% }; %>
-              </li>
+              </li>-->
+
             <% }); %>
           </ul>
         <% } else { %>

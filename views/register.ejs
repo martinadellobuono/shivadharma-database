@@ -7,6 +7,13 @@
     <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
     <h1>Register</h1>
   </div>
+
+  <% if (typeof errorMessage !== "undefined") { %>
+  <div class="alert alert-danger" role="alert">
+    <%= errorMessage; %>
+  </div>
+  <% }; %>
+
   <form class="login-form" action="<%= process.env.URL_PATH %>/register" method="POST">
     <div class="mb-3">
       <label for="name">Full name</label>

@@ -139,6 +139,10 @@ body {
     color: $gray-800;
 }
 
+[data-type="header"][data-subtype="editor"]:not(:last-child)::after {
+    content: ", ";
+}
+
 /* caret */
 .caret[aria-expanded="false"]::after {
     content: "\25BC";

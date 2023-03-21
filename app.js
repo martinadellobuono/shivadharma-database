@@ -80,7 +80,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(cors({
     origin: "*",
-    methods: ["GET","POST","DELETE","UPDATE", "PUT", "PATCH"]
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"]
 }));
 
 /* index */
@@ -143,23 +143,34 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
         /* crypt the password */
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+        /* error messages */
+        var userEmails = [];
+        var errorMessage;
+
         /* insert user in the db */
         const session = driver.session();
         try {
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MERGE (editor:Editor {name: "${req.body.name}", email: "${req.body.email}", password: "${hashedPassword}"})
-                    RETURN id(editor), editor.name, editor.email, editor.password
+                    MATCH editors = (editor:Editor)
+                    MERGE (user:Editor {name: "${req.body.name}"})
+                    ON CREATE SET user.email = "${req.body.email}", user.password = "${hashedPassword}"
+                    RETURN editors, ID(user), user.name, user.email, user.password
                     `
                 )
                 .subscribe({
                     onNext: record => {
+                        /* email of all the users */
+                        if (!userEmails.includes(record.get("editors")["end"]["properties"]["email"])) {
+                            userEmails.push(record.get("editors")["end"]["properties"]["email"]);
+                        };
+
                         /* user id */
                         var ids = [];
                         var id;
-                        if (!ids.includes(record.get("id(editor)"))) {
-                            ids.push(record.get("id(editor)"));
+                        if (!ids.includes(record.get("ID(user)"))) {
+                            ids.push(record.get("ID(user)"));
                         };
                         ids.forEach(el => {
                             id = el["low"];
@@ -167,10 +178,12 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
                         /* save the user */
                         users.push({
                             id: id,
-                            name: record.get("editor.name"),
-                            email: record.get("editor.email"),
-                            password: record.get("editor.password")
+                            name: record.get("user.name"),
+                            email: record.get("user.email"),
+                            password: record.get("user.password")
                         });
+                        /* / */
+
                     },
                     onCompleted: () => {
                         console.log("Data added to the database")
@@ -188,7 +201,15 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
     } catch (err) {
         console.log(err);
     } finally {
-        res.redirect(process.env.URL_PATH + "/login");
+        /* there is a user with this email */
+        if (userEmails.includes(req.body.email)) {
+            res.render("register", {
+                errorMessage: "There is already a user with this email"
+            });
+        } else {
+            /* there is not a user with this email */
+            res.redirect(process.env.URL_PATH + "/login");
+        };
     };
 });
 
@@ -202,7 +223,7 @@ app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res)
                 .run(
                     `
                     MATCH (editor:Editor)
-                    RETURN id(editor), editor.name, editor.email, editor.password
+                    RETURN ID(editor), editor.name, editor.email, editor.password
                     `
                 )
                 .subscribe({
@@ -210,8 +231,8 @@ app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res)
                         /* user id */
                         var ids = [];
                         var id;
-                        if (!ids.includes(record.get("id(editor)"))) {
-                            ids.push(record.get("id(editor)"));
+                        if (!ids.includes(record.get("ID(editor)"))) {
+                            ids.push(record.get("ID(editor)"));
                         };
                         ids.forEach(el => {
                             id = el["low"];
@@ -292,7 +313,7 @@ const addWitnesses = require("./routes/forms/metadata/addWitnesses");
 app.use("/", addWitnesses);
 
 /* add philological note */
-const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
+const addPhilologicalNote = require("./routes/forms/metadata/addPhilologicalNote");
 app.use("/", addPhilologicalNote);
 
 /* add apparatus */
