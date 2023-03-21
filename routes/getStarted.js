@@ -49,6 +49,11 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                 MERGE (work)-[:WRITTEN_BY]->(author)
                 MERGE (editor)-[:IS_EDITOR_OF]->(edition)
                 ON CREATE SET edition.publishType = "Save as draft"
+
+                FOREACH (name IN split("${otherEditorsArr}", ",") |
+                    MERGE otherEditor = (editor:Editor {name: name})
+                    MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                )
                 
                 FOREACH (name IN split("${contributorsArr}", ",") |
                     MERGE contributor = (editor:Editor {name: name})
