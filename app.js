@@ -152,7 +152,7 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MATCH editors = (users:Editor)
+                    OPTIONAL MATCH (editors:Editor)
                     MERGE (editor:Editor {email: "${req.body.email}"})
                     ON CREATE SET editor.name = "${req.body.name}", editor.password = "${hashedPassword}"
                     RETURN editors, id(editor), editor.name, editor.email, editor.password
@@ -162,8 +162,12 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
                     onNext: record => {
 
                         /* registerd users */
-                        if (!registeredUsers.includes(record.get("editors")["end"]["properties"]["email"])) {
-                            registeredUsers.push(record.get("editors")["end"]["properties"]["email"])
+                        console.log(record.get("editors"));
+
+                        if (record.get("editors") !== null) {
+                            if (!registeredUsers.includes(record.get("editors")["properties"]["email"])) {
+                                registeredUsers.push(record.get("editors")["properties"]["email"]);
+                            };
                         };
 
                         /* user id */
@@ -199,7 +203,6 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
     } catch (err) {
         console.log(err);
     } finally {
-
         /* the user with the inserted mail does not exist */
         if (!registeredUsers.includes(req.body.email)) {
             res.redirect(process.env.URL_PATH + "/login");
