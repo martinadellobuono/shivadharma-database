@@ -101,7 +101,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
 
                 tx.run(
                     `
-                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)  
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)  
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                     OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                     MERGE (witness:Witness {

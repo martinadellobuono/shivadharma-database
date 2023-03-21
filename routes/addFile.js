@@ -55,12 +55,12 @@ router.post(process.env.URL_PATH + "/addFile/:id", async (req, res) => {
                             await session.writeTransaction(tx => tx
                                 .run(
                                     `
-                                        MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[r:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                                        MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                                        OPTIONAL MATCH (edition)-[p:PUBLISHED_ON]->(date:Date)
+                                        OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                                         OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
                                         MERGE (file:File {name: $file})
-                                        MERGE (file)-[pr:PRODUCED_BY]->(editor)
+                                        MERGE (file)-[:PRODUCED_BY]->(editor)
                                         RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
                                         `, { file: fileName }
                                 )

@@ -30,7 +30,7 @@ router.post(process.env.URL_PATH + "/addPhilologicalNote/:id", async (req, res) 
                 await session.writeTransaction(tx => tx
                     .run(
                         `
-                            MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                            MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                             WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                             MERGE (philologicalNote:PhilologicalNote {name: $philologicalNote})
                             MERGE (philologicalNote)-[:PRODUCED_BY]->(editor)

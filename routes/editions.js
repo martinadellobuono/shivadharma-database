@@ -43,7 +43,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
             data = await session.readTransaction(tx => tx
                 .run(
                     `
-                    MATCH (author:Author)<-[w:WRITTEN_BY]-(work:Work)-[h:HAS_MANIFESTATION]->(edition:Edition)-[e:EDITED_BY]->(editor:Editor)
+                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                     RETURN author.name, edition.publishType, edition.title, editor.name, ID(edition), ID(editor), editor.email
                     ORDER BY edition.title, author.name, editor.name
                     `

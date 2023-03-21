@@ -14,40 +14,49 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     var idEdition;
     var idEditor;
 
-    /* try */
-    var collaborators = req.body.collaborators;
-    /* / */
+    /* other editors array */
+    var otherEditorsArr = [];
+    var otherEditors = req.body.otherEditors;
+    otherEditors.split(" ; ").forEach(otherEditor => {
+        if (otherEditor !== "") {
+            if (!otherEditorsArr.includes(otherEditor)) {
+                otherEditorsArr.push(otherEditor);
+            };
+        };
+    });
+
+    /* contributors array */
+    var contributorsArr = [];
+    var contributors = req.body.contributors;
+    contributors.split(" ; ").forEach(contributor => {
+        if (contributor !== "") {
+            if (!contributorsArr.includes(contributor)) {
+                contributorsArr.push(contributor);
+            };
+        };
+    });
 
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                    MERGE (work:Work {title: $work})
-                    MERGE (edition:Edition {title: $title, editionOf: $editionOf, authorCommentary: $authorCommentary})
-                    MERGE (author:Author {name: $author})
-                    MERGE (editor:Editor {name: $editor})
-                    MERGE (work)-[:HAS_MANIFESTATION]->(edition)
-                    MERGE (work)-[:WRITTEN_BY]->(author)
-                    MERGE (edition)-[:EDITED_BY]->(editor)
-                    ON CREATE
-                        SET edition.publishType = "Save as draft"
-
-                    FOREACH (name IN split("${collaborators}", " ; ") |
-                        MERGE (collaborator:Collaborator {name: name})
-                        MERGE (collaborator)-[:IS_CONTRIBUTOR_OF]->(edition)
-                    )
-
-                    RETURN work.title, ID(edition), edition.title, author.name, ID(editor), editor.name
-                    `,
-                {
-                    work: req.body.work,
-                    title: req.body.title,
-                    author: req.body.author,
-                    editor: req.body.editor,
-                    editionOf: req.body.editionOf,
-                    authorCommentary: req.body.authorCommentary
-                }
+                MERGE (work:Work {title: "${req.body.work}"})
+                MERGE (edition:Edition {title: "${req.body.title}", editionOf: "${req.body.editionOf}", authorCommentary: "${req.body.authorCommentary}"})
+                MERGE (author:Author {name: "${req.body.author}"})
+                MERGE (editor:Editor {name: "${req.body.editor}"})
+                MERGE (work)-[:HAS_MANIFESTATION]->(edition)
+                MERGE (work)-[:WRITTEN_BY]->(author)
+                MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                ON CREATE SET edition.publishType = "Save as draft"
+                
+                FOREACH (name IN split("${contributorsArr}", ",") |
+                    MERGE contributor = (editor:Editor {name: name})
+                    MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
+                )
+                
+                RETURN ID(edition), ID(editor)
+                `
             )
             .subscribe({
                 onNext: record => {

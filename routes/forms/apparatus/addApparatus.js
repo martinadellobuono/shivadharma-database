@@ -90,7 +90,7 @@ router.post(process.env.URL_PATH + "/addApparatus/:id", async (req, res) => {
 
                 tx.run(
                     `
-                        MATCH (edition:Edition)-[:EDITED_BY]->(editor:Editor)
+                        MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                         WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
 
                         MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
