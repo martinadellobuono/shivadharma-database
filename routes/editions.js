@@ -49,7 +49,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                     `
                     MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
                     MATCH (edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                    RETURN author.name, edition.title, editors
+                    RETURN author.name, edition.title
                     `
                 )
                 .subscribe({

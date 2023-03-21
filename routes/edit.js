@@ -611,12 +611,12 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     });
                 },
                 onError: err => {
-                    console.log("Error related to the upload to Neo4j: " + err)
+                    console.log(err)
                 }
             })
         );
     } catch (err) {
-        console.log("Error related to Neo4j: " + err);
+        console.log(err);
     } finally {
         await session.close();
     };

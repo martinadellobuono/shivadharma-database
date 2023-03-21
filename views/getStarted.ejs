@@ -28,6 +28,12 @@
         </div>
       </div>
 
+      <% if (typeof errorMessage !== "undefined") { %>
+        <div class="alert alert-danger" role="alert">
+          <%= errorMessage; %>
+        </div>
+      <% }; %>
+
       <!-- metadata -->
       <div class="row mt-4">
         <div class="col-md-12">

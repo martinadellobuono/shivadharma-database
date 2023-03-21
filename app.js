@@ -80,7 +80,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(cors({
     origin: "*",
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"]
+    methods: ["GET","POST","DELETE","UPDATE", "PUT", "PATCH"]
 }));
 
 /* index */
@@ -143,9 +143,8 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
         /* crypt the password */
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        /* error messages */
-        var userEmails = [];
-        var errorMessage;
+        /* registered users */
+        var registeredUsers = [];
 
         /* insert user in the db */
         const session = driver.session();
@@ -153,24 +152,25 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
             await session.writeTransaction(tx => tx
                 .run(
                     `
-                    MATCH editors = (editor:Editor)
-                    MERGE (user:Editor {name: "${req.body.name}"})
-                    ON CREATE SET user.email = "${req.body.email}", user.password = "${hashedPassword}"
-                    RETURN editors, ID(user), user.name, user.email, user.password
+                    MATCH editors = (users:Editor)
+                    MERGE (editor:Editor {email: "${req.body.email}"})
+                    ON CREATE SET editor.name = "${req.body.name}", editor.password = "${hashedPassword}"
+                    RETURN editors, id(editor), editor.name, editor.email, editor.password
                     `
                 )
                 .subscribe({
                     onNext: record => {
-                        /* email of all the users */
-                        if (!userEmails.includes(record.get("editors")["end"]["properties"]["email"])) {
-                            userEmails.push(record.get("editors")["end"]["properties"]["email"]);
+
+                        /* registerd users */
+                        if (!registeredUsers.includes(record.get("editors")["end"]["properties"]["email"])) {
+                            registeredUsers.push(record.get("editors")["end"]["properties"]["email"])
                         };
 
                         /* user id */
                         var ids = [];
                         var id;
-                        if (!ids.includes(record.get("ID(user)"))) {
-                            ids.push(record.get("ID(user)"));
+                        if (!ids.includes(record.get("id(editor)"))) {
+                            ids.push(record.get("id(editor)"));
                         };
                         ids.forEach(el => {
                             id = el["low"];
@@ -178,12 +178,10 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
                         /* save the user */
                         users.push({
                             id: id,
-                            name: record.get("user.name"),
-                            email: record.get("user.email"),
-                            password: record.get("user.password")
+                            name: record.get("editor.name"),
+                            email: record.get("editor.email"),
+                            password: record.get("editor.password")
                         });
-                        /* / */
-
                     },
                     onCompleted: () => {
                         console.log("Data added to the database")
@@ -201,14 +199,15 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
     } catch (err) {
         console.log(err);
     } finally {
-        /* there is a user with this email */
-        if (userEmails.includes(req.body.email)) {
-            res.render("register", {
-                errorMessage: "There is already a user with this email"
-            });
-        } else {
-            /* there is not a user with this email */
+
+        /* the user with the inserted mail does not exist */
+        if (!registeredUsers.includes(req.body.email)) {
             res.redirect(process.env.URL_PATH + "/login");
+        } else {
+            /* the user with the inserted mail exist */
+            res.render("register", {
+                errorMessage: "The user with the mail " + req.body.email + " already exists."
+            });
         };
     };
 });
@@ -223,7 +222,7 @@ app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res)
                 .run(
                     `
                     MATCH (editor:Editor)
-                    RETURN ID(editor), editor.name, editor.email, editor.password
+                    RETURN id(editor), editor.name, editor.email, editor.password
                     `
                 )
                 .subscribe({
@@ -231,8 +230,8 @@ app.get(process.env.URL_PATH + "/login", checkNotAuthenticated, async (req, res)
                         /* user id */
                         var ids = [];
                         var id;
-                        if (!ids.includes(record.get("ID(editor)"))) {
-                            ids.push(record.get("ID(editor)"));
+                        if (!ids.includes(record.get("id(editor)"))) {
+                            ids.push(record.get("id(editor)"));
                         };
                         ids.forEach(el => {
                             id = el["low"];
@@ -313,7 +312,7 @@ const addWitnesses = require("./routes/forms/metadata/addWitnesses");
 app.use("/", addWitnesses);
 
 /* add philological note */
-const addPhilologicalNote = require("./routes/forms/metadata/addPhilologicalNote");
+const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
 app.use("/", addPhilologicalNote);
 
 /* add apparatus */

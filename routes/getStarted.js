@@ -14,6 +14,12 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     var idEdition;
     var idEditor;
 
+    /* current user */
+    var currentUser = req.user.name;
+
+    /* users email */
+    var userEmails = [];
+
     /* other editors array */
     var otherEditorsArr = [];
     var otherEditors = req.body.otherEditors;
@@ -41,6 +47,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
+                MATCH editors = (x:Editor)
                 MERGE (work:Work {title: "${req.body.work}"})
                 MERGE (edition:Edition {title: "${req.body.title}", editionOf: "${req.body.editionOf}", authorCommentary: "${req.body.authorCommentary}"})
                 MERGE (author:Author {name: "${req.body.author}"})
@@ -62,11 +69,17 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                     MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                 )
                 
-                RETURN ID(edition), ID(editor)
+                RETURN editors, ID(edition), ID(editor)
                 `
             )
             .subscribe({
                 onNext: record => {
+                    /* email of all the users */
+                    if (!userEmails.includes(record.get("editors")["end"]["properties"]["email"])) {
+                        userEmails.push(record.get("editors")["end"]["properties"]["email"]);
+                    };
+
+                    /* id for url of the edition */
                     idEdition = record.get("ID(edition)");
                     idEditor = record.get("ID(editor)");
                 },
@@ -84,8 +97,19 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
         /* close session */
         await session.close();
 
-        /* page redirect */
-        res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
+        /* check if the inserted editors' mails exists */
+        otherEditorsArr.forEach((email) => {
+            if (!userEmails.includes(email)) {
+                /* the mail does not exist */
+                res.render("getstarted", {
+                    name: currentUser,
+                    errorMessage: "There is not an editor with the email " + email
+                });
+            } else {
+                /* the mail exist */
+                res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
+            };
+        });
     };
 }
 );
