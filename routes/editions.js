@@ -35,10 +35,6 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     };
 
     /* editions */
-    /* editions data */
-    var titles = [];
-    /* / */
-
     const session = driver.session();
     var data;
 
@@ -47,18 +43,17 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
             data = await session.readTransaction(tx => tx
                 .run(
                     `
-                    MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
-                    MATCH (edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                    RETURN author.name, edition.title
+                    MATCH r = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                    RETURN r
                     `
                 )
                 .subscribe({
                     onNext: record => {
 
-                        /* titles */
-                        if (!titles.includes(record.get("edition.title"))) {
-                            titles.push(record.get("edition.title"));
-                        };
+                        var author = record.get("r")["start"]["properties"]["name"];
+                        var editor = record.get("r")["end"]["properties"]["name"]
+                        console.log(editor);
+
                     }
                 })
             );
@@ -70,11 +65,6 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-
-        /* try */
-        console.log(titles);
-        /* / */
-
         res.render("editions", {
             prevUrl: prevUrl,
             editions: "",

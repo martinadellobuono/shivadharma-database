@@ -25,7 +25,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     var otherEditorsArr = [];
     var otherEditors = req.body.otherEditors;
     otherEditors.split(" ; ").forEach(otherEditor => {
-        if (otherEditor !== "") {
+        if (otherEditor !== "" || otherEditor !== undefined) {
             if (!otherEditorsArr.includes(otherEditor)) {
                 otherEditorsArr.push(otherEditor);
             };
@@ -36,7 +36,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     var contributorsArr = [];
     var contributors = req.body.contributors;
     contributors.split(" ; ").forEach(contributor => {
-        if (contributor !== "") {
+        if (contributor !== "" || contributor !== undefined) {
             if (!contributorsArr.includes(contributor)) {
                 contributorsArr.push(contributor);
             };
