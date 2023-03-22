@@ -84,7 +84,7 @@ app.use(cors({
 }));
 
 /* index */
-app.get(process.env.URL_PATH + "/", checkAuthenticated, (req, res) => {
+app.get(process.env.URL_PATH, checkAuthenticated, (req, res) => {
 
     /* store the current url in a cookie */
     var test_url_1 = res.cookie["test_url_1"];
@@ -379,7 +379,7 @@ function checkAuthenticated(req, res, next) {
 /* do not go back to login if logged users */
 function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        return res.redirect(process.env.URL_PATH + "/");
+        return res.redirect(process.env.URL_PATH);
     } else {
         next();
     };

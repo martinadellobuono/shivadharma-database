@@ -35,24 +35,32 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     };
 
     /* editions */
+    var titles_temp = [];
+    var editors_temp = [];
+
+    var editionsArr = [];
+
     const session = driver.session();
     var data;
-
     try {
         try {
             data = await session.readTransaction(tx => tx
                 .run(
                     `
-                    MATCH r = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                    RETURN r
+                    MATCH aw = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
+                    MATCH ee = (edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                    RETURN aw, ee
                     `
                 )
                 .subscribe({
                     onNext: record => {
 
-                        var author = record.get("r")["start"]["properties"]["name"];
-                        var editor = record.get("r")["end"]["properties"]["name"]
-                        console.log(editor);
+                        var title = record.get("aw")["end"]["properties"]["title"];
+                        if (title !== undefined) {
+                            if (!titles_temp.includes(title)) {
+                                titles_temp.push(title);
+                            };
+                        };
 
                     }
                 })
