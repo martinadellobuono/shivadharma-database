@@ -35,9 +35,10 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     };
 
     /* editions */
-    var titles_temp = [];
-    var editors_temp = [];
-
+    var edition = [];
+    var titles = [];
+    var editors = [];
+    var file = [];
     var editionsArr = [];
 
     const session = driver.session();
@@ -47,21 +48,42 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
             data = await session.readTransaction(tx => tx
                 .run(
                     `
-                    MATCH aw = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
-                    MATCH ee = (edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                    RETURN aw, ee
+                    MATCH ae = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
+                    MATCH ee = (editor:Editor)-[:IS_EDITOR_OF]->(edition)
+                    MATCH fe = (file:File)-[:IS_ITEM_OF]->(edition)
+                    RETURN ae, ee, fe
                     `
                 )
                 .subscribe({
                     onNext: record => {
+                        var title = record.get("ae")["end"]["properties"]["title"];
+                        var authors = record.get("ae")["start"]["properties"]["name"].replace(" ; ", "---");
 
-                        var title = record.get("aw")["end"]["properties"]["title"];
-                        if (title !== undefined) {
-                            if (!titles_temp.includes(title)) {
-                                titles_temp.push(title);
-                            };
+                        /* titles */
+                        if (!titles.includes(title)) {
+                            titles.push(title);
                         };
 
+                        /* authors */
+                        if (!edition.includes(title + "___" + authors)) {
+                            edition.push(title + "___" + authors);
+                        };
+
+                        titles.forEach((title) => {
+                            /* editors */
+                            if (title == record.get("ee")["end"]["properties"]["title"]) {
+                                if (!editors.includes(title + "___" + record.get("ee")["start"]["properties"]["name"])) {
+                                    editors.push(title + "___" + record.get("ee")["start"]["properties"]["name"]);
+                                };
+                            };
+
+                            /* file */
+                            if (title == record.get("fe")["end"]["properties"]["title"]) {
+                                if (!file.includes(title + "___" + record.get("fe")["start"]["properties"]["name"])) {
+                                    file.push(title + "___" + record.get("fe")["start"]["properties"]["name"]);
+                                };
+                            };
+                        });
                     }
                 })
             );
@@ -73,6 +95,70 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
+
+        /* one array containing titles, authors, editors, file */
+        var edTitles = [];
+        var edDict = [];
+
+        editors.forEach((editor) => {
+            var title = editor.split("___")[0];
+            if (!edTitles.includes(title)) {
+                edTitles.push(title);
+            };
+        });
+
+        edTitles.forEach((title) => {
+
+            /* authors */
+            var edAuthors = [];
+
+            edition.forEach((author) => {
+                if (author.indexOf(title) > -1) {
+                    edAuthors.push(author.split("___")[1]);
+                };
+            });
+
+            /* editors */
+            var edEditors = [];
+        
+            /* array of editors according to title */
+            editors.forEach((editor) => {
+                if (editor.indexOf(title) > -1) {
+                    edEditors.push(editor.split("___")[1]);
+                };
+            });
+
+            /* file */
+            var edFile = [];
+
+            /* array of file according to title */
+            file.forEach((el) => {
+                if (el.indexOf(title) > -1) {
+                    edFile.push(el.split("___")[1]);
+                };
+            });
+
+            /* dict title editors */
+            var editorsDict = JSON.stringify({
+                [title]: {
+                    authors: edAuthors,
+                    editors: edEditors,
+                    file: edFile
+                }
+            });
+
+            /* array of all the dictionaries */
+            if (!edDict.includes(editorsDict)) {
+                edDict.push(editorsDict);
+            };
+
+        });
+
+
+        edDict.forEach((el) => {
+            console.log(JSON.parse(el));
+        });
+
         res.render("editions", {
             prevUrl: prevUrl,
             editions: "",

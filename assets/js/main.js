@@ -918,7 +918,7 @@ let annotations = () => {
 /* save file every 5 seconds */
 let saveFile = async () => {
     /* fetch data */
-    await fetch("http://localhost:80/shivadharma-database/saveFile", {
+    await fetch("http://localhost:80/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -982,7 +982,7 @@ let publishEdition = () => {
             }
 
             /* fetch the type of publishment */
-            var route = "http://localhost:80/shivadharma-database/publish/" + idEdition + "-" + idEditor;
+            var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
             await fetch(route, {
                 method: "POST",
                 body: JSON.stringify(publishType),

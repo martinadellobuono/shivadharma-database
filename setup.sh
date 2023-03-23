@@ -1,2 +1,2 @@
 npm install
-npm i nodemon
+sudo npm i -g nodemon

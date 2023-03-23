@@ -60,7 +60,7 @@ router.post(process.env.URL_PATH + "/addFile/:id", async (req, res) => {
                                         OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                                         OPTIONAL MATCH (witness:Witness)-[:USED_IN]->(edition)
                                         MERGE (file:File {name: $file})
-                                        MERGE (file)-[:PRODUCED_BY]->(editor)
+                                        MERGE (edition)<-[:IS_ITEM_OF]-(file)-[:PRODUCED_BY]->(editor)
                                         RETURN work.title, edition.title, author.name, editor.name, date.on, witness.siglum, file.name
                                         `, { file: fileName }
                                 )
