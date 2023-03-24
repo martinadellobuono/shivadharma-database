@@ -38,8 +38,8 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     var edition = [];
     var titles = [];
     var editors = [];
+    var publish = [];
     var file = [];
-    var editionsArr = [];
 
     const session = driver.session();
     var data;
@@ -57,6 +57,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                 .subscribe({
                     onNext: record => {
                         var title = record.get("ae")["end"]["properties"]["title"];
+                        /* var publishType = record.get("ae")["end"]["properties"]["publishType"]; */
                         var authors = record.get("ae")["start"]["properties"]["name"].replace(" ; ", "---");
 
                         /* titles */
@@ -74,6 +75,11 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                             if (title == record.get("ee")["end"]["properties"]["title"]) {
                                 if (!editors.includes(title + "___" + record.get("ee")["start"]["properties"]["name"])) {
                                     editors.push(title + "___" + record.get("ee")["start"]["properties"]["name"]);
+                                };
+
+                                /* publish type */
+                                if (!publish.includes(title + "___" + record.get("ee")["end"]["properties"]["publishType"])) {
+                                    publish.push(title + "___" + record.get("ee")["end"]["properties"]["publishType"]);
                                 };
                             };
 
@@ -111,7 +117,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
 
             /* authors */
             var edAuthors = [];
-
+            /* array of authors according to title */
             edition.forEach((author) => {
                 if (author.indexOf(title) > -1) {
                     edAuthors.push(author.split("___")[1]);
@@ -120,7 +126,6 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
 
             /* editors */
             var edEditors = [];
-        
             /* array of editors according to title */
             editors.forEach((editor) => {
                 if (editor.indexOf(title) > -1) {
@@ -128,9 +133,17 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                 };
             });
 
+            /* publish type */
+            var edPublish = [];
+            /* array of editors according to title */
+            publish.forEach((el) => {
+                if (el.indexOf(title) > -1) {
+                    edPublish.push(el.split("___")[1]);
+                };
+            });
+
             /* file */
             var edFile = [];
-
             /* array of file according to title */
             file.forEach((el) => {
                 if (el.indexOf(title) > -1) {
@@ -141,9 +154,10 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
             /* dict title editors */
             var editorsDict = JSON.stringify({
                 [title]: {
+                    publishType: edPublish.join(""),
                     authors: edAuthors,
                     editors: edEditors,
-                    file: edFile
+                    file: edFile.join("").split(".html")[0]
                 }
             });
 
@@ -154,14 +168,12 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
 
         });
 
-
-        edDict.forEach((el) => {
-            console.log(JSON.parse(el));
-        });
+        /* sort alphabetically the editions */
+        edDict.sort();
 
         res.render("editions", {
             prevUrl: prevUrl,
-            editions: "",
+            editions: edDict,
             name: req.user.name,
             email: req.user.email
         });

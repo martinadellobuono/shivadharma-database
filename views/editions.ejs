@@ -14,45 +14,63 @@
         <span>You can edit only the editions of which you are the editor.</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      <!-- list of editions -->
+
       <% var publishedEditions = []; %>
       <% if (editions.length > 0) { %>
-        
-        <!-- editions array -->
-        <% editions.forEach(function(edition) { %>
-          <% if (edition.get("edition.publishType") == "Published") { %>
-            <!-- array of published editions -->
-            <% if (!publishedEditions.includes(edition)) { %>
-              <% publishedEditions.push(edition); %>
-            <% }; %>              
+
+        <!-- published editions -->
+        <% editions.forEach((edition) => { %>
+          <% edition = JSON.parse(edition); %>
+          <% var publish; %>
+          <% for (const [key, value] of Object.entries(edition)) { %>
+            <!-- published edition -->
+            <% if (value["publishType"] == "Published") { %>
+              <!-- published editions array -->
+              <% if (!publishedEditions.includes(edition)) { %>
+                <% publishedEditions.push(edition); %>
+              <% }; %>
+            <% }; %>
           <% }; %>
         <% }); %>
 
-        <!-- editions list -->
-        <% if (publishedEditions.length > 0) { %>
-          <ul>
-            <% publishedEditions.forEach((edition) => { %>
-              <!-- list of editions -->
-              
-              <%= JSON.stringify(edition); %>
+        <!-- list of editions -->
+        <% publishedEditions.forEach((edition) => { %>
 
-              <!--<li class="p-2">
-                <span class="fw-bold"><%= edition.get("edition.title"); %></span>, <span><%= edition.get("author.name"); %></span> <span class="text-muted">curated by <%= edition.get("editors.name"); %></span>
-                <a href="<%= process.env.URL_PATH %>/edition/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                <% if (edition.get("editor.email") == email) { %>
-                  <a href="<%= process.env.URL_PATH %>/edit/<%= edition.get('ID(edition)') %>-<%= edition.get('ID(editor)') %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
-                <% }; %>
-              </li>-->
+          <!-- edition -->
+          <div class="p-2">
 
-            <% }); %>
-          </ul>
-        <% } else { %>
-          <div class="mt-3">
-            <p>No edition is available for now.</p>
-            <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
+            <% var file; %>
+            <% for (const [key, value] of Object.entries(edition)) { %>
+
+              <!-- file -->
+              <% file = value["file"]; %>
+
+              <!-- title -->
+              <% var title = key; %>
+              <span class="fw-bold"><%= title; %></span>
+
+              <!-- authors -->
+              <% var authors = value["authors"]; %>
+              <% authors.forEach((author) => { %>
+                <span>by</span>
+                <span><%= author.replace("---", ", "); %></span>
+              <% }); %>
+
+              <!-- editors -->
+              <% var editors = value["editors"]; %>
+              <span class="text-secondary">Curated by </span>
+              <span class="text-secondary"><%= editors.join(", "); %></span>
+
+            <% }; %>
+
+            <!-- read the edition -->
+            <a href="/edition/<%= file; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
+            
+            <!-- edit the edition -->
+            <a href="/edit/<%= file; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
           </div>
-        <% }; %>
 
+        <% }); %>
       <% } else { %>
         <div class="mt-3">
           <p>No edition is available for now.</p>
