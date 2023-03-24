@@ -73,8 +73,8 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                         titles.forEach((title) => {
                             /* editors */
                             if (title == record.get("ee")["end"]["properties"]["title"]) {
-                                if (!editors.includes(title + "___" + record.get("ee")["start"]["properties"]["name"])) {
-                                    editors.push(title + "___" + record.get("ee")["start"]["properties"]["name"]);
+                                if (!editors.includes(title + "___" + record.get("ee")["start"]["properties"]["name"] + "---" + record.get("ee")["start"]["properties"]["email"])) {
+                                    editors.push(title + "___" + record.get("ee")["start"]["properties"]["name"] + "---" + record.get("ee")["start"]["properties"]["email"]);
                                 };
 
                                 /* publish type */

@@ -40,6 +40,8 @@
           <div class="p-2">
 
             <% var file; %>
+            <% var emails = []; %>
+            
             <% for (const [key, value] of Object.entries(edition)) { %>
 
               <!-- file -->
@@ -59,15 +61,28 @@
               <!-- editors -->
               <% var editors = value["editors"]; %>
               <span class="text-secondary">Curated by </span>
-              <span class="text-secondary"><%= editors.join(", "); %></span>
+              <% editors.forEach((editor) => { %>
+                <span class="text-secondary"><%= editor.split("---")[0]; %></span>
+
+                <!-- editors mails -->
+                <% if (!emails.includes(editor.split("---")[1])) { %>
+                  <% emails.push(editor.split("---")[1]); %>
+                <% }; %>
+
+              <% }); %>
 
             <% }; %>
 
             <!-- read the edition -->
             <a href="/edition/<%= file; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
             
-            <!-- edit the edition -->
-            <a href="/edit/<%= file; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+            <!-- edit the edition - edit only if the logged user is the editor -->
+            <% emails.forEach((el) => { %>
+              <% if (el == email) { %>
+                <a href="/edit/<%= file; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+              <% }; %>
+            <% }); %>
+
           </div>
 
         <% }); %>
