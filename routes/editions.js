@@ -171,6 +171,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
         /* sort alphabetically the editions */
         edDict.sort();
 
+        /* page rendering */
         res.render("editions", {
             prevUrl: prevUrl,
             editions: edDict,

@@ -60,16 +60,18 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
 
                 FOREACH (email IN split("${otherEditorsArr}", ",") |
                     MERGE otherEditor = (editor:Editor {email: email})
-                    ON MATCH SET editor.email = email           
+                    ON MATCH SET editor.email = email
                     MERGE (editor)-[:IS_EDITOR_OF]->(edition)
                 )
-                
-                FOREACH (name IN split("${contributorsArr}", ",") |
-                    MERGE contributor = (editor:Editor {name: name})
-                    ON MATCH SET editor.name = name
+
+                FOREACH (email IN split("${contributorsArr}", ",") |
+                    MERGE contributor = (editor:Editor {email: email})
+                    ON MATCH SET editor.email = email
                     MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                 )
+
                 
+
                 RETURN editors, ID(edition), ID(editor)
                 `
             )
@@ -110,11 +112,17 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
             };
         });
 
+        /* empty the array if it contains only an empty value */
+        if (notExistingUsers.length = 1 && notExistingUsers.includes("")) {
+            notExistingUsers = [];
+        };
+
+        /* page redirect */
         if (notExistingUsers.length > 0) {
             /* the mails do not exist */
             res.render("getStarted", {
                 name: currentUser,
-                errorMessage: "The editor's mails " + notExistingUsers.join(", ") + " do not exist." 
+                errorMessage: "The editor's mails " + notExistingUsers.join(", ") + " do not exist."
             });
         } else {
             /* the mails exist */
