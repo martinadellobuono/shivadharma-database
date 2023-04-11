@@ -218,7 +218,7 @@
           <div class="collapse" id="collapse-apparatus">
             <div class="card card-body">
               <% apparatus.forEach((entry) => { %>
-                <div data-type="apparatus" data-subtype="entry">
+                <div class="fs-xs" data-type="apparatus" data-subtype="entry">
                   <% entry.forEach((el) => { %>
 
                     <!-- location -->
@@ -264,7 +264,7 @@
           <div class="collapse" id="collapse-notes">
             <div class="card card-body">
               <% notes.forEach((el) => { %>
-                <div data-type="note" data-subtype="note">
+                <div class="fs-xs" data-type="note" data-subtype="note">
                   <span class="me-1" data-type="location" data-subtype="location-top">
                     <span data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                   </span>

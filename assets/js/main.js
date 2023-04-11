@@ -965,9 +965,9 @@ let annotations = () => {
 
 /* SAVE FILE */
 /* save file every 5 seconds */
-let saveFile = async () => {
+let saveFile = () => {
     /* fetch data */
-    await fetch("http://localhost:80/saveFile", {
+    fetch("http://localhost:80/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }

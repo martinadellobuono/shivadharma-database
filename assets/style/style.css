@@ -12445,6 +12445,10 @@ p {
   animation: heartbeat 1s ease-in-out infinite both;
 }
 
+.heartbeat::before {
+  content: "Click to show you are not a robot | ";
+}
+
 /* navbar */
 .navbar-bg {
   background-color: #7A868E;
