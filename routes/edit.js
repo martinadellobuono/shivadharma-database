@@ -92,32 +92,48 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 onNext: record => {
 
                     /* work */
-                    workMatrix = record.get("work.title");
+                    if (record.get("work.title") !== null) {
+                        workMatrix = record.get("work.title");
+                    };
 
                     /* title */
-                    title = record.get("edition.title");
+                    if (record.get("edition.title") !== null) {
+                        title = record.get("edition.title");
+                    };
 
                     /* editionOf */
-                    editionOf = record.get("edition.editionOf");
+                    if (record.get("edition.editionOf") !== null) {
+                        editionOf = record.get("edition.editionOf");
+                    };
 
                     /* author(s) */
                     if (!authors.includes(record.get("author.name"))) {
-                        authors.push(record.get("author.name"));
+                        if (record.get("author.name") !== null) {
+                            authors.push(record.get("author.name"));
+                        };
                     };
 
                     /* author of the commentary */
-                    authorCommentary = record.get("edition.authorCommentary");
+                    if (record.get("edition.authorCommentary") !== null) {
+                        authorCommentary = record.get("edition.authorCommentary");
+                    };
 
                     /* date */
-                    date = record.get("date.on");
+                    if (record.get("date.on") !== null) {
+                        date = record.get("date.on");
+                    };
 
                     /* editor(s) */
                     if (!editors.includes(record.get("editors.name"))) {
-                        editors.push(record.get("editors.name"));
+                        if (record.get("editors.name") !== null) {
+                            editors.push(record.get("editors.name"));
+                        };
                     };
 
                     /* chapter */
-                    chapter = record.get("selectedFragment.chapter");
+                    if (record.get("selectedFragment.chapter") !== null) {
+                        chapter = record.get("selectedFragment.chapter");
+                    };
 
                     /* translations */
                     if (record.get("translation.value") !== null) {
@@ -240,12 +256,16 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
                     /* witnesses */
                     if (!witnesses_temp.includes(record.get("witness"))) {
-                        witnesses_temp.push(record.get("witness"));
+                        if (record.get("witness") !== null) {
+                            witnesses_temp.push(record.get("witness"));
+                        };
                     };
 
                     /* lemma / witnesses */
                     if (!lemmaWitness_temp.includes(record.get("lemmaWitness"))) {
-                        lemmaWitness_temp.push(record.get("lemmaWitness"));
+                        if (record.get("lemmaWitness") !== null) {
+                            lemmaWitness_temp.push(record.get("lemmaWitness"));
+                        };
                     };
 
                     /* lemma / variant / witnesses */
