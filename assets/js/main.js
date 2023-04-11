@@ -939,6 +939,9 @@ let annotations = () => {
                                 contentFile: contentFile
                             }
 
+                            /* save the file */
+                            saveFile();
+
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
                             for (var i = 0; i < btns.length; i++) {

@@ -214,7 +214,7 @@
 
         <!-- apparatus -->
         <% if (apparatus.length > 0) { %>
-          <button type="button" class="btn btn-sm btn-yellow" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="collapse-apparatus">Apparatus</button>
+          <button type="button" class="btn btn-sm btn-yellow caret" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="collapse-apparatus">Apparatus</button>
           <div class="collapse" id="collapse-apparatus">
             <div class="card card-body">
               <% apparatus.forEach((entry) => { %>
@@ -260,7 +260,7 @@
 
         <!-- notes -->
         <% if (notes.length > 0) { %>
-          <button type="button" class="btn btn-sm btn-blue" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="collapse-notes">Notes</button>
+          <button type="button" class="btn btn-sm btn-blue caret" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="collapse-notes">Notes</button>
           <div class="collapse" id="collapse-notes">
             <div class="card card-body">
               <% notes.forEach((el) => { %>

@@ -291,12 +291,12 @@ body {
 
 /* caret */
 .caret[aria-expanded="false"]::after {
-    content: "\25BC";
+    content: " \25BC";
     font-size: 10px;
 }
 
 .caret[aria-expanded="true"]::after {
-    content: "\25B2";
+    content: " \25B2";
     font-size: 10px;
 }
 
