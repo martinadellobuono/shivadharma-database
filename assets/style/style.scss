@@ -252,6 +252,20 @@ body {
     float: right;
 }
 
+.marker-list {
+    list-style: none;
+    margin-top: 16px;
+}
+
+.marker-list li::before {
+    content: "\2022";
+    color: $gray-500;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -2em;
+}
+
 /* titles */
 .h1-f {
     color: $light;
@@ -715,8 +729,11 @@ p {
 
 /* MOBILE */
 @media (max-width: 991px) {
+
     /* list */
     .btn-list {
         float: none;
     }
-};
+}
+
+;

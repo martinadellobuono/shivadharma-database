@@ -12206,6 +12206,20 @@ body {
   float: right;
 }
 
+.marker-list {
+  list-style: none;
+  margin-top: 16px;
+}
+
+.marker-list li::before {
+  content: "\2022";
+  color: #adb5bd;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -2em;
+}
+
 /* titles */
 .h1-f {
   color: #f8f9fa;

@@ -49,15 +49,15 @@
         <div class="tab-pane fade" id="account-editions">
           <h2 class="ff-cursive">Editions</h2>
             <% if (editions) { %>
-              <ul>
+              <ul class="marker-list">
                 <% editions.forEach((edition) => { %>
                   <% var e = edition.split('___')[1]; %>
                   <% var editionId = e.split('---')[0]; %>
                   <% var publishType = e.split('---')[1]; %>
                   <li class="p-2">
                     <span class="fw-bold"><%= edition.split("___")[0] %></span>
-                    <a href="<%= process.env.URL_PATH %>/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm" title="Read the edition">Read the edition</a>
-                    <a href="<%= process.env.URL_PATH %>/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm" title="Edit the edition">Edit the edition</a>
+                    <a href="<%= process.env.URL_PATH %>/edition/<%= editionId; %>-<%= idEditor; %>" class="btn btn-primary btn-sm btn-list" title="Read the edition">Read the edition</a>
+                    <a href="<%= process.env.URL_PATH %>/edit/<%= editionId; %>-<%= idEditor; %>" class="btn btn-light btn-sm btn-list" title="Edit the edition">Edit the edition</a>
                     <span class="text-secondary fst-italic fs-xs"><%= publishType; %></span>
                   </li>
                 <% }); %>
