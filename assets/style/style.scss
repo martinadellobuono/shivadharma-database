@@ -51,6 +51,12 @@ body {
 }
 
 /* font */
+.ff-cursive {
+    color: $gray-600;
+    font-family: $f-title;
+    letter-spacing: 1px;
+}
+
 .fs-xs {
     font-size: 15px;
 }

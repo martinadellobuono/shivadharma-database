@@ -12003,6 +12003,12 @@ body {
 }
 
 /* font */
+.ff-cursive {
+  color: #6c757d;
+  font-family: "Lily Script One", cursive;
+  letter-spacing: 1px;
+}
+
 .fs-xs {
   font-size: 15px;
 }
