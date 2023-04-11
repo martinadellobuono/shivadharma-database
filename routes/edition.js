@@ -245,7 +245,9 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
 
                     /* lemma / variant / witnesses */
                     if (!lemmaVariantWitness_temp.includes(record.get("lemmaVariantWitness"))) {
-                        lemmaVariantWitness_temp.push(record.get("lemmaVariantWitness"));
+                        if (record.get("lemmaVariantWitness") !== null) {
+                            lemmaVariantWitness_temp.push(record.get("lemmaVariantWitness"));
+                        };
                     };
 
                 },
@@ -463,36 +465,38 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
 
                         /* array of variants for each lemma */
                         lemmaVariantWitness_temp.forEach((el) => {
-                            if (el["start"]["labels"] == "Lemma") {
-                                if (el["start"]["properties"]["value"] == lemma) {
-                                    el["segments"].forEach((segment) => {
-                                        if (segment["start"]["labels"] == "Variant") {
-
-                                            /* variant */
-                                            var variant = segment["start"]["properties"]["value"];
-
-                                            /* variant dict */
-                                            var variantDict = JSON.stringify({
-                                                idAnnotation: segment["start"]["properties"]["idVariant"],
-                                                variant: variant,
-                                                notes: segment["start"]["properties"]["notes"]
-                                            })
-
-                                            /* array of variants */
-                                            if (!variants_arr.includes(variantDict)) {
-                                                variants_arr.push(variantDict);
-                                            };
-
-                                            /* array of attested in relation of variant with witnesses */
-                                            if (segment["relationship"]["type"] == "ATTESTED_IN") {
-                                                var witness_relations = JSON.stringify(segment);
-                                                if (!variant_witnesses_data_arr.includes(witness_relations)) {
-                                                    variant_witnesses_data_arr.push(witness_relations);
+                            if (el !== null) {
+                                if (el["start"]["labels"] == "Lemma") {
+                                    if (el["start"]["properties"]["value"] == lemma) {
+                                        el["segments"].forEach((segment) => {
+                                            if (segment["start"]["labels"] == "Variant") {
+    
+                                                /* variant */
+                                                var variant = segment["start"]["properties"]["value"];
+    
+                                                /* variant dict */
+                                                var variantDict = JSON.stringify({
+                                                    idAnnotation: segment["start"]["properties"]["idVariant"],
+                                                    variant: variant,
+                                                    notes: segment["start"]["properties"]["notes"]
+                                                })
+    
+                                                /* array of variants */
+                                                if (!variants_arr.includes(variantDict)) {
+                                                    variants_arr.push(variantDict);
                                                 };
+    
+                                                /* array of attested in relation of variant with witnesses */
+                                                if (segment["relationship"]["type"] == "ATTESTED_IN") {
+                                                    var witness_relations = JSON.stringify(segment);
+                                                    if (!variant_witnesses_data_arr.includes(witness_relations)) {
+                                                        variant_witnesses_data_arr.push(witness_relations);
+                                                    };
+                                                };
+    
                                             };
-
-                                        };
-                                    });
+                                        });
+                                    };
                                 };
                             };
                         });
