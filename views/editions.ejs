@@ -65,7 +65,11 @@
 
                 <span class="after-coma">
                 <% editors.forEach((editor) => { %>
-                  <span class="text-secondary after-coma-content fs-xs"><%= editor.split("---")[0]; %></span>
+
+                  <% if (editor.split("---")[0] !== "undefined") { %> 
+                    <span class="text-secondary after-coma-content fs-xs"><%= editor.split("---")[0]; %></span>
+                  <% }; %>
+
                   <!-- editors mails -->
                   <% if (!emails.includes(editor.split("---")[1])) { %>
                     <% emails.push(editor.split("---")[1]); %>
