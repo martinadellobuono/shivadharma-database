@@ -23,9 +23,11 @@
         <h2 class="d-inline h5 text-secondary">
           <span data-type="header" data-subtype="curated-by">Curated by </span>
           <% if (editors) { %>
+            <span class="after-coma">
             <% editors.forEach((editor) => { %>
-              <span data-type="header" data-subtype="editor"><%= editor %></span>
+              <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor %></span>
             <% }); %>
+            </span>
           <% }; %>
         </h2>
       </div>

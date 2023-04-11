@@ -18,10 +18,12 @@
             <% }); %>
           </h1>
           <h2 class="d-inline h5 text-secondary">
-            Curated by
-            <% editors.forEach((editor) => { %>
-              <%= editor; %>
-            <% }); %>
+            <span data-type="header" data-subtype="curated-by">Curated by</span>
+            <span class="after-coma">
+              <% editors.forEach((editor) => { %>
+                <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
+              <% }); %>
+            </span>
           </h2>
         <% }; %>
       </div>
@@ -54,7 +56,7 @@
       <!-- textus constitutus -->
       <div class="col-md-6 border p-3 enlarge-col">
         <% if (file) { %>
-          <%- include (`../uploads/${file}`) %>
+          <div class="ff-edition"><%- include (`../uploads/${file}`) %></div>
         <% } else { %>
           <p>The edition is coming soon!</p>
         <% }; %>

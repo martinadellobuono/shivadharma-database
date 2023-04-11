@@ -156,6 +156,9 @@ let fileTextarea = () => {
         width: "100%",
         plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
+        menu : {
+            format: {title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat"},
+        },
         toolbar: "save | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
         toolbar_sticky: false,
         autosave_ask_before_unload: true,
@@ -171,7 +174,7 @@ let fileTextarea = () => {
         quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
         toolbar_mode: "sliding",
         contextmenu: "link image table",
-        content_style: "body {font-family:Helvetica,Arial,sans-serif; font-size:16px}" +
+        content_style: "body {font-family:'Book Antiqua'; font-size:16px}" +
             "[data-type='milestone'][data-start='start']::before {content: '\u25CF';}" +
             "[data-type='annotation-object'] {display: inline;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='apparatus']::before {content: '\u25CF'; color: #FFC107;}" +

@@ -1,5 +1,5 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-@import url('https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lily+Script+One&display=swap");
 
 /* VAR */
 /* colors */
@@ -8,7 +8,9 @@ $gray-light: #7A868E;
 $pink-dark: #B0786A;
 
 /* font */
-$f-title: "Lily Script One", cursive;
+$ff-title: "Lily Script One", cursive;
+$ff-edition: "Book Antiqua";
+$fs-xs: 15px;
 
 /* html */
 html {
@@ -53,12 +55,18 @@ body {
 /* font */
 .ff-cursive {
     color: $gray-600;
-    font-family: $f-title;
+    font-family: $ff-title;
     letter-spacing: 1px;
 }
 
+.ff-edition {
+    font-family: $ff-edition;
+    font-size: 18px;
+    font-weight: 400;
+}
+
 .fs-xs {
-    font-size: 15px;
+    font-size: $fs-xs;
 }
 
 .fw-xs {
@@ -239,6 +247,11 @@ body {
     vertical-align: top;
 }
 
+/* list */
+.btn-list {
+    float: right;
+}
+
 /* titles */
 .h1-f {
     color: $light;
@@ -251,7 +264,7 @@ body {
 .h3-f,
 .h4-f {
     letter-spacing: 1px;
-    font-family: $f-title;
+    font-family: $ff-title;
 }
 
 .title-subsection:hover {
@@ -499,7 +512,7 @@ p {
     font-weight: 600;
 }
 
-/* edit */
+/* edit layout */
 .edition-container,
 .edition-container .row {
     height: 80vh;
@@ -510,7 +523,7 @@ p {
     overflow: hidden;
 }
 
-/* read */
+/* read layout */
 .edition-container-vis,
 .edition-container-vis .row {
     height: 80vh;
@@ -540,6 +553,11 @@ p {
 .scroll-tab::-webkit-scrollbar-thumb {
     background-color: $secondary;
     border-radius: 10px;
+}
+
+/* punctuation */
+.after-coma .after-coma-content:not(:last-child):after {
+    content: ", ";
 }
 
 /* autocomplete */
@@ -593,6 +611,12 @@ p {
 }
 
 /* account */
+.account-sidebar {
+    background-image: url("https://images.unsplash.com/photo-1524229648276-e66561fe45a9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1143&q=80");
+    background-repeat: no-repeat;
+    height: 90.4vh;
+}
+
 .account-sidebar li {
     padding: 0;
 }
@@ -604,7 +628,7 @@ p {
 }
 
 .account-sidebar a:not(.active) {
-    color: $dark;
+    color: $light;
 }
 
 .account-sidebar a:hover:not(.active) {
@@ -688,3 +712,11 @@ p {
         width: 100% !important;
     }
 }
+
+/* MOBILE */
+@media (max-width: 991px) {
+    /* list */
+    .btn-list {
+        float: none;
+    }
+};
