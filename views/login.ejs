@@ -1,35 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" >
+
 <%- include ("partials/head") %>
 
-<div class="text-center">
-  <div class="mb-3">
-    <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
-    <h1>Login</h1>
-  </div>
+<body class="height-100 bg-login">
+<div class="pt-4">
 
+  <!-- error messages -->
   <% if (messages.error) { %>
-  <div class="alert alert-danger" role="alert">
-    <%= locals.messages.error %>
-  </div>
+    <div class="alert alert-danger" role="alert">
+      <%= locals.messages.error %>
+    </div>
   <% }; %>
 
-  <form class="login-form" action="<%= process.env.URL_PATH %>/login" method="POST">
-    <div class="mb-2">
-      <label for="email">Email</label>
-      <input class="form-control" type="email" name="email" required>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5 mx-auto">
+        <div class="card card-body card-radius">
+          <img class="logo-m mx-auto d-block my-4" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
+          <h1 class="text-center">Login</h1>
+          <form class="login-form" action="<%= process.env.URL_PATH %>/login" method="POST">
+            <!-- email -->
+            <div class="form-group px-5 py-2">
+                <label for="email">Email</label>
+                <input type="email" class="form-control text-lowercase" name="email" required>
+            </div>
+            <!-- password -->
+            <div class="form-group px-5 py-2">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+            <!-- login btn-->
+            <div class="d-grid gap-2 px-5 py-2 my-4">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
+          </form>
+          <!-- login -->
+          <p class="small-xl pt-3 text-center f-xs">
+            <span class="text-muted fs-xs">Don't have an account yet?</span>
+            <a href="<%= process.env.URL_PATH %>/register" class="fs-xs" title="Register">Register</a>
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="password">Password</label>
-      <input class="form-control" type="password" name="password" required>
-    </div>
-    <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Login</button>
-    </div>
-  </form>
-  <hr>
-  <span>Don't have an account yet?</span>
-  <a href="<%= process.env.URL_PATH %>/register" title="Register">Register</a>
+  </div>
 </div>
 
+</body>
 </html>

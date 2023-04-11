@@ -20,6 +20,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
 
     /* users email */
     var userEmails = [];
+    var notExistingUsers = [];
 
     /* other editors array */
     var otherEditorsArr = [];
@@ -48,48 +49,32 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH editors = (users:Editor)
-                MERGE (work:Work {title: "${req.body.work}"})
-                MERGE (edition:Edition {title: "${req.body.title}", editionOf: "${req.body.editionOf}", authorCommentary: "${req.body.authorCommentary}"})
-                MERGE (author:Author {name: "${req.body.author}"})
-                MERGE (editor:Editor {name: "${req.body.editor}"})
-                MERGE (work)-[:HAS_MANIFESTATION]->(edition)
-                MERGE (work)-[:WRITTEN_BY]->(author)
-                MERGE (editor)-[:IS_EDITOR_OF]->(edition)
-                ON CREATE SET edition.publishType = "Save as draft"
-
-                FOREACH (email IN split("${otherEditorsArr}", ",") |
-                    MERGE otherEditor = (editor:Editor {email: email})
-                    ON MATCH SET editor.email = email
-                    MERGE (editor)-[:IS_EDITOR_OF]->(edition)
-                )
-
-                FOREACH (email IN split("${contributorsArr}", ",") |
-                    MERGE contributor = (editor:Editor {email: email})
-                    ON MATCH SET editor.email = email
-                    MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
-                )
-
-                
-
-                RETURN editors, ID(edition), ID(editor)
+                MATCH (users:Editor)
+                RETURN users.email
                 `
             )
             .subscribe({
                 onNext: record => {
-                    /* email of all the users */
-                    if (!userEmails.includes(record.get("editors")["end"]["properties"]["email"])) {
-                        if (record.get("editors")["end"]["properties"]["email"] !== undefined) {
-                            userEmails.push(record.get("editors")["end"]["properties"]["email"]);
-                        };
+                    var user = record.get("users.email");
+
+                    /* all users array */
+                    if (!userEmails.includes(user)) {
+                        userEmails.push(user);
                     };
 
-                    /* id for url of the edition */
-                    idEdition = record.get("ID(edition)");
-                    idEditor = record.get("ID(editor)");
                 },
                 onCompleted: () => {
-                    console.log("Data added to the graph");
+
+                    /* check if the editors inserted are users yet */
+                    otherEditorsArr.concat(contributorsArr).forEach((user) => {
+                        if (!userEmails.includes(user)) {
+                            /* array of not existing users */
+                            if (!notExistingUsers.includes(user)) {
+                                notExistingUsers.push(user);
+                            };
+                        };
+                    });
+
                 },
                 onError: err => {
                     console.log(err);
@@ -99,35 +84,68 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
-        /* close session */
-        await session.close();
 
-        /* check if the inserted editors' mails exists */
-        var notExistingUsers = [];
-        otherEditorsArr.forEach((email) => {
-            if (!userEmails.includes(email)) {
-                if (!notExistingUsers.includes(email)) {
-                    notExistingUsers.push(email);
-                };
+        /* all the mails inserted exist */
+        if (notExistingUsers >= 0) {
+
+            /* id edition / id editor */
+            var idEdition;
+            var idEditor;
+
+            try {
+                await session.writeTransaction(tx => tx
+                    .run(
+                        `
+                        MERGE (work:Work {title: "${req.body.work}"})
+                        MERGE (edition:Edition {title: "${req.body.title}", editionOf: "${req.body.editionOf}", authorCommentary: "${req.body.authorCommentary}"})
+                        MERGE (author:Author {name: "${req.body.author}"})
+                        MERGE (editor:Editor {name: "${req.body.editor}"})
+                        MERGE (work)-[:HAS_MANIFESTATION]->(edition)
+                        MERGE (work)-[:WRITTEN_BY]->(author)
+                        MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                        ON CREATE SET edition.publishType = "Save as draft"
+
+                        FOREACH (email IN split("${otherEditorsArr}", ",") |
+                            MERGE otherEditor = (editor:Editor {email: email})
+                            ON CREATE SET editor.email = email
+                            MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                        )
+                        
+                        RETURN ID(edition), ID(editor)
+                        `
+                    )
+                    .subscribe({
+                        onNext: record => {
+                            idEdition = record.get("ID(edition)");
+                            idEditor = record.get("ID(editor)");
+                        },
+                        onCompleted: () => {
+                            console.log("Work, edition, authors, editor, and publish type added to the graph");
+                        },
+                        onError: err => {
+                            console.log(err);
+                        }
+                    })
+                );
+            } catch (err) {
+                console.log(err);
+            } finally {
+                /* the mails exist */
+                /* redirect to the edit page */
+                res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
             };
-        });
 
-        /* empty the array if it contains only an empty value */
-        if (notExistingUsers.length = 1 && notExistingUsers.includes("")) {
-            notExistingUsers = [];
-        };
-
-        /* page redirect */
-        if (notExistingUsers.length > 0) {
-            /* the mails do not exist */
+        } else {
+            /* at least one mail do not exist */
             res.render("getStarted", {
                 name: currentUser,
-                errorMessage: "The editor's mails " + notExistingUsers.join(", ") + " do not exist."
+                errorMessage: "The users " + notExistingUsers.join(", ") + " do not exist."
             });
-        } else {
-            /* the mails exist */
-            res.redirect(process.env.URL_PATH + "/edit/" + idEdition + "-" + idEditor);
+
+            /* close session */
+            session.close();
         };
+
     };
 }
 );

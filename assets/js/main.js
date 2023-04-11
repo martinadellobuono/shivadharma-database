@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+    navbarBg();
+    navbarActive();
     alerts();
     popovers();
     tooltips();
@@ -17,6 +19,50 @@ document.addEventListener("DOMContentLoaded", () => {
     witnessDimensions();
     inlineLocation();
 });
+
+/* navbar */
+/* add /remove navbar background */
+let navbarBg = () => {
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    if (page == "" || page == "apikey") {
+        document.querySelector(".navbar").classList.remove("navbar-bg");
+    } else {
+        document.querySelector(".navbar").classList.add("navbar-bg");
+    };
+};
+
+/* make navbar li active */
+let navbarActive = () => {
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    [].forEach.call(document.querySelectorAll(".navbar-a a"), (el) => {
+        var item = el.getAttribute("href").replace("/", "");
+        if (item == page) {
+            el.classList.add("navbar-a-active");
+        } else {
+            el.classList.remove("navbar-a-active");
+        };
+    });
+};
+
+/* prevent submitting forms by pressing enter */
+let preventEnter = () => {
+    /* remove effect from button */
+    document.getElementById("btn-apikey").classList.remove("heartbeat");
+
+    /* event pressing enter */
+    var form = document.getElementById("form-apikey");
+    form.addEventListener("keypress", (e) => {
+        var key = e.charCode || e.keyCode || 0;
+        if (key == 13) {
+            /* prevent submitting data */
+            e.preventDefault();
+            /* animate the get started button */
+            document.getElementById("btn-apikey").classList.add("heartbeat");
+        };
+    });
+};
 
 /* alerts */
 let alerts = () => {
@@ -91,7 +137,7 @@ let currentTime = () => {
         };
         var currentTimes = document.querySelectorAll(".current-time");
         currentTimes.forEach((el) => {
-            el.innerHTML = '<i class="bi bi-watch"></i> ' + hour + ":" + minutes;
+            el.innerHTML = hour + ":" + minutes;
         });
     };
     time();

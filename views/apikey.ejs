@@ -1,35 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" >
+
 <%- include ("partials/head") %>
 
-<body>
+<body class="height-100 bg-apikey" onload="preventEnter();">
+
   <%- include ("partials/navbar") %>
 
-  <div class="text-center pb-5 pt-5">
-    <div class="mb-3">
-      <h1>Create your edition | Access key</h1>
-    </div>
+  <div class="py-5">
     <!-- error message -->
     <% if (typeof errorMessage !== "undefined") { %>
-    <div class="alert alert-danger" role="alert">
-      <%= errorMessage %>
-    </div>
+      <div class="alert alert-danger" role="alert">
+        <%= errorMessage %>
+      </div>
     <% }; %>
-    <!-- api key -->
-    <form class="login-form" action="<%= process.env.URL_PATH %>/apikey" method="POST">
-      <div class="mb-3">
-        <label for="password">Key to access</label>
-        <input class="form-control" type="password" name="apikey" required>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <div class="card card-body card-radius">
+            <img class="logo-m mx-auto d-block my-4" src="https://cdn-icons-png.flaticon.com/512/4001/4001033.png" alt="Logo Sivadharma">
+            <h1 class="text-center">Create your edition | Access key</h1>
+            <form class="login-form" id="form-apikey" action="<%= process.env.URL_PATH %>/apikey" method="POST">
+              <!-- apikey -->
+              <div class="form-group px-5 py-2">
+                  <label for="apikey">Access key</label>
+                  <input type="password" class="form-control text-lowercase" name="apikey" required>
+              </div>
+              <!-- access -->
+              <div class="d-grid gap-2 px-5 py-2 my-4">
+                  <button type="submit" class="btn btn-primary" id="btn-apikey" title="Get started">Get started</button>
+              </div>
+            </form>
+            <!-- login -->
+            <p class="small-xl pt-3 text-center f-xs">
+              <span class="text-muted fs-xs">Don't have the Access key?</span>
+              <a href="https://shivadharmaproject.com/" class="fs-xs" title="Contact the team" target="_blank">Contact the team</a>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Access</button>
-      </div>
-    </form>
-  </div>
+    </div>
   </div>
 
-  <%- include ("partials/footer") %>
   <%- include ("partials/script") %>
 </body>
-
 </html>

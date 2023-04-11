@@ -2,25 +2,166 @@
 <html>
 <%- include ("partials/head") %>
 
-<body>
+<body class="bg-index">
   <%- include ("partials/navbar") %>
-  <div class="container-fluid pb-5 pt-5">
-    <!-- alert -->
-    <div class="alert alert-warning alert-dismissible fade" role="alert">
-      <span>The web application is under development. New contents and functionalities are coming soon!</span></span>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+  <!-- get started -->
+  <div class="py-5 height-100">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <div class="p-5">
+            <!-- welcome -->
+            <img class="logo-l mx-auto d-block my-3" src="assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
+            <h1 class="text-center typing-effect h1-f">Shivadharma Database</h1>
+            <h2 class="text-center text-light my-3 tracking-in-expand fs-4 fw-xs">Welcome<br><%= name %></h2>
+            <!-- read / create -->
+            <div class="text-center my-3">
+              <a href="<%= process.env.URL_PATH %>/editions" class="btn btn-light mt-3" title="Read editions">Read editions</a>
+              <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary mt-3" title="Create editions">Create Edition</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="container text-center">
-      <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
-      <h1>&#x15a;ivadharma Database</h1>
-      <h2>Welcome <%= name %></h2>
+    <!-- find more -->
+    <div class="py-4 text-center">
+      <a href="#intro-section" class="link-go-down text-light" title="Find more"><i class="bi bi-arrow-down"></i></a>
     </div>
   </div>
+
+  <!-- introduction -->
+  <div class="container-fluid bg-light pb-5 pt-5" id="intro-section">
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <h3 class="h3-f">The project</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p>A Scholarly Digital Critical Edition is a conceptually and structurally sophisticated entity, not only because the text is “constrained by its sequential presentation”, but also because it is characterized by a multidimensional complexity. Editions of South Asian texts, in particular, contain a series of phenomena difficult to manage formally, such as the overlapping, which requires establishing the data structure best suited to represent this complexity. Śivadharma Database, an upcoming editor of Digital Scholarly Edition by ..., shows that a tree structure is insufficient to handle the non-linearity of the readings of a text in South Asian languages, while the graph database Neo4j, is a better solution to structure and store data to create, publish, store, catalog, update, visualize, and browse editions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- tools -->
+  <div class="container-fluid pb-5 pt-5">
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <h3 class="h3-f text-light">The tools</h3>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Textus constitutus</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Witnesses</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Apparatus</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Translation</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Parallels</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Citations</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-radius p-4">
+            <img src="" class="card-img-top" alt="">
+            <div class="card-body">
+              <h5 class="card-title">Text structure</h5>
+              <p class="card-text text-secondary">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- stay in touch -->
   <div class="container-fluid bg-light pb-5 pt-5">
     <div class="container">
-      A Scholarly Digital Critical Edition is a conceptually and structurally sophisticated entity, not only because the text is “constrained by its sequential presentation”, but also because it is characterized by a multidimensional complexity. Editions of South Asian texts, in particular, contain a series of phenomena difficult to manage formally, such as the overlapping, which requires establishing the data structure best suited to represent this complexity. Śivadharma Database, an upcoming editor of Digital Scholarly Edition by ..., shows that a tree structure is insufficient to handle the non-linearity of the readings of a text in South Asian languages, while the graph database Neo4j, is a better solution to structure and store data to create, publish, store, catalog, update, visualize, and browse editions.
+      <div class="row mb-3">
+        <div class="col-md-12 text-center">
+          <h3 class="h3-f">Stay in touch with Shivadharma Project</h3>
+          <a href="https://shivadharmaproject.com/" class="btn btn-pink-dark mt-3" target="_blank">Visit the blog</a>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- partners -->
+  <div class="container-fluid bg-white pb-5 pt-5">
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <img class="partner-img mx-auto d-block" src="https://ipr.univ-rennes.fr/sites/ipr.univ-rennes.fr/files/styles/16_9_large/public/pages/erc_bis_0.jpg?h=6c2aa0bb&itok=NBi1oAFh" alt="Visit Erc">
+        </div>
+        <div class="col-md-4">
+          <img class="partner-img mx-auto d-block" src="https://universitycorridors.unhcr.it/wp-content/uploads/2022/03/Picture1.jpg" alt="Visit L&#x27;Orientale University of Naples">
+        </div>
+        <div class="col-md-4">
+          <img class="partner-img mx-auto d-block" src="https://www2.almalaurea.it/img/logofull/70003.png" alt="Visit Alma Mater Studiorum University of Bologna">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <%- include ("partials/footer") %>
   <%- include ("partials/script") %>
 </body>

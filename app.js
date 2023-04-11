@@ -162,8 +162,6 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
                     onNext: record => {
 
                         /* registerd users */
-                        console.log(record.get("editors"));
-
                         if (record.get("editors") !== null) {
                             if (!registeredUsers.includes(record.get("editors")["properties"]["email"])) {
                                 registeredUsers.push(record.get("editors")["properties"]["email"]);
@@ -179,6 +177,7 @@ app.post(process.env.URL_PATH + "/register", checkNotAuthenticated, async (req, 
                         ids.forEach(el => {
                             id = el["low"];
                         });
+                        
                         /* save the user */
                         users.push({
                             id: id,

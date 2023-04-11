@@ -1,41 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" >
+
 <%- include ("partials/head") %>
 
-<div class="text-center">
-  <div class="mb-3">
-    <img class="logo mb-3" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
-    <h1>Register</h1>
-  </div>
+<body class="height-100 bg-register">
+<div class="pt-4">
 
-  <% if (typeof errorMessage !== "undefined") { %>
-  <div class="alert alert-danger" role="alert">
-    <%= errorMessage; %>
-  </div>
-  <% }; %>
+    <!-- error messages -->
+    <% if (typeof errorMessage !== "undefined") { %>
+        <div class="alert alert-danger" role="alert">
+            <%= errorMessage; %>
+        </div>
+    <% }; %>
 
-  <form class="login-form" action="<%= process.env.URL_PATH %>/register" method="POST">
-    <div class="mb-3">
-      <label for="name">Full name</label>
-      <input class="form-control" type="text" name="name" required>
-      <div id="emailHelp" class="form-text">Insert your name first, then your surname.</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <div class="card card-body card-radius">
+                    <img class="logo-m mx-auto d-block my-4" src="/assets/img/logo-brand-shivadhama.png" alt="Logo Sivadharma">
+                    <h1 class="text-center">Register</h1>
+                    <form class="login-form" action="<%= process.env.URL_PATH %>/register" method="POST">
+                        <!-- full-name -->
+                        <div class="form-group px-5 py-2">
+                            <label for="name">Full-name</label>
+                            <input type="text" class="form-control" name="name" required>
+                            <div class="form-text">Insert your name first, then your surname.</div>
+                        </div>
+                        <!-- email -->
+                        <div class="form-group px-5 py-2">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control text-lowercase" name="email" required>
+                            <div class="form-text">We will never share your email with anyone else.</div>
+                        </div>
+                        <!-- password -->
+                        <div class="form-group px-5 py-2">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <!-- register btn-->
+                        <div class="d-grid gap-2 px-5 py-2 my-4">
+                            <button class="btn btn-primary" type="submit">Register</button>
+                        </div>
+                    </form>
+                    <!-- login -->
+                    <p class="small-xl pt-3 text-center f-xs">
+                        <span class="text-muted fs-xs">Already have an account?</span>
+                        <a href="<%= process.env.URL_PATH %>/login" class="fs-xs" title="Login">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-      <label for="email">Email</label>
-      <input class="form-control" type="email" name="email" required>
-      <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-      <label for="password">Password</label>
-      <input class="form-control" type="password" name="password" required>
-    </div>
-    <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-  </form>
-  <hr>
-  <span>Already have an account?</span>
-  <a href="<%= process.env.URL_PATH %>/login" title="Login">Login</a>
 </div>
 
+</body>
 </html>
