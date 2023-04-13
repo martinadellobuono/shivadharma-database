@@ -8,7 +8,7 @@ The project is ongoing and under development.
 Clone this repository using the URL https://github.com/martinadellobuono/shivadharma-neo4j.git
 or download the folder.
 
-The project works with these ***requirements***:
+The project works with these **requirements**:
 
 - [**Node.js**](https://nodejs.org/en/) v16.14.2
 - [**Neo4j**](https://neo4j.com/download/) @4.4.1
