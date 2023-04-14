@@ -65,6 +65,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
                 base = "witnessSiglumBase" + i;
                 superscript = "witnessSiglumSuperscript" + i;
                 subscript = "witnessSiglumSubscript" + i;
+                urlFacsimile = "witnessUrl" + i;
                 provenance = "witnessProvenance" + i;
                 location = "witnessLocation" + i;
                 repository = "witnessRepository" + i;
@@ -106,6 +107,7 @@ router.post("/addWitnesses/:id", async (req, res) => {
                     OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                     MERGE (witness:Witness {
                         siglum: "${req.body[base]}" + "<sup>" + "${req.body[superscript]}" + "</sup><sub>" + "${req.body[subscript]}" + "</sub>",
+                        urlFacsimile: "${req.body[urlFacsimile]}",
                         provenance: "${req.body[provenance]}",
                         location: "${req.body[location]}",
                         repository: "${req.body[repository]}",

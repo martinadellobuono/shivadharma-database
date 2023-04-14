@@ -143,6 +143,11 @@
                     </div>
                   </div>
                 </div>
+                <!-- facsimile URL -->
+                <div class="mb-3">
+                  <label class="form-label">URL of the facsimile</label>
+                  <input type="url" class="form-control" aria-describedby="witnessUrl" name="witnessUrl0">
+                </div>
                 <!-- collapse -->
                 <a class="btn btn-secondary expand-section mb-3" data-bs-toggle="collapse" href="#expand-metadata0" role="button" aria-expanded="false" aria-controls="expand-metadata0"></a>
                 <div class="collapse" id="expand-metadata0">
@@ -281,11 +286,7 @@
                   <!-- state -->
                   <div class="mb-3">
                     <label class="form-label">State<sup class="help-symbol" data-bs-toggle="popover" title="State" data-bs-content="Select whether the manuscript is complete or incomplete."><i class="bi bi-question-lg"></i></sup></label>
-                    <select class="form-select" aria-label="Select state" name="witnessState0">
-                      <option value="Complete">Complete</option>
-                      <option value="Inapplicable">Inapplicable</option>
-                      <option value="Incomplete">Incomplete</option>
-                    </select>
+                    <input type="text" class="form-control" aria-describedby="State" name="witnessState0">
                   </div>
                   <!-- condition -->
                   <div class="mb-3">
