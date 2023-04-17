@@ -1046,6 +1046,9 @@ let publishEdition = () => {
                     console.log(json);
                 })
                 .catch(err => console.log(err));
+            
+            /* stop loading the page */
+            window.stop();
 
         });
     };
