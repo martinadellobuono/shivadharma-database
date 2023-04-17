@@ -110,16 +110,22 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                         ON CREATE SET edition.publishType = "Save as draft"
 
                         FOREACH (email IN split("${otherEditorsArr}", ",") |
-                            MERGE otherEditor = (editor:Editor {email: email})
-                            ON CREATE SET editor.email = email
-                            MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                            MERGE (otherEditor:Editor {email: email})
+                            ON CREATE SET otherEditor.email = email
+                            MERGE (otherEditor)-[:IS_EDITOR_OF]->(edition)
+                        )
+
+                        FOREACH (email IN split("${contributorsArr}", ",") |
+                            MERGE (contributor:Editor {email: email})
+                            ON CREATE SET contributor.email = email
+                            MERGE (contributor)-[:IS_CONTRIBUTOR_OF]->(edition)
                         )
 
                         WITH edition, editor
-                        MATCH p = (x:Editor)-[r:IS_EDITOR_OF]->()
+                        MATCH p=(x:Editor)-[r]->()
                         WHERE x.email = ""
-                        DELETE r,x
-                        
+                        DELETE r, x
+
                         RETURN ID(edition), ID(editor)
                         `
                     )
@@ -129,7 +135,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                             idEditor = record.get("ID(editor)");
                         },
                         onCompleted: () => {
-                            console.log("Work, edition, authors, editor, and publish type added to the graph");
+                            console.log(idEdition + idEditor + "___" +"Work, edition, authors, editor, and publish type added to the graph");
                         },
                         onError: err => {
                             console.log(err);
