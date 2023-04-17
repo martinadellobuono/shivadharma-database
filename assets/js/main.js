@@ -156,8 +156,8 @@ let fileTextarea = () => {
         width: "100%",
         plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
-        menu : {
-            format: {title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat"},
+        menu: {
+            format: { title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat" },
         },
         toolbar: "save | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
         toolbar_sticky: false,
@@ -939,10 +939,6 @@ let annotations = () => {
                                 contentFile: contentFile
                             }
 
-                            /* save the file */
-                            /* saveFile();
-                            window.stop();
- */
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
                             for (var i = 0; i < btns.length; i++) {
@@ -1046,9 +1042,6 @@ let publishEdition = () => {
                     console.log(json);
                 })
                 .catch(err => console.log(err));
-            
-            /* stop loading the page */
-            //window.stop();
 
         });
     };
@@ -1070,8 +1063,8 @@ let onloadEdit = () => {
     fileTextarea();
     metadataTextareas();
     setInterval(saveFile, 5000);
-    stopLoading();
     publishEdition();
+    stopLoading();
 };
 
 /* preview annotations */

@@ -25,24 +25,28 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     /* other editors array */
     var otherEditorsArr = [];
     var otherEditors = req.body.otherEditors;
-    otherEditors.split(" ; ").forEach(otherEditor => {
-        if (otherEditor !== "" || otherEditor !== undefined) {
-            if (!otherEditorsArr.includes(otherEditor)) {
-                otherEditorsArr.push(otherEditor);
+    if (otherEditors !== "") {
+        otherEditors.split(" ; ").forEach(otherEditor => {
+            if (otherEditor !== "" || otherEditor !== undefined) {
+                if (!otherEditorsArr.includes(otherEditor)) {
+                    otherEditorsArr.push(otherEditor);
+                };
             };
-        };
-    });
+        });
+    };
 
     /* contributors array */
     var contributorsArr = [];
     var contributors = req.body.contributors;
-    contributors.split(" ; ").forEach(contributor => {
-        if (contributor !== "" || contributor !== undefined) {
-            if (!contributorsArr.includes(contributor)) {
-                contributorsArr.push(contributor);
+    if (contributors !== "") {
+        contributors.split(" ; ").forEach(contributor => {
+            if (contributor !== "" || contributor !== undefined) {
+                if (!contributorsArr.includes(contributor)) {
+                    contributorsArr.push(contributor);
+                };
             };
-        };
-    });
+        });
+    };
 
     const session = driver.session();
     try {
@@ -110,6 +114,11 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                             ON CREATE SET editor.email = email
                             MERGE (editor)-[:IS_EDITOR_OF]->(edition)
                         )
+
+                        WITH edition, editor
+                        MATCH p = (x:Editor)-[r:IS_EDITOR_OF]->()
+                        WHERE x.email = ""
+                        DELETE r,x
                         
                         RETURN ID(edition), ID(editor)
                         `

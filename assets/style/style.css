@@ -12679,4 +12679,34 @@ p {
     float: none;
   }
 }
+
+/* drag and drop */
+#container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.item {
+  background-color: #ccc;
+  border: 3px solid #999;
+  border-radius: 10px;
+  cursor: move;
+  list-style: none;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  padding: 0.5em;
+  text-align: center;
+  width: 30px;
+}
+
+.item:hover {
+  opacity: 0.5;
+}
+
+.dragging {
+  opacity: 0.5;
+}
 /*# sourceMappingURL=style.css.map */

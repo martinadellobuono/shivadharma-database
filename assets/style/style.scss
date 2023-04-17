@@ -504,7 +504,9 @@ p {
 
 .heartbeat::before {
     content: "Click to show you are not a robot | ";
-};
+}
+
+;
 
 /* navbar */
 .navbar-bg {
@@ -740,4 +742,29 @@ p {
     }
 }
 
-;
+/* drag and drop */
+#container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    background-color: #ccc;
+    border: 3px solid #999;
+    border-radius: 10px;
+    cursor: move;
+    list-style: none;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 0.5em;
+    text-align: center;
+    width: 30px;
+}
+
+.item:hover {
+    opacity: 0.5;
+}
+
+.dragging {
+    opacity: 0.5;
+}
