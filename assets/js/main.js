@@ -1047,11 +1047,21 @@ let publishEdition = () => {
     };
 };
 
-/* stop loading the page when submitting data */
+/* stop loading the page to stop saving the file */
 let stopLoading = () => {
+    /* submit buttons */
     var submitBtn = document.querySelectorAll("button[type='submit']");
     for (var i = 0; i < submitBtn.length; i++) {
         submitBtn[i].addEventListener("click", () => {
+            saveFile();
+            window.stop();
+        });
+    };
+
+    /* nav links */
+    var navLink = document.querySelectorAll(".nav-link");
+    for (var i = 0; i < navLink.length; i++) {
+        navLink[i].addEventListener("click", () => {
             saveFile();
             window.stop();
         });
