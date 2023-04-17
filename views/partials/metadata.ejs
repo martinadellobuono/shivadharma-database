@@ -108,7 +108,7 @@
 
             <!-- form -->
             <form id="addWitnesses" method="post" action="<%= process.env.URL_PATH %>/addWitnesses/<%= id %>">
-              <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3 wit-clone" data-cloned="witness">
+              <div class="alert alert-dark alert-dismissible fade show bg-light mb-3 p-3 wit-clone fs-xs" data-cloned="witness">
                 <!-- siglum -->
                 <div class="mb-3">
                   <label class="form-label">Siglum</label>
@@ -151,6 +151,13 @@
                 <!-- collapse -->
                 <a class="btn btn-secondary expand-section mb-3" data-bs-toggle="collapse" href="#expand-metadata0" role="button" aria-expanded="false" aria-controls="expand-metadata0"></a>
                 <div class="collapse" id="expand-metadata0">
+                  
+                  <!-- shelf-mark -->
+                  <div class="mb-3">
+                    <label class="form-label">Shelf-mark</label>
+                    <input type="text" class="form-control" aria-describedby="shelf-mark" name="witnessShelfMark0">
+                  </div>
+                  
                   <!-- provenance -->
                   <div class="mb-3">
                     <label class="form-label">Provenance<sup class="help-symbol" data-bs-toggle="popover" title="Provenance" data-bs-content="Insert here the country or region of origin of the manuscript."><i class="bi bi-question-lg"></i></sup></label>

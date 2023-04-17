@@ -991,6 +991,16 @@ let saveFile = () => {
     }, 2000);
 };
 
+/* stop save file */
+let stopSaveFile = () => {
+    var submitBtn = document.querySelectorAll("button[type='submit']");
+    for (var i = 0; i < submitBtn.length; i++) {
+        submitBtn[i].addEventListener("click", () => {
+            window.stop();
+        });
+    };
+};
+
 /* metadata textareas */
 let metadataTextareas = () => {
     tinymce.init({
@@ -1056,7 +1066,8 @@ let onloadEdit = () => {
     metadataTextareas();
     setInterval(saveFile, 5000);
     publishEdition();
-}
+    stopSaveFile();
+};
 
 /* preview annotations */
 let previewAnnotations = () => {
