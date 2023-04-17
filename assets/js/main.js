@@ -940,9 +940,9 @@ let annotations = () => {
                             }
 
                             /* save the file */
-                            saveFile();
+                            /* saveFile();
                             window.stop();
-
+ */
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
                             for (var i = 0; i < btns.length; i++) {
@@ -1022,7 +1022,7 @@ let metadataTextareas = () => {
 let publishEdition = () => {
     var publishBtn = document.querySelectorAll(".publish-btn");
     for (var i = 0; i < publishBtn.length; i++) {
-        publishBtn[i].addEventListener("click", async (e) => {
+        publishBtn[i].addEventListener("click", (e) => {
 
             var url = window.location.href;
             var idEdition = url.split("/").pop().split("-")[0];
@@ -1036,7 +1036,7 @@ let publishEdition = () => {
 
             /* fetch the type of publishment */
             var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
-            await fetch(route, {
+            fetch(route, {
                 method: "POST",
                 body: JSON.stringify(publishType),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
@@ -1048,8 +1048,19 @@ let publishEdition = () => {
                 .catch(err => console.log(err));
             
             /* stop loading the page */
-            window.stop();
+            //window.stop();
 
+        });
+    };
+};
+
+/* stop loading the page when submitting data */
+let stopLoading = () => {
+    var submitBtn = document.querySelectorAll("button[type='submit']");
+    for (var i = 0; i < submitBtn.length; i++) {
+        submitBtn[i].addEventListener("click", () => {
+            saveFile();
+            window.stop();
         });
     };
 };
@@ -1059,8 +1070,8 @@ let onloadEdit = () => {
     fileTextarea();
     metadataTextareas();
     setInterval(saveFile, 5000);
+    stopLoading();
     publishEdition();
-    stopSaveFile();
 };
 
 /* preview annotations */
