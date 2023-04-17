@@ -941,6 +941,7 @@ let annotations = () => {
 
                             /* save the file */
                             saveFile();
+                            window.stop();
 
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
@@ -989,16 +990,6 @@ let saveFile = () => {
     setTimeout(() => {
         document.getElementById("autosaved-message").classList.add("d-none");
     }, 2000);
-};
-
-/* stop save file */
-let stopSaveFile = () => {
-    var submitBtn = document.querySelectorAll("button[type='submit']");
-    for (var i = 0; i < submitBtn.length; i++) {
-        submitBtn[i].addEventListener("click", () => {
-            window.stop();
-        });
-    };
 };
 
 /* metadata textareas */
