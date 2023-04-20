@@ -11,6 +11,7 @@ const { render } = require("ejs");
 router.post(process.env.URL_PATH + "/addTextStructure/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
+    var n = "textStructure" + req.body.textStructure.charAt(0).toUpperCase() + req.body.textStructure.slice(1);
     var structure = req.body.textStructure.toUpperCase();
     const session = driver.session();
     try {
@@ -21,19 +22,11 @@ router.post(process.env.URL_PATH + "/addTextStructure/:id", async (req, res) => 
                 WHERE ID(edition) = ${idEdition} AND ID(editor) = ${idEditor}
                 MERGE (textStructure:TextStructure {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET textStructure.structure = "${req.body.textStructure}"
+                    SET textStructure.type = "${req.body.textStructure}", textStructure.n = "${req.body[n]}"
                 ON MATCH
-                    SET textStructure.structure = "${req.body.textStructure}"
+                    SET textStructure.type = "${req.body.textStructure}", textStructure.n = "${req.body[n]}"
+                MERGE (edition)-[:HAS_${structure}]->(textStructure)
                 
-                WITH edition
-                MATCH (txt:TextStructure)
-                WHERE txt.structure = "chapter" AND txt.idAnnotation = "${req.body.idAnnotation}"
-                MERGE (edition)-[:HAS_${structure}]->(txt)
-                ON CREATE
-                    SET txt.chapter = "${req.body.textStructureChapter}"
-                ON MATCH
-                    SET txt.chapter = "${req.body.textStructureChapter}"
-
                 RETURN *
                 `
             )
