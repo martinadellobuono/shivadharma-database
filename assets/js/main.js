@@ -1231,25 +1231,26 @@ let closeAnnotationBox = () => {
 
     /* annotation box > default col */
     var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
-    if (smaller.length > 0) {
-        if (smaller.length > 0) {
-            smaller.forEach((el) => {
-                /* reset the col */
-                el.classList.add("col-md-1");
-                el.classList.remove("col-md-4");
-                el.classList.remove("bg-light");
-                el.querySelector(".top-btn").classList.remove("d-none");
+    if (smaller.length > 0) {        
+        smaller.forEach((el) => {
+            /* reset the col */
+            el.classList.add("col-md-1");
+            el.classList.remove("col-md-4");
+            el.classList.remove("bg-light");
+            el.querySelector(".top-btn").classList.remove("d-none");
 
-                /* hide the forms */
-                el.querySelector(".annotation-form").classList.add("d-none");
+            /* hide the forms */
+            el.querySelector(".annotation-form").classList.add("d-none");
 
-                /* hide the close button */
-                el.querySelector(".btn-close").classList.add("d-none");
-            });
-        };
-    } else {
+            /* hide the close button */
+            el.querySelector(".btn-close").classList.add("d-none");
+        });
+    } else {        
         /* hide the forms */
-        document.querySelector(".annotation-form").classList.add("d-none");
+        var annotationForms = document.querySelectorAll(".annotation-form");
+        for (var i = 0; i < annotationForms.length; i++) {
+            annotationForms[i].classList.add("d-none");
+        };
     };
 };
 
