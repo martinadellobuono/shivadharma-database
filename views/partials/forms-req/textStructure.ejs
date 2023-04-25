@@ -76,18 +76,16 @@
             <label class="form-label">Stanza</label>
             <input type="number" min="1" class="form-control form-control-sm related-available-chapters" aria-describedby="Number of chapter" name="textStructureStanza">
           </div>
-          <div class="mb-3">
-            <label class="form-label">In chapter</label>
-            
+          <div class="mb-3">            
             <% if (availableChapters.length > 0) { %>
+              <label class="form-label">In chapter</label>
               <% availableChapters.forEach((chapter) => { %>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="chapter-<%= chapter; %>" value="<%= chapter; %>" name="stanzaRefChapter">
+                  <input class="form-check-input available-chapters" type="radio" id="chapter-<%= chapter; %>" value="<%= chapter; %>" name="stanzaRefChapter">
                   <label class="form-check-label"><%= chapter; %></label>
                 </div>
               <% }); %>
             <% }; %>
-            
           </div>
         </div>
         <!-- submit -->

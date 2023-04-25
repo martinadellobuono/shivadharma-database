@@ -1350,23 +1350,25 @@ let cancelAnnotations = () => {
 let textStructureOpt = () => {
     var chapters = document.querySelectorAll(".available-chapters");
     var stanzas = document.querySelectorAll(".related-available-chapters");
-    for (var i = 0; i < chapters.length; i++) {
-        /* no chapter available */
-        if (chapters[i].options.length == 0) {
-            /* disable chapters */
+    /* no chapter available */
+    if (chapters.length == 0) {
+        /* disable chapters */
+        for (var i = 0; i < chapters.length; i++) {
             chapters[i].setAttribute("disabled", "disabled");
-            /* disable stanzas */
-            for (var i = 0; i < stanzas.length; i++) {
-                stanzas[i].setAttribute("disabled", "disabled");
-            };
-        } else {
-            /* chapters available */
-            /* enable chapters */
+        };
+        /* disable stanzas */
+        for (var i = 0; i < stanzas.length; i++) {
+            stanzas[i].setAttribute("disabled", "disabled");
+        };
+    } else {
+        /* chapters available */
+        /* enable chapters */
+        for (var i = 0; i < chapters.length; i++) {
             chapters[i].removeAttribute("disabled");
-            /* enable stanzas */
-            for (var i = 0; i < stanzas.length; i++) {
-                stanzas[i].removeAttribute("disabled");
-            };
+        };
+        /* enable stanzas */
+        for (var i = 0; i < stanzas.length; i++) {
+            stanzas[i].removeAttribute("disabled");
         };
     };
 };
