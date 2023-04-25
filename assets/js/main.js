@@ -977,6 +977,14 @@ let previewAnnotations = () => {
         btn.addEventListener("click", () => {
             /* close annotations */
             closeAnnotationBox();
+
+            /* show annotations in text */
+            var categoryToShow = btn.getAttribute("data-value");
+            var spansToShow = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='hidden-" + categoryToShow + "']");
+            spansToShow.forEach((span) => {
+                span.setAttribute("data-subtype", categoryToShow);
+            });
+
             /* open panels */
             /* vertical panels */
             var bigger = btn.closest(".enlarge-col");
@@ -1037,9 +1045,9 @@ let hideAnnotations = () => {
     btnHide.forEach((btn) => {
         btn.addEventListener("click", () => {
             var categoryToHide = btn.getAttribute("data-value");
-            var spansToHide = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
+            var spansToHide = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
             spansToHide.forEach((span) => {
-                console.log(span);
+                span.setAttribute("data-subtype", "hidden-" + categoryToHide);
             });
         });
     });
