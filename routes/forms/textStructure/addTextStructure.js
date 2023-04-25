@@ -8,11 +8,10 @@ router.use(bodyParser.urlencoded({ extended: false }));
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
-router.post(process.env.URL_PATH + "/addTextStructure/:id", async (req, res) => {
+/* add chapter */
+router.post(process.env.URL_PATH + "/addChapter/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
-    var n = "textStructure" + req.body.textStructure.charAt(0).toUpperCase() + req.body.textStructure.slice(1);
-    var structure = req.body.textStructure.toUpperCase();
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
@@ -20,19 +19,57 @@ router.post(process.env.URL_PATH + "/addTextStructure/:id", async (req, res) => 
                 `
                 MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                 WHERE ID(edition) = ${idEdition} AND ID(editor) = ${idEditor}
-                MERGE (textStructure:TextStructure {idAnnotation: "${req.body.idAnnotation}"})
+                MERGE (chapter:Chapter {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET textStructure.type = "${req.body.textStructure}", textStructure.n = "${req.body[n]}"
+                    SET chapter.n = "${req.body.textStructureChapter}"
                 ON MATCH
-                    SET textStructure.type = "${req.body.textStructure}", textStructure.n = "${req.body[n]}"
-                MERGE (edition)-[:HAS_${structure}]->(textStructure)
+                    SET chapter.n = "${req.body.textStructureChapter}"
+                MERGE (edition)-[:HAS_CHAPTER]->(chapter)
                 
                 RETURN *
                 `
             )
             .subscribe({
                 onCompleted: () => {
-                    console.log("Text structure added to the graph");
+                    console.log("Chapter added to the graph");
+                },
+                onError: err => {
+                    console.log(err)
+                }
+            })
+        );
+    } catch (err) {
+        console.log(err);
+    } finally {
+        await session.close();
+        res.redirect(process.env.URL_PATH + `/edit/${idEdition}-${idEditor}`);
+    };
+});
+
+/* add stanza */
+router.post(process.env.URL_PATH + "/addStanza/:id", async (req, res) => {
+    var idEdition = req.params.id.split("/").pop().split("-")[0];
+    var idEditor = req.params.id.split("/").pop().split("-")[1];
+    const session = driver.session();
+    try {
+        await session.writeTransaction(tx => tx
+            .run(
+                `
+                MATCH (chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE ID(edition) = ${idEdition} AND ID(editor) = ${idEditor} AND chapter.n = "${req.body.stanzaRefChapter}"
+                MERGE (stanza:Stanza {idAnnotation: "${req.body.idAnnotation}"})
+                ON CREATE
+                    SET stanza.n = "${req.body.textStructureStanza}", stanza.refChapter = "${req.body.stanzaRefChapter}"
+                ON MATCH
+                    SET stanza.n = "${req.body.textStructureStanza}", stanza.refChapter = "${req.body.stanzaRefChapter}"
+                MERGE (chapter)-[:HAS_STANZA]->(stanza)
+                
+                RETURN *
+                `
+            )
+            .subscribe({
+                onCompleted: () => {
+                    console.log("Stanza added to the graph");
                 },
                 onError: err => {
                     console.log(err)

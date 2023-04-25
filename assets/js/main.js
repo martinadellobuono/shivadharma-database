@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    annotations();
     previewAnnotations();
     closeBtn();
     modifyAnnotations();
@@ -917,35 +916,38 @@ let annotations = () => {
 
                     var form = document.querySelector("#" + category + "-req");
                     var location = form.querySelector(".location");
-                    var inputs = location.querySelectorAll("input[type='number']");
-                    var submitBtn = form.querySelector("button[type='submit']");
 
-                    let detectEmptyForms = () => {
-                        for (var i = 0; i < inputs.length; i++) {
-                            if (inputs[i].value !== "") {
-                                return true;
-                            } else {
-                                return false;
+                    if (location !== null) {
+                        var inputs = location.querySelectorAll("input[type='number']");
+                        var submitBtn = form.querySelector("button[type='submit']");
+
+                        let detectEmptyForms = () => {
+                            for (var i = 0; i < inputs.length; i++) {
+                                if (inputs[i].value !== "") {
+                                    return true;
+                                } else {
+                                    return false;
+                                };
                             };
                         };
+
+                        submitBtn.addEventListener("click", () => {
+                            if (detectEmptyForms()) {
+                                /* send the file new content to the server */
+                                data = {
+                                    idEdition: idEdition,
+                                    idEditor: idEditor,
+                                    contentFile: contentFile
+                                }
+
+                                /* unblock all the buttons */
+                                const btns = document.querySelectorAll(".btn-set-annotation button");
+                                for (var i = 0; i < btns.length; i++) {
+                                    btns[i].removeAttribute("disabled");
+                                };
+                            };
+                        });
                     };
-
-                    submitBtn.addEventListener("click", () => {
-                        if (detectEmptyForms()) {
-                            /* send the file new content to the server */
-                            data = {
-                                idEdition: idEdition,
-                                idEditor: idEditor,
-                                contentFile: contentFile
-                            }
-
-                            /* unblock all the buttons */
-                            const btns = document.querySelectorAll(".btn-set-annotation button");
-                            for (var i = 0; i < btns.length; i++) {
-                                btns[i].removeAttribute("disabled");
-                            };
-                        };
-                    });
 
                 } else {
                     /* show default settings */
@@ -961,6 +963,31 @@ let annotations = () => {
         });
 
     });
+};
+
+/* text structure */
+let textStructureOpt = () => {
+    var chapters = document.querySelectorAll(".available-chapters");
+    var stanzas = document.querySelectorAll(".related-available-chapters");
+    for (var i = 0; i < chapters.length; i++) {
+        /* no chapter available */
+        if (chapters[i].options.length == 0) {
+            /* disable chapters */
+            chapters[i].setAttribute("disabled", "disabled");
+            /* disable stanzas */
+            for (var i = 0; i < stanzas.length; i++) {
+                stanzas[i].setAttribute("disabled", "disabled");
+            };
+        } else {
+            /* chapters available */
+            /* enable chapters */
+            chapters[i].removeAttribute("disabled");
+            /* enable stanzas */
+            for (var i = 0; i < stanzas.length; i++) {
+                stanzas[i].removeAttribute("disabled");
+            };
+        };
+    };
 };
 
 /* SAVE FILE */
@@ -1072,6 +1099,8 @@ let stopLoading = () => {
 let onloadEdit = () => {
     fileTextarea();
     metadataTextareas();
+    annotations();
+    textStructureOpt();
     setInterval(saveFile, 5000);
     publishEdition();
     stopLoading();
@@ -1231,7 +1260,7 @@ let closeAnnotationBox = () => {
 
     /* annotation box > default col */
     var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
-    if (smaller.length > 0) {        
+    if (smaller.length > 0) {
         smaller.forEach((el) => {
             /* reset the col */
             el.classList.add("col-md-1");
@@ -1245,7 +1274,7 @@ let closeAnnotationBox = () => {
             /* hide the close button */
             el.querySelector(".btn-close").classList.add("d-none");
         });
-    } else {        
+    } else {
         /* hide the forms */
         var annotationForms = document.querySelectorAll(".annotation-form");
         for (var i = 0; i < annotationForms.length; i++) {

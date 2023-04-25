@@ -23,7 +23,15 @@ router.post(process.env.URL_PATH + "/addNote/:id", async (req, res) => {
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
-                MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
+                
+                WITH edition, editor, selectedFragment
+
+                
+                OPTIONAL MATCH (textStructure:TextStructure)
+                WHERE textStructure.type = "chapter" AND textStructure.n = "${req.body.chapter}"
+                MERGE (textStructure)-[:HAS_FRAGMENT]->(selectedFragment)
+
+
                 MERGE (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET note.value = '${req.body.note}'

@@ -51,6 +51,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var authors = [];
     var date;
     var editors = [];
+
+    var availableChapters = [];
+
     var chapter;
     var translation_temp = [];
     var commentary_temp = [];
@@ -75,6 +78,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MATCH (edition)<-[:IS_EDITOR_OF]-(editors:Editor)
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
+
+                OPTIONAL MATCH (edition)-[:HAS_CHAPTER]->(chapter:Chapter)
+
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
@@ -85,7 +91,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, chapter.n, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
                 `
             )
             .subscribe({
@@ -121,6 +127,13 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     /* date */
                     if (record.get("date.on") !== null) {
                         date = record.get("date.on");
+                    };
+
+                    /* available chapters */
+                    if (!availableChapters.includes(record.get("chapter.n"))) {
+                        if (record.get("chapter.n") !== null) {
+                            availableChapters.push(record.get("chapter.n"));
+                        };
                     };
 
                     /* editor(s) */
@@ -277,6 +290,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
                 },
                 onCompleted: () => {
+
+                    /* AVAILABLE CHAPTERS */
+                    availableChapters.sort();
 
                     /* TRANSLATIONS */
                     /* parse each translation in the array / string > JSON */
@@ -622,6 +638,11 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         authors: authors,
                         authorCommentary: authorCommentary,
                         date: date,
+
+
+                        availableChapters: availableChapters,
+
+
                         editors: editors,
                         file: textus,
                         philologicalNote: phNote,

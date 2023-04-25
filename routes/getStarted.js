@@ -135,7 +135,7 @@ router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
                             idEditor = record.get("ID(editor)");
                         },
                         onCompleted: () => {
-                            console.log(idEdition + idEditor + "___" +"Work, edition, authors, editor, and publish type added to the graph");
+                            console.log("Work, edition, authors, editor, and publish type added to the graph");
                         },
                         onError: err => {
                             console.log(err);
