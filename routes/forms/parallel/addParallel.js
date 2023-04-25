@@ -16,14 +16,14 @@ router.post(process.env.URL_PATH + "/addParallel/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
+                MATCH (stanza:Stanza)<-[:HAS_STANZA]-(chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} AND chapter.n = "${req.body.chapter}" AND stanza.n = "${req.body.stanzaStart}"
                 MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
-                MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
+                MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}", book: "${req.body.parallelBook}", bookChapter: "${req.body.parallelChapter}", bookStanza: "${req.body.parallelStanza}", note: "${req.body.parallelNote}"})
                 ON CREATE
                     SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.bookChapter = "${req.body.parallelChapter}", parallel.bookStanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"

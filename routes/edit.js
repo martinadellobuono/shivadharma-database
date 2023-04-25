@@ -78,10 +78,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MATCH (edition)<-[:IS_EDITOR_OF]-(editors:Editor)
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
-
                 OPTIONAL MATCH (edition)-[:HAS_CHAPTER]->(chapter:Chapter)
-
-                OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
+                OPTIONAL MATCH (chapter)-[:HAS_STANZA]->(stanza:Stanza)
+                OPTIONAL MATCH (stanza)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_PARALLEL]->(parallel:Parallel)
