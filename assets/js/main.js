@@ -10,9 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    previewAnnotations();
     closeBtn();
-    modifyAnnotations();
     truncation();
     lemmaVariantPresence();
     witnessDimensions();
@@ -231,17 +229,20 @@ let fileTextarea = () => {
                         }, 5000);
 
                     } else {
-
                         data = {
                             idEdition: idEdition,
                             idEditor: idEditor,
                             contentFile: contentFile
                         }
-
                     };
 
                 });
             });
+
+            /* when loosing focus */
+            /* ed.on("focusout", (e) => {
+                
+            }); */
 
         }
     });
@@ -594,6 +595,10 @@ let cloneEl = () => {
         });
     });
 };
+
+//////////////////////////////////////
+////////////ANNOTATIONS///////////////
+//////////////////////////////////////
 
 /* annotations */
 let annotations = () => {
@@ -965,147 +970,6 @@ let annotations = () => {
     });
 };
 
-/* text structure */
-let textStructureOpt = () => {
-    var chapters = document.querySelectorAll(".available-chapters");
-    var stanzas = document.querySelectorAll(".related-available-chapters");
-    for (var i = 0; i < chapters.length; i++) {
-        /* no chapter available */
-        if (chapters[i].options.length == 0) {
-            /* disable chapters */
-            chapters[i].setAttribute("disabled", "disabled");
-            /* disable stanzas */
-            for (var i = 0; i < stanzas.length; i++) {
-                stanzas[i].setAttribute("disabled", "disabled");
-            };
-        } else {
-            /* chapters available */
-            /* enable chapters */
-            chapters[i].removeAttribute("disabled");
-            /* enable stanzas */
-            for (var i = 0; i < stanzas.length; i++) {
-                stanzas[i].removeAttribute("disabled");
-            };
-        };
-    };
-};
-
-/* SAVE FILE */
-/* save file every 5 seconds */
-let saveFile = () => {
-    /* fetch data */
-    fetch("http://localhost:80/saveFile", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then((response) => {
-            console.log(response);
-            response.json();
-        })
-        .then(json => {
-            console.log(json);
-        })
-        .catch(err => console.log(err));
-
-    /* saved message */
-    document.getElementById("autosaved-message").classList.remove("d-none");
-    setTimeout(() => {
-        document.getElementById("autosaved-message").classList.add("d-none");
-    }, 2000);
-};
-
-/* metadata textareas */
-let metadataTextareas = () => {
-    tinymce.init({
-        selector: ".metadata-container textarea",
-        resize: "both",
-        width: "100%",
-        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
-        menubar: "file edit view insert format tools table help",
-        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
-        toolbar_sticky: false,
-        autosave_ask_before_unload: true,
-        autosave_interval: "30s",
-        autosave_prefix: "{path}{query}-{id}-",
-        autosave_restore_when_empty: false,
-        autosave_retention: "2m",
-        image_advtab: true,
-        template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
-        template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
-        height: "50vh",
-        image_caption: true,
-        quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
-        toolbar_mode: "sliding",
-        contextmenu: "link image table"
-    });
-};
-
-/* publish or save as draft */
-let publishEdition = () => {
-    var publishBtn = document.querySelectorAll(".publish-btn");
-    for (var i = 0; i < publishBtn.length; i++) {
-        publishBtn[i].addEventListener("click", (e) => {
-
-            var url = window.location.href;
-            var idEdition = url.split("/").pop().split("-")[0];
-            var idEditor = url.split("/").pop().split("-")[1];
-            var publishType = e.target.getAttribute("data-value");
-
-            /* type of publishment > draft or publishment */
-            var publishType = {
-                publishType: publishType
-            }
-
-            /* fetch the type of publishment */
-            var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
-            fetch(route, {
-                method: "POST",
-                body: JSON.stringify(publishType),
-                headers: { "Content-type": "application/json; charset=UTF-8" }
-            })
-                .then(response => response.json())
-                .then(json => {
-                    console.log(json);
-                })
-                .catch(err => console.log(err));
-
-        });
-    };
-};
-
-/* stop loading the page to stop saving the file */
-let stopLoading = () => {
-    /* submit buttons */
-    var submitBtn = document.querySelectorAll("button[type='submit']");
-    for (var i = 0; i < submitBtn.length; i++) {
-        submitBtn[i].addEventListener("click", () => {
-            saveFile();
-            window.stop();
-        });
-    };
-
-    /* nav links */
-    var navLink = document.querySelectorAll(".nav-link");
-    for (var i = 0; i < navLink.length; i++) {
-        navLink[i].addEventListener("click", () => {
-            saveFile();
-            window.stop();
-        });
-    };
-};
-
-/* ONLOAD EDIT PAGE */
-let onloadEdit = () => {
-    fileTextarea();
-    metadataTextareas();
-    annotations();
-    textStructureOpt();
-    setInterval(saveFile, 5000);
-    publishEdition();
-    stopLoading();
-};
-
 /* preview annotations */
 let previewAnnotations = () => {
     var btnPreview = document.querySelectorAll(".btn-preview");
@@ -1167,129 +1031,16 @@ let previewAnnotations = () => {
     });
 };
 
-/* cancel annotations */
-let cancelAnnotations = () => {
-    /* modal */
-    var modals = document.querySelectorAll("div[data-role='cancel-annotation']");
-    modals.forEach((modal) => {
-        var safeDeletionInput = modal.querySelector("input[data-role='safe-deletion']");
-        var saveChangesBtn = modal.querySelector("button[data-role='safe-deletion-btn']");
-        /* open the modal */
-        modal.addEventListener("shown.bs.modal", () => {
-            /* typing in the input */
-            safeDeletionInput.addEventListener("keyup", () => {
-                /* check the value of the input */
-                if (safeDeletionInput.value == "cancel-annotation") {
-                    /* enable the save changes button */
-                    saveChangesBtn.removeAttribute("disabled");
-                    /* save changes */
-                    saveChangesBtn.addEventListener("click", () => {
-                        /* CANCEL THE ANNOTATION */
-                        var safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
-                        var annotationId = safeCancelBtn.getAttribute("data-cancel");
-                        /* search all elements with the annotation id */
-                        var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
-
-                        /* reinsert the original content without annotation tags */
-                        var newContent = "";
-                        annotationDiv.forEach((annotation) => {
-                            /* remove milestones */
-                            if (annotation.getAttribute("data-type") == "milestone") {
-                                annotation.remove();
-                            } else {
-                                /* remove annotations */
-                                var annotationChildren = annotation.childNodes;
-                                annotationChildren.forEach((el) => {
-                                    if (el.tagName == "SPAN") {
-
-                                    } else if (el.tagName == "P") {
-                                        newContent = newContent + el.outerHTML;
-                                    } else {
-                                        var txt = el.textContent
-                                        annotation.outerHTML = "" + txt;
-                                        newContent = "";
-                                    };
-                                });
-                                if (newContent !== "") {
-                                    annotation.outerHTML = newContent;
-                                };
-                            };
-                        });
-
-                        /* close the modal */
-                        let modalToClose = bootstrap.Modal.getInstance(modal);
-                        modalToClose.hide();
-                        /* reset the layout */
-                        closeAnnotationBox();
-                        var defaultSettings = document.querySelector(".default-settings");
-                        defaultSettings.classList.remove("d-none");
-
-                        /* unblock the annotation buttons */
-                        const btns = document.querySelectorAll(".btn-set-annotation button");
-                        for (var i = 0; i < btns.length; i++) {
-                            btns[i].removeAttribute("disabled");
-                        };
-                    });
-                } else {
-                    /* disable the save changes button */
-                    saveChangesBtn.setAttribute("disabled", "disabled");
-                };
+/* hide annotations */
+let hideAnnotations = () => {
+    var btnHide = document.querySelectorAll(".btn-hide");
+    btnHide.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            var categoryToHide = btn.getAttribute("data-value");
+            var spansToHide = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
+            spansToHide.forEach((span) => {
+                console.log(span);
             });
-
-            /* when the modal is closed */
-            modal.addEventListener("hidden.bs.modal", () => {
-                /* disable the button to delete the annotation */
-                saveChangesBtn.setAttribute("disabled", "disabled");
-                /* empty the input */
-                safeDeletionInput.value = "";
-            });
-        });
-    });
-};
-
-/* close annotation box when clicking on another annotation button */
-let closeAnnotationBox = () => {
-    /* reset the empty annotation box */
-    var defaultAnnotationBox = document.querySelector(".annotations-box-below");
-    defaultAnnotationBox.classList.remove("d-none");
-    defaultAnnotationBox.classList.add("d-block");
-
-    /* hide default settings */
-    var defaultSettings = document.querySelector(".default-settings");
-    defaultSettings.classList.add("d-none");
-
-    /* annotation box > default col */
-    var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
-    if (smaller.length > 0) {
-        smaller.forEach((el) => {
-            /* reset the col */
-            el.classList.add("col-md-1");
-            el.classList.remove("col-md-4");
-            el.classList.remove("bg-light");
-            el.querySelector(".top-btn").classList.remove("d-none");
-
-            /* hide the forms */
-            el.querySelector(".annotation-form").classList.add("d-none");
-
-            /* hide the close button */
-            el.querySelector(".btn-close").classList.add("d-none");
-        });
-    } else {
-        /* hide the forms */
-        var annotationForms = document.querySelectorAll(".annotation-form");
-        for (var i = 0; i < annotationForms.length; i++) {
-            annotationForms[i].classList.add("d-none");
-        };
-    };
-};
-
-/* close annotation box when clicking on another annotation button */
-let closeBtn = () => {
-    var closeBtn = document.querySelectorAll(".btn-close.float-end");
-    closeBtn.forEach((el) => {
-        el.addEventListener("click", () => {
-            /* remove highlight in the text */
-            cancelAnnotations();
         });
     });
 };
@@ -1499,6 +1250,281 @@ let modifyAnnotations = () => {
             fillIn();
             removeEmptyClones();
 
+        });
+    });
+};
+
+/* cancel annotations */
+let cancelAnnotations = () => {
+    /* modal */
+    var modals = document.querySelectorAll("div[data-role='cancel-annotation']");
+    modals.forEach((modal) => {
+        var safeDeletionInput = modal.querySelector("input[data-role='safe-deletion']");
+        var saveChangesBtn = modal.querySelector("button[data-role='safe-deletion-btn']");
+        /* open the modal */
+        modal.addEventListener("shown.bs.modal", () => {
+            /* typing in the input */
+            safeDeletionInput.addEventListener("keyup", () => {
+                /* check the value of the input */
+                if (safeDeletionInput.value == "cancel-annotation") {
+                    /* enable the save changes button */
+                    saveChangesBtn.removeAttribute("disabled");
+                    /* save changes */
+                    saveChangesBtn.addEventListener("click", () => {
+                        /* CANCEL THE ANNOTATION */
+                        var safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
+                        var annotationId = safeCancelBtn.getAttribute("data-cancel");
+                        /* search all elements with the annotation id */
+                        var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
+
+                        /* reinsert the original content without annotation tags */
+                        var newContent = "";
+                        annotationDiv.forEach((annotation) => {
+                            /* remove milestones */
+                            if (annotation.getAttribute("data-type") == "milestone") {
+                                annotation.remove();
+                            } else {
+                                /* remove annotations */
+                                var annotationChildren = annotation.childNodes;
+                                annotationChildren.forEach((el) => {
+                                    if (el.tagName == "SPAN") {
+
+                                    } else if (el.tagName == "P") {
+                                        newContent = newContent + el.outerHTML;
+                                    } else {
+                                        var txt = el.textContent
+                                        annotation.outerHTML = "" + txt;
+                                        newContent = "";
+                                    };
+                                });
+                                if (newContent !== "") {
+                                    annotation.outerHTML = newContent;
+                                };
+                            };
+                        });
+
+                        /* close the modal */
+                        let modalToClose = bootstrap.Modal.getInstance(modal);
+                        modalToClose.hide();
+                        /* reset the layout */
+                        closeAnnotationBox();
+                        var defaultSettings = document.querySelector(".default-settings");
+                        defaultSettings.classList.remove("d-none");
+
+                        /* unblock the annotation buttons */
+                        const btns = document.querySelectorAll(".btn-set-annotation button");
+                        for (var i = 0; i < btns.length; i++) {
+                            btns[i].removeAttribute("disabled");
+                        };
+                    });
+                } else {
+                    /* disable the save changes button */
+                    saveChangesBtn.setAttribute("disabled", "disabled");
+                };
+            });
+
+            /* when the modal is closed */
+            modal.addEventListener("hidden.bs.modal", () => {
+                /* disable the button to delete the annotation */
+                saveChangesBtn.setAttribute("disabled", "disabled");
+                /* empty the input */
+                safeDeletionInput.value = "";
+            });
+        });
+    });
+};
+
+//////////////////////////////////////
+//////////////////////////////////////
+//////////////////////////////////////
+
+/* text structure */
+let textStructureOpt = () => {
+    var chapters = document.querySelectorAll(".available-chapters");
+    var stanzas = document.querySelectorAll(".related-available-chapters");
+    for (var i = 0; i < chapters.length; i++) {
+        /* no chapter available */
+        if (chapters[i].options.length == 0) {
+            /* disable chapters */
+            chapters[i].setAttribute("disabled", "disabled");
+            /* disable stanzas */
+            for (var i = 0; i < stanzas.length; i++) {
+                stanzas[i].setAttribute("disabled", "disabled");
+            };
+        } else {
+            /* chapters available */
+            /* enable chapters */
+            chapters[i].removeAttribute("disabled");
+            /* enable stanzas */
+            for (var i = 0; i < stanzas.length; i++) {
+                stanzas[i].removeAttribute("disabled");
+            };
+        };
+    };
+};
+
+/* SAVE FILE */
+/* save file every 5 seconds */
+let saveFile = () => {
+    /* fetch data */
+    fetch("http://localhost:80/saveFile", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+        .then((response) => {
+            console.log(response);
+            response.json();
+        })
+        .then(json => {
+            console.log(json);
+        })
+        .catch(err => console.log(err));
+
+    /* saved message */
+    document.getElementById("autosaved-message").classList.remove("d-none");
+    setTimeout(() => {
+        document.getElementById("autosaved-message").classList.add("d-none");
+    }, 2000);
+};
+
+/* metadata textareas */
+let metadataTextareas = () => {
+    tinymce.init({
+        selector: ".metadata-container textarea",
+        resize: "both",
+        width: "100%",
+        plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+        menubar: "file edit view insert format tools table help",
+        toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
+        toolbar_sticky: false,
+        autosave_ask_before_unload: true,
+        autosave_interval: "30s",
+        autosave_prefix: "{path}{query}-{id}-",
+        autosave_restore_when_empty: false,
+        autosave_retention: "2m",
+        image_advtab: true,
+        template_cdate_format: "[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]",
+        template_mdate_format: "[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]",
+        height: "50vh",
+        image_caption: true,
+        quickbars_selection_toolbar: "bold italic | quicklink h2 h3 blockquote quickimage quicktable",
+        toolbar_mode: "sliding",
+        contextmenu: "link image table"
+    });
+};
+
+/* publish or save as draft */
+let publishEdition = () => {
+    var publishBtn = document.querySelectorAll(".publish-btn");
+    for (var i = 0; i < publishBtn.length; i++) {
+        publishBtn[i].addEventListener("click", (e) => {
+
+            var url = window.location.href;
+            var idEdition = url.split("/").pop().split("-")[0];
+            var idEditor = url.split("/").pop().split("-")[1];
+            var publishType = e.target.getAttribute("data-value");
+
+            /* type of publishment > draft or publishment */
+            var publishType = {
+                publishType: publishType
+            }
+
+            /* fetch the type of publishment */
+            var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
+            fetch(route, {
+                method: "POST",
+                body: JSON.stringify(publishType),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+            })
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                })
+                .catch(err => console.log(err));
+
+        });
+    };
+};
+
+/* stop loading the page to stop saving the file */
+let stopLoading = () => {
+    /* submit buttons */
+    var submitBtn = document.querySelectorAll("button[type='submit']");
+    for (var i = 0; i < submitBtn.length; i++) {
+        submitBtn[i].addEventListener("click", () => {
+            saveFile();
+            window.stop();
+        });
+    };
+
+    /* nav links */
+    var navLink = document.querySelectorAll(".nav-link");
+    for (var i = 0; i < navLink.length; i++) {
+        navLink[i].addEventListener("click", () => {
+            saveFile();
+            window.stop();
+        });
+    };
+};
+
+/* ONLOAD EDIT PAGE */
+let onloadEdit = () => {
+    fileTextarea();
+    metadataTextareas();
+    annotations();
+    previewAnnotations();
+    hideAnnotations();
+    modifyAnnotations();
+    textStructureOpt();
+    setInterval(saveFile, 5000);
+    publishEdition();
+    stopLoading();
+};
+
+/* close annotation box when clicking on another annotation button */
+let closeAnnotationBox = () => {
+    /* reset the empty annotation box */
+    var defaultAnnotationBox = document.querySelector(".annotations-box-below");
+    defaultAnnotationBox.classList.remove("d-none");
+    defaultAnnotationBox.classList.add("d-block");
+
+    /* hide default settings */
+    var defaultSettings = document.querySelector(".default-settings");
+    defaultSettings.classList.add("d-none");
+
+    /* annotation box > default col */
+    var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
+    if (smaller.length > 0) {
+        smaller.forEach((el) => {
+            /* reset the col */
+            el.classList.add("col-md-1");
+            el.classList.remove("col-md-4");
+            el.classList.remove("bg-light");
+            el.querySelector(".top-btn").classList.remove("d-none");
+
+            /* hide the forms */
+            el.querySelector(".annotation-form").classList.add("d-none");
+
+            /* hide the close button */
+            el.querySelector(".btn-close").classList.add("d-none");
+        });
+    } else {
+        /* hide the forms */
+        var annotationForms = document.querySelectorAll(".annotation-form");
+        for (var i = 0; i < annotationForms.length; i++) {
+            annotationForms[i].classList.add("d-none");
+        };
+    };
+};
+
+/* close annotation box when clicking on another annotation button */
+let closeBtn = () => {
+    var closeBtn = document.querySelectorAll(".btn-close.float-end");
+    closeBtn.forEach((el) => {
+        el.addEventListener("click", () => {
+            /* remove highlight in the text */
+            cancelAnnotations();
         });
     });
 };

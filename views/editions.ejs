@@ -16,23 +16,38 @@
       </div>
 
       <% var publishedEditions = []; %>
-      <% if (editions.length > 0) { %>
+      <% var unpublishedEditions = []; %>
 
-        <!-- published editions -->
+      <% if (editions.length > 0) { %>
         <% editions.forEach((edition) => { %>
           <% edition = JSON.parse(edition); %>
           <% var publish; %>
           <% for (const [key, value] of Object.entries(edition)) { %>
-            <!-- published edition -->
+
+            <!-- published editions -->
             <% if (value["publishType"] == "Published") { %>
-              <!-- published editions array -->
               <% if (!publishedEditions.includes(edition)) { %>
                 <% publishedEditions.push(edition); %>
               <% }; %>
             <% }; %>
+
+            <!-- unpublished editions -->
+            <% if (value["publishType"] == "Save as draft") { %>
+              <% if (!unpublishedEditions.includes(edition)) { %>
+                <% unpublishedEditions.push(edition); %>
+              <% }; %>
+            <% }; %>
+
           <% }; %>
         <% }); %>
+      <% }; %>
 
+      <% if (publishedEditions.length == 0 && unpublishedEditions.length >= 0) { %>
+        <div class="my-3">
+          <p class="fs-xs">No edition is available for now.</p>
+          <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary btn-sm" title="Read the edition">Create an edition</a>
+        </div>
+      <% } else { %>
         <!-- list of editions -->
         <ul class="marker-list">
           <% publishedEditions.forEach((edition) => { %>
@@ -93,12 +108,8 @@
             
           <% }); %>
         </ul>
-      <% } else { %>
-        <div class="my-3">
-          <p>No edition is available for now.</p>
-          <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
-        </div>
       <% }; %>
+
     </div>
   </div>
 
