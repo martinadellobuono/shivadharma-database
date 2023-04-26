@@ -1,1 +1,17 @@
-Text structure.
+<% if (availableChapters) { %>
+    <h6 class="text-secondary">Chapters</h6>
+    <% availableChapters.forEach((el) => { %>
+        <div class="p-3 mt-3 bg-white container-textStructure" data-type="textStructure" data-subtype="textStructure-entry">
+            <!-- hidden ID -->
+            <span class="d-none" data-type="textStructure" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+            
+            <!-- number of chapter -->
+            <div class="bg-secondary text-light mb-3 p-2" data-type="textStructure" data-subtype="chapter" data-name="textStructureChapter" data-fill='<%= el["n"]; %>' data-input="number"><%= el["n"]; %></div>
+
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-secondary modify-btn" type="button" data-type="textStructure">Modify</button>
+            </div>
+        </div>
+    <% }); %>
+<% }; %>

@@ -52,7 +52,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var date;
     var editors = [];
 
-    var availableChapters = [];
+    var availableChapters_temp = [];
 
     var chapter;
     var translation_temp = [];
@@ -90,7 +90,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, chapter.n, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, chapter.idAnnotation, chapter.n, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
                 `
             )
             .subscribe({
@@ -128,10 +128,17 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         date = record.get("date.on");
                     };
 
-                    /* available chapters */
-                    if (!availableChapters.includes(record.get("chapter.n"))) {
-                        if (record.get("chapter.n") !== null) {
-                            availableChapters.push(record.get("chapter.n"));
+                    /* all available chapters */
+                    if (record.get("chapter.n") !== null) {
+                        /* chapter entry */
+                        var availableChapter_entry = JSON.stringify({
+                            idAnnotation: record.get("chapter.idAnnotation"),
+                            n: record.get("chapter.n")
+                        });
+
+                        /* array of citation entries */
+                        if (!availableChapters_temp.includes(availableChapter_entry)) {
+                            availableChapters_temp.push(availableChapter_entry);
                         };
                     };
 
@@ -291,7 +298,15 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 onCompleted: () => {
 
                     /* AVAILABLE CHAPTERS */
-                    availableChapters.sort();
+                    var availableChapters = [];
+                    availableChapters_temp.forEach((el) => {
+                        availableChapters.push(JSON.parse(el));
+                    });
+
+                    /* order chapters */
+                    availableChapters.sort((a, b) => {
+                        return a.n - b.n;
+                    });
 
                     /* TRANSLATIONS */
                     /* parse each translation in the array / string > JSON */
@@ -613,7 +628,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     if (fs.existsSync(path)) {
                         textus = file;
                     } else {
-                        textus = false
+                        textus = false;
                     };
 
                     /* file philological note */
@@ -621,7 +636,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     if (fs.existsSync(phPath)) {
                         phNote = philologicalNote;
                     } else {
-                        phNote = false
+                        phNote = false;
                     };
 
                     /* rendering */
@@ -637,11 +652,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         authors: authors,
                         authorCommentary: authorCommentary,
                         date: date,
-
-
                         availableChapters: availableChapters,
-
-
                         editors: editors,
                         file: textus,
                         philologicalNote: phNote,
