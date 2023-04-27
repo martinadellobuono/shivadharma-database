@@ -1,3 +1,4 @@
+<!-- stanza -->
 <!-- cancel annotations -->
 <button type="button" class="btn-close float-end" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-stanza" data-type="cancel-annotation"></button>
 <div class="modal fade" id="cancel-stanza" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-stanza" aria-hidden="true">
@@ -50,14 +51,10 @@
           <!-- stanza -->
           <div class="mb-3">
             <label class="form-label">Stanza</label>
-            <input type="number" class="form-control form-control-sm related-available-chapters" aria-describedby="Number/name of stanza" name="stanzaStanza">
+            <input type="number" class="form-control form-control-sm related-available-chapters" aria-describedby="Number/name of stanza" name="stanzaN">
           </div>
           <div class="mb-3">   
             <% if (availableChapters.length > 0) { %>
-              <%= JSON.stringify(availableChapters); %>
-            <% }; %>
-
-            <!--<% if (availableChapters.length > 0) { %>
               <label class="form-label">In chapter</label>
               <% availableChapters.forEach((chapter) => { %>
                 <div class="form-check">
@@ -65,7 +62,7 @@
                   <label class="form-check-label"><%= chapter['n']; %></label>
                 </div>
               <% }); %>
-            <% }; %>-->
+            <% }; %>
           </div>
         </div>
         <!-- submit -->

@@ -21,9 +21,9 @@ router.post(process.env.URL_PATH + "/addChapter/:id", async (req, res) => {
                 WHERE ID(edition) = ${idEdition} AND ID(editor) = ${idEditor}
                 MERGE (chapter:Chapter {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET chapter.n = "${req.body.textStructureChapter}"
+                    SET chapter.n = "${req.body.chapterN}"
                 ON MATCH
-                    SET chapter.n = "${req.body.textStructureChapter}"
+                    SET chapter.n = "${req.body.chapterN}"
                 MERGE (edition)-[:HAS_CHAPTER]->(chapter)
                 
                 RETURN *
@@ -31,7 +31,7 @@ router.post(process.env.URL_PATH + "/addChapter/:id", async (req, res) => {
             )
             .subscribe({
                 onCompleted: () => {
-                    console.log("Chapter added to the graph");
+                    console.log("Chapter added to the graph.");
                 },
                 onError: err => {
                     console.log(err)

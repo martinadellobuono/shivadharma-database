@@ -21,9 +21,9 @@ router.post(process.env.URL_PATH + "/addStanza/:id", async (req, res) => {
                 WHERE ID(edition) = ${idEdition} AND ID(editor) = ${idEditor} AND chapter.n = "${req.body.stanzaRefChapter}"
                 MERGE (stanza:Stanza {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET stanza.n = "${req.body.textStructureStanza}", stanza.refChapter = "${req.body.stanzaRefChapter}"
+                    SET stanza.n = "${req.body.stanzaN}", stanza.refChapter = "${req.body.stanzaRefChapter}"
                 ON MATCH
-                    SET stanza.n = "${req.body.textStructureStanza}", stanza.refChapter = "${req.body.stanzaRefChapter}"
+                    SET stanza.n = "${req.body.stanzaN}", stanza.refChapter = "${req.body.stanzaRefChapter}"
                 MERGE (chapter)-[:HAS_STANZA]->(stanza)
                 
                 RETURN *
