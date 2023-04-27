@@ -617,6 +617,7 @@ let saveFile = () => {
         })
         .then(json => {
             console.log(json);
+            return json;
         })
         .catch(err => console.log(err));
 
