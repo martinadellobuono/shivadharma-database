@@ -1,0 +1,24 @@
+<!-- stanzas -->
+<% if (availableStanzas) { %>
+    <% if (availableStanzas.length > 0) { %>
+        <div class="mb-3">
+            <h6 class="text-secondary">Stanzas</h6>
+            <% availableStanzas.forEach((el) => { %>
+                <div class="p-3 mt-3 bg-white container-textStructure" data-type="textStructure" data-subtype="textStructure-entry">
+                    <!-- hidden ID -->
+                    <span class="d-none" data-type="textStructure" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+                    
+                    <!-- number of chapter -->
+                    <div class="bg-secondary text-light mb-3 p-2" data-type="textStructure" data-subtype="chapter" data-name="textStructureChapter" data-fill='<%= el["n"]; %>' data-input="number"><span>Chapter: </span><b><%= el["n"]; %></b></div>
+
+                    <!-- modify button -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                        <button class="btn btn-sm btn-secondary modify-btn" type="button" data-type="textStructure">Modify</button>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <p class="bg-white fs-xs rounded-20 p-3">No stanza is annotated for now. Let's annotate your first stanza!</p>
+    <% }; %>
+<% }; %>

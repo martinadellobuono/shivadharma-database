@@ -1,59 +1,62 @@
+<!-- commentary -->
 <% if (commentary) { %>
-    <% commentary.forEach((el) => { %>
+    <% if (commentary.length > 0) { %>
+        <% commentary.forEach((el) => { %>
+            <div class="p-3 mt-3 bg-white container-commentary" data-type="commentary" data-subtype="commentary-entry">
+                <!-- hidden ID -->
+                <span class="d-none" data-type="commentary" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-        <div class="p-3 mt-3 bg-white container-commentary" data-type="commentary" data-subtype="commentary-entry">
+                <!-- fragment -->
+                <div class="bg-indigo p-2 mb-3" data-type="commentary" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
 
-            <!-- hidden ID -->
-            <span class="d-none" data-type="commentary" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
-
-            <!-- fragment -->
-            <div class="bg-indigo p-2 mb-3" data-type="commentary" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
-
-            <!-- commentary -->
-            <div data-type="commentary" data-subtype="commentary">
-                <span data-type="commentary" data-subtype="full-text" data-name="commentary" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
-            </div>
-
-            <!-- hidden location -->
-            <span class="d-none" data-type="commentary" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
-            <span class="d-none" data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
-            <span class="d-none" data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
-            <span class="d-none" data-type="commentary" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
-            <span class="d-none" data-type="commentary" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
-
-            <!-- note -->
-            <% if (el["note"] !== "") { %>
-                <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-note-<%= el['id']; %>"></span>
-                <div class="collapse mb-3" id="collapse-commentary-note-<%= el['id']; %>">
-                <div class="card card-body">
-                    <div data-type="commentary" data-subtype="note" data-name="commentaryNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+                <!-- commentary -->
+                <div data-type="commentary" data-subtype="commentary">
+                    <span data-type="commentary" data-subtype="full-text" data-name="commentary" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
                 </div>
-                </div>
-            <% }; %>
 
-            <!-- translation -->
-            <% if (el["translation"] !== "") { %>
-                <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= el['id']; %>"></span>
-                <div class="collapse mb-3" id="collapse-commentary-translation-<%= el['id']; %>">
+                <!-- hidden location -->
+                <span class="d-none" data-type="commentary" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+                <span class="d-none" data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
+                <span class="d-none" data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+                <span class="d-none" data-type="commentary" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+                <span class="d-none" data-type="commentary" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
+
+                <!-- note -->
+                <% if (el["note"] !== "") { %>
+                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-note-<%= el['id']; %>"></span>
+                    <div class="collapse mb-3" id="collapse-commentary-note-<%= el['id']; %>">
                     <div class="card card-body">
-                        <div class="mb-2" data-type="commentary" data-subtype="translation" data-name="commentaryTranslation" data-fill='<%= el["translation"]; %>' data-input="textarea">
-                            <h5 class="h6">Translation</h5>
-                            <%- el["translation"]; %>
-                        </div>
-                        <% if (el["translationNote"] !== "") { %>
-                        <div data-type="commentary" data-subtype="translationNote" data-name="commentaryTranslationNote" data-fill='<%= el["translationNote"]; %>' data-input="textarea">
-                            <h5 class="h6">Notes on the translation</h5>
-                            <%- el["translationNote"]; %>
-                        </div>
-                        <% }; %>
+                        <div data-type="commentary" data-subtype="note" data-name="commentaryNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
                     </div>
-                </div>
-            <% }; %>
+                    </div>
+                <% }; %>
 
-            <!-- modify button -->
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-                <button class="btn btn-sm btn-indigo modify-btn" type="button" data-type="commentary">Modify</button>
+                <!-- translation -->
+                <% if (el["translation"] !== "") { %>
+                    <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= el['id']; %>"></span>
+                    <div class="collapse mb-3" id="collapse-commentary-translation-<%= el['id']; %>">
+                        <div class="card card-body">
+                            <div class="mb-2" data-type="commentary" data-subtype="translation" data-name="commentaryTranslation" data-fill='<%= el["translation"]; %>' data-input="textarea">
+                                <h5 class="h6">Translation</h5>
+                                <%- el["translation"]; %>
+                            </div>
+                            <% if (el["translationNote"] !== "") { %>
+                            <div data-type="commentary" data-subtype="translationNote" data-name="commentaryTranslationNote" data-fill='<%= el["translationNote"]; %>' data-input="textarea">
+                                <h5 class="h6">Notes on the translation</h5>
+                                <%- el["translationNote"]; %>
+                            </div>
+                            <% }; %>
+                        </div>
+                    </div>
+                <% }; %>
+
+                <!-- modify button -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                    <button class="btn btn-sm btn-indigo modify-btn" type="button" data-type="commentary">Modify</button>
+                </div>
             </div>
-        </div>
-    <% }); %>
+        <% }); %>
+    <% } else { %>
+        <p class="bg-white fs-xs rounded-20 p-3">No commentary has been created for now. Let's create your first commentary!</p>
+    <% }; %>
 <% }; %>

@@ -317,6 +317,14 @@ app.use("/", addWitnesses);
 const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
 app.use("/", addPhilologicalNote);
 
+/* add text structure */
+const addChapter = require("./routes/forms/textStructure/addChapter");
+app.use("/", addChapter);
+
+/* add stanza */
+const addStanza = require("./routes/forms/textStructure/addStanza");
+app.use("/", addStanza);
+
 /* add translation */
 const addTranslation = require("./routes/forms/translation/addTranslation");
 app.use("/", addTranslation);
@@ -332,10 +340,6 @@ app.use("/", addCommentary);
 /* add citation */
 const addCitation = require("./routes/forms/citation/addCitation");
 app.use("/", addCitation);
-
-/* add add text structure */
-const addTextStructure = require("./routes/forms/textStructure/addTextStructure");
-app.use("/", addTextStructure);
 
 /* add apparatus */
 const addApparatus = require("./routes/forms/apparatus/addApparatus");

@@ -320,9 +320,9 @@ p {
     margin-bottom: 10px !important;
 }
 
-.note p {
+/* .note p {
     display: inline;
-}
+} */
 
 /* cols */
 .specific-cols.col-md-1 {
@@ -361,6 +361,12 @@ p {
     color: $light;
     font-size: 30px;
     text-shadow: 0px 10px 66px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* borders */
+.rounded-20 {
+    border: 1px solid transparent;
+    border-radius: 20px;
 }
 
 /* animations */

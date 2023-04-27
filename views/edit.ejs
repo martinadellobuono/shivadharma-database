@@ -84,7 +84,7 @@
                 <div class="tab-pane fade show active" id="annotate" role="tabpanel" aria-labelledby="annotate-tab">
                   <!-- default alerts -->
                   <div class="fs-xs" id="annotation-warning"></div>
-                  <div class="alert alert-primary alert-dismissible fade show mt-3 fs-xs" role="alert">
+                  <div class="alert alert-primary alert-dismissible fade show mt-3 fs-xs rounded-20 p-3" role="alert">
                     <p class="fw-bold">How the annotator works</p>
                     <p class="fw-bolder mb-2">1. Insert the witnesses</p>
                     <p>Click on Add metadata button, then on Witnesses. Insert all the witnesses to use them later building the apparatus. You can modify any metadata later.</p>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="tab-pane fade" id="check" role="tabpanel" aria-labelledby="check-tab">
                   <h2 class="mt-3 h5 fs-xs" id="check-annotation"></h2>
-                  <div class="alert alert-info alert-dismissible fade show fs-xs" role="alert">
+                  <div class="alert alert-info alert-dismissible fade show fs-xs rounded-20 p-3" role="alert">
                     <p class="fw-bold">How the annotator works<br><span class="fw-bolder">Check the annotations</span></p>
                     <p>After annotating the selected fragment in the text, click on Check all to check the specific information you added via forms and modify them, if needed.</p>
                   </div>
@@ -109,9 +109,13 @@
             <div class="annotation-form note d-none">
               <%- include ("partials/forms-req/note") %>
             </div>
-            <!-- text structure form -->
-            <div class="annotation-form textStructure d-none">
-              <%- include ("partials/forms-req/textStructure") %>
+            <!-- chapter form -->
+            <div class="annotation-form chapter d-none">
+              <%- include ("partials/forms-req/chapter") %>
+            </div>
+            <!-- stanza form -->
+            <div class="annotation-form stanza d-none">
+              <%- include ("partials/forms-req/stanza") %>
             </div>
           </div>
         </div>
@@ -255,11 +259,17 @@
     <div class="row">
       <div class="col-md-12">
         <span class="fs-xs">Insert/check: </span>
-        <!-- text structure -->
+        <!-- chapter -->
         <div class="btn-group btn-set-annotation" role="group">
-          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="textStructure" title="Preview text structure"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-secondary" data-value="textStructure" title="Hide text structure"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="textStructure" title="Insert/check text structure"><i class="bi bi-pencil-fill"></i> Text structure</button>
+          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="chapter" title="Preview chapters"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-hide btn-secondary" data-value="chapter" title="Hide chapters"><i class="bi bi-eye-slash-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="chapter" title="Annotate chapters"><i class="bi bi-pencil-fill"></i> Chapter</button>
+        </div>
+        <!-- stanza -->
+        <div class="btn-group btn-set-annotation" role="group">
+          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="stanza" title="Preview stanzas"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-hide btn-secondary" data-value="stanza" title="Hide stanzas"><i class="bi bi-eye-slash-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="stanza" title="Annotate stanzas"><i class="bi bi-pencil-fill"></i> Stanza</button>
         </div>
         <!-- apparatus entry -->
         <div class="btn-group btn-set-annotation" role="group">
