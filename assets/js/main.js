@@ -198,7 +198,6 @@ let fileTextarea = () => {
 
         /* OPERATIONS ON THE TEXTUS */
         setup: (ed) => {
-
             /* when the text changes */
             "input keyup mousedown paste".split(" ").forEach((event) => {
                 ed.on(event, async (e) => {
@@ -244,11 +243,6 @@ let fileTextarea = () => {
 
                 });
             });
-
-            /* when loosing focus */
-            /* ed.on("focusout", (e) => {
-                
-            }); */
 
         }
     });
@@ -611,10 +605,6 @@ let saveFile = () => {
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
-        .then((response) => {
-            console.log(response);
-            response.json();
-        })
         .then(json => {
             console.log(json);
             return json;
@@ -947,7 +937,6 @@ let annotations = () => {
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
                     var contentFile = tinymce.get("fileBaseTxt").getContent();
-
                     var form = document.querySelector("#" + category + "-req");
                     var location = form.querySelector(".location");
 

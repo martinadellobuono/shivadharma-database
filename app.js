@@ -80,6 +80,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(cors({
     origin: "*",
+    credentials: true,
     methods: ["GET","POST","DELETE","UPDATE", "PUT", "PATCH"]
 }));
 
