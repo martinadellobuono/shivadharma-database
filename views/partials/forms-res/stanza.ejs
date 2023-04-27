@@ -2,18 +2,20 @@
 <% if (availableStanzas) { %>
     <% if (availableStanzas.length > 0) { %>
         <div class="mb-3">
-            <h6 class="text-secondary">Stanzas</h6>
             <% availableStanzas.forEach((el) => { %>
-                <div class="p-3 mt-3 bg-white container-textStructure" data-type="textStructure" data-subtype="textStructure-entry">
+                <div class="bg-white rounded-20 p-3 mt-3 container-stanza" data-type="textStructure" data-subtype="stanza">
                     <!-- hidden ID -->
                     <span class="d-none" data-type="textStructure" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
                     
-                    <!-- number of chapter -->
-                    <div class="bg-secondary text-light mb-3 p-2" data-type="textStructure" data-subtype="chapter" data-name="textStructureChapter" data-fill='<%= el["n"]; %>' data-input="number"><span>Chapter: </span><b><%= el["n"]; %></b></div>
+                    <!-- number of stanza -->
+                    <div class="bg-dark-green text-light p-2" data-type="textStructure" data-subtype="stanza" data-name="stanzaN" data-fill='<%= el["n"]; %>' data-input="number"><span>Stanza </span><b><%= el["n"]; %></b></div>
 
+                    <!-- reference chapter -->
+                    <div class="p-2" data-type="textStructure" data-subtype="refChapter" data-name="refChapter" data-fill='<%= el["refChapter"]; %>' data-input="number"><span>In chapter: </span><b><%= el["refChapter"]; %></b></div>
+                    
                     <!-- modify button -->
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-                        <button class="btn btn-sm btn-secondary modify-btn" type="button" data-type="textStructure">Modify</button>
+                        <button class="btn btn-sm btn-dark-green modify-btn" type="button" data-type="textStructure">Modify</button>
                     </div>
                 </div>
             <% }); %>

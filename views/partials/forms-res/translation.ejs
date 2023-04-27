@@ -1,7 +1,7 @@
 <% if (translation) { %>
   <% if (translation.length > 0) { %>
     <% translation.forEach((el) => { %>
-      <div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
+      <div class="bg-white rounded-20 p-3 mt-3 container-translation" data-type="translation" data-subtype="translation-entry">
 
         <!-- hidden ID -->
         <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>

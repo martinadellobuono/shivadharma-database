@@ -184,15 +184,16 @@ let fileTextarea = () => {
             "[data-type='milestone'][data-start='start'][data-subtype='translation']::before {content: '\u25CF'; color: #79DFC1;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='citation']::before {content: '\u25CF'; color: #DE5C9D;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='note']::before {content: '\u25CF'; color: #087990;}" +
-            "[data-type='milestone'][data-start='start'][data-subtype='textStructure']::before {content: '\u25CF'; color: #6C757D;}" +
+            "[data-type='milestone'][data-start='start'][data-subtype='chapter']::before {content: '\u25CF'; color: #6C757D;}" +
+            "[data-type='milestone'][data-start='start'][data-subtype='stanza']::before {content: '\u25CF'; color: #3D8854;}" +
             "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 2px;}" +
-            "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 3px;}" +
-            "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 4px;}" +
-            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 5px;}" +
-            "[data-type='annotation-object'][data-subtype='citation'] {text-decoration: underline 3px solid #DE5C9D; text-underline-offset: 6px;}" +
-            "[data-type='annotation-object'][data-subtype='note'] {text-decoration: underline 3px solid #087990; text-underline-offset: 7px;}" +
-            "[data-type='annotation-object'][data-subtype='chapter'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 8px;}" +
-            "[data-type='annotation-object'][data-subtype='stanza'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 9px;}",
+            "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 3.5px;}" +
+            "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 4.5px;}" +
+            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 5.5px;}" +
+            "[data-type='annotation-object'][data-subtype='citation'] {text-decoration: underline 3px solid #DE5C9D; text-underline-offset: 6.5px;}" +
+            "[data-type='annotation-object'][data-subtype='note'] {text-decoration: underline 3px solid #087990; text-underline-offset: 7.5px;}" +
+            "[data-type='annotation-object'][data-subtype='chapter'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 8.5px;}" +
+            "[data-type='annotation-object'][data-subtype='stanza'] {text-decoration: underline 3px solid #3D8854; text-underline-offset: 9.5px;}",
         verify_html: false,
 
         /* OPERATIONS ON THE TEXTUS */

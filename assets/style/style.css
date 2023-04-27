@@ -12063,12 +12063,24 @@ body {
   background-color: #cff4fc;
 }
 
+.bg-dark-green {
+  background-color: #479f76;
+}
+
 .bg-fuchsia {
   background-color: #efadce;
 }
 
 .bg-indigo {
   background-color: #c29ffa;
+}
+
+.bg-light-gray {
+  background-color: #dee2e6;
+}
+
+.bg-light-yellow {
+  background-color: #ffda6a;
 }
 
 .bg-orange {
@@ -12091,6 +12103,11 @@ body {
 
 .btn-blue {
   background-color: #087990;
+  color: #f8f9fa;
+}
+
+.btn-dark-green {
+  background-color: #198754;
   color: #f8f9fa;
 }
 
@@ -12135,6 +12152,11 @@ body {
   color: #f8f9fa;
 }
 
+.btn-dark-green:hover {
+  background-color: #479f76;
+  color: #f8f9fa;
+}
+
 .btn-fuchsia:hover {
   background-color: #e685b5;
   color: #f8f9fa;
@@ -12156,8 +12178,8 @@ body {
 }
 
 .btn-gray:hover {
-  background-color: rgba(122, 134, 142, 0.6);
-  color: #f8f9fa;
+  background-color: #ced4da;
+  color: #212529;
 }
 
 .btn-pink:hover {

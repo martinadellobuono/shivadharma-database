@@ -47,11 +47,12 @@
           <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="stanza" name="selectedFragment">
         </div>
         <!-- type of structure -->
-        <div class="bg-white p-3 mb-3">
+        <div class="bg-white rounded-20 p-3 mb-3 mt-3">
           <!-- stanza -->
           <div class="mb-3">
             <label class="form-label">Stanza</label>
             <input type="number" class="form-control form-control-sm related-available-chapters" aria-describedby="Number/name of stanza" name="stanzaN">
+            <div class="form-text">Annotate chapters first, stanzas, and then other types of annotations.</div>
           </div>
           <div class="mb-3">   
             <% if (availableChapters.length > 0) { %>

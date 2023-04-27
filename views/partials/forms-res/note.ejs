@@ -2,7 +2,7 @@
 <% if (notes) { %>
     <% if (notes.length > 0) { %>
         <% notes.forEach((el) => { %>
-            <div class="p-3 mt-3 bg-white container-note" data-type="note" data-subtype="note-entry">
+            <div class="bg-white rounded-20 p-3 mt-3 container-note" data-type="note" data-subtype="note-entry">
                 <!-- hidden ID -->
                 <span class="d-none" data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 

@@ -2,7 +2,7 @@
 <% if (citations) { %>
     <% if (citations.length > 0) { %>
         <% citations.forEach((el) => { %>
-            <div class="p-3 mt-3 bg-white container-citation" data-type="citation" data-subtype="citation-entry">
+            <div class="bg-white rounded-20 p-3 mt-3 container-citation" data-type="citation" data-subtype="citation-entry">
 
                 <!-- hidden ID -->
                 <span class="d-none" data-type="citation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
