@@ -59,11 +59,9 @@ router.post(process.env.URL_PATH + "/saveFile", async (req, res) => {
             } catch (err) {
                 console.log(err);
             } finally {
-                await session.close();
+                await session.close();                
+                res.end();
             };
-
-            //res.end();
-
         };
     };
 });
