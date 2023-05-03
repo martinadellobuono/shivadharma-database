@@ -18,7 +18,7 @@
         <!-- location / translation -->
         <div data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= el["value"]; %>' data-input="textarea">
           <span class="me-1" data-type="location" data-subtype="location-top">
-            <span data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span>        
+            <span data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="select"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span>        
           </span>
           <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
         </div>
