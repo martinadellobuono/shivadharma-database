@@ -12529,7 +12529,7 @@ p {
 
 /* tabs */
 .scroll-tab {
-  height: 60vh;
+  height: 70vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }

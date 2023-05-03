@@ -1068,6 +1068,28 @@ let stopLoading = () => {
     };
 };
 
+/* filter stanzas depending on the chapter */
+let filterStanzas = () => {
+    var selects = document.querySelectorAll("select[name='chapter']");
+    selects.forEach((select) => {
+        select.addEventListener("change", () => {
+            var chapter = select.value;
+            var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
+            stanzas.forEach((stanza) => {
+                var options = stanza.querySelectorAll("option");
+                options.forEach((option) => {
+                    if (option.getAttribute("data-refChapter") !== chapter) {
+                        option.classList.add("d-none");
+                    } else {
+                        option.classList.remove("d-none");
+                        option.selected = true;
+                    };
+                });
+            });
+        });
+    });
+};
+
 /* ONLOAD EDIT PAGE */
 let onloadEdit = () => {
     fileTextarea();
@@ -1075,6 +1097,7 @@ let onloadEdit = () => {
     setInterval(saveFile, 5000);
     publishEdition();
     stopLoading();
+    filterStanzas();
 };
 
 /* preview annotations */

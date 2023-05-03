@@ -49,9 +49,9 @@
         <div class="mb-3">
           <label class="form-label">Starting stanza</label>
           <% if (availableStanzas.length > 0) { %>
-            <select class="form-select" aria-label="Select the number of stanza" name="stanzaStart">
+            <select class="form-select" aria-label="Select the number of stanza" data-type="chapterStanza" name="stanzaStart">
               <% availableStanzas.forEach((stanza) => { %>
-                <option value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
+                <option data-refChapter='<%= stanza["refChapter"]; %>' value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
               <% }); %>
             </select>
           <% } else { %>
@@ -93,9 +93,9 @@
         <div class="mb-3">
           <label class="form-label">Ending stanza</label>
           <% if (availableStanzas.length > 0) { %>
-            <select class="form-select" aria-label="Select the number of stanza" name="stanzaEnd">
+            <select class="form-select" aria-label="Select the number of stanza" data-type="chapterStanza" name="stanzaEnd">
               <% availableStanzas.forEach((stanza) => { %>
-                <option value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
+                <option data-refChapter='<%= stanza["refChapter"]; %>' value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
               <% }); %>
             </select>
           <% } else { %>
