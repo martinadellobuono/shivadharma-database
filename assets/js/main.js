@@ -1072,21 +1072,27 @@ let stopLoading = () => {
 let filterStanzas = () => {
     var selects = document.querySelectorAll("select[name='chapter']");
     selects.forEach((select) => {
-        select.addEventListener("change", () => {
-            var chapter = select.value;
-            var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
-            stanzas.forEach((stanza) => {
-                var options = stanza.querySelectorAll("option");
-                options.forEach((option) => {
-                    if (option.getAttribute("data-refChapter") !== chapter) {
-                        option.classList.add("d-none");
-                    } else {
-                        option.classList.remove("d-none");
-                        option.selected = true;
-                    };
+        //select.addEventListener("change", () => {
+            let filtering = () => {
+                var chapter = select.value;
+                var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
+                stanzas.forEach((stanza) => {
+                    var options = stanza.querySelectorAll("option");
+                    options.forEach((option) => {
+                        if (option.getAttribute("data-refChapter") !== chapter) {
+                            option.classList.add("d-none");
+                        } else {
+                            option.classList.remove("d-none");
+                            option.selected = true;
+                        };
+                    });
                 });
+            };
+            filtering();
+            select.addEventListener("change", () => {
+                filtering();
             });
-        });
+        //});
     });
 };
 
