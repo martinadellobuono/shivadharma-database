@@ -1441,6 +1441,17 @@ let modifyAnnotations = () => {
                         });
                     };
 
+                    /* select */
+                    /* TRY */
+                    let select = () => {
+                        var selects = form.querySelectorAll("select[name='" + name + "']");
+                        selects.forEach((select) => {
+                            select.querySelector("option[value='" + val + "']").selected = "selected";
+                        });
+                    };
+                    select();
+                    /* / */
+
                     /* fill the input */
                     if (el.getAttribute("data-input") == "number") {
                         numbers();
