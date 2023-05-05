@@ -26,9 +26,15 @@ router.post(process.env.URL_PATH + "/addCitation/:id", async (req, res) => {
                 MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${req.body.citation}'
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = "${req.body.citation}"
                 ON MATCH
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${req.body.citation}'
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = "${req.body.citation}"
+                
+                WITH selectedFragment
+                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                WHERE s.n <> "${req.body.stanzaStart}"
+                DELETE sf
+
                 RETURN *
                 `
             )

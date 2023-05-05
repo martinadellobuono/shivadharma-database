@@ -29,6 +29,12 @@ router.post(process.env.URL_PATH + "/addCommentary/:id", async (req, res) => {
                     SET commentary.value = '${req.body.commentary}', commentary.translation = '${req.body.commentaryTranslation}', commentary.note = '${req.body.commentaryNote}', commentary.translationNote = '${req.body.commentaryTranslationNote}'
                 ON MATCH
                     SET commentary.value = '${req.body.commentary}', commentary.translation = '${req.body.commentaryTranslation}', commentary.note = '${req.body.commentaryNote}', commentary.translationNote = '${req.body.commentaryTranslationNote}'
+                
+                WITH selectedFragment
+                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                WHERE s.n <> "${req.body.stanzaStart}"
+                DELETE sf
+                
                 RETURN *
                 `
             )

@@ -18,30 +18,42 @@ router.post(process.env.URL_PATH + "/addParallel/:id", async (req, res) => {
                 `
                 MATCH (stanza:Stanza)<-[:HAS_STANZA]-(chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} AND chapter.n = "${req.body.chapter}" AND stanza.n = "${req.body.stanzaStart}"
+                
                 MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
+                
                 MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
+               
                 MERGE (parallel:Parallel {idAnnotation: "${req.body.idAnnotation}", book: "${req.body.parallelBook}", bookChapter: "${req.body.parallelChapter}", bookStanza: "${req.body.parallelStanza}", note: "${req.body.parallelNote}"})
                 ON CREATE
                     SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.bookChapter = "${req.body.parallelChapter}", parallel.bookStanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
                 ON MATCH
                     SET parallel.stanzaStart = "${req.body.stanzaStart}", parallel.padaStart = "${req.body.padaStart}", parallel.value = '${req.body.parallel}', parallel.book = "${req.body.parallelBook}", parallel.bookChapter = "${req.body.parallelChapter}", parallel.bookStanza = "${req.body.parallelStanza}", parallel.note = "${req.body.parallelNote}"
+                
                 MERGE (work:Work {title: "${req.body.parallelWork}"})
                 MERGE (author:Author {name: "${req.body.parallelAuthor}"})
                 MERGE (selectedFragment)-[:HAS_PARALLEL]->(parallel)
                 MERGE (parallel)<-[:HAS_FRAGMENT]-(work)
                 MERGE (work)-[:WRITTEN_BY]->(author)
-                WITH parallel
+
+                WITH selectedFragment, parallel
                 MATCH (parallel)<-[pw:HAS_FRAGMENT]-(work:Work)
                 WHERE NOT "${req.body.parallelWork}" CONTAINS work.title
                 DELETE pw
-                WITH work
+
+                WITH selectedFragment, work
                 MATCH (work)-[wa:WRITTEN_BY]->(author:Author)
                 WHERE NOT "${req.body.parallelWork}" CONTAINS author.name
                 DELETE wa
+
+                WITH selectedFragment
+                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                WHERE s.n <> "${req.body.stanzaStart}"
+                DELETE sf
+
                 RETURN *
                 `
             )
