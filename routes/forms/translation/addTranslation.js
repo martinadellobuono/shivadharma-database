@@ -26,9 +26,15 @@ router.post(process.env.URL_PATH + "/addTranslation/:id", async (req, res) => {
                 MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
+                    SET translation.value = "${req.body.translation}", translation.note = "${req.body.noteTranslation}"
                 ON MATCH
-                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
+                    SET translation.value = "${req.body.translation}", translation.note = "${req.body.noteTranslation}"
+
+                WITH selectedFragment
+                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                WHERE s.n <> "${req.body.stanzaStart}"
+                DELETE sf
+
                 RETURN *
                 `
             )
