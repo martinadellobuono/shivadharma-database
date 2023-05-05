@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
+    blockBtn();
     annotations();
     previewAnnotations();
     closeBtn();
@@ -1068,31 +1069,62 @@ let stopLoading = () => {
     };
 };
 
+/* block annotation buttons when no chapter and stanza are available */
+let blockBtn = () => {
+    /* block all buttons except chapter if no chapters is available */
+    var selectChapters = document.querySelectorAll("select[name='chapter']");
+    if (selectChapters.length == 0) {
+        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
+        annotationBtns.forEach((btn) => {
+            if (btn.getAttribute("data-value") !== "chapter") {
+                btn.setAttribute("disabled", "disabled");
+            };
+        });
+    };
+
+    /* block all buttons except chapter and stanza if no stanza is available */
+    var selectStanzas = document.querySelectorAll("select[name='stanzaStart']");
+    if (selectChapters.length > 0 && selectStanzas.length == 0) {
+        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
+        annotationBtns.forEach((btn) => {
+            if (btn.getAttribute("data-value") !== "chapter" && btn.getAttribute("data-value") !== "stanza") {
+                btn.setAttribute("disabled", "disabled");
+            };
+        });
+    };
+
+    /* unblock all buttons if at least one stanza and one chapter are available */
+    if (selectChapters.length > 0 && selectStanzas.length > 0) {
+        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
+        annotationBtns.forEach((btn) => {
+            btn.removeAttribute("disabled");
+        });
+    };
+};
+
 /* filter stanzas depending on the chapter */
 let filterStanzas = () => {
     var selects = document.querySelectorAll("select[name='chapter']");
     selects.forEach((select) => {
-        //select.addEventListener("change", () => {
-            let filtering = () => {
-                var chapter = select.value;
-                var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
-                stanzas.forEach((stanza) => {
-                    var options = stanza.querySelectorAll("option");
-                    options.forEach((option) => {
-                        if (option.getAttribute("data-refChapter") !== chapter) {
-                            option.classList.add("d-none");
-                        } else {
-                            option.classList.remove("d-none");
-                            option.selected = true;
-                        };
-                    });
+        let filtering = () => {
+            var chapter = select.value;
+            var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
+            stanzas.forEach((stanza) => {
+                var options = stanza.querySelectorAll("option");
+                options.forEach((option) => {
+                    if (option.getAttribute("data-refChapter") !== chapter) {
+                        option.classList.add("d-none");
+                    } else {
+                        option.classList.remove("d-none");
+                        option.selected = true;
+                    };
                 });
-            };
-            filtering();
-            select.addEventListener("change", () => {
-                filtering();
             });
-        //});
+        };
+        filtering();
+        select.addEventListener("change", () => {
+            filtering();
+        });
     });
 };
 
