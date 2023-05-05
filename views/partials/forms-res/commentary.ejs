@@ -3,8 +3,22 @@
     <% if (commentary.length > 0) { %>
         <% commentary.forEach((el) => { %>
             <div class="bg-white rounded-20 p-3 mt-3 container-commentary" data-type="commentary" data-subtype="commentary-entry">
+                                
                 <!-- hidden ID -->
                 <span class="d-none" data-type="commentary" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+
+                <!-- chapter -->
+                <div class="mb-3" data-type="translation" data-subtype="chapter">
+                <span class="fw-bold">Chapter</span>
+                <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span>
+                </div>
+
+                <!-- stanza -->
+                <% if (el["stanzaStart"] !== el["stanzaEnd"]) { %>
+                    <b><span>Comment to stanzas </span><span data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="select"><%= el["stanzaStart"]; %></span> - <span data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="select"><%= el["stanzaEnd"]; %></span></b>
+                <% } else { %>
+                    <b><span>Comment to stanza </span><span data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="select"><%= el["stanzaStart"]; %></span><span class="d-none"> - <span data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="select"><%= el["stanzaEnd"]; %></span></span></b>
+                <% }; %>
 
                 <!-- fragment -->
                 <div class="bg-indigo p-2 mb-3" data-type="commentary" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
@@ -13,11 +27,8 @@
                 <div data-type="commentary" data-subtype="commentary">
                     <span data-type="commentary" data-subtype="full-text" data-name="commentary" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
                 </div>
-
+                
                 <!-- hidden location -->
-                <span class="d-none" data-type="commentary" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="commentary" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="commentary" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
                 <span class="d-none" data-type="commentary" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
                 <span class="d-none" data-type="commentary" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 

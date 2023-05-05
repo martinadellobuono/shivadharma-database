@@ -6,10 +6,10 @@
                 <% entry.forEach((el) => { %>
                     
                     <!-- location -->
-                    <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="number"><%= el["lemma"]["stanzaStart"]; %></span>
+                    <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="select"><%= el["lemma"]["stanzaStart"]; %></span>
                     <span data-type="apparatus" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["lemma"]["padaStart"]; %>' data-input="checkbox"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                     
-                    <span data-type="apparatus" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["lemma"]["stanzaEnd"]; %>' data-input="number">
+                    <span data-type="apparatus" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["lemma"]["stanzaEnd"]; %>' data-input="select">
                         <% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %>
                             <span data-type="separator" data-subtype="enDash">&#x2013;</span><%= el["lemma"]["stanzaEnd"]; %>
                         <% }; %>
