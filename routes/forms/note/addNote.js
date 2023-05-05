@@ -26,9 +26,15 @@ router.post(process.env.URL_PATH + "/addNote/:id", async (req, res) => {
                 MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET note.value = '${req.body.note}'
+                    SET note.value = "${req.body.note}"
                 ON MATCH
-                    SET note.value = '${req.body.note}'
+                    SET note.value = "${req.body.note}"
+                
+                WITH selectedFragment
+                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                WHERE s.n <> "${req.body.stanzaStart}"
+                DELETE sf
+                
                 RETURN *
                 `
             )
