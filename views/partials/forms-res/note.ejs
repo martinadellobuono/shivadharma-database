@@ -12,14 +12,14 @@
                 <!-- note / location -->
                 <div data-type="note" data-subtype="note">
                     <span class="me-1" data-type="location" data-subtype="location-top">
-                        <span data-type="note" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                        <span data-type="note" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="select"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                     </span>
                     <span data-type="note" data-subtype="full-text" data-name="note" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
                 </div>
 
                 <!-- hidden location -->
-                <span class="d-none" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="note" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+                <span class="d-none" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="select"></span>
+                <span class="d-none" data-type="note" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="select"></span>
                 <span class="d-none" data-type="note" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
                 <span class="d-none" data-type="note" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
