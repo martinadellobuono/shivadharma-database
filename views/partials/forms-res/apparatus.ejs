@@ -5,6 +5,12 @@
             <div class="p-3 mt-3 bg-white rounded-20 container-apparatus" data-type="apparatus" data-subtype="apparatus-entry">
                 <% entry.forEach((el) => { %>
                     
+                    <!-- chapter -->
+                    <div class="mb-3" data-type="translation" data-subtype="chapter">
+                        <span class="fw-bold">Chapter</span>
+                        <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["lemma"]["chapter"]; %></span>
+                    </div>
+
                     <!-- location -->
                     <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="select"><%= el["lemma"]["stanzaStart"]; %></span>
                     <span data-type="apparatus" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["lemma"]["padaStart"]; %>' data-input="checkbox"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>

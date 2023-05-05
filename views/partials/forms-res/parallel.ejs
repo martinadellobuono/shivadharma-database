@@ -16,6 +16,12 @@
                     <!-- hidden ID -->
                     <span class="d-none" data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
+                    <!-- chapter -->
+                    <div class="mb-3" data-type="translation" data-subtype="chapter">
+                        <span class="fw-bold">Chapter</span>
+                        <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span>
+                    </div>
+
                     <!-- fragment -->
                     <div class="bg-orange mb-3 p-2" data-type="parallel" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
 

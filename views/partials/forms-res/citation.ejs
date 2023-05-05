@@ -7,6 +7,12 @@
                 <!-- hidden ID -->
                 <span class="d-none" data-type="citation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
+                <!-- chapter -->
+                <div class="mb-3" data-type="translation" data-subtype="chapter">
+                    <span class="fw-bold">Chapter</span>
+                    <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span>
+                </div>
+
                 <!-- fragment -->
                 <div class="bg-fuchsia mb-3 p-2" data-type="citation" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
 
