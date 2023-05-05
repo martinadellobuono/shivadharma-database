@@ -127,6 +127,11 @@ router.post(process.env.URL_PATH + "/addApparatus/:id", async (req, res) => {
                             MERGE (variant)-[:ATTESTED_IN]->(witness)
                         )
 
+                        WITH selectedFragment
+                        MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
+                        WHERE s.n <> "${req.body.stanzaStart}"
+                        DELETE sf
+
                         RETURN *
                         `
                 )
