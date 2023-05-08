@@ -615,8 +615,13 @@ p {
 /* autocomplete */
 [role="listbox"] {
     border: 1px solid $light;
+    background-color: $white;
     list-style: none;
-    padding: $spacer;
+    padding: 10px;
+}
+
+[role="listbox"] > li:hover {
+    background-color: $gray-200;
 }
 
 /* live check */

@@ -12555,8 +12555,13 @@ p {
 /* autocomplete */
 [role="listbox"] {
   border: 1px solid #f8f9fa;
+  background-color: #fff;
   list-style: none;
-  padding: 1rem;
+  padding: 10px;
+}
+
+[role="listbox"] > li:hover {
+  background-color: #e9ecef;
 }
 
 /* live check */
