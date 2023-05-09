@@ -76,7 +76,6 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
         await session.readTransaction(tx => tx
             .run(
                 `
-                MATCH allWitnesses = (w:Witness)
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MATCH (edition)<-[:IS_EDITOR_OF]-(editors:Editor)
@@ -93,18 +92,18 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN allWitnesses, work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, chapter.idAnnotation, chapter.n, stanza.idAnnotation, stanza.n, stanza.refChapter, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, chapter.idAnnotation, chapter.n, stanza.idAnnotation, stanza.n, stanza.refChapter, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
                 `
             )
             .subscribe({
                 onNext: record => {
 
                     /* all witnesses */
-                    if (record.get("allWitnesses") !== null) {
+                    /* if (record.get("allWitnesses") !== null) {
                         if (!allWitnesses_temp.includes(record.get("allWitnesses"))) {
                             allWitnesses_temp.push(record.get("allWitnesses"));
                         };
-                    };
+                    }; */
 
                     /* work */
                     if (record.get("work.title") !== null) {
