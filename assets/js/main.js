@@ -1609,7 +1609,7 @@ let liveCheck = () => {
     var padaEnd = [];
 
     input.forEach((el) => {
-        "change keyup".split(" ").forEach((e) => {
+        "click change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
                 /* RADIOS */
                 if (el.getAttribute("type") == "radio") {
@@ -1625,8 +1625,14 @@ let liveCheck = () => {
                     });
                 };
 
-                /* NUMBER */
-                if (el.getAttribute("type") == "number") {
+                /* SELECT */
+                if (el.getAttribute("data-input") == "select") {
+
+                    /* chapter */
+                    if (el.getAttribute("name") == "chapter") {
+                        /* print value of chapter */
+                        document.getElementById("live-chapter").innerHTML = el.value;
+                    };
 
                     /* stanza start */
                     if (el.getAttribute("name") == "stanzaStart") {
