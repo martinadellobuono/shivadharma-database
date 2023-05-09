@@ -29,6 +29,7 @@ After installing the required packages:
 - In .env add:
 API_KEY = your_personal_api_key
 to set the API key to access the Create an edition functionalities.
+- Install the necessary libraries: **sh install.sh**
 - Run the application locally: **nodemon app.js**
 - Open the application in your browser: **http://0.0.0.0/**
 
