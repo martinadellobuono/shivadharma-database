@@ -19,8 +19,8 @@
     </div>
   </div>
 </div>
-<!-- stanza -->
-<h3 class="h6">Stanzas</h3>
+<!-- stanza/paragraph -->
+<h3 class="h6">Stanzas/paragraph</h3>
 <ul class="nav nav-tabs fs-xs" role="tablist">
   <li class="nav-item" role="presentation">
     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-stanza" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
@@ -48,12 +48,19 @@
         </div>
         <!-- type of structure -->
         <div class="bg-white rounded-20 p-3 mb-3 mt-3">
-          <!-- stanza -->
+          <!-- stanza/paragraph -->
           <div class="mb-3">
-            <label class="form-label">Stanza</label>
+            <label class="form-label">Stanza/paragraph position</label>
             <input type="number" class="form-control form-control-sm related-available-chapters" aria-describedby="Number/name of stanza" name="stanzaN">
-            <div class="form-text">Annotate chapters first, stanzas, and then other types of annotations.</div>
+            <div class="form-text">Annotate chapters first, stanzas/paragraph, and then other types of annotations.</div>
           </div>
+          <!-- stanza/paragraph name -->
+          <div class="mb-3">
+            <label class="form-label">Stanza/paragraph name</label>
+            <input type="text" class="form-control form-control-sm" aria-describedby="Name of stanza" name="stanzaName">
+            <div class="form-text">Insert the name of the stanza/paragraph.</div>
+          </div>
+          <!-- stanza/paragraph chapter -->
           <div class="mb-3">   
             <% if (availableChapters.length > 0) { %>
               <label class="form-label">In chapter</label>
