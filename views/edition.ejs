@@ -63,10 +63,10 @@
         <% if (file) { %>
 
           <!-- roman text -->
-          <div class="ff-edition" id="editionTextTest" data-script="roman"><%- include (`../uploads/${file}`) %></div>
+          <div class="ff-edition text-to-convert" data-script="roman"><%- include (`../uploads/${file}`) %></div>
 
           <!-- devanagari text -->
-          <div class="ff-edition" id="devanagariText" data-script="devanagari"></div>
+          <div class="ff-edition text-to-convert" data-script="devanagari"></div>
 
         <% } else { %>
           <p>The edition is coming soon!</p>
