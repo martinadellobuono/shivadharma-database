@@ -29,15 +29,15 @@
         <!-- profile -->
         <div class="tab-pane fade" id="account-profile">
           <h2 class="ff-cursive">Profile</h2>
-          <form action="" method="POST">
+          <form action="<%= process.env.URL_PATH %>/modifyAccount" method="POST">
             <div class="mb-3">
               <label for="name">Full name</label>
-              <input class="form-control" type="text" value="<%- name %>" name="name">
+              <input class="form-control" type="text" value="<%- name %>" name="newName">
               <div id="emailHelp" class="form-text">Insert your name first, then your surname.</div>
             </div>
             <div class="mb-3">
               <label for="email">Email</label>
-              <input class="form-control" type="email" value="<%- email %>" name="email">
+              <input class="form-control" type="email" value="<%- email %>" name="newEmail">
               <div id="emailHelp" class="form-text">We will never share your email with anyone else.</div>
             </div>
             <div class="mb-3">

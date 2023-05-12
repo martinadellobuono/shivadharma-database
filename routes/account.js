@@ -35,16 +35,18 @@ router.get(process.env.URL_PATH + "/account", async (req, res) => {
 
     /* user */
     const user = req.user.name;
-    
+
     /* editions */
     var editions = [];
     var idEditor;
 
+    /* db session */
     const session = driver.session();
 
     try {
         try {
-            const data = await session.readTransaction(tx => tx
+            /* extract data from db */
+            await session.readTransaction(tx => tx
                 .run(
                     `
                     MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
@@ -72,12 +74,73 @@ router.get(process.env.URL_PATH + "/account", async (req, res) => {
     } catch (err) {
         console.log(err);
     } finally {
+        /* render the page */
         res.render("account", {
             prevUrl: prevUrl,
             idEditor: idEditor,
             editions: editions,
             name: req.user.name,
             email: req.user.email
+        });
+    };
+});
+
+router.post(process.env.URL_PATH + "/modifyAccount", async (req, res) => {
+    try {
+        /* account data */
+        const oldName = req.user.name;
+        const oldEmail = req.user.email;
+        const newName = req.body.newName;
+        const newEmail = req.body.newEmail;
+        
+        /* editions */
+        var editions = [];
+        var idEditor;
+
+        /* db session */
+        const session = driver.session();
+
+        /* post new account data */
+        await session.writeTransaction(tx => tx
+            .run(
+                `
+                MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE editor.name = "${oldName}" AND editor.email = "${oldEmail}"
+                MERGE (edition)<-[:IS_EDITOR_OF]-(editor)
+                ON CREATE
+                    SET editor.name = "${newName}", editor.email = "${newEmail}"
+                ON MATCH 
+                    SET editor.name = "${newName}", editor.email = "${newEmail}"
+                RETURN edition.publishType, edition.title, id(edition), id(editor), editor.name, editor.email
+                `
+            )
+            .subscribe({
+                onNext: record => {
+                    /* editions */
+                    if (!editions.includes(record.get("edition.title") + "___" + record.get("id(edition)") + "---" + record.get("edition.publishType"))) {
+                        editions.push(record.get("edition.title") + "___" + record.get("id(edition)") + "---" + record.get("edition.publishType"));
+                    };
+                    /* editor id */
+                    idEditor = record.get("id(editor)");
+                },
+                onCompleted: () => {
+                    console.log("Updated account");
+                },
+                onError: err => {
+                    console.log(err);
+                }
+            })
+        );
+
+    } catch (err) {
+        console.log(err);
+    } finally {
+        /* render the page */
+        res.render("account", {
+            idEditor: idEditor,
+            editions: editions,
+            name: req.body.newName,
+            email: req.body.newEmail
         });
     };
 });
