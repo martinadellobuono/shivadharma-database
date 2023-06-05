@@ -971,17 +971,16 @@ let annotations = () => {
 /* save file every 5 seconds */
 let saveFile = () => {
     /* fetch data */
-    fetch("http://localhost:80/saveFile", {
+    fetch("/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
         .then((response) => {
-            console.log(response);
             response.json();
         })
-        .then(json => {
-            console.log(json);
+        .then(contentFile => {
+            console.log(contentFile);
         })
         .catch(err => console.log(err));
 

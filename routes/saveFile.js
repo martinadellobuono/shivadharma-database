@@ -62,8 +62,8 @@ router.post(process.env.URL_PATH + "/saveFile", async (req, res) => {
                 await session.close();
             };
 
-            //res.end();
-
+            /* try */
+            res.json(contentFile);
         };
     };
 });
