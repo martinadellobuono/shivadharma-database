@@ -16,25 +16,19 @@ router.post(process.env.URL_PATH + "/addTranslation/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (stanza:Stanza)<-[:HAS_STANZA]-(chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} AND chapter.n = "${req.body.chapter}" AND stanza.n = "${req.body.stanzaStart}"
+                MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
-                MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
+                MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET translation.value = "${req.body.translation}", translation.note = "${req.body.noteTranslation}"
+                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
                 ON MATCH
-                    SET translation.value = "${req.body.translation}", translation.note = "${req.body.noteTranslation}"
-
-                WITH selectedFragment
-                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
-                WHERE s.n <> "${req.body.stanzaStart}"
-                DELETE sf
-
+                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
                 RETURN *
                 `
             )

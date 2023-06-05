@@ -1,35 +1,31 @@
-<!-- notes -->
 <% if (notes) { %>
-    <% if (notes.length > 0) { %>
-        <% notes.forEach((el) => { %>
-            <div class="bg-white rounded-20 p-3 mt-3 container-note" data-type="note" data-subtype="note-entry">
-                <!-- hidden ID -->
-                <span class="d-none" data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+    <% notes.forEach((el) => { %>
+        <div class="p-3 mt-3 bg-white container-note" data-type="note" data-subtype="note-entry">
+            
+            <!-- hidden ID -->
+            <span class="d-none" data-type="note" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-                <!-- fragment -->
-                <div class="bg-blue mb-3 p-2" data-type="note" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
+            <!-- fragment -->
+            <div class="bg-blue mb-3 p-2" data-type="note" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
 
-                <!-- note / location -->
-                <div data-type="note" data-subtype="note">
-                    <span class="me-1" data-type="location" data-subtype="location-top">
-                        <span data-type="note" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="select"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
-                    </span>
-                    <span data-type="note" data-subtype="full-text" data-name="note" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
-                </div>
-
-                <!-- hidden location -->
-                <span class="d-none" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="select"></span>
-                <span class="d-none" data-type="note" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="select"></span>
-                <span class="d-none" data-type="note" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
-                <span class="d-none" data-type="note" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
-
-                <!-- modify button -->
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-                    <button class="btn btn-sm btn-blue modify-btn" type="button" data-type="note">Modify</button>
-                </div>
+            <!-- note / location -->
+            <div data-type="note" data-subtype="note">
+                <span class="me-1" data-type="location" data-subtype="location-top">
+                    <span data-type="note" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                </span>
+                <span data-type="note" data-subtype="full-text" data-name="note" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
             </div>
-        <% }); %>
-    <% } else { %>
-        <p class="bg-white fs-xs rounded-20 p-3">No note has been created for now. Let's create your first note!</p>
-    <% }; %>
+
+            <!-- hidden location -->
+            <span class="d-none" data-type="note" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="note" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+            <span class="d-none" data-type="note" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+            <span class="d-none" data-type="note" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
+
+            <!-- modify button -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                <button class="btn btn-sm btn-blue modify-btn" type="button" data-type="note">Modify</button>
+            </div>
+        </div>
+    <% }); %>
 <% }; %>

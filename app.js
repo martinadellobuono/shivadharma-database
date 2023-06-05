@@ -80,7 +80,6 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(cors({
     origin: "*",
-    credentials: true,
     methods: ["GET","POST","DELETE","UPDATE", "PUT", "PATCH"]
 }));
 
@@ -318,13 +317,9 @@ app.use("/", addWitnesses);
 const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
 app.use("/", addPhilologicalNote);
 
-/* add text structure */
-const addChapter = require("./routes/forms/textStructure/addChapter");
-app.use("/", addChapter);
-
-/* add stanza */
-const addStanza = require("./routes/forms/textStructure/addStanza");
-app.use("/", addStanza);
+/* add apparatus */
+const addApparatus = require("./routes/forms/apparatus/addApparatus");
+app.use("/", addApparatus);
 
 /* add translation */
 const addTranslation = require("./routes/forms/translation/addTranslation");
@@ -341,10 +336,6 @@ app.use("/", addCommentary);
 /* add citation */
 const addCitation = require("./routes/forms/citation/addCitation");
 app.use("/", addCitation);
-
-/* add apparatus */
-const addApparatus = require("./routes/forms/apparatus/addApparatus");
-app.use("/", addApparatus);
 
 /* add note */
 const addNote = require("./routes/forms/note/addNote");

@@ -16,25 +16,19 @@ router.post(process.env.URL_PATH + "/addNote/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (stanza:Stanza)<-[:HAS_STANZA]-(chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} AND chapter.n = "${req.body.chapter}" AND stanza.n = "${req.body.stanzaStart}"
+                MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
-                MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
+                MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET note.value = "${req.body.note}"
+                    SET note.value = '${req.body.note}'
                 ON MATCH
-                    SET note.value = "${req.body.note}"
-                
-                WITH selectedFragment
-                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
-                WHERE s.n <> "${req.body.stanzaStart}"
-                DELETE sf
-                
+                    SET note.value = '${req.body.note}'
                 RETURN *
                 `
             )

@@ -6,11 +6,11 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get(process.env.URL_PATH + "/getStarted", async (req, res) => {
-    res.render("getStarted", { name: req.user.name });
+router.get(process.env.URL_PATH + "/getstarted", async (req, res) => {
+    res.render("getstarted", { name: req.user.name });
 });
 
-router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
+router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
     /* edition url */
     var idEdition;
     var idEditor;
@@ -25,28 +25,24 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
     /* other editors array */
     var otherEditorsArr = [];
     var otherEditors = req.body.otherEditors;
-    if (otherEditors !== "") {
-        otherEditors.split(" ; ").forEach(otherEditor => {
-            if (otherEditor !== "" || otherEditor !== undefined) {
-                if (!otherEditorsArr.includes(otherEditor)) {
-                    otherEditorsArr.push(otherEditor);
-                };
+    otherEditors.split(" ; ").forEach(otherEditor => {
+        if (otherEditor !== "" || otherEditor !== undefined) {
+            if (!otherEditorsArr.includes(otherEditor)) {
+                otherEditorsArr.push(otherEditor);
             };
-        });
-    };
+        };
+    });
 
     /* contributors array */
     var contributorsArr = [];
     var contributors = req.body.contributors;
-    if (contributors !== "") {
-        contributors.split(" ; ").forEach(contributor => {
-            if (contributor !== "" || contributor !== undefined) {
-                if (!contributorsArr.includes(contributor)) {
-                    contributorsArr.push(contributor);
-                };
+    contributors.split(" ; ").forEach(contributor => {
+        if (contributor !== "" || contributor !== undefined) {
+            if (!contributorsArr.includes(contributor)) {
+                contributorsArr.push(contributor);
             };
-        });
-    };
+        };
+    });
 
     const session = driver.session();
     try {
@@ -110,22 +106,11 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                         ON CREATE SET edition.publishType = "Save as draft"
 
                         FOREACH (email IN split("${otherEditorsArr}", ",") |
-                            MERGE (otherEditor:Editor {email: email})
-                            ON CREATE SET otherEditor.email = email
-                            MERGE (otherEditor)-[:IS_EDITOR_OF]->(edition)
+                            MERGE otherEditor = (editor:Editor {email: email})
+                            ON CREATE SET editor.email = email
+                            MERGE (editor)-[:IS_EDITOR_OF]->(edition)
                         )
                         
-                        FOREACH (email IN split("${contributorsArr}", ",") |
-                            MERGE (contributor:Editor {email: email})
-                            ON CREATE SET contributor.email = email
-                            MERGE (contributor)-[:IS_CONTRIBUTOR_OF]->(edition)
-                        )
-
-                        WITH *
-                        MATCH (x:Editor)-[r]->()
-                        WHERE x.email = ""
-                        DELETE r, x
-
                         RETURN ID(edition), ID(editor)
                         `
                     )

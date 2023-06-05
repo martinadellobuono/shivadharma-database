@@ -16,25 +16,19 @@ router.post(process.env.URL_PATH + "/addCitation/:id", async (req, res) => {
         await session.writeTransaction(tx => tx
             .run(
                 `
-                MATCH (stanza:Stanza)<-[:HAS_STANZA]-(chapter:Chapter)<-[:HAS_CHAPTER]-(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
-                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor} AND chapter.n = "${req.body.chapter}" AND stanza.n = "${req.body.stanzaStart}"
+                MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
+                WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 MERGE (selectedFragment:SelectedFragment {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
-                MERGE (stanza)-[:HAS_FRAGMENT]->(selectedFragment)
+                MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = "${req.body.citation}"
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${req.body.citation}'
                 ON MATCH
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = "${req.body.citation}"
-                
-                WITH selectedFragment
-                MATCH (s:Stanza)-[sf:HAS_FRAGMENT]->(selectedFragment)
-                WHERE s.n <> "${req.body.stanzaStart}"
-                DELETE sf
-
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${req.body.citation}'
                 RETURN *
                 `
             )

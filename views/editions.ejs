@@ -10,44 +10,29 @@
       <a href="<%= prevUrl; %>" type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>
       <h1 class="h2 d-inline align-middle ff-cursive">Editions</h1>
       <!-- alert -->
-      <div class="alert alert-info alert-dismissible fade show my-3 fs-xs" role="alert">
+      <div class="alert alert-info alert-dismissible fade show my-3" role="alert">
         <span>You can edit only the editions of which you are the editor.</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
 
       <% var publishedEditions = []; %>
-      <% var unpublishedEditions = []; %>
-
       <% if (editions.length > 0) { %>
+
+        <!-- published editions -->
         <% editions.forEach((edition) => { %>
           <% edition = JSON.parse(edition); %>
           <% var publish; %>
           <% for (const [key, value] of Object.entries(edition)) { %>
-
-            <!-- published editions -->
+            <!-- published edition -->
             <% if (value["publishType"] == "Published") { %>
+              <!-- published editions array -->
               <% if (!publishedEditions.includes(edition)) { %>
                 <% publishedEditions.push(edition); %>
               <% }; %>
             <% }; %>
-
-            <!-- unpublished editions -->
-            <% if (value["publishType"] == "Save as draft") { %>
-              <% if (!unpublishedEditions.includes(edition)) { %>
-                <% unpublishedEditions.push(edition); %>
-              <% }; %>
-            <% }; %>
-
           <% }; %>
         <% }); %>
-      <% }; %>
 
-      <% if (publishedEditions.length == 0 && unpublishedEditions.length >= 0) { %>
-        <div class="my-3">
-          <p class="fs-xs">No edition is available for now.</p>
-          <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary btn-sm" title="Read the edition">Create an edition</a>
-        </div>
-      <% } else { %>
         <!-- list of editions -->
         <ul class="marker-list">
           <% publishedEditions.forEach((edition) => { %>
@@ -108,8 +93,12 @@
             
           <% }); %>
         </ul>
+      <% } else { %>
+        <div class="my-3">
+          <p>No edition is available for now.</p>
+          <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
+        </div>
       <% }; %>
-
     </div>
   </div>
 

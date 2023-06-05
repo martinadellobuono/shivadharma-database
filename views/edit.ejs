@@ -48,7 +48,7 @@
       <div class="col-md-6 border p-3 enlarge-col">
         <h3 class="h6">Textus constitutus</h3>
         <form method="post" action="<%= process.env.URL_PATH %>/addFile/<%= id %>" enctype="multipart/form-data">
-          <label class="text-muted fs-xs">Upload a <span class="fw-bold">.docx</span> or <span class="fw-bold">.txt</span> file:</label>
+          <label class="text-muted fs-xs">Upload a <span class="fw-bold">.docx</span> file:</label>
           <input type="file" class="fs-xs" name="upload">
           <input class="btn btn-sm btn-light border" type="submit" value="Submit">
         </form>
@@ -60,7 +60,7 @@
             <% }; %>
           </textarea>
           <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <span class="text-success fs-xs d-none" id="fragment-message">All changes to the annotated fragment saved.</span>
+            <span class="text-success d-none" id="fragment-message">All changes to the annotated fragment saved.</span>
             <span class="text-secondary fst-italic fs-xs d-none" id="autosaved-message">All changes saved.</span>
           </div>
         </form>
@@ -84,20 +84,17 @@
                 <div class="tab-pane fade show active" id="annotate" role="tabpanel" aria-labelledby="annotate-tab">
                   <!-- default alerts -->
                   <div class="fs-xs" id="annotation-warning"></div>
-                  <div class="alert alert-primary alert-dismissible fade show mt-3 fs-xs rounded-20 p-3" role="alert">
+                  <div class="alert alert-primary alert-dismissible fade show mt-3 fs-xs" role="alert">
                     <p class="fw-bold">How the annotator works</p>
                     <p class="fw-bolder mb-2">1. Insert the witnesses</p>
                     <p>Click on Add metadata button, then on Witnesses. Insert all the witnesses to use them later building the apparatus. You can modify any metadata later.</p>
-                    <p class="fw-bolder mb-2">2. Insert the chapter, the stanzas, and then the annotations</p>
-                    <p>Highlight the fragment in the text you would like to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after clicking the button.</p> 
-                    <p class="bg-white rounded-20 p-1 px-3"><b>Start with annotating the chapter and then the stanza in which all the other annotations are included.</b></p>
-                    <p class="fw-bolder mb-2">3. Save your textus constitutus</p>
-                    <p>Even if your textus constitutus is saved every 5 seconds, for safety reasons remember to save it before submitting your annotation by clicking on <svg width="24" height="24" focusable="false"><path fill="#084298" d="M5 16h14a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2c0-1.1.9-2 2-2Zm0 2v2h14v-2H5Zm10 0h2v2h-2v-2Zm-4-6.4L8.7 9.3a1 1 0 1 0-1.4 1.4l4 4c.4.4 1 .4 1.4 0l4-4a1 1 0 1 0-1.4-1.4L13 11.6V4a1 1 0 0 0-2 0v7.6Z" fill-rule="nonzero"></path></svg>.</p>
+                    <p class="fw-bolder mb-2">2. Insert the annotations</p>
+                    <p>Highlight the fragment in the text you would like to annotate, then click a button to add specific information. Finally, fill in the forms which will appear after clicking the button.</p>
                   </div>
                 </div>
                 <div class="tab-pane fade" id="check" role="tabpanel" aria-labelledby="check-tab">
                   <h2 class="mt-3 h5 fs-xs" id="check-annotation"></h2>
-                  <div class="alert alert-info alert-dismissible fade show fs-xs rounded-20 p-3" role="alert">
+                  <div class="alert alert-info alert-dismissible fade show fs-xs" role="alert">
                     <p class="fw-bold">How the annotator works<br><span class="fw-bolder">Check the annotations</span></p>
                     <p>After annotating the selected fragment in the text, click on Check all to check the specific information you added via forms and modify them, if needed.</p>
                   </div>
@@ -112,13 +109,9 @@
             <div class="annotation-form note d-none">
               <%- include ("partials/forms-req/note") %>
             </div>
-            <!-- chapter form -->
-            <div class="annotation-form chapter d-none">
-              <%- include ("partials/forms-req/chapter") %>
-            </div>
-            <!-- stanza form -->
-            <div class="annotation-form stanza d-none">
-              <%- include ("partials/forms-req/stanza") %>
+            <!-- text structure form -->
+            <div class="annotation-form textStructure d-none">
+              <%- include ("partials/forms-req/textStructure") %>
             </div>
           </div>
         </div>
@@ -148,9 +141,8 @@
         <!-- translation -->
         <h3 class="h6">Translation</h3>
         <div class="btn-group-vertical btn-vertical btn-set-annotation">
-          <button type="button" class="btn btn-sm btn-preview btn-teal" data-value="translation" title="Preview translations"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-teal" data-value="translation" title="Hide translations"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-teal mb-2" data-value="translation" title="Annotate translations"><i class="bi bi-pencil-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-preview btn-teal" data-value="translation" title="Insert/check translations"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-teal mb-2" data-value="translation" title="Insert/check translations"><i class="bi bi-pencil-fill"></i></button>
         </div>
         <div class="annotation-form translation d-none">
           <%- include ("partials/forms-req/translation") %>
@@ -182,8 +174,7 @@
         <h3 class="h6">Parallels</h3>
         <div class="btn-group-vertical btn-vertical btn-set-annotation">
           <button type="button" class="btn btn-sm btn-preview btn-orange" data-value="parallel" title="Preview parallels"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-orange" data-value="parallel" title="Hide parallels"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-orange btn-annotation mb-2" data-value="parallel" title="Annotate parallels"><i class="bi bi-pencil-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-orange btn-annotation mb-2" data-value="parallel" title="Insert/check parallels"><i class="bi bi-pencil-fill"></i></button>
         </div>
         <div class="annotation-form parallel d-none">
           <%- include ("partials/forms-req/parallel") %>
@@ -215,8 +206,7 @@
         <h3 class="h6">Commentary</h3>
         <div class="btn-group-vertical btn-vertical btn-set-annotation">
           <button type="button" class="btn btn-sm btn-preview btn-indigo" data-value="commentary" title="Preview commentary"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-indigo" data-value="commentary" title="Hide commentary"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-indigo btn-annotation mb-2" data-value="commentary" title="Annotate commentary"><i class="bi bi-pencil-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-indigo btn-annotation mb-2" data-value="commentary" title="Insert/check commentary"><i class="bi bi-pencil-fill"></i></button>
         </div>
         <div class="annotation-form commentary d-none">
           <%- include ("partials/forms-req/commentary") %>
@@ -248,8 +238,7 @@
         <h3 class="h6">Citations</h3>
         <div class="btn-group-vertical btn-vertical btn-set-annotation">
           <button type="button" class="btn btn-sm btn-preview btn-fuchsia" data-value="citation" title="Preview citations"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-fuchsia" data-value="citation" title="Hide citations"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-fuchsia btn-annotation mb-2" data-value="citation" title="Annotate citations"><i class="bi bi-pencil-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-fuchsia btn-annotation mb-2" data-value="citation" title="Insert/check citations"><i class="bi bi-pencil-fill"></i></button>
         </div>
         <div class="annotation-form citation d-none">
           <%- include ("partials/forms-req/citation") %>
@@ -262,29 +251,20 @@
     <div class="row">
       <div class="col-md-12">
         <span class="fs-xs">Insert/check: </span>
-        <!-- chapter -->
+        <!-- text structure -->
         <div class="btn-group btn-set-annotation" role="group">
-          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="chapter" title="Preview chapters"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-secondary" data-value="chapter" title="Hide chapters"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="chapter" title="Annotate chapters"><i class="bi bi-pencil-fill"></i> Chapter</button>
-        </div>
-        <!-- stanza -->
-        <div class="btn-group btn-set-annotation" role="group">
-          <button type="button" class="btn btn-sm btn-preview btn-dark-green" data-value="stanza" title="Preview stanzas"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-dark-green" data-value="stanza" title="Hide stanzas"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-dark-green" data-value="stanza" title="Annotate stanzas"><i class="bi bi-pencil-fill"></i> Stanza/paragraph</button>
+          <button type="button" class="btn btn-sm btn-preview btn-secondary" data-value="textStructure" title="Preview text structure"><i class="bi bi-eye-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-annotation btn-secondary" data-value="textStructure" title="Insert/check text structure"><i class="bi bi-pencil-fill"></i> Text structure</button>
         </div>
         <!-- apparatus entry -->
         <div class="btn-group btn-set-annotation" role="group">
           <button type="button" class="btn btn-sm btn-preview btn-yellow" data-value="apparatus" title="Preview apparatus"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-yellow" data-value="apparatus" title="Hide apparatus"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-yellow" data-value="apparatus" title="Annotate apparatus"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
+          <button type="button" class="btn btn-sm btn-annotation btn-yellow" data-value="apparatus" title="Insert/check text structure"><i class="bi bi-pencil-fill"></i> Apparatus entry</button>
         </div>
         <!-- note -->
         <div class="btn-group btn-set-annotation" role="group">
           <button type="button" class="btn btn-sm btn-preview btn-blue" data-value="note" title="Preview notes"><i class="bi bi-eye-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-blue" data-value="note" title="Hide notes"><i class="bi bi-eye-slash-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-annotation btn-blue" data-value="note" title="Annotate notes"><i class="bi bi-pencil-fill"></i> Note on the text</button>
+          <button type="button" class="btn btn-sm btn-annotation btn-blue" data-value="note" title="Insert/check notes"><i class="bi bi-pencil-fill"></i> Note on the text</button>
         </div>
       </div>
     </div>

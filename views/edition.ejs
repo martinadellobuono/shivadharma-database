@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body onload="devanagariConverter();">
+<body>
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -55,21 +55,8 @@
     <div class="row">
       <!-- textus constitutus -->
       <div class="col-md-6 border p-3 enlarge-col">
-
-        <!-- roman / devanagari converter -->
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button type="button" class="btn btn-sm btn-primary btn-converter" data-script="devanagari">Convert to <span class="scriptLabel">Devanāgārī</span></button>
-        </div>
-
-        <!-- textus constitutus -->
         <% if (file) { %>
-
-          <!-- roman text -->
-          <div class="ff-edition text-to-convert" data-script="roman"><%- include (`../uploads/${file}`) %></div>
-
-          <!-- devanagari text -->
-          <div class="ff-edition text-to-convert" data-script="devanagari"></div>
-
+          <div class="ff-edition"><%- include (`../uploads/${file}`) %></div>
         <% } else { %>
           <p>The edition is coming soon!</p>
         <% }; %>

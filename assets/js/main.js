@@ -1,20 +1,3 @@
-/*
-    File main.js except the function devanagariConverter();
-    Author: Martina Dello Buono
-    Author's address: martinadellobuono1@gmail.com
-    Last change on: 09/05/2023
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
 document.addEventListener("DOMContentLoaded", () => {
     navbarBg();
     navbarActive();
@@ -27,12 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     autocomplete();
     dependingForms();
     cloneEl();
-    blockBtn();
     annotations();
     previewAnnotations();
     closeBtn();
     modifyAnnotations();
-    hideAnnotations();
     truncation();
     lemmaVariantPresence();
     witnessDimensions();
@@ -175,8 +156,8 @@ let fileTextarea = () => {
         width: "100%",
         plugins: "preview searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
-        menu: {
-            format: { title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat" },
+        menu : {
+            format: {title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat"},
         },
         toolbar: "save | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap | fullscreen preview save | image media template link anchor codesample | ltr rtl",
         toolbar_sticky: false,
@@ -202,20 +183,19 @@ let fileTextarea = () => {
             "[data-type='milestone'][data-start='start'][data-subtype='translation']::before {content: '\u25CF'; color: #79DFC1;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='citation']::before {content: '\u25CF'; color: #DE5C9D;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='note']::before {content: '\u25CF'; color: #087990;}" +
-            "[data-type='milestone'][data-start='start'][data-subtype='chapter']::before {content: '\u25CF'; color: #6C757D;}" +
-            "[data-type='milestone'][data-start='start'][data-subtype='stanza']::before {content: '\u25CF'; color: #3D8854;}" +
+            "[data-type='milestone'][data-start='start'][data-subtype='textStructure']::before {content: '\u25CF'; color: #6C757D;}" +
             "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 2px;}" +
-            "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 3.5px;}" +
-            "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 4.5px;}" +
-            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 5.5px;}" +
-            "[data-type='annotation-object'][data-subtype='citation'] {text-decoration: underline 3px solid #DE5C9D; text-underline-offset: 6.5px;}" +
-            "[data-type='annotation-object'][data-subtype='note'] {text-decoration: underline 3px solid #087990; text-underline-offset: 7.5px;}" +
-            "[data-type='annotation-object'][data-subtype='chapter'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 8.5px;}" +
-            "[data-type='annotation-object'][data-subtype='stanza'] {text-decoration: underline 3px solid #3D8854; text-underline-offset: 9.5px;}",
+            "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 4px;}" +
+            "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 6px;}" +
+            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 8px;}" +
+            "[data-type='annotation-object'][data-subtype='citation'] {text-decoration: underline 3px solid #DE5C9D; text-underline-offset: 10px;}" +
+            "[data-type='annotation-object'][data-subtype='note'] {text-decoration: underline 3px solid #087990; text-underline-offset: 12px;}" +
+            "[data-type='annotation-object'][data-subtype='textStructure'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 14px;}",
         verify_html: false,
 
         /* OPERATIONS ON THE TEXTUS */
         setup: (ed) => {
+
             /* when the text changes */
             "input keyup mousedown paste".split(" ").forEach((event) => {
                 ed.on(event, async (e) => {
@@ -252,11 +232,13 @@ let fileTextarea = () => {
                         }, 5000);
 
                     } else {
+
                         data = {
                             idEdition: idEdition,
                             idEditor: idEditor,
                             contentFile: contentFile
                         }
+
                     };
 
                 });
@@ -614,29 +596,6 @@ let cloneEl = () => {
     });
 };
 
-/* SAVE FILE */
-/* save file every 5 seconds */
-let saveFile = () => {
-    /* fetch data */
-    fetch("http://localhost/saveFile", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: { "Content-type": "application/json; charset=UTF-8" }
-    })
-        .then(json => {
-            console.log(json);
-            return json;
-        })
-        .catch(err => console.log(err));
-
-    /* saved message */
-    document.getElementById("autosaved-message").classList.remove("d-none");
-    setTimeout(() => {
-        document.getElementById("autosaved-message").classList.add("d-none");
-    }, 2000);
-};
-
-/* ANNOTATIONS */
 /* annotations */
 let annotations = () => {
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
@@ -955,40 +914,42 @@ let annotations = () => {
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
                     var contentFile = tinymce.get("fileBaseTxt").getContent();
+
                     var form = document.querySelector("#" + category + "-req");
                     var location = form.querySelector(".location");
+                    var inputs = location.querySelectorAll("input[type='number']");
+                    var submitBtn = form.querySelector("button[type='submit']");
 
-                    if (location !== null) {
-                        var inputs = location.querySelectorAll("input[type='number']");
-                        var submitBtn = form.querySelector("button[type='submit']");
-
-                        let detectEmptyForms = () => {
-                            for (var i = 0; i < inputs.length; i++) {
-                                if (inputs[i].value !== "") {
-                                    return true;
-                                } else {
-                                    return false;
-                                };
+                    let detectEmptyForms = () => {
+                        for (var i = 0; i < inputs.length; i++) {
+                            if (inputs[i].value !== "") {
+                                return true;
+                            } else {
+                                return false;
                             };
                         };
-
-                        submitBtn.addEventListener("click", () => {
-                            if (detectEmptyForms()) {
-                                /* send the file new content to the server */
-                                data = {
-                                    idEdition: idEdition,
-                                    idEditor: idEditor,
-                                    contentFile: contentFile
-                                }
-
-                                /* unblock all the buttons */
-                                const btns = document.querySelectorAll(".btn-set-annotation button");
-                                for (var i = 0; i < btns.length; i++) {
-                                    btns[i].removeAttribute("disabled");
-                                };
-                            };
-                        });
                     };
+
+                    submitBtn.addEventListener("click", () => {
+                        if (detectEmptyForms()) {
+                            /* send the file new content to the server */
+                            data = {
+                                idEdition: idEdition,
+                                idEditor: idEditor,
+                                contentFile: contentFile
+                            }
+
+                            /* save the file */
+                            /* saveFile();
+                            window.stop();
+ */
+                            /* unblock all the buttons */
+                            const btns = document.querySelectorAll(".btn-set-annotation button");
+                            for (var i = 0; i < btns.length; i++) {
+                                btns[i].removeAttribute("disabled");
+                            };
+                        };
+                    });
 
                 } else {
                     /* show default settings */
@@ -996,7 +957,7 @@ let annotations = () => {
                     formToHide.classList.add("d-none");
                     document.querySelector(".default-settings").classList.remove("d-none");
                     /* warning that you have selected nothing */
-                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show rounded-20 mt-3 p-3" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
                 };
 
             };
@@ -1004,6 +965,31 @@ let annotations = () => {
         });
 
     });
+};
+
+/* SAVE FILE */
+/* save file every 5 seconds */
+let saveFile = () => {
+    /* fetch data */
+    fetch("http://localhost:80/saveFile", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+    })
+        .then((response) => {
+            console.log(response);
+            response.json();
+        })
+        .then(json => {
+            console.log(json);
+        })
+        .catch(err => console.log(err));
+
+    /* saved message */
+    document.getElementById("autosaved-message").classList.remove("d-none");
+    setTimeout(() => {
+        document.getElementById("autosaved-message").classList.add("d-none");
+    }, 2000);
 };
 
 /* metadata textareas */
@@ -1049,7 +1035,7 @@ let publishEdition = () => {
             }
 
             /* fetch the type of publishment */
-            var route = "http://localhost/publish/" + idEdition + "-" + idEditor;
+            var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
             fetch(route, {
                 method: "POST",
                 body: JSON.stringify(publishType),
@@ -1060,17 +1046,16 @@ let publishEdition = () => {
                     console.log(json);
                 })
                 .catch(err => console.log(err));
+            
+            /* stop loading the page */
+            //window.stop();
 
         });
     };
-
-    /* stop loading the page */
-    stopLoading();
 };
 
-/* stop loading the page to stop saving the file */
+/* stop loading the page when submitting data */
 let stopLoading = () => {
-    /* submit buttons */
     var submitBtn = document.querySelectorAll("button[type='submit']");
     for (var i = 0; i < submitBtn.length; i++) {
         submitBtn[i].addEventListener("click", () => {
@@ -1078,74 +1063,6 @@ let stopLoading = () => {
             window.stop();
         });
     };
-
-    /* nav links */
-    var navLink = document.querySelectorAll(".nav-link");
-    for (var i = 0; i < navLink.length; i++) {
-        navLink[i].addEventListener("click", () => {
-            saveFile();
-            window.stop();
-        });
-    };
-};
-
-/* block annotation buttons when no chapter and stanza are available */
-let blockBtn = () => {
-    /* block all buttons except chapter if no chapters is available */
-    var selectChapters = document.querySelectorAll("select[name='chapter']");
-    if (selectChapters.length == 0) {
-        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
-        annotationBtns.forEach((btn) => {
-            if (btn.getAttribute("data-value") !== "chapter") {
-                btn.setAttribute("disabled", "disabled");
-            };
-        });
-    };
-
-    /* block all buttons except chapter and stanza if no stanza is available */
-    var selectStanzas = document.querySelectorAll("select[name='stanzaStart']");
-    if (selectChapters.length > 0 && selectStanzas.length == 0) {
-        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
-        annotationBtns.forEach((btn) => {
-            if (btn.getAttribute("data-value") !== "chapter" && btn.getAttribute("data-value") !== "stanza") {
-                btn.setAttribute("disabled", "disabled");
-            };
-        });
-    };
-
-    /* unblock all buttons if at least one stanza and one chapter are available */
-    if (selectChapters.length > 0 && selectStanzas.length > 0) {
-        var annotationBtns = document.querySelectorAll(".btn-set-annotation .btn");
-        annotationBtns.forEach((btn) => {
-            btn.removeAttribute("disabled");
-        });
-    };
-};
-
-/* filter stanzas depending on the chapter */
-let filterStanzas = () => {
-    var selects = document.querySelectorAll("select[name='chapter']");
-    selects.forEach((select) => {
-        let filtering = () => {
-            var chapter = select.value;
-            var stanzas = document.querySelectorAll("select[data-type='chapterStanza']");
-            stanzas.forEach((stanza) => {
-                var options = stanza.querySelectorAll("option");
-                options.forEach((option) => {
-                    if (option.getAttribute("data-refChapter") !== chapter) {
-                        option.classList.add("d-none");
-                    } else {
-                        option.classList.remove("d-none");
-                        option.selected = true;
-                    };
-                });
-            });
-        };
-        filtering();
-        select.addEventListener("change", () => {
-            filtering();
-        });
-    });
 };
 
 /* ONLOAD EDIT PAGE */
@@ -1153,9 +1070,8 @@ let onloadEdit = () => {
     fileTextarea();
     metadataTextareas();
     setInterval(saveFile, 5000);
-    publishEdition();
     stopLoading();
-    filterStanzas();
+    publishEdition();
 };
 
 /* preview annotations */
@@ -1165,14 +1081,6 @@ let previewAnnotations = () => {
         btn.addEventListener("click", () => {
             /* close annotations */
             closeAnnotationBox();
-
-            /* show annotations in text */
-            var categoryToShow = btn.getAttribute("data-value");
-            var spansToShow = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='hidden-" + categoryToShow + "']");
-            spansToShow.forEach((span) => {
-                span.setAttribute("data-subtype", categoryToShow);
-            });
-
             /* open panels */
             /* vertical panels */
             var bigger = btn.closest(".enlarge-col");
@@ -1321,25 +1229,24 @@ let closeAnnotationBox = () => {
     /* annotation box > default col */
     var smaller = document.querySelectorAll(".col-md-4.enlarge-col");
     if (smaller.length > 0) {
-        smaller.forEach((el) => {
-            /* reset the col */
-            el.classList.add("col-md-1");
-            el.classList.remove("col-md-4");
-            el.classList.remove("bg-light");
-            el.querySelector(".top-btn").classList.remove("d-none");
+        if (smaller.length > 0) {
+            smaller.forEach((el) => {
+                /* reset the col */
+                el.classList.add("col-md-1");
+                el.classList.remove("col-md-4");
+                el.classList.remove("bg-light");
+                el.querySelector(".top-btn").classList.remove("d-none");
 
-            /* hide the forms */
-            el.querySelector(".annotation-form").classList.add("d-none");
+                /* hide the forms */
+                el.querySelector(".annotation-form").classList.add("d-none");
 
-            /* hide the close button */
-            el.querySelector(".btn-close").classList.add("d-none");
-        });
+                /* hide the close button */
+                el.querySelector(".btn-close").classList.add("d-none");
+            });
+        };
     } else {
         /* hide the forms */
-        var annotationForms = document.querySelectorAll(".annotation-form");
-        for (var i = 0; i < annotationForms.length; i++) {
-            annotationForms[i].classList.add("d-none");
-        };
+        document.querySelector(".annotation-form").classList.add("d-none");
     };
 };
 
@@ -1522,14 +1429,6 @@ let modifyAnnotations = () => {
                         });
                     };
 
-                    /* select */
-                    let select = () => {
-                        var selects = form.querySelectorAll("select[name='" + name + "']");
-                        selects.forEach((select) => {
-                            select.querySelector("option[value='" + val + "']").selected = "selected";
-                        });
-                    };
-
                     /* fill the input */
                     if (el.getAttribute("data-input") == "number") {
                         numbers();
@@ -1539,10 +1438,6 @@ let modifyAnnotations = () => {
                         checkbox();
                     } else if (el.getAttribute("data-input") == "list") {
                         lists();
-                    } else if (el.getAttribute("data-input") == "list") {
-                        lists();
-                    } else if (el.getAttribute("data-input") == "select") {
-                        select();
                     } else {
                         textareas();
                     };
@@ -1575,47 +1470,6 @@ let modifyAnnotations = () => {
     });
 };
 
-/* hide annotations */
-let hideAnnotations = () => {
-    var btnHide = document.querySelectorAll(".btn-hide");
-    btnHide.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            var categoryToHide = btn.getAttribute("data-value");
-            var spansToHide = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
-            spansToHide.forEach((span) => {
-                span.setAttribute("data-subtype", "hidden-" + categoryToHide);
-            });
-        });
-    });
-};
-
-/* text structure */
-let textStructureOpt = () => {
-    var chapters = document.querySelectorAll(".available-chapters");
-    var stanzas = document.querySelectorAll(".related-available-chapters");
-    /* no chapter available */
-    if (chapters.length == 0) {
-        /* disable chapters */
-        for (var i = 0; i < chapters.length; i++) {
-            chapters[i].setAttribute("disabled", "disabled");
-        };
-        /* disable stanzas */
-        for (var i = 0; i < stanzas.length; i++) {
-            stanzas[i].setAttribute("disabled", "disabled");
-        };
-    } else {
-        /* chapters available */
-        /* enable chapters */
-        for (var i = 0; i < chapters.length; i++) {
-            chapters[i].removeAttribute("disabled");
-        };
-        /* enable stanzas */
-        for (var i = 0; i < stanzas.length; i++) {
-            stanzas[i].removeAttribute("disabled");
-        };
-    };
-};
-
 /* live check */
 /* textarea live check in textarea() */
 let liveCheck = () => {
@@ -1626,7 +1480,7 @@ let liveCheck = () => {
     var padaEnd = [];
 
     input.forEach((el) => {
-        "click change keyup".split(" ").forEach((e) => {
+        "change keyup".split(" ").forEach((e) => {
             el.addEventListener(e, () => {
                 /* RADIOS */
                 if (el.getAttribute("type") == "radio") {
@@ -1642,14 +1496,8 @@ let liveCheck = () => {
                     });
                 };
 
-                /* SELECT */
-                if (el.getAttribute("data-input") == "select") {
-
-                    /* chapter */
-                    if (el.getAttribute("name") == "chapter") {
-                        /* print value of chapter */
-                        document.getElementById("live-chapter").innerHTML = el.value;
-                    };
+                /* NUMBER */
+                if (el.getAttribute("type") == "number") {
 
                     /* stanza start */
                     if (el.getAttribute("name") == "stanzaStart") {
@@ -2025,290 +1873,4 @@ let inlineLocation = () => {
             location.remove();
         };
     };
-};
-
-/*
-    JS function: devanagariConverter
-    Author: Csaba Kiss
-    Author's address: csaba.kiss.email@gmail.com
-    Last change on: 08/05/2023
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-let devanagariConverter = () => {
-    var btnConverter = document.querySelectorAll(".btn-converter");
-
-    btnConverter.forEach((btn) => {
-        btn.addEventListener("click", () => {
-
-            var containerDevanagari = document.querySelector(".text-to-convert[data-script='devanagari']");
-            var containerRoman = document.querySelector(".text-to-convert[data-script='roman']");
-
-            // convert the text
-            let dic = [
-                // space:
-                [' ', ' '],
-                // initial vowels:
-                ['A', 'अ'],
-                ['Ā', 'आ'],
-                ['I', 'इ'],
-                ['Ī', 'ई'],
-                ['U', 'उ'],
-                ['Ū', 'ऊ'],
-                ['Ṛ', 'ऋ'],
-                ['Ṝ', 'ॠ'],
-                ['E', 'ए'],
-                ['O', 'ओ'],
-                ['Đ', 'ऐ'],
-                ['Ő', 'औ'],
-                ["’", 'ऽ'],
-                ['Ó', 'ॐ'],
-                //  conjunct vowels:
-                ['a', ''], ['ā', 'ा'], ['i', 'ि'], ['ī', 'ी'], ['u', 'ु'],
-                ['ū', 'ू'], ['ṛ', 'ृ'], ['ṝ', 'ॄ'], ['ḷ', 'ॢ'], ['ḹ', 'ॣ'],
-                ['e', 'े'], ['o', 'ो'], ['đ', 'ै'], ['ő', 'ौ'], ['ṃ', 'ं'], ['ḥ', 'ः'],
-                // virāma:
-                ['V', '्'],
-                // consonants: 	 		 	
-                ['k', 'क'], ['Ɋ', 'ख'], ['g', 'ग'], ['G', 'घ'], ['ṅ', 'ङ'],
-                //
-                ['c', 'च'], ['Ȼ', 'छ'], ['j', 'ज'], ['J', 'झ'], ['ñ', 'ञ'],
-                //	 	 	 	
-                ['ṭ', 'ट'], ['Ṭ', 'ठ'], ['ḍ', 'ड'], ['Ḍ', 'ढ'], ['ṇ', 'ण'],
-                // 
-                ['t', 'त'], ['T', 'थ'], ['d', 'द'], ['D', 'ध'], ['n', 'न'],
-                // 
-                ['p', 'प'], ['P', 'फ'], ['b', 'ब'], ['B', 'भ'], ['m', 'म'],
-                //
-                ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'], ['ś', 'श'], ['ṣ', 'ष'],
-                ['s', 'स'], ['h', 'ह']]
-
-            // , ['0', '०'],
-            //['1', '१'], ['2', '२'], ['3', '३'], ['4', '४'], ['5', '५'], ['6', '६'],
-            //['7', '७'], ['8', '८'], ['9', '९']]
-
-            let dnnumbers = [['0', '0'], ['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5'], ['6', '6'], ['7', '7'], ['8', '8'], ['9', '9']]
-
-            // \n added only in this version of the script
-
-            let vowels = ["ṃ", "ḥ", 'a', 'i', 'u', 'ṛ', 'ḷ', 'ā', 'ī', 'ū', 'ṝ', 'ḹ', 'e', 'ai', 'o', 'au', 'đ', 'ő']
-
-            let consonants = ["k", "Ɋ", "g", "G", "ṅ", "c", "Ȼ", "j", "J", "ñ", "ṭ", "Ṭ", "ḍ", "Ḍ", "ṇ", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h"] //, "<", ">"]
-
-            //let preprocessing = [['ai', 'đ'], ['au', 'ő'], ['kh', 'Ɋ'], ['gh', 'G'], ['ṭh', 'Ṭ'], ['ḍh', 'Ḍ'], ['th', 'T'], ['dh', 'D'], ['ph', 'P'], ['bh', 'B'], ['ch', 'Ȼ'], ['jh', 'J'], ['\|\|', ' ।।'], ['\|', ' ।'], ['{ }', ''], ['\n', ' \n'], [',', ' ,'],]
-
-            let preprocessing = { 'ai': 'đ', 'au': 'ő', 'kh': 'Ɋ', 'gh': 'G', 'ṭh': 'Ṭ', 'ḍh': 'Ḍ', 'th': 'T', 'dh': 'D', 'ph': 'P', 'bh': 'B', 'ch': 'Ȼ', 'jh': 'J' }
-
-            let cosmetics = [['\|\|', ' ।। '], ['\|', ' ।'], ['{ }', ''], ['\n', ' \n'], [',', ' ,'], ['{', '{ '], ['}', ' }'], ['-', ' - '], ['/', ' / ']];
-            // the last but one produces viraamas at the end of line; the last one is for <br/>, somehow the / is lost
-
-            // CHANGE IAST LETTERS TO DEVANAGARI
-            // this is the Roman script input point
-
-            /* TRY */
-
-
-            var editionText = containerRoman.innerHTML;
-
-            roman_elem = editionText.toLowerCase().split('\n');
-
-            // these will trigger the stopping of conversion after \ and <
-            let commandflag = false;
-            let tagflag = false;
-
-            let results = "";
-            let roman_prep = [];
-
-            // preprocess
-            let preproc_keys = Object.keys(preprocessing);
-
-            // going through the lines
-            for (let a = 0; a < roman_elem.length; a++) {
-                roman_elem[a] = roman_elem[a] + ' ';
-
-                // applying minor changes from the array 'cosmetics'
-                for (let b = 0; b < cosmetics.length; b++) {
-                    roman_elem[a] = roman_elem[a].split(cosmetics[b][0]).join(cosmetics[b][1]);
-                }
-
-
-                let preprocessed_line = roman_elem[a].split('');
-                let c = 0;
-                let doubleChar = '';
-
-                while (c < preprocessed_line.length) {
-
-                    // flags
-                    if (preprocessed_line[c] === '\\' || Number.isInteger(parseInt(preprocessed_line[c]))) { commandflag = true; }
-                    if (preprocessed_line[c] === '<') { tagflag = true; commandflag = true; }
-                    if (preprocessed_line[c] === '>') { tagflag = false; commandflag = false; }
-                    if (preprocessed_line[c] === ' ' && tagflag === false) { commandflag = false; }
-
-                    // if indeed the section should be changed to Devanagari
-                    if (commandflag === false) {
-
-                        // preprocess double characters such as th and ai
-                        doubleChar = preprocessed_line[c] + preprocessed_line[c + 1];
-
-                        if (preproc_keys.includes(doubleChar)) {
-                            preprocessed_line[c] = preprocessing[doubleChar];
-                            preprocessed_line[c + 1] = '';
-                        }
-
-                    }
-                    c = c + 1;
-                }
-
-                roman_prep[a] = preprocessed_line.join('') + " ";
-
-            } // end of preprocessing double characters such as th and ai
-
-            // change
-            for (let d = 0; d < roman_prep.length; d++) {
-                let rsplit = roman_prep[d].split('');
-                let conjunct = false;
-                // go through this line letter by letter
-                for (let l = 0; l < rsplit.length; l++) {
-                    if (rsplit[l] === '\\' || Number.isInteger(parseInt(rsplit[l]))) { commandflag = true; }
-                    if (rsplit[l] === '<') { tagflag = true; commandflag = true }
-                    if (rsplit[l] === ' ' && tagflag === false) { commandflag = false; }
-
-
-                    if (commandflag === false) {  // big if
-                        if (l < rsplit.length && consonants.includes(rsplit[l]) && consonants.includes(rsplit[l + 1])) {
-                            rsplit[l] = rsplit[l] + 'V';
-                        }
-
-                        // space
-                        if (rsplit[l] === " " || rsplit[l] === "-") {
-                            conjunct = false;
-                        }
-
-                        // sandhi C + V
-                        if (l < rsplit.length - 2 && consonants.includes(rsplit[l]) && rsplit[l + 1] === " " && vowels.includes(rsplit[l + 2])) {
-                            rsplit[l + 1] = '';
-                        }
-
-                        // sandhi C + C
-                        if (l < rsplit.length - 2 && consonants.includes(rsplit[l]) && rsplit[l + 1] === " " && consonants.includes(rsplit[l + 2])) {
-                            rsplit[l + 1] = 'V';
-                        }
-
-                        // if it is an initial consonant
-                        if (conjunct === false && consonants.includes(rsplit[l])) {
-                            rsplit[l] = rsplit[l];
-                            conjunct = true;
-                        }
-
-                        // if it is an initial vowel
-                        if (conjunct === false && vowels.includes(rsplit[l])) {
-                            rsplit[l] = rsplit[l].toUpperCase();
-                            conjunct = true;
-
-                        }
-
-                        // if it is a last consonant: put in virāma
-                        if (l < rsplit.length && consonants.includes(rsplit[l]) && (rsplit[l + 1] === " " || rsplit[l + 1] === "<")) {
-                            rsplit[l] = rsplit[l] + 'V';
-                        }
-
-                    } // end of big if
-                    else {
-                        for (let b = 0; b < preprocessing.length; b++) {
-                            // a nice trick to change all occurences in line
-                            if (rsplit[l] === preprocessing[b][1]) {
-                                rsplit[l] = preprocessing[b][0];
-                            }
-                        }
-
-                    }
-                    // change all into Devanagari
-                    for (let rmchar = 0; rmchar < dic.length; rmchar++) {
-                        if (rsplit[l] === dic[rmchar][0] && commandflag === false) {
-                            rsplit[l] = dic[rmchar][1];
-                        }
-                        if (rsplit[l].length === 2 && rsplit[l][0] === dic[rmchar][0] && commandflag === false) {
-                            rsplit[l] = dic[rmchar][1] + '्';
-                        }
-                    }
-                    if (rsplit[l] === '>') { tagflag = false; commandflag = false; }
-
-                } // end of go through this line letter by letter
-
-                rjoin = rsplit.join('');
-                // change numbers to Devanagari anyway
-                for (n = 0; n < dnnumbers.length; n++) {
-                    rjoin = rjoin.split(dnnumbers[n][0]).join(dnnumbers[n][1]);
-                }
-                // delete spaces after {s, and before }s
-                rjoin = rjoin.split('{ ').join('{');
-                rjoin = rjoin.split(' }').join('}');
-                rjoin = rjoin.split(' - ').join('-');
-                rjoin = rjoin.split(' / ').join('/');
-                results = results + rjoin + '\n';
-            } // end of for 
-
-
-            /*
-                JS function: this last part of devanagariConverter
-                Author: Martina Dello Buono
-                Author's address: martinadellobuono1@gmail.com
-                Last change on: 09/05/2023
-                Copyright (c) 2023 by the author
-                Permission to use, copy, modify, and/or distribute this software for any
-                purpose with or without fee is hereby granted, provided that the above
-                copyright notice and this permission notice appear in all copies.
-                THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-                WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-                MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-                SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-                WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-                OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-                CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-            */
-            const romanTxt = editionText;
-            const devanagariTxt = results;
-
-            /* print the devanagari text */
-            containerRoman.innerHTML = romanTxt;
-            containerDevanagari.innerHTML = devanagariTxt;
-
-            /* switch from devanagari to sanskrit and vice versa */
-            const expr = btn.getAttribute("data-script");
-            switch (expr) {
-                case "roman":
-                    /* print the roman text */
-                    containerRoman.classList.remove("d-none");
-                    containerDevanagari.classList.add("d-none");
-
-                    /* set the button */
-                    btn.setAttribute("data-script", "devanagari");
-                    btn.querySelector(".scriptLabel").innerHTML = "Devanāgārī";
-
-                    break;
-                case "devanagari":
-                    /* print the roman text */
-                    containerRoman.classList.add("d-none");
-                    containerDevanagari.classList.remove("d-none");
-
-                    /* set the button */
-                    btn.setAttribute("data-script", "roman");
-                    btn.querySelector(".scriptLabel").innerHTML = "Roman";
-
-                    break;
-                default:
-                    console.log(`Sorry, we are out of ${expr}.`);
-            }
-
-        });
-    });
 };

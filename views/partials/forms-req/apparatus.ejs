@@ -52,45 +52,21 @@
             <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="apparatus" name="selectedFragment">
           </div>
           <!-- location -->
-          <div class="location bg-white rounded-20 p-3 mb-3">
+          <div class="location bg-white p-3 mb-3">
             <!-- chapter -->
             <div class="mb-3">
-              <label class="form-label">Chapter</label>          
-              <% if (availableChapters.length > 0) { %>
-                <select class="form-select live-check" aria-label="Select the number of chapter" data-input="select" name="chapter">
-                  <% availableChapters.forEach((chapter) => { %>
-                    <option value='<%= chapter["n"]; %>'><%= chapter["n"]; %></option>
-                  <% }); %>
-                </select>
-              <% } else { %>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>Annotate the chapter</strong> in which your selected fragment is located first.
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              <% }; %>
+              <label class="form-label">Chapter</label>
+              <input class="form-control" type="number" aria-describedby="Chapter" placeholder="Insert the number of chapter" name="chapter" required>
             </div>
             <!-- stanza / pada -->
             <label class="form-label">Stanza</label>
             <div class="mb-3">
               <div class="form-text">If you refer to only one stanza, fill the starting stanza and pāda&#x28;s&#x29; form, then the ending stanza and pāda&#x28;s&#x29; with the values of the starting ones.</div>
             </div>
-            <!-- starting stanza -->
-            <div class="mb-3">
-              <label class="form-label">Starting stanza</label>
-              <% if (availableStanzas.length > 0) { %>
-                <select class="form-select live-check" aria-label="Select the number of stanza" data-input="select" data-type="chapterStanza" name="stanzaStart">
-                  <% availableStanzas.forEach((stanza) => { %>
-                    <option data-refChapter='<%= stanza["refChapter"]; %>' value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
-                  <% }); %>
-                </select>
-              <% } else { %>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>Annotate the stanza</strong> in which your selected fragment is located first.
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              <% }; %>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Starting stanza</span>
+              <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaStart" required>
             </div>
-            <!-- starting pada -->
             <div class="mb-3">
               <label class="form-label">Pāda</label>
               <div class="form-check form-check-inline">
@@ -118,23 +94,10 @@
                 <label class="form-check-label">f</label>
               </div>
             </div>
-            <!-- ending stanza -->
-            <div class="mb-3">
-              <label class="form-label">Ending stanza</label>
-              <% if (availableStanzas.length > 0) { %>
-                <select class="form-select live-check" aria-label="Select the number of stanza" data-type="chapterStanza" name="stanzaEnd">
-                  <% availableStanzas.forEach((stanza) => { %>
-                    <option data-refChapter='<%= stanza["refChapter"]; %>' value='<%= stanza["n"]; %>'><%= stanza["n"]; %></option>
-                  <% }); %>
-                </select>
-              <% } else { %>
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                  <strong>Annotate the stanza</strong> in which your selected fragment is located first.
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              <% }; %>
+            <div class="input-group mb-3">
+              <span class="input-group-text">Ending stanza</span>
+              <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaEnd" required>
             </div>
-            <!-- ending pada -->
             <div class="mb-3">
               <label class="form-label">Pāda</label>
               <div class="form-check form-check-inline">
@@ -164,22 +127,18 @@
             </div>
           </div>
           <!-- lemma -->
-          <div class="bg-white rounded-20 p-3 mb-3">
+          <div class="bg-white p-3 mb-3">
             <label class="form-label">Lemma</label>
             <!-- present or omitted -->
             <div class="mb-3">
               <div class="form-check">
-                <input class="form-check-input check-presence" type="checkbox" data-value="lemma-omission" data-href="lemmaOmission" data-omission="lemma" name="lemmaPresence">
-                <label class="form-check-label">Omitted</label>
-              </div>
-              <!--<div class="form-check">
                 <input class="form-check-input check-presence" type="radio" data-subtype="lemma" data-value="lemma-present" data-omission="lemma" name="lemmaPresence" checked>
                 <label class="form-check-label">Present</label>
               </div>
               <div class="form-check">
                 <input class="form-check-input check-presence" type="radio" data-subtype="lemma" data-value="lemma-omission" data-href="lemmaOmission" data-omission="lemma" name="lemmaPresence">
                 <label class="form-check-label">Omitted</label>
-              </div>-->
+              </div>
             </div>
             <!-- truncation -->
             <div class="p-3 pb-1 bg-light" data-subtype="lemma" data-workflow="lemma-present">
@@ -189,11 +148,11 @@
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" data-value="circlefront" value="circlefront" name="lemmaTruncation">
-                  <label class="form-check-label">Circleleft</label>
+                  <label class="form-check-label">Circlefront</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" data-value="circleback" value="circleback" name="lemmaTruncation">
-                  <label class="form-check-label">Circleright</label>
+                  <label class="form-check-label">Circleback</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="lemma" data-value="circlearound" value="circlearound" name="lemmaTruncation">
@@ -216,37 +175,26 @@
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
             </div>
             <!-- additional notes -->
-            <div class="bg-light mb-3 p-3">
+            <div class="p-3 bg-light">
               <label class="form-label">Additional notes</label>
               <div class="apparatus-container">
                 <textarea class="mt-1 live-check" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="lemmaNotes" id="lemmaNotes"></textarea>
               </div>
             </div>
-            <!-- hide the variant in the apparatus visualization -->
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox">
-                <label class="form-check-label">Hide the lemma in the apparatus visualization</label>
-              </div>
-            </div>
           </div>
           <!-- variants -->
-          <div class="alert bg-light-yellow alert-dismissible fade show rounded-20 p-3 mb-3 data-list" data-cloned="variant">
+          <div class="alert alert-warning alert-dismissible fade show p-3 mb-3 data-list" data-cloned="variant">
             <label class="form-label">Variant</label>
             <!-- present or omitted -->
             <div class="mb-3">
               <div class="form-check">
-                <input class="form-check-input check-presence" type="checkbox" data-subtype="variant0-presence" data-value="variant0-omission" data-href="variant0-omission" data-omission="variant0" name="variant0-presence">
-                <label class="form-check-label">Omitted</label>
-              </div>
-              <!--<div class="form-check">
                 <input class="form-check-input check-presence" type="radio" data-subtype="variant0-presence" data-value="variant0-present" name="variant0-presence" checked>
                 <label class="form-check-label">Present</label>
               </div>
               <div class="form-check">
                 <input class="form-check-input check-presence" type="radio" data-subtype="variant0-presence" data-value="variant0-omission" data-href="variant0-omission" data-omission="variant0" name="variant0-presence">
                 <label class="form-check-label">Omitted</label>
-              </div>-->
+              </div>
             </div>
             <!-- truncation -->
             <div class="p-3 pb-1 bg-light" data-subtype="variant0" data-workflow="variant0-present">
@@ -256,11 +204,11 @@
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlefront" name="truncation-radios">
-                  <label class="form-check-label">Circleleft</label>
+                  <label class="form-check-label">Circlefront</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circleback" name="truncation-radios">
-                  <label class="form-check-label">Circleright</label>
+                  <label class="form-check-label">Circleback</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" data-subtype="truncation" data-href="variant0" data-value="circlearound" name="truncation-radios">
@@ -284,17 +232,10 @@
               <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
             </div>
             <!-- additional notes -->
-            <div class="bg-light mb-3 p-3">
+            <div class="p-3 bg-light">
               <label class="form-label">Additional notes</label>
               <div class="apparatus-container">
                 <textarea class="live-check mt-1" placeholder="Insert additional notes..." data-type="apparatus" data-subtype="omissionComment" name="variant0Omission" id="variant0-OmissionEditor"></textarea>
-              </div>
-            </div>
-            <!-- hide the variant in the apparatus visualization -->
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox">
-                <label class="form-check-label">Hide the variant in the apparatus visualization</label>
               </div>
             </div>
           </div>

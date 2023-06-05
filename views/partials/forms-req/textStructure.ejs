@@ -21,85 +21,114 @@
 <!-- text structure -->
 <h3 class="h6">Text structure</h3>
 <ul class="nav nav-tabs fs-xs" role="tablist">
+  <!-- annotate -->
   <li class="nav-item" role="presentation">
     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-textStructure" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
   </li>
+  <!-- check -->
   <li class="nav-item" role="presentation">
     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-textStructure" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
   </li>
 </ul>
 <div class="tab-content fs-xs">
   <!-- ANNOTATE -->
-  <div class="tab-pane fade show active" id="annotate-textStructure" role="tabpanel" aria-labelledby="annotate-tab">
-    <!-- textStructure form -->
-    <div class="annotation-form textStructure d-none textStructure-scroll scroll-tab">
-      <!-- chapter -->
-      <form class="form-annotations mb-3" id="textStructure-req" method="post" action="<%= process.env.URL_PATH %>/addChapter/<%= id %>">
-        <!-- ID -->
-        <div class="d-none">
-          <label class="form-label">ID of annotation</label>
-          <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="textStructure" name="idAnnotation">
+  <div class="tab-pane fade show active scroll-tab" id="annotate-textStructure" role="tabpanel" aria-labelledby="annotate-tab">
+    <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addtextStructure/<%= id %>">
+      <!-- ID -->
+      <div class="d-none">
+        <label class="form-label">ID of annotation</label>
+        <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="textStructure" name="idAnnotation">
+      </div>
+      <!-- selected fragment -->
+      <div class="mb-3 mt-3">
+        <label class="form-label">Selected fragment</label>
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="textStructure" name="selectedFragment">
+      </div>
+      <!-- location -->
+      <div class="location bg-white p-3 mb-3">
+        <label class="form-label">Stanza</label>
+        <div class="mb-3">
+          <div class="form-text">If you refer to only one stanza, fill the starting stanza and pāda&#x28;s&#x29; form, then the ending stanza and pāda&#x28;s&#x29; with the values of the starting ones.</div>
         </div>
-        <!-- selected fragment -->
-        <div class="mb-3 mt-3">
-          <label class="form-label">Selected fragment</label>
-          <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="textStructure" name="selectedFragment">
+        <div class="input-group mb-3">
+          <span class="input-group-text">Starting stanza</span>
+          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaStart" required>
         </div>
-        <!-- type of structure -->
-        <div class="bg-white p-3 mb-3">
-          <!-- chapter -->
-          <label class="form-label">Chapter</label>
-          <input type="number" min="1" class="form-control form-control-sm" aria-describedby="Number of chapter" name="textStructureChapter">
-          <div class="form-text">Annotate chapters first.</div>
-        </div>
-        <!-- submit -->
-        <div>
-          <button type="submit" class="btn btn-primary">Save</button>
-        </div>
-      </form>
-      <!-- stanza -->
-      <form class="form-annotations mb-3" method="post" action="<%= process.env.URL_PATH %>/addStanza/<%= id %>">
-        <!-- ID -->
-        <div class="d-none">
-          <label class="form-label">ID of annotation</label>
-          <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="textStructure" name="idAnnotation">
-        </div>
-        <!-- selected fragment -->
-        <div class="mb-3 mt-3 d-none">
-          <label class="form-label">Selected fragment</label>
-          <input class="form-control" type="text" aria-describedby="Selected fragment" readonly="true" data-value="textStructure" name="selectedFragment">
-        </div>
-        <!-- type of structure -->
-        <div class="bg-white p-3 mb-3">
-          <!-- chapter -->
-          <div class="mb-3">
-            <label class="form-label">Stanza</label>
-            <input type="number" min="1" class="form-control form-control-sm related-available-chapters" aria-describedby="Number of chapter" name="textStructureStanza">
+        <div class="mb-3">
+          <label class="form-label">Pāda</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="a" name="padaStart">
+            <label class="form-check-label">a</label>
           </div>
-          <div class="mb-3">            
-            <% if (availableChapters.length > 0) { %>
-              <label class="form-label">In chapter</label>
-              <% availableChapters.forEach((chapter) => { %>
-                <div class="form-check">
-                  <input class="form-check-input available-chapters" type="radio" id="chapter-<%= chapter; %>" value="<%= chapter; %>" name="stanzaRefChapter">
-                  <label class="form-check-label"><%= chapter; %></label>
-                </div>
-              <% }); %>
-            <% }; %>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="b" name="padaStart">
+            <label class="form-check-label">b</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="c" name="padaStart">
+            <label class="form-check-label">c</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="d" name="padaStart">
+            <label class="form-check-label">d</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="e" name="padaStart">
+            <label class="form-check-label">e</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="f" name="padaStart">
+            <label class="form-check-label">f</label>
           </div>
         </div>
-        <!-- submit -->
-        <div>
-          <button type="submit" class="btn btn-primary">Save</button>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Ending stanza</span>
+          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza" aria-describedby="Insert stanza" name="stanzaEnd">
         </div>
-      </form>
-    </div>
+        <div class="mb-3">
+          <label class="form-label">Pāda</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="a" name="padaEnd">
+            <label class="form-check-label">a</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="b" name="padaEnd">
+            <label class="form-check-label">b</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="c" name="padaEnd">
+            <label class="form-check-label">c</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="d" name="padaEnd">
+            <label class="form-check-label">d</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="e" name="padaEnd">
+            <label class="form-check-label">e</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="f" name="padaEnd">
+            <label class="form-check-label">f</label>
+          </div>
+        </div>
+      </div>
+      <!-- text structure -->
+      <div class="mb-3">
+        <label class="form-label">Text structure</label>
+        <textarea placeholder="Insert the text structure..." name="textStructure"></textarea>
+      </div>
+      <!-- submit -->
+      <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
   </div>
   <!-- CHECK -->
   <div class="tab-pane fade" id="check-textStructure" role="tabpanel" aria-labelledby="check-tab">
     <h2 class="mt-3 h5" id="check-annotation"></h2>
-    <!-- results textStructure -->
-    <div class="textStructure-scroll scroll-tab" id="textStructure-res">
+    <!-- results text structure -->
+    <div class="scroll-tab" id="textStructure-res">
       <%- include ("partials/forms-res/textStructure") %>
     </div>
   </div>
