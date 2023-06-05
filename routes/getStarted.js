@@ -6,11 +6,11 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get(process.env.URL_PATH + "/getstarted", async (req, res) => {
-    res.render("getstarted", { name: req.user.name });
+router.get(process.env.URL_PATH + "/getStarted", async (req, res) => {
+    res.render("getStarted", { name: req.user.name });
 });
 
-router.post(process.env.URL_PATH + "/getstarted", async (req, res) => {
+router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
     /* edition url */
     var idEdition;
     var idEditor;
