@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     previewAnnotations();
     closeBtn();
     modifyAnnotations();
+    deleteAnnotations();
     truncation();
     lemmaVariantPresence();
     witnessDimensions();
@@ -956,10 +957,6 @@ let annotations = () => {
                                 contentFile: contentFile
                             }
 
-                            /* save the file */
-                            /* saveFile();
-                            window.stop();
- */
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
                             for (var i = 0; i < btns.length; i++) {
@@ -995,9 +992,6 @@ let saveFile = () => {
     })
         .then((response) => {
             response.json();
-        })
-        .then(contentFile => {
-            console.log(contentFile);
         })
         .catch(err => console.log(err));
 
@@ -1051,7 +1045,7 @@ let publishEdition = () => {
             }
 
             /* fetch the type of publishment */
-            var route = "http://localhost:80/publish/" + idEdition + "-" + idEditor;
+            var route = "/publish/" + idEdition + "-" + idEditor;
             fetch(route, {
                 method: "POST",
                 body: JSON.stringify(publishType),
@@ -1062,9 +1056,6 @@ let publishEdition = () => {
                     console.log(json);
                 })
                 .catch(err => console.log(err));
-
-            /* stop loading the page */
-            //window.stop();
 
         });
     };
@@ -1415,7 +1406,6 @@ let modifyAnnotations = () => {
                             if (type == "apparatus") {
                                 var vals = [];
                                 vals.push(val);
-                                console.log(vals);
                                 document.getElementById("live-" + name).innerHTML = val.replace(" ; ", " ");
                             };
                         });
@@ -1481,6 +1471,51 @@ let modifyAnnotations = () => {
             showForm();
             fillIn();
             removeEmptyClones();
+
+        });
+    });
+};
+
+/* delete annotations */
+let deleteAnnotations = () => {
+    var deleteBtn = document.querySelectorAll(".delete-btn");
+    deleteBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            var type = btn.getAttribute("data-type");
+            var dataContainer = btn.closest(".container-" + type);
+
+            /* edition / editor id */
+            var url = window.location.href;
+            var idEdition = url.split("/").pop().split("-")[0];
+            var idEditor = url.split("/").pop().split("-")[1];
+
+            /* translation */
+            var data = dataContainer.querySelectorAll("[data-name='idAnnotation']");
+
+            data.forEach((el) => {
+
+                var data = {
+                    idEdition: idEdition,
+                    idEditor: idEditor,
+                    idAnnotation: el.getAttribute("data-fill")
+                }
+
+                /* fetch data */
+                fetch("/deleteTranslation", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { "Content-type": "application/json; charset=UTF-8" }
+                })
+                    .then((response) => {
+                        /* send response */
+                        response.json();
+                    })
+                    .then(() => {
+                        /* reload the page */
+                        window.location.reload();
+                    })
+                    .catch(err => console.log(err));
+            });
 
         });
     });

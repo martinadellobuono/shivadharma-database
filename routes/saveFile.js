@@ -12,6 +12,7 @@ router.post(process.env.URL_PATH + "/saveFile", async (req, res) => {
     var idEditor = req.body.idEditor;
     var contentFile = req.body.contentFile;
     var path = `${__dirname}/../uploads/${idEdition}-${idEditor}.html`;
+
     if (contentFile !== undefined) { /* it avoids errors when uploading a new file */
         try {
             /* SAVE THE FILE */

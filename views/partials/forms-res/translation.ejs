@@ -37,10 +37,18 @@
         </div>
       <% }; %>
 
-      <!-- modify button -->
+      <!-- delete button -->
       <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+      </div>
+
+      <!-- modify / delete button -->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+        <!-- delete -->
+        <button class="btn btn-sm btn-secondary delete-btn" type="button" data-type="translation"><i class="bi bi-trash-fill"></i></button>
+        <!-- modify -->
         <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
       </div>
+
     </div>
   <% }); %>
 <% }; %>

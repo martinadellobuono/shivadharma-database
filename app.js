@@ -325,6 +325,10 @@ app.use("/", addApparatus);
 const addTranslation = require("./routes/forms/translation/addTranslation");
 app.use("/", addTranslation);
 
+/* delete translation */
+const deleteTranslation = require("./routes/forms/translation/deleteTranslation");
+app.use("/", deleteTranslation);
+
 /* add parallel */
 const addParallel = require("./routes/forms/parallel/addParallel");
 app.use("/", addParallel);
