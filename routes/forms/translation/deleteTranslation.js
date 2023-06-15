@@ -8,9 +8,6 @@ router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.post(process.env.URL_PATH + "/deleteTranslation", async (req, res) => {
-    /* edition / editor id */
-    var idEdition = req.body.idEdition;
-    var idEditor = req.body.idEditor;
 
     /* translation to delete */
     var idAnnotation = req.body.idAnnotation;

@@ -15,9 +15,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
 
-      <% var publishedEditions = []; %>
+      <!-- if editions / create published editions array-->
       <% if (editions.length > 0) { %>
-
+        <% var publishedEditions = []; %>
         <!-- published editions -->
         <% editions.forEach((edition) => { %>
           <% edition = JSON.parse(edition); %>
@@ -32,7 +32,10 @@
             <% }; %>
           <% }; %>
         <% }); %>
+      <% }; %>
 
+      <!-- if there are published editions -->
+      <% if (publishedEditions.length > 0) { %>
         <!-- list of editions -->
         <ul class="marker-list">
           <% publishedEditions.forEach((edition) => { %>
@@ -99,6 +102,7 @@
           <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
         </div>
       <% }; %>
+
     </div>
   </div>
 

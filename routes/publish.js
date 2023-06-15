@@ -18,6 +18,9 @@ router.post(process.env.URL_PATH + "/publish/:id", async (req, res) => {
                 MATCH (edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 SET edition.publishType = "${publishType}"
+                WITH edition, editor
+                MERGE (file:File {name: "${idEdition}-${idEditor}.html"})
+                MERGE (edition)<-[:IS_ITEM_OF]-(file)-[:PRODUCED_BY]->(editor)
                 RETURN *
                 `
             )
@@ -35,8 +38,10 @@ router.post(process.env.URL_PATH + "/publish/:id", async (req, res) => {
     } finally {
         /* close session */
         await session.close();
-    };
 
+        /* redirect to the page */
+        res.redirect(process.env.URL_PATH + "/edition/" + idEdition + "-" + idEditor);
+    };
 });
 
 module.exports = router;

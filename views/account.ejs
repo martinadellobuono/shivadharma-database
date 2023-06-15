@@ -48,7 +48,7 @@
         <!-- editions -->
         <div class="tab-pane fade" id="account-editions">
           <h2 class="ff-cursive">Editions</h2>
-            <% if (editions) { %>
+            <% if (editions.length > 0) { %>
               <ul class="marker-list">
                 <% editions.forEach((edition) => { %>
                   <% var e = edition.split('___')[1]; %>
@@ -65,7 +65,7 @@
             <% } else { %>
               <div class="mt-3">
                 <p>No edition is available for now.</p>
-                <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Read the edition">Create an edition</a>
+                <a href="<%= process.env.URL_PATH %>/apikey" class="btn btn-primary" title="Create an edition">Create an edition</a>
               </div>
             <% }; %>
         </div>
