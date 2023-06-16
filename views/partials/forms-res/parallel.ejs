@@ -1,61 +1,66 @@
 <% if (parallels) { %>
-    <% parallels.forEach((parallel) => { %>
-        <div class="mb-3" data-type="parallel" data-subtype="parallel">
-        <% for (const [key, value] of Object.entries(parallel)) { %>
+    <% if (parallels.length > 0) { %>
+        <% parallels.forEach((parallel) => { %>
+            <div class="mb-3" data-type="parallel" data-subtype="parallel">
+            <% for (const [key, value] of Object.entries(parallel)) { %>
 
-        <!-- title -->
-        <span class="fw-bold title-subsection" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
-            <!-- title with tooltip -->
-            <%= key.split("___")[0]; %>
-        </span>
+            <!-- title -->
+            <span class="fw-bold title-subsection" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
+                <!-- title with tooltip -->
+                <%= key.split("___")[0]; %>
+            </span>
 
-        <% value.forEach((el) => { %>
-            <div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
-                
-                <!-- hidden ID -->
-                <span class="d-none" data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+            <% value.forEach((el) => { %>
+                <div class="p-3 mt-3 bg-white container-parallel" data-type="parallel" data-subtype="parallel-entry">
+                    
+                    <!-- hidden ID -->
+                    <span class="d-none" data-type="parallel" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
 
-                <!-- fragment -->
-                <div class="bg-orange mb-3 p-2" data-type="parallel" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
+                    <!-- fragment -->
+                    <div class="bg-orange mb-3 p-2" data-type="parallel" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%= el["fragment"]; %></div>
 
-                <!-- hidden work and author -->
-                <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelWork" data-fill='<%= el["work"]; %>' data-input="text"></span>
-                <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelAuthor" data-fill='<%= el["author"]; %>' data-input="text"></span>
+                    <!-- hidden work and author -->
+                    <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelWork" data-fill='<%= el["work"]; %>' data-input="text"></span>
+                    <span class="d-none" data-type="parallel" data-subtype="work" data-name="parallelAuthor" data-fill='<%= el["author"]; %>' data-input="text"></span>
 
-                <!-- location / parallel -->   
-                <div data-type="parallel" data-subtype="parallel">
-                    <span data-type="parallel" data-subtype="full-text" data-name="parallel" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
-                    <span class="me-2" data-type="location" data-subtype="location-bottom">
-                        <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book" data-name="parallelBook" data-fill='<%= el["book"]; %>' data-input="number"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter" data-name="parallelChapter" data-fill='<%= el["bookChapter"]; %>' data-input="number"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza" data-name="parallelStanza" data-fill='<%= el["bookStanza"]; %>' data-input="number"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
-                    </span>
-                </div>
-
-                <!-- hidden location -->
-                <span class="d-none" data-type="parallel" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="parallel" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="parallel" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
-                <span class="d-none" data-type="parallel" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
-                <span class="d-none" data-type="parallel" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
-
-                <!-- note -->
-                <% if (el["note"] !== "") { %>
-                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
-                    <div class="collapse mb-3" id="collapse-parallel-note-<%= el['id']; %>">
-                        <div class="card card-body">
-                        <div data-type="parallel" data-subtype="note" data-name="parallelNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
-                        </div>
+                    <!-- location / parallel -->   
+                    <div data-type="parallel" data-subtype="parallel">
+                        <span data-type="parallel" data-subtype="full-text" data-name="parallel" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+                        <span class="me-2" data-type="location" data-subtype="location-bottom">
+                            <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book" data-name="parallelBook" data-fill='<%= el["book"]; %>' data-input="number"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter" data-name="parallelChapter" data-fill='<%= el["bookChapter"]; %>' data-input="number"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza" data-name="parallelStanza" data-fill='<%= el["bookStanza"]; %>' data-input="number"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
+                        </span>
                     </div>
-                <% }; %>
 
-                <!-- modify button -->
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-                    <button class="btn btn-sm btn-orange modify-btn" type="button" data-type="parallel">Modify</button>
+                    <!-- hidden location -->
+                    <span class="d-none" data-type="parallel" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+                    <span class="d-none" data-type="parallel" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
+                    <span class="d-none" data-type="parallel" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+                    <span class="d-none" data-type="parallel" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+                    <span class="d-none" data-type="parallel" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
+
+                    <!-- note -->
+                    <% if (el["note"] !== "") { %>
+                        <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
+                        <div class="collapse mb-3" id="collapse-parallel-note-<%= el['id']; %>">
+                            <div class="card card-body">
+                            <div data-type="parallel" data-subtype="note" data-name="parallelNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+                            </div>
+                        </div>
+                    <% }; %>
+
+                    <!-- modify button -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                        <button class="btn btn-sm btn-orange modify-btn" type="button" data-type="parallel">Modify</button>
+                    </div>
+                    
                 </div>
+            <% }); %>
                 
+            <% }; %>
             </div>
-        <% }); %>
-            
-        <% }; %>
-        </div>
-    <% }); %>
+        <% }); %>åå
+    <% } else { %>
+        <!-- no parallels -->
+        <div class="alert alert-warning fs-xs" role="alert">No parallels for now. Let's add a new parallel!</div>
+    <% }; %>
 <% }; %>
