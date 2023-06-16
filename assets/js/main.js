@@ -967,12 +967,19 @@ let annotations = () => {
                     });
 
                 } else {
+
+                    /* unblock all the buttons */
+                    const btns = document.querySelectorAll(".btn-set-annotation button");
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].removeAttribute("disabled");
+                    };
+
                     /* show default settings */
                     var formToHide = document.querySelector(".annotation-form." + category);
                     formToHide.classList.add("d-none");
                     document.querySelector(".default-settings").classList.remove("d-none");
                     /* warning that you have selected nothing */
-                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p></div>'
                 };
 
             };
@@ -1145,6 +1152,12 @@ let previewAnnotations = () => {
                 form.classList.add("d-none");
             });
 
+            /* block all the buttons */
+            const btns = document.querySelectorAll(".btn-set-annotation button");
+            btns.forEach((el) => {
+                el.setAttribute("disabled", "disabled");
+            });
+
         });
     });
 };
@@ -1201,6 +1214,7 @@ let cancelAnnotations = () => {
                         /* close the modal */
                         let modalToClose = bootstrap.Modal.getInstance(modal);
                         modalToClose.hide();
+
                         /* reset the layout */
                         closeAnnotationBox();
                         var defaultSettings = document.querySelector(".default-settings");
@@ -1260,7 +1274,10 @@ let closeAnnotationBox = () => {
         };
     } else {
         /* hide the forms */
-        document.querySelector(".annotation-form").classList.add("d-none");
+        var annotationBoxes = document.querySelectorAll(".annotation-form");
+        annotationBoxes.forEach((box) => {
+            box.classList.add("d-none");
+        });
     };
 };
 
