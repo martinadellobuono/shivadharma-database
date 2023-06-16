@@ -689,6 +689,7 @@ let annotations = () => {
                     forms.forEach((form) => {
                         form.classList.remove("d-none");
                     });
+                    showSelectedFragmentForm();
 
                     /* click on annotation tab */
                     var formToShow = document.querySelector(".annotation-form." + category);
@@ -1586,6 +1587,18 @@ let checkSelectedFragment = () => {
         annotate.classList.remove("d-none");
         alert.classList.add("d-none");
     };
+};
+
+/* show selected fragment form */
+let showSelectedFragmentForm = () => {
+    var form = document.querySelector(".annotation-form:not(.d-none)");
+    var annotate = form.querySelector(".tab-pane[aria-labelledby='annotate-tab'] .form-annotations");
+    var alert = form.querySelector(".alert-warning");
+    var fragment = form.querySelector("input[name='selectedFragment']");
+
+    /* if no selected fragment hide the form and show alert / vice versa */
+    annotate.classList.remove("d-none");
+    alert.classList.add("d-none");
 };
 
 /* live check */
