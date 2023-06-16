@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     previewAnnotations();
     closeBtn();
     modifyAnnotations();
+    hideAnnotations();
     deleteAnnotations();
     truncation();
     lemmaVariantPresence();
@@ -195,6 +196,7 @@ let fileTextarea = () => {
         content_style: "body {font-family:'Book Antiqua'; font-size:16px}" +
             "[data-type='milestone'][data-start='start']::before {content: '\u25CF';}" +
             "[data-type='annotation-object'] {display: inline;}" +
+            ".hidden-annotation {text-decoration: none !important;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='apparatus']::before {content: '\u25CF'; color: #FFC107;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='commentary']::before {content: '\u25CF'; color: #8540F5;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='parallel']::before {content: '\u25CF'; color: #FD9843;}" +
@@ -1469,6 +1471,20 @@ let modifyAnnotations = () => {
             fillIn();
             removeEmptyClones();
 
+        });
+    });
+};
+
+/* hide annotations */
+let hideAnnotations = () => {
+    var btnHide = document.querySelectorAll(".btn-hide");
+    btnHide.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            var categoryToHide = btn.getAttribute("data-value");
+            var spansToHide = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
+            spansToHide.forEach((span) => {
+                span.classList.toggle("hidden-annotation");
+            });
         });
     });
 };
