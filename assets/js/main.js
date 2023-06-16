@@ -979,7 +979,7 @@ let annotations = () => {
                     formToHide.classList.add("d-none");
                     document.querySelector(".default-settings").classList.remove("d-none");
                     /* warning that you have selected nothing */
-                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning fade show" role="alert"><p>Highlight the fragment in the text you want to annotate, then click.</p></div>'
+                    document.getElementById("annotation-warning").innerHTML = '<div class="alert alert-warning fade show" role="alert"><p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p></div>'
                 };
 
             };
@@ -1100,8 +1100,10 @@ let previewAnnotations = () => {
     var btnPreview = document.querySelectorAll(".btn-preview");
     btnPreview.forEach((btn) => {
         btn.addEventListener("click", () => {
+
             /* close annotations */
             closeAnnotationBox();
+
             /* open panels */
             /* vertical panels */
             var bigger = btn.closest(".enlarge-col");
@@ -1157,6 +1159,9 @@ let previewAnnotations = () => {
             btns.forEach((el) => {
                 el.setAttribute("disabled", "disabled");
             });
+
+            /* check selected fragment */
+            checkSelectedFragment();
 
         });
     });
@@ -1564,6 +1569,23 @@ let deleteAnnotations = () => {
 
         });
     });
+};
+
+/* check selected fragment */
+let checkSelectedFragment = () => {
+    var form = document.querySelector(".annotation-form:not(.d-none)");
+    var annotate = form.querySelector(".tab-pane[aria-labelledby='annotate-tab'] .form-annotations");
+    var alert = form.querySelector(".alert-warning");
+    var fragment = form.querySelector("input[name='selectedFragment']");
+
+    /* if no selected fragment hide the form and show alert / vice versa */
+    if (fragment.value == "") {
+        annotate.classList.add("d-none");
+        alert.classList.remove("d-none");
+    } else {
+        annotate.classList.remove("d-none");
+        alert.classList.add("d-none");
+    };
 };
 
 /* live check */

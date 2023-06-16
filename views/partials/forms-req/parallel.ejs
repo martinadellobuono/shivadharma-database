@@ -11,6 +11,11 @@
 <div class="tab-content fs-xs">
   <!-- ANNOTATE -->
   <div class="tab-pane fade show active scroll-tab" id="annotate-parallel" role="tabpanel" aria-labelledby="annotate-tab">
+    <!-- no selected fragment alert -->
+    <div class="alert alert-warning fade show mt-3 d-none" role="alert">
+      <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
+    </div>
+    <!-- form to add a parallel -->
     <form class="form-annotations parallel-container" id="parallel-req" method="post" action="<%= process.env.URL_PATH %>/addParallel/<%= id %>">
       <!-- ID -->
       <div class="d-none">

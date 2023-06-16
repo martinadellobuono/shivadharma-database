@@ -38,7 +38,11 @@
   <div class="tab-content fs-xs">
     <!-- ANNOTATE -->
     <div class="tab-pane fade show active" id="annotate-apparatus" role="tabpanel" aria-labelledby="annotate-tab">
-      <!-- apparatus form -->
+      <!-- no selected fragment alert -->
+      <div class="alert alert-warning fade show mt-3 d-none" role="alert">
+        <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
+      </div>
+      <!-- form to add commentary -->
       <div class="annotation-form apparatus d-none apparatus-scroll scroll-tab">
         <form class="form-annotations" id="apparatus-req" method="post" action="<%= process.env.URL_PATH %>/addApparatus/<%= id %>">
           <!-- ID -->
