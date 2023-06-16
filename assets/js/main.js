@@ -252,13 +252,12 @@ let fileTextarea = () => {
                         }, 5000);
 
                     } else {
-
+                        /* create the json to send to the database > id annotation + new fragment */
                         data = {
                             idEdition: idEdition,
                             idEditor: idEditor,
                             contentFile: contentFile
                         }
-
                     };
 
                 });
@@ -1480,11 +1479,18 @@ let hideAnnotations = () => {
     var btnHide = document.querySelectorAll(".btn-hide");
     btnHide.forEach((btn) => {
         btn.addEventListener("click", () => {
+            /* change icon btn */
+            btn.querySelector(".icon-show").classList.toggle("d-none");
+            btn.querySelector(".icon-hide").classList.toggle("d-none");
+
+            /* hide annotation */
             var categoryToHide = btn.getAttribute("data-value");
             var spansToHide = tinyMCE.get("fileBaseTxt").dom.select("span[data-type='annotation-object'][data-subtype='" + categoryToHide + "']");
-            spansToHide.forEach((span) => {
-                span.classList.toggle("hidden-annotation");
-            });
+            if (spansToHide) {
+                spansToHide.forEach((span) => {
+                    span.classList.toggle("hidden-annotation");
+                });
+            };
         });
     });
 };
