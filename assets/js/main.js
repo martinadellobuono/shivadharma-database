@@ -2,7 +2,6 @@
     File main.js except the function devanagariConverter();
     Author: Martina Dello Buono
     Author's address: martinadellobuono1@gmail.com
-    Last change on: 09/05/2023
     Copyright (c) 2023 by the author
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted, provided that the above
@@ -15,6 +14,7 @@
     OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
     CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
+
 document.addEventListener("DOMContentLoaded", () => {
     navbarBg();
     navbarActive();
@@ -1064,6 +1064,15 @@ let stopLoading = () => {
     var submitBtn = document.querySelectorAll("button[type='submit']");
     for (var i = 0; i < submitBtn.length; i++) {
         submitBtn[i].addEventListener("click", () => {
+            saveFile();
+            window.stop();
+        });
+    };
+
+    /* nav links */
+    var navLink = document.querySelectorAll(".nav-link");
+    for (var i = 0; i < navLink.length; i++) {
+        navLink[i].addEventListener("click", () => {
             saveFile();
             window.stop();
         });
