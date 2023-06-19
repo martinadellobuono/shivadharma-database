@@ -1424,6 +1424,9 @@ let deleteAnnotationModal = () => {
                             /* reinsert the original content without annotation tags */
                             var newContent = "";
                             annotationDiv.forEach((annotation) => {
+
+                                alert(annotation);
+
                                 /* remove milestones */
                                 if (annotation.getAttribute("data-type") == "milestone") {
                                     annotation.remove();
@@ -1449,6 +1452,7 @@ let deleteAnnotationModal = () => {
                         };
 
                         let deleteAnnotationDb = () => {
+
                             /* send to the db the translation data to delete */
                             var type = modal.getAttribute("data-annotation-type");
                             var dataContainer = document.querySelector(".container-" + type);
@@ -1486,9 +1490,6 @@ let deleteAnnotationModal = () => {
                                     .catch(err => console.log(err));
                             });
                         };
-
-
-                        
 
                         /* close the modal */
                         let closeModal = () => {
@@ -1595,10 +1596,12 @@ let closeBtn = () => {
                 modal.classList.add("delete-annotation");
                 modal.setAttribute("data-annotation-type", annotationType);
             } else {
-                var modalRef = btn.getAttribute("data-bs-target");
+                var modalRef = btn.getAttribute("data-bs-target").replace("#", "");
                 var modal = document.getElementById(modalRef);
-                modal.classList.remove("delete-annotation");
-                modal.removeAttribute("data-annotation-type");
+                if (modal.classList.contains("delete-annotation") == true) {
+                    modal.classList.remove("delete-annotation");
+                    modal.removeAttribute("data-annotation-type");
+                };
             };
 
             /* remove highlight in the text */
