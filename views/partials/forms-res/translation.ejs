@@ -38,14 +38,10 @@
           </div>
         <% }; %>
 
-        <!-- delete button -->
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
-        </div>
-
         <!-- modify / delete button -->
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
           <!-- delete -->
-          <button class="btn btn-sm btn-secondary delete-btn" type="button" data-type="translation"><i class="bi bi-trash-fill"></i></button>
+          <button class="btn btn-sm btn-secondary btn-delete btn-close-annotation" type="button" data-bs-toggle="modal" data-bs-target="#cancel-translation" data-type="cancel-annotation" data-annotation-type="translation"><i class="bi bi-trash-fill"></i></button>
           <!-- modify -->
           <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
         </div>
