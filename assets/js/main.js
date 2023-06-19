@@ -1177,6 +1177,16 @@ let modifyAnnotations = () => {
             var dataContainer = btn.closest(".container-" + type);
             var data = dataContainer.querySelectorAll("[data-name]");
 
+            /* hide the alert */
+            var formAlerts = document.querySelectorAll(".annotation-form:not(.d-none)");
+            formAlerts.forEach((alertMsg) => {
+                alertMsg.querySelector(".alert-warning").classList.add("d-none");
+            });
+
+            /* show the form */
+            form.classList.remove("d-none");
+
+            /* modify annotation */
             /* init textareas */
             var selector = "." + type + "-container textarea";
             tinymce.init({
@@ -1425,8 +1435,6 @@ let deleteAnnotationModal = () => {
                             var newContent = "";
                             annotationDiv.forEach((annotation) => {
 
-                                alert(annotation);
-
                                 /* remove milestones */
                                 if (annotation.getAttribute("data-type") == "milestone") {
                                     annotation.remove();
@@ -1452,7 +1460,6 @@ let deleteAnnotationModal = () => {
                         };
 
                         let deleteAnnotationDb = () => {
-
                             /* send to the db the translation data to delete */
                             var type = modal.getAttribute("data-annotation-type");
                             var dataContainer = document.querySelector(".container-" + type);
@@ -1484,7 +1491,6 @@ let deleteAnnotationModal = () => {
                                         response.json();
                                     })
                                     .then(() => {
-                                        /* reload the page */
                                         window.location.reload();
                                     })
                                     .catch(err => console.log(err));
@@ -1496,14 +1502,14 @@ let deleteAnnotationModal = () => {
                             let modalToClose = bootstrap.Modal.getInstance(modal);
                             modalToClose.hide();
                         };
-                        
+
                         /* reset the layout */
                         let resetLayout = () => {
                             closeAnnotationBox();
                             var defaultSettings = document.querySelector(".default-settings");
                             defaultSettings.classList.remove("d-none");
                         };
-                        
+
                         /* unblock the annotation buttons */
                         let unblockButtons = () => {
                             const btns = document.querySelectorAll(".btn-set-annotation button");
@@ -1511,33 +1517,29 @@ let deleteAnnotationModal = () => {
                                 btns[i].removeAttribute("disabled");
                             };
                         };
-                        
-                        /* DELETE THE ANNOTATION */
-                        if (modal.classList.contains("delete-annotation") == true) {
-                            cancelAnnotationColor();
-                            deleteAnnotationDb();
-                            closeModal();
-                            resetLayout();
-                            unblockButtons();
-                        } else {
-                            cancelAnnotationColor();
-                            closeModal();
-                            resetLayout();
-                            unblockButtons();
+
+                        /* when the modal is closed / empty inputs */
+                        let emptyInputs = () => {
+                            modal.addEventListener("hidden.bs.modal", () => {
+                                /* disable the button to delete the annotation */
+                                saveChangesBtn.setAttribute("disabled", "disabled");
+                                /* empty the input */
+                                safeDeletionInput.value = "";
+                            });
                         };
+
+                        /* DELETE THE ANNOTATION */
+                        deleteAnnotationDb();
+                        cancelAnnotationColor();
+                        closeModal();
+                        resetLayout();
+                        unblockButtons();
+                        emptyInputs();
                     });
                 } else {
                     /* disable the save changes button */
                     saveChangesBtn.setAttribute("disabled", "disabled");
                 };
-            });
-
-            /* when the modal is closed */
-            modal.addEventListener("hidden.bs.modal", () => {
-                /* disable the button to delete the annotation */
-                saveChangesBtn.setAttribute("disabled", "disabled");
-                /* empty the input */
-                safeDeletionInput.value = "";
             });
         });
     });
