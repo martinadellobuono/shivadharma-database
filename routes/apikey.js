@@ -28,7 +28,7 @@ router.get(process.env.URL_PATH + "/apikey", async (req, res) => {
 router.post(process.env.URL_PATH + "/apikey", async (req, res) => {
     /* check if the api key is correct */
     if (req.body.apikey == process.env.API_KEY) {
-        res.redirect("/getStarted");
+        res.redirect(process.env.URL_PATH + "/getStarted");
     } else {
         res.render("apikey", { name: req.user.name, errorMessage: "Incorrect access key" });
     };
