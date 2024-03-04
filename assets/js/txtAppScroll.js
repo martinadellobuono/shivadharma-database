@@ -25,13 +25,13 @@ for (var i = 0; i < appEntries.length; i++) {
         var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
         var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])");
         
-        /* remove the underline text-decoration the the not corresponding app entry */
+        /* remove the underline text-decoration the not corresponding app entry */
         for (var i = 0; i < oldAppEntries.length; i++) {
             var txtEntry = oldAppEntries[i];           
             txtEntry.classList.remove("app-entry");
         };
         
-        /* add the underline text-decoration the the not corresponding app entry */
+        /* add the underline text-decoration the corresponding app entry and scroll */
         for (var i = 0; i < appEntries.length; i++) {
             var txtEntry = appEntries[i];           
             txtEntry.classList.add("app-entry");

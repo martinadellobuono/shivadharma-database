@@ -23,9 +23,21 @@ for (var i = 0; i < appEntries.length; i++) {
     appEntries[i].addEventListener("click", (e) => {
         var idAppEntry = e.target.getAttribute("data-ref");
         var txtEntries = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='apparatus'][data-annotation='#" + idAppEntry + "']");
+
+        /* remove the underline text-decoration to the not corresponding app entry */
+        var entries = document.querySelectorAll(".app-entry");
+        for (var i = 0; i < entries.length; i++) {
+            entries[i].classList.remove("app-entry");
+        };
+
+        /* add the underline text-decoration the corresponding app entry */
+        e.target.classList.add("app-entry");
+
+        /* scroll to the lemma in the textus */
         for (var i = 0; i < txtEntries.length; i++) {
             var txtEntry = txtEntries[i];
             txtEntry.scrollIntoView();
         };
+
     });
 };
