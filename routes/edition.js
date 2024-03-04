@@ -25,7 +25,7 @@ router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
-    
+
     /* previous url */
     var prevUrl;
 
@@ -97,7 +97,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness
                 `
             )
             .subscribe({
@@ -433,6 +433,10 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                     var lemmas_attested_in_relations = [];
                     lemmaWitness_temp.forEach((el) => {
                         if (el !== null) {
+
+                            /* id app entry */
+                            var idApp = el["start"]["properties"]["idAnnotation"];
+
                             /* location */
                             var chapter = el["start"]["properties"]["chapter"];
                             var stanzaStart = el["start"]["properties"]["stanzaStart"];
@@ -450,6 +454,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                                     var lemmaDict = JSON.stringify({
                                         id: segment["start"]["identity"]["low"],
                                         idAnnotation: segment["start"]["properties"]["idLemma"],
+                                        idApp: idApp,
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,
@@ -509,22 +514,22 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                                     if (el["start"]["properties"]["value"] == lemma) {
                                         el["segments"].forEach((segment) => {
                                             if (segment["start"]["labels"] == "Variant") {
-    
+
                                                 /* variant */
                                                 var variant = segment["start"]["properties"]["value"];
-    
+
                                                 /* variant dict */
                                                 var variantDict = JSON.stringify({
                                                     idAnnotation: segment["start"]["properties"]["idVariant"],
                                                     variant: variant,
                                                     notes: segment["start"]["properties"]["notes"]
                                                 })
-    
+
                                                 /* array of variants */
                                                 if (!variants_arr.includes(variantDict)) {
                                                     variants_arr.push(variantDict);
                                                 };
-    
+
                                                 /* array of attested in relation of variant with witnesses */
                                                 if (segment["relationship"]["type"] == "ATTESTED_IN") {
                                                     var witness_relations = JSON.stringify(segment);
@@ -532,7 +537,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                                                         variant_witnesses_data_arr.push(witness_relations);
                                                     };
                                                 };
-    
+
                                             };
                                         });
                                     };

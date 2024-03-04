@@ -548,7 +548,7 @@ p {
 /* read layout */
 .edition-container-vis,
 .edition-container-vis .row {
-    height: 80vh;
+    height: 67vh;
 }
 
 .edition-container-vis>.row>div {
@@ -733,6 +733,17 @@ p {
     .specific-cols.col-md-2 {
         width: 100% !important;
     }
+}
+
+/* apparatus */
+span[data-type="annotation-object"][data-subtype="apparatus"] {
+    text-decoration: underline;
+    text-decoration-color: $warning;
+    text-decoration-thickness: 3px;
+}
+
+span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
+    text-decoration-color: #F5D574;
 }
 
 /* MOBILE */
