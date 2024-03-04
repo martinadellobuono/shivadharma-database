@@ -1,5 +1,5 @@
 /*
-    File appTxtScroll.js
+    File txtAppScroll.js
     Author: Martina Dello Buono
     Author's address: martinadellobuono1@gmail.com
     Copyright (c) 2024 by the author
@@ -17,14 +17,24 @@
 
 /* scroll to the apparatus lemma in the textus */
 
-var appEntries = document.querySelectorAll(".entries");
+var appEntries = document.querySelectorAll("span[data-type='annotation-object']");
 
 for (var i = 0; i < appEntries.length; i++) {
     appEntries[i].addEventListener("click", (e) => {
-        var idAppEntry = e.target.getAttribute("data-ref");
-        var txtEntries = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='apparatus'][data-annotation='#" + idAppEntry + "']");
-        for (var i = 0; i < txtEntries.length; i++) {
-            var txtEntry = txtEntries[i];
+        var idTxtEntry = e.target.getAttribute("data-annotation").split("#")[1];
+        var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
+        var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])");
+        
+        /* remove the underline text-decoration the the not corresponding app entry */
+        for (var i = 0; i < oldAppEntries.length; i++) {
+            var txtEntry = oldAppEntries[i];           
+            txtEntry.classList.remove("app-entry");
+        };
+        
+        /* add the underline text-decoration the the not corresponding app entry */
+        for (var i = 0; i < appEntries.length; i++) {
+            var txtEntry = appEntries[i];           
+            txtEntry.classList.add("app-entry");
             txtEntry.scrollIntoView();
         };
     });

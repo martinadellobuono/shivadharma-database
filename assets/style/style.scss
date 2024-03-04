@@ -736,13 +736,13 @@ p {
 }
 
 /* apparatus */
-span[data-type="annotation-object"][data-subtype="apparatus"] {
+span[data-type="annotation-object"][data-subtype="apparatus"], .app-entry {
     text-decoration: underline;
     text-decoration-color: $warning;
     text-decoration-thickness: 3px;
 }
 
-span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
+span[data-type="annotation-object"][data-subtype="apparatus"]:hover, .app-entry:hover {
     text-decoration-color: #F5D574;
 }
 
