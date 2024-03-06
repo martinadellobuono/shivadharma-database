@@ -45,9 +45,9 @@ router.post(process.env.URL_PATH + "/addTranslation/:id", async (req, res) => {
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
+                    SET translation.langTranslation= '${req.body.langTranslation}', translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
                 ON MATCH
-                    SET translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
+                    SET translation.langTranslation= '${req.body.langTranslation}', translation.value = '${req.body.translation}', translation.note = '${req.body.noteTranslation}'
                 RETURN *
                 `
             )
