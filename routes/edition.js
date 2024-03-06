@@ -66,6 +66,10 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
     var editors = [];
     var chapter;
     var translation_temp = [];
+
+    /* language of translation */
+    var translation_lang = [];
+
     var commentary_temp = [];
     var parallels_temp = [];
     var citations_temp = [];
@@ -97,7 +101,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.langTranslation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness
                 `
             )
             .subscribe({
@@ -160,6 +164,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             padaEnd: record.get("selectedFragment.padaEnd"),
                             fragment: record.get("selectedFragment.value"),
                             value: record.get("translation.value"),
+                            langTranslation: record.get("translation.langTranslation"),
                             note: record.get("translation.note")
                         });
 
@@ -167,6 +172,12 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         if (!translation_temp.includes(translation_entry)) {
                             translation_temp.push(translation_entry);
                         };
+
+                        /* array of translation languages */
+                        if (!translation_lang.includes(record.get("translation.langTranslation"))) {
+                            translation_lang.push(record.get("translation.langTranslation"));
+                        };
+                        
                     };
 
                     /* commentary */
@@ -617,6 +628,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             file: file,
                             chapter: chapter,
                             translation: translation,
+                            langTranslation: translation_lang,
                             commentary: commentary,
                             parallels: parallels,
                             citations: citations,
@@ -639,6 +651,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             file: false,
                             chapter: chapter,
                             translation: translation,
+                            langTranslation: translation_lang,
                             commentary: commentary,
                             parallels: parallels,
                             citations: citations,

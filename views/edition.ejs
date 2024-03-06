@@ -109,22 +109,39 @@
           <!-- translation -->
           <div class="tab-pane fade show active" id="pills-translation" role="tabpanel">
             <% if (translation) { %>
-              <% translation.forEach((el) => { %>
-                <div data-type="translation" data-subtype="translation">
-                  <span class="me-1" data-type="location" data-subtype="location-top">
-                    <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
-                  </span>
-                  <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
-                </div>
-                <% if (el["note"] !== "") { %>
-                  <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']['low']; %>"></span>
-                  <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
+              <!-- languages -->
+              <% if (langTranslation) { %>
+              
+                <% langTranslation.forEach((lang) => { %>
+                  <button class="btn btn-sm btn-teal" type="button" data-bs-toggle="collapse" data-bs-target='#translation-<%= lang; %>' aria-expanded="false" aria-controls='translation-<%= lang; %>'>
+                    <%= lang; %>
+                  </button>
+                  <div class="collapse" id='translation-<%= lang; %>'>
                     <div class="card card-body">
-                      <div data-type="translation" data-subtype="note"><%- el["note"]; %></div>
+                      <% translation.forEach((el) => { %>
+                        <% if (el["langTranslation"] == lang) { %>
+                          <!-- translation full-text -->
+                          <div data-type="translation" data-subtype="translation">
+                            <span class="me-1" data-type="location" data-subtype="location-top">
+                              <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
+                            </span>
+                            <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+                          </div>
+                          <!-- translation note -->
+                          <% if (el["note"] !== "") { %>
+                            <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']['low']; %>"></span>
+                            <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
+                              <div class="card card-body">
+                                <div data-type="translation" data-subtype="note"><%- el["note"]; %></div>
+                              </div>
+                            </div>
+                          <% }; %>
+                        <% }; %>
+                      <% }); %>
                     </div>
                   </div>
-                <% }; %>
-              <% }); %>
+                <% }); %>
+              <% }; %>
             <% }; %>
           </div>
 
