@@ -10809,6 +10809,14 @@ span[data-type=annotation-object][data-subtype=apparatus]:hover, .app-entry:hove
   text-decoration-color: #F5D574;
 }
 
+.entries {
+  color: #ffc107;
+}
+
+.entries:hover {
+  color: #F5D574;
+}
+
 /* MOBILE */
 @media (max-width: 991px) {
   /* list */
