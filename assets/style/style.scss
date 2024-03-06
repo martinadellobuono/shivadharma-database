@@ -736,13 +736,13 @@ p {
 }
 
 /* apparatus */
-span[data-type="annotation-object"][data-subtype="apparatus"], .app-entry {
+span[data-type="annotation-object"][data-subtype="apparatus"] {
     text-decoration: underline;
     text-decoration-color: $warning;
     text-decoration-thickness: 3px;
 }
 
-span[data-type="annotation-object"][data-subtype="apparatus"]:hover, .app-entry:hover {
+span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
     text-decoration-color: #F5D574;
 }
 
@@ -752,6 +752,10 @@ span[data-type="annotation-object"][data-subtype="apparatus"]:hover, .app-entry:
 
 .entries:hover {
     color: #F5D574;
+}
+
+.app-entry {
+    color: #BF920D;
 }
 
 /* MOBILE */
