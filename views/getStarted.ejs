@@ -39,11 +39,11 @@
         <div class="col-md-12">
           <form method="post" action="<%= process.env.URL_PATH %>/getstarted">
             <div class="mb-3">
-              <label>Work</label>
+              <label>Text</label>
               <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.work %><% } %>" name="work" required>
             </div>
             <div class="mb-3">
-              <label>Author of the work</label>
+              <label>Author of the text</label>
               <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.author %><% } %>" name="author" required>
             </div>
             <div class="mb-3">

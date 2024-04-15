@@ -12,13 +12,13 @@
         <a href="<%= prevUrl; %>" type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>
         <% if (typeof title !== "undefined") { %>
           <h1 class="h4 d-inline">
-            <%= title %>,
-            <% authors.forEach((author) => { %>
+            <%= title %>
+            <!--<% authors.forEach((author) => { %>
               <%= author; %>
-            <% }); %>
+            <% }); %>-->
           </h1>
           <h2 class="d-inline h5 text-secondary">
-            <span data-type="header" data-subtype="curated-by">Curated by</span>
+            <span data-type="header" data-subtype="curated-by">curated by</span>
             <span class="after-coma">
               <% editors.forEach((editor) => { %>
                 <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
@@ -164,7 +164,9 @@
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
                       <div class="bg-light fs-6 mb-3">
-                        <span>Parallel of: </span><%= el["chapter"]%>.<%= el["stanzaStart"] %>
+                      <% if (typeof title !== "undefined") { %>
+                        <span>Parallel to <%= title %>: </span><%= el["chapter"]%>.<%= el["stanzaStart"] %>
+                      <% }; %>
                       </div>
                       <div data-type="parallel" data-subtype="parallel">
                         <span data-type="parallel" data-subtype="full-text"><%- el["value"]; %></span>

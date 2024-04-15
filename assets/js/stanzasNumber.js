@@ -32,7 +32,7 @@ for (var i = 0; i < stanzaSel.length; i++) {
         var parser = tinymce.html.DomParser({ validate: true }, schema);
         var rootNode = parser.parse(txt);
 
-        parser.addNodeFilter('p', (nodes, name) => {
+        parser.addNodeFilter("p", (nodes, name) => {
             for (var i = 0; i < nodes.length; i++) {
                 console.log(nodes[i].name);
             }

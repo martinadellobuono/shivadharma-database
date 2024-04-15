@@ -12,16 +12,16 @@
         <a href="<%= prevUrl; %>" type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>
         <h1 class="h4 d-inline">
           <% if (title) { %>
-            <span data-type="header" data-subtype="title"><%= title; %></span><span data-type="separator" data-subtype="coma">, </span>
+            <span data-type="header" data-subtype="title"><%= title; %></span>
           <% }; %>
-          <% if (authors) { %>
+          <!--<% if (authors) { %>
             <% authors.forEach((author) => { %>
               <span data-type="header" data-subtype="author"><%= author; %></span>
             <% }); %>
-          <% }; %>
+          <% }; %>-->
         </h1>
         <h2 class="d-inline h5 text-secondary">
-          <span data-type="header" data-subtype="curated-by">Curated by </span>
+          <span data-type="header" data-subtype="curated-by">curated by </span>
           <% if (editors) { %>
             <span class="after-coma">
             <% editors.forEach((editor) => { %>
