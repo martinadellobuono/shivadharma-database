@@ -261,13 +261,19 @@
                     <span data-type="apparatus" data-subtype="stanzaStart"><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
 
                     <!-- lemma -->
-                    <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
+                    <% if (el["lemma"]["lemma"].indexOf("lemmaOmission") > -1) { %>
+                      <span class="fst-italic" data-type="apparatus" data-subtype="lemma">om.</span>
+                    <% } else { %>
+                      <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
+                    <% }; %>
+
                     <!-- square bracket -->
                     <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
                     <!-- witnesses -->
                     <% el["witnessesLemma"].forEach((witness) => { %>
                       <span data-type="apparatus" data-subtype="witnessesLemma"><%- witness["siglum"]; %></span>
                     <% }); %>
+
                     <!-- notes -->
                     <% if (el["lemma"]["notes"] !== "") { %>
                       <span class="note" data-type="apparatus" data-subtype="lemmaNotes"><%- el["lemma"]["notes"]; %></span>
@@ -276,7 +282,14 @@
                     <!-- variants -->
                     <% el["variants"].forEach((variant) => { %>
                       <!-- variant -->
-                      <span class="ms-5 fst-italic" data-type="apparatus" data-subtype="variant"><%= variant["variant"]["variant"]; %></span>
+                      
+                      <!-- variant -->
+                      <% if (variant["variant"]["value"].indexOf("variantOmission") > -1) { %>
+                        <span class="ms-5 fst-italic" data-type="apparatus" data-subtype="variant">om.</span>
+                      <% } else { %>
+                        <span class="ms-5 fst-italic" data-type="apparatus" data-subtype="variant"><%= variant["variant"]["variant"]; %></span>
+                      <% }; %>
+                      
                       <!-- witnesses-->
                       <% variant["witnessesVariant"].forEach((witness) => { %>
                         <span data-type="apparatus" data-subtype="witnessesVariant"><%- witness["siglum"]; %></span>
