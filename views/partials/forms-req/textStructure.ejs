@@ -38,7 +38,7 @@
       <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
     </div>
     <!-- form to add structure -->
-    <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addtextStructure/<%= id %>">
+    <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addTextStructure/<%= id %>">
       <!-- ID -->
       <div class="d-none">
         <label class="form-label">ID of annotation</label>
@@ -57,63 +57,63 @@
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Starting stanza/paragraph</span>
-          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaStart" required>
+          <input type="number" min="1" class="form-control" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaStart" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Pāda</label>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="a" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="a" name="padaStart">
             <label class="form-check-label">a</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="b" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="b" name="padaStart">
             <label class="form-check-label">b</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="c" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="c" name="padaStart">
             <label class="form-check-label">c</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="d" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="d" name="padaStart">
             <label class="form-check-label">d</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="e" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="e" name="padaStart">
             <label class="form-check-label">e</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="f" name="padaStart">
+            <input class="form-check-input" type="checkbox" value="f" name="padaStart">
             <label class="form-check-label">f</label>
           </div>
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Ending stanza/paragraph</span>
-          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaEnd">
+          <input type="number" min="1" class="form-control set-stanza" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaEnd">
         </div>
         <div class="mb-3">
           <label class="form-label">Pāda</label>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="a" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="a" name="padaEnd">
             <label class="form-check-label">a</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="b" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="b" name="padaEnd">
             <label class="form-check-label">b</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="c" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="c" name="padaEnd">
             <label class="form-check-label">c</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="d" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="d" name="padaEnd">
             <label class="form-check-label">d</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="e" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="e" name="padaEnd">
             <label class="form-check-label">e</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input live-check" type="checkbox" value="f" name="padaEnd">
+            <input class="form-check-input" type="checkbox" value="f" name="padaEnd">
             <label class="form-check-label">f</label>
           </div>
         </div>
@@ -121,11 +121,16 @@
       <!-- text structure -->
       <div class="mb-3">
         <label class="form-label">Text structure</label>
-        <textarea placeholder="Insert the text structure..." name="textStructure"></textarea>
+        <select class="form-select" aria-label="Select the type of text structure" name="textStructure">
+          <option value="Chapter" selected>Chapter</option>
+          <option value="Pāda">Pāda</option>
+          <option value="Paragraph">Paragraph</option>
+          <option value="Stanza">Stanza</option>
+        </select>
       </div>
       <!-- submit -->
       <div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-secondary">Save</button>
       </div>
     </form>
   </div>

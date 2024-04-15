@@ -334,6 +334,10 @@ app.use("/", addWitnesses);
 const addPhilologicalNote  = require("./routes/forms/metadata/addPhilologicalNote");
 app.use("/", addPhilologicalNote);
 
+/* add text structure */
+const addTextStructure = require("./routes/forms/textStructure/addTextStructure");
+app.use("/", addTextStructure);
+
 /* add apparatus */
 const addApparatus = require("./routes/forms/apparatus/addApparatus");
 app.use("/", addApparatus);

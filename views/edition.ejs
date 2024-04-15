@@ -163,6 +163,9 @@
                   <div class="card card-body">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
+                      <div class="bg-light fs-6 mb-3">
+                        <span>Parallel of: </span><%= el["chapter"]%>.<%= el["stanzaStart"] %>
+                      </div>
                       <div data-type="parallel" data-subtype="parallel">
                         <span data-type="parallel" data-subtype="full-text"><%- el["value"]; %></span>
                         <span class="me-2" data-type="location" data-subtype="location-bottom">
