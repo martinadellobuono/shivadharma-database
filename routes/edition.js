@@ -153,8 +153,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         };
                     };
 
-                    console.log(contributors);
-
                     /* chapter */
                     if (record.get("selectedFragment.chapter") !== null) {
                         chapter = record.get("selectedFragment.chapter");

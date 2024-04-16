@@ -39,22 +39,32 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-
-                    
                     <!-- editors -->
-                    <% if (editors.length > 1) { %>
-                      <h2 class="d-inline h5">Editors:</h2>
-                    <% } else { %>
-                      <h2 class="d-inline h5">Editor:</h2>
-                    <% }; %>
-                    <span class="after-coma">
-                      <% editors.forEach((editor) => { %>
-                        <span class="after-coma-content"><%= editor; %></span>
-                      <% }); %>
-                    </span>
-
+                    <div>
+                      <% if (editors.length > 1) { %>
+                        <h2 class="d-inline h5">Editors:</h2>
+                      <% } else { %>
+                        <h2 class="d-inline h5">Editor:</h2>
+                      <% }; %>
+                      <span class="after-coma">
+                        <% editors.forEach((editor) => { %>
+                          <span class="after-coma-content"><%= editor; %></span>
+                        <% }); %>
+                      </span>
+                    </div>
                     <!-- contributors -->
-
+                    <div>
+                      <% if (contributors.length > 1) { %>
+                        <h2 class="d-inline h5">Contributors:</h2>
+                      <% } else { %>
+                        <h2 class="d-inline h5">Contributor:</h2>
+                      <% }; %>
+                      <span class="after-coma">
+                        <% contributors.forEach((contributor) => { %>
+                          <span class="after-coma-content"><%= contributor; %></span>
+                        <% }); %>
+                      </span>
+                    </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
