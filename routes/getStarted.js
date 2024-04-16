@@ -85,10 +85,12 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
 
                     /* check if the editors inserted are users yet */
                     otherEditorsArr.concat(contributorsArr).forEach((user) => {
-                        if (!userEmails.includes(user)) {
-                            /* array of not existing users */
-                            if (!notExistingUsers.includes(user)) {
-                                notExistingUsers.push(user);
+                        if (user !== "") {
+                            if (!userEmails.includes(user)) {
+                                /* array of not existing users */
+                                if (!notExistingUsers.includes(user)) {
+                                    notExistingUsers.push(user);
+                                };
                             };
                         };
                     });
@@ -127,6 +129,12 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                             MERGE otherEditor = (editor:Editor {email: email})
                             ON CREATE SET editor.email = email
                             MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                        )
+
+                        FOREACH (email IN split("${contributorsArr}", ",") |
+                            MERGE otherContributor = (editor:Editor {email: email})
+                            ON CREATE SET editor.email = email
+                            MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                         )
                         
                         RETURN ID(edition), ID(editor)
