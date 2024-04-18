@@ -22,13 +22,18 @@
         </h1>
         <h2 class="d-inline h5 text-secondary">
           <span data-type="header" data-subtype="curated-by">curated by </span>
-          <% if (editors) { %>
             <span class="after-coma">
-            <% editors.forEach((editor) => { %>
-              <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor %></span>
-            <% }); %>
+            <% if (editors) { %>
+              <% editors.forEach((editor) => { %>
+                <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor %></span>
+              <% }); %>
+            <% }; %>
+            <% if (secondaryEditors) { %>
+              <% secondaryEditors.forEach((secondaryEditor) => { %>
+                <span class="after-coma-content" data-type="header" data-subtype="secondaryEditor"><%= secondaryEditor %></span>
+              <% }); %>
+            <% }; %>
             </span>
-          <% }; %>
         </h2>
       </div>
       <div class="col-md-4 text-end">

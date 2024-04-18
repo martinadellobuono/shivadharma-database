@@ -128,7 +128,7 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                         FOREACH (email IN split("${otherEditorsArr}", ",") |
                             MERGE otherEditor = (editor:Editor {email: email})
                             ON CREATE SET editor.email = email
-                            MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                            MERGE (editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
                         )
 
                         FOREACH (email IN split("${contributorsArr}", ",") |

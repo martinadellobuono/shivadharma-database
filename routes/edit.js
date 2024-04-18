@@ -68,6 +68,8 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var authors = [];
     var date;
     var editors = [];
+    var secondaryEditors = [];
+    var contributors = [];
     var chapter;
     var translation_temp = [];
     var commentary_temp = [];
@@ -90,7 +92,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 `
                 MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                MATCH (edition)<-[:IS_EDITOR_OF]-(editors:Editor)
+                OPTIONAL MATCH (editor:Editor)-[:IS_EDITOR_OF]->(edition)
+                OPTIONAL MATCH (secondaryEditor:Editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
+                OPTIONAL MATCH (contributor:Editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
@@ -102,7 +106,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, editors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, contributor.name
                 `
             )
             .subscribe({
@@ -141,9 +145,23 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     };
 
                     /* editor(s) */
-                    if (!editors.includes(record.get("editors.name"))) {
-                        if (record.get("editors.name") !== null) {
-                            editors.push(record.get("editors.name"));
+                    if (!editors.includes(record.get("editor.name"))) {
+                        if (record.get("editor.name") !== null) {
+                            editors.push(record.get("editor.name"));
+                        };
+                    };
+
+                    /* secondary editor(s) */
+                    if (!secondaryEditors.includes(record.get("secondaryEditor.name"))) {
+                        if (record.get("secondaryEditor.name") !== null) {
+                            secondaryEditors.push(record.get("secondaryEditor.name"));
+                        };
+                    };
+
+                    /* contributor(s) */
+                    if (!contributors.includes(record.get("contributor.name"))) {
+                        if (record.get("contributor.name") !== null) {
+                            contributors.push(record.get("contributor.name"));
                         };
                     };
 
@@ -640,6 +658,8 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         authorCommentary: authorCommentary,
                         date: date,
                         editors: editors,
+                        secondaryEditors: secondaryEditors,
+                        contributors: contributors,
                         file: textus,
                         philologicalNote: phNote,
                         chapter: chapter,

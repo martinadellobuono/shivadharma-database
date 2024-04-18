@@ -55,6 +55,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
     var edition = [];
     var titles = [];
     var editors = [];
+    var secondaryEditors = [];
     var publish = [];
     var file = [];
 
@@ -68,15 +69,15 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                     MATCH ae = (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)
                     MATCH ee = (editor:Editor)-[:IS_EDITOR_OF]->(edition)
                     MATCH fe = (file:File)-[:IS_ITEM_OF]->(edition)
-                    RETURN ae, ee, fe
+                    OPTIONAL MATCH se = (secondaryEditor:Editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
+                    RETURN ae, ee, fe, se
                     `
                 )
                 .subscribe({
                     onNext: record => {
                         var title = record.get("ae")["end"]["properties"]["title"];
-                        /* var publishType = record.get("ae")["end"]["properties"]["publishType"]; */
                         var authors = record.get("ae")["start"]["properties"]["name"].replace(" ; ", "---");
-
+                       
                         /* titles */
                         if (!titles.includes(title)) {
                             titles.push(title);
@@ -87,17 +88,26 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                             edition.push(title + "___" + authors);
                         };
 
+                        /* secondary editor() */
+
                         titles.forEach((title) => {
-                            /* editors */
                             if (title == record.get("ee")["end"]["properties"]["title"]) {
+                                
+                                /* editor(s) */
                                 if (!editors.includes(title + "___" + record.get("ee")["start"]["properties"]["name"] + "---" + record.get("ee")["start"]["properties"]["email"])) {
                                     editors.push(title + "___" + record.get("ee")["start"]["properties"]["name"] + "---" + record.get("ee")["start"]["properties"]["email"]);
+                                };
+
+                                /* secondary editor(s) */
+                                if (!secondaryEditors.includes(title + "___" + record.get("se")["start"]["properties"]["name"])) {
+                                    secondaryEditors.push(title + "___" + record.get("se")["start"]["properties"]["name"]);
                                 };
 
                                 /* publish type */
                                 if (!publish.includes(title + "___" + record.get("ee")["end"]["properties"]["publishType"])) {
                                     publish.push(title + "___" + record.get("ee")["end"]["properties"]["publishType"]);
                                 };
+                                
                             };
 
                             /* file */
@@ -132,7 +142,7 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
 
         edTitles.forEach((title) => {
 
-            /* authors */
+            /* author(s) */
             var edAuthors = [];
             /* array of authors according to title */
             edition.forEach((author) => {
@@ -141,18 +151,27 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                 };
             });
 
-            /* editors */
+            /* editor(s) */
             var edEditors = [];
-            /* array of editors according to title */
+            /* array of editor(s) according to title */
             editors.forEach((editor) => {
                 if (editor.indexOf(title) > -1) {
                     edEditors.push(editor.split("___")[1]);
                 };
             });
 
+            /* secondary editor(s) */
+            var edSecondaryEditors = [];
+            /* array of secondary editor(s) according to title */
+            secondaryEditors.forEach((secondaryEditor) => {
+                if (secondaryEditor.indexOf(title) > -1) {
+                    edSecondaryEditors.push(secondaryEditor.split("___")[1]);
+                };
+            });
+
             /* publish type */
             var edPublish = [];
-            /* array of editors according to title */
+            /* array of publish type according to title */
             publish.forEach((el) => {
                 if (el.indexOf(title) > -1) {
                     edPublish.push(el.split("___")[1]);
@@ -168,12 +187,13 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                 };
             });
 
-            /* dict title editors */
+            /* dict title editor(s) */
             var editorsDict = JSON.stringify({
                 [title]: {
                     publishType: edPublish.join(""),
                     authors: edAuthors,
                     editors: edEditors,
+                    secondaryEditors: edSecondaryEditors,
                     file: edFile.join("").split(".html")[0]
                 }
             });

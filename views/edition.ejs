@@ -20,9 +20,16 @@
           <h2 class="d-inline h5 text-secondary">
             <span data-type="header" data-subtype="curated-by">curated by</span>
             <span class="after-coma">
-              <% editors.forEach((editor) => { %>
-                <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
-              <% }); %>
+              <% if (editors) { %>
+                <% editors.forEach((editor) => { %>
+                  <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
+                <% }); %>
+              <% }; %>
+              <% if (secondaryEditors) { %>
+                <% secondaryEditors.forEach((secondaryEditor) => { %>
+                  <span class="after-coma-content" data-type="header" data-subtype="editor"><%= secondaryEditor; %></span>
+                <% }); %>
+              <% }; %>
             </span>
           </h2>
 
@@ -41,7 +48,7 @@
                   <div class="modal-body">
                     <!-- editors -->
                     <div>
-                      <% if (editors.length > 1) { %>
+                      <% if (editors.length + secondaryEditors.length > 1) { %>
                         <h2 class="d-inline h5">Editors:</h2>
                       <% } else { %>
                         <h2 class="d-inline h5">Editor:</h2>
@@ -49,6 +56,9 @@
                       <span class="after-coma">
                         <% editors.forEach((editor) => { %>
                           <span class="after-coma-content"><%= editor; %></span>
+                        <% }); %>
+                        <% secondaryEditors.forEach((secondaryEditor) => { %>
+                          <span class="after-coma-content"><%= secondaryEditor; %></span>
                         <% }); %>
                       </span>
                     </div>

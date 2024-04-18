@@ -52,7 +52,19 @@
               <!-- editor -->
               <div class="mb-3">
                 <label class="form-label">Editor</label>
-                <input type="text" class="form-control" readonly="true" value="<%= editors %>" name="editor">
+                <input type="text" class="form-control" value="<%= editors.join(' ; '); %>" name="editor">
+              </div>
+              <!-- other editors -->
+              <div class="mb-3">
+                <label>Email of other editors</label>
+                <input class="form-control" aria-describedby="Email of other editors" value="<%= secondaryEditors.join(' ; '); %>" name="otherEditors">
+                <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
+              </div>
+              <!-- contributors -->
+              <div class="mb-3">
+                <label>Email of contributors</label>
+                <input class="form-control" aria-describedby="Email of other editors" value="<%= contributors.join(' ; '); %>" name="contributors">
+                <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               </div>
               <!-- edition of -->
               <div class="mb-3">

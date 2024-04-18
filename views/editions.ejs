@@ -67,19 +67,30 @@
                 <span class="text-secondary fs-xs">curated by </span>
 
                 <span class="after-coma">
-                <% editors.forEach((editor) => { %>
-
-                  <% if (editor.split("---")[0] !== "undefined") { %> 
-                    <span class="text-secondary after-coma-content fs-xs"><%= editor.split("---")[0]; %></span>
+                  <% if (editors) { %>
+                    <% editors.forEach((editor) => { %>
+                      <% if (editor.split("---")[0] !== "undefined") { %> 
+                        <span class="text-secondary after-coma-content fs-xs"><%= editor.split("---")[0]; %></span>
+                      <% }; %>
+                      <!-- editors mails -->
+                      <% if (!emails.includes(editor.split("---")[1])) { %>
+                        <% emails.push(editor.split("---")[1]); %>
+                      <% }; %>
+                    <% }); %>
                   <% }; %>
 
-                  <!-- editors mails -->
-                  <% if (!emails.includes(editor.split("---")[1])) { %>
-                    <% emails.push(editor.split("---")[1]); %>
+                  <!-- secondary editors -->
+                  <% var secondaryEditors = value["secondaryEditors"]; %>
+                  
+                  <span class="after-coma">
+                  <% if (secondaryEditors) { %>
+                    <% secondaryEditors.forEach((secondaryEditor) => { %>
+                      <span class="text-secondary after-coma-content fs-xs"><%= secondaryEditor; %></span>
+                    <% }); %>
                   <% }; %>
-                <% }); %>
+                  </span>
                 </span>
-
+                
               <% }; %>
 
               <!-- buttons -->
