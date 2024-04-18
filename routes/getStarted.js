@@ -125,16 +125,20 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                         MERGE (editor)-[:IS_EDITOR_OF]->(edition)
                         ON CREATE SET edition.publishType = "Save as draft"
 
-                        FOREACH (email IN split("${otherEditorsArr}", ",") |
-                            MERGE otherEditor = (editor:Editor {email: email})
-                            ON CREATE SET editor.email = email
-                            MERGE (editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
+                        FOREACH (email IN split("${otherEditorsArr}", ",") | 
+                            FOREACH (ignoreMe IN CASE WHEN email <> "" THEN [1] ELSE [] END | 
+                                MERGE (otherEditor:Editor {email: email})
+                                ON CREATE SET otherEditor.email = email
+                                MERGE (otherEditor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
+                            )
                         )
 
                         FOREACH (email IN split("${contributorsArr}", ",") |
-                            MERGE otherContributor = (editor:Editor {email: email})
-                            ON CREATE SET editor.email = email
-                            MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
+                            FOREACH (ignoreMe IN CASE WHEN email <> "" THEN [1] ELSE [] END | 
+                                MERGE otherContributor = (editor:Editor {email: email})
+                                ON CREATE SET editor.email = email
+                                MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
+                            )
                         )
                         
                         RETURN ID(edition), ID(editor)
