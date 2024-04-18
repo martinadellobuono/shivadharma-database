@@ -36,7 +36,7 @@
             <form method="post" action="<%= process.env.URL_PATH %>/edit/<%= id %>">
               <!-- work -->
               <div class="mb-3">
-                <label class="form-label">Work</label>
+                <label class="form-label">Text</label>
                 <input type="text" class="form-control" aria-describedby="Title of the edition" value="<%= work %>" name="work">
               </div>
               <!-- title -->
@@ -52,12 +52,12 @@
               <!-- editor -->
               <div class="mb-3">
                 <label class="form-label">Editor</label>
-                <input type="text" class="form-control" value="<%= editors.join(' ; '); %>" name="editor">
+                <input type="text" class="form-control" readonly="true" value="<%= editors.join(' ; '); %>" name="editor">
               </div>
               <!-- other editors -->
               <div class="mb-3">
                 <label>Email of other editors</label>
-                <input class="form-control" aria-describedby="Email of other editors" value="<%= secondaryEditors.join(' ; '); %>" name="otherEditors">
+                <input class="form-control" aria-describedby="Email of other editors" value="<%= secondaryEditorsEmail.join(' ; '); %>" name="secondaryEditors">
                 <div class="form-text">Separate the values by using &#x22; &#x3b; &#x22;.</div>
               </div>
               <!-- contributors -->

@@ -78,17 +78,17 @@
                       <% }; %>
                     <% }); %>
                   <% }; %>
+                </span>
 
-                  <!-- secondary editors -->
-                  <% var secondaryEditors = value["secondaryEditors"]; %>
-                  
-                  <span class="after-coma">
-                  <% if (secondaryEditors) { %>
-                    <% secondaryEditors.forEach((secondaryEditor) => { %>
-                      <span class="text-secondary after-coma-content fs-xs"><%= secondaryEditor; %></span>
-                    <% }); %>
-                  <% }; %>
-                  </span>
+                <!-- secondary editors -->
+                <% var secondaryEditors = value["secondaryEditors"]; %>
+                
+                <span class="after-coma">
+                <% if (secondaryEditors) { %>
+                  <% secondaryEditors.forEach((secondaryEditor) => { %>
+                    <span class="text-secondary after-coma-content fs-xs"><%= secondaryEditor; %></span>
+                  <% }); %>
+                <% }; %>
                 </span>
                 
               <% }; %>

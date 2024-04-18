@@ -99,10 +99,16 @@ router.get(process.env.URL_PATH + "/editions", async (req, res) => {
                                 };
 
                                 /* secondary editor(s) */
-                                if (!secondaryEditors.includes(title + "___" + record.get("se")["start"]["properties"]["name"])) {
-                                    secondaryEditors.push(title + "___" + record.get("se")["start"]["properties"]["name"]);
+                                if (record.get("se") !== null) {
+                                    if (record.get("se")["start"]["properties"]["name"] !== undefined) {
+                                        if (record.get("se")["start"]["properties"]["name"] !== "") {
+                                            if (!secondaryEditors.includes(title + "___" + record.get("se")["start"]["properties"]["name"])) {
+                                                secondaryEditors.push(title + "___" + record.get("se")["start"]["properties"]["name"]);
+                                            };
+                                        };
+                                    };
                                 };
-
+                                
                                 /* publish type */
                                 if (!publish.includes(title + "___" + record.get("ee")["end"]["properties"]["publishType"])) {
                                     publish.push(title + "___" + record.get("ee")["end"]["properties"]["publishType"]);

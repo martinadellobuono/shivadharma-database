@@ -69,6 +69,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var date;
     var editors = [];
     var secondaryEditors = [];
+    var secondaryEditorsEmail = [];
     var contributors = [];
     var chapter;
     var translation_temp = [];
@@ -106,7 +107,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, contributor.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
                 `
             )
             .subscribe({
@@ -155,6 +156,13 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     if (!secondaryEditors.includes(record.get("secondaryEditor.name"))) {
                         if (record.get("secondaryEditor.name") !== null) {
                             secondaryEditors.push(record.get("secondaryEditor.name"));
+                        };
+                    };
+
+                    /* secondary editor(s) emails */
+                    if (!secondaryEditorsEmail.includes(record.get("secondaryEditor.email"))) {
+                        if (record.get("secondaryEditor.email") !== null) {
+                            secondaryEditorsEmail.push(record.get("secondaryEditor.email"));
                         };
                     };
 
@@ -659,6 +667,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         date: date,
                         editors: editors,
                         secondaryEditors: secondaryEditors,
+                        secondaryEditorsEmail: secondaryEditorsEmail,
                         contributors: contributors,
                         file: textus,
                         philologicalNote: phNote,
@@ -687,6 +696,11 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 router.post(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     const idEdition = req.params.id.split("/").pop().split("-")[0];
     const idEditor = req.params.id.split("/").pop().split("-")[1];
+
+    /* secondary editor(s) */
+    var secondaryEditorsArr = req.body.secondaryEditors.split(" ; ");
+    console.log(secondaryEditorsArr);
+
     const session = driver.session();
     try {
         try {
@@ -701,6 +715,13 @@ router.post(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
                     ON MATCH 
                         SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
+                   
+                    FOREACH (email IN split("${secondaryEditorsArr}", ",") |
+                        MERGE otherEditor = (editor:Editor {email: email})
+                        ON CREATE SET editor.email = email
+                        MERGE (editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
+                    )
+
                     RETURN *
                     `
                 )
