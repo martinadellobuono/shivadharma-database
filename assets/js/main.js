@@ -716,7 +716,6 @@ let annotations = () => {
                     let milestoneContent = () => {
                         /* selected string */
                         var sel = tinymce.activeEditor.selection;
-
                         /* selected range */
                         var rng = sel.getRng();
 
@@ -933,7 +932,6 @@ let annotations = () => {
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
                     var contentFile = tinymce.get("fileBaseTxt").getContent();
-
                     var form = document.querySelector("#" + category + "-req");
                     var location = form.querySelector(".location");
                     var inputs = location.querySelectorAll("input[type='number']");
@@ -949,14 +947,58 @@ let annotations = () => {
                         };
                     };
 
-                    submitBtn.addEventListener("click", () => {
+                    submitBtn.addEventListener("click", (e) => {
                         if (detectEmptyForms()) {
-                            /* send the file new content to the server */
-                            data = {
-                                idEdition: idEdition,
-                                idEditor: idEditor,
-                                contentFile: contentFile
-                            }
+
+                            /* TRY */
+                            if (submitBtn.classList.contains("btn-txtStr")) {
+                                
+                                e.preventDefault();
+
+                                /* text structure number / name */
+                                var txtStrInput = document.getElementById("nTxtStr");
+                                var txtStrName = txtStrInput.value;
+                                /* create the text structure milestone */
+                                var milestoneTxtStr = document.createElement("span");
+                                milestoneTxtStr.setAttribute("data-type", "printTxtStr");
+                                milestoneTxtStr.setAttribute("data-subtype", annType);
+                                /* assign an id to the annotation */
+                                milestoneTxtStr.setAttribute("data-n", txtStrName);
+                                /* / */
+
+                                /* set the print text structure milestone after the text structure milestone */
+                                var editor = tinymce.get("fileBaseTxt");
+                                if (editor) {
+                                    var content = editor.getContent();
+                                    /* create a fake element to extract the html */
+                                    var tempElement = document.createElement("div");
+                                    tempElement.innerHTML = content;
+                                    /* text structure milestone */
+                                    var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"]');
+
+                                    /* if the milestone exists */
+                                    if (specificElement) {
+                                        specificElement.insertAdjacentElement("afterend", milestoneTxtStr);
+                                        /* add the print text structure milestone */
+                                        editor.setContent(tempElement.innerHTML);
+                                    };
+                                };
+
+                                /* send the file new content to the server */
+                                data = {
+                                    idEdition: idEdition,
+                                    idEditor: idEditor,
+                                    contentFile: contentFile
+                                }
+
+                            } else {
+                                /* send the file new content to the server */
+                                data = {
+                                    idEdition: idEdition,
+                                    idEditor: idEditor,
+                                    contentFile: contentFile
+                                }
+                            };
 
                             /* unblock all the buttons */
                             const btns = document.querySelectorAll(".btn-set-annotation button");
@@ -1068,6 +1110,8 @@ let publishEdition = () => {
 
 /* stop loading the page when submitting data */
 let stopLoading = () => {
+
+    /* submit buttons */
     var submitBtn = document.querySelectorAll("button[type='submit']");
     for (var i = 0; i < submitBtn.length; i++) {
         submitBtn[i].addEventListener("click", () => {

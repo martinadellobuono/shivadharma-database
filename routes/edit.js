@@ -709,13 +709,15 @@ router.post(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     `
                     MATCH (author:Author)<-[:WRITTEN_BY]-(work:Work)-[:HAS_MANIFESTATION]->(edition:Edition)<-[:IS_EDITOR_OF]-(editor:Editor)
                     WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
-                    MERGE (date:Date)
-                    MERGE (edition)-[:PUBLISHED_ON]->(date)
+                    
+                    MERGE (edition)-[:PUBLISHED_ON]->(date:Date)
                     ON CREATE
-                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
+                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}",
+                            date.on = CASE WHEN "${req.body.date}" <> "" THEN NULL ELSE "${req.body.date}" END
                     ON MATCH 
-                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}", date.on = "${req.body.date}"
-                   
+                        SET edition.title = "${req.body.title}", edition.editionOf = "${req.body.editionOf}", edition.authorCommentary = "${req.body.authorCommentary}", editor.name = "${req.body.editor}", work.title = "${req.body.work}", author.name = "${req.body.author}",
+                            date.on = CASE WHEN "${req.body.date}" <> "" THEN NULL ELSE "${req.body.date}" END
+
                     FOREACH (email IN split("${secondaryEditorsArr}", ",") |
                         MERGE otherEditor = (editor:Editor {email: email})
                         ON CREATE SET editor.email = email
@@ -727,7 +729,7 @@ router.post(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 )
                 .subscribe({
                     onCompleted: () => {
-                        console.log("Data added to the database")
+                        console.log("Data added to the database");
                     },
                     onError: err => {
                         console.log(err);

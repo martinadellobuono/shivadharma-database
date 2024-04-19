@@ -38,7 +38,7 @@
       <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
     </div>
     <!-- form to add structure -->
-    <form class="form-annotations textarea-container" id="textStructure-req" method="post" action="/addTextStructure/<%= id %>">
+    <form class="form-annotations textarea-container" id="textStructure-req">
       <!-- ID -->
       <div class="d-none">
         <label class="form-label">ID of annotation</label>
@@ -88,7 +88,7 @@
         </div>
         <div class="input-group mb-3">
           <span class="input-group-text">Ending stanza/paragraph</span>
-          <input type="number" min="1" class="form-control set-stanza" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaEnd">
+          <input type="number" min="1" class="form-control set-stanza" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaEnd" required>
         </div>
         <div class="mb-3">
           <label class="form-label">Pāda</label>
@@ -121,16 +121,21 @@
       <!-- text structure -->
       <div class="mb-3">
         <label class="form-label">Text structure</label>
-        <select class="form-select" aria-label="Select the type of text structure" name="textStructure">
+        <select class="form-select" aria-label="Select the type of text structure" name="textStructure" required>
           <option value="Chapter" selected>Chapter</option>
           <option value="Pāda">Pāda</option>
           <option value="Paragraph">Paragraph</option>
           <option value="Stanza">Stanza</option>
         </select>
       </div>
+      <!-- number / name of the structure -->
+      <div class="mb-3">
+        <label class="form-label">Name or number of the structure</label>
+        <input type="text" id="nTxtStr" class="form-control" aria-describedby="Name or number of the structure" name="nTextStructure" required>
+      </div>
       <!-- submit -->
       <div>
-        <button type="submit" class="btn btn-secondary">Save</button>
+        <button type="submit" class="btn btn-secondary btn-txtStr">Save</button>
       </div>
     </form>
   </div>
