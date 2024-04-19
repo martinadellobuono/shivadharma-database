@@ -931,7 +931,6 @@ let annotations = () => {
                     var url = window.location.href;
                     var idEdition = url.split("/").pop().split("-")[0];
                     var idEditor = url.split("/").pop().split("-")[1];
-                    var contentFile = tinymce.get("fileBaseTxt").getContent();
                     var form = document.querySelector("#" + category + "-req");
                     var location = form.querySelector(".location");
                     var inputs = location.querySelectorAll("input[type='number']");
@@ -952,7 +951,7 @@ let annotations = () => {
 
                             /* TRY */
                             if (submitBtn.classList.contains("btn-txtStr")) {
-                                
+
                                 e.preventDefault();
 
                                 /* text structure number / name */
@@ -985,14 +984,22 @@ let annotations = () => {
                                 };
 
                                 /* send the file new content to the server */
+                                var contentFile = tinymce.get("fileBaseTxt").getContent();
                                 data = {
                                     idEdition: idEdition,
                                     idEditor: idEditor,
                                     contentFile: contentFile
                                 }
-
+                                                                
+                                /* submit form */
+                                setTimeout(() => {
+                                    var form = submitBtn.closest("form");
+                                    form.submit();
+                                }, 4000);
+                                
                             } else {
                                 /* send the file new content to the server */
+                                var contentFile = tinymce.get("fileBaseTxt").getContent();
                                 data = {
                                     idEdition: idEdition,
                                     idEditor: idEditor,
