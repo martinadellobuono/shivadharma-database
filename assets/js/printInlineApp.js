@@ -11,7 +11,7 @@ for (var i = 0; i < stanzas.length; i++) {
     /* collapse btn */
     var btnCollapse = document.createElement("a");
     btnCollapse.textContent = "app.";
-    btnCollapse.setAttribute("class", "yellow-400 fs-xxs");
+    btnCollapse.setAttribute("class", "yellow-500 fs-xxs p-1");
 
     btnCollapse.setAttribute("data-bs-toggle", "collapse");
     btnCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
