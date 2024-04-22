@@ -224,7 +224,7 @@
                     <% value.forEach((el) => { %>
                       <div class="bg-light fs-6 mb-3">
                       <% if (typeof title !== "undefined") { %>
-                        <span>Parallel to <%= title %>: </span><%= el["chapter"]%>.<%= el["stanzaStart"] %>
+                        <span>Parallel to <%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n="<%= el["stanzaStart"] %>"><%= el["stanzaStart"] %></span>
                       <% }; %>
                       </div>
                       <div data-type="parallel" data-subtype="parallel">

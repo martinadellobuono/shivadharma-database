@@ -83,6 +83,14 @@ body {
     color: $blue-600;
 }
 
+.orange-400 {
+    color: $orange-400;
+}
+
+.orange-400:hover {
+    color: $orange-500;
+}
+
 .red-600 {
     color: $red-600;
 }
@@ -145,6 +153,10 @@ body {
 
 .bg-orange {
     background-color: $orange-300;
+}
+
+.bg-light-orange {
+    background-color: #FFD280;
 }
 
 .bg-teal {

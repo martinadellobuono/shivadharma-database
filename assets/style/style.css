@@ -10225,6 +10225,14 @@ body {
   color: #0a58ca;
 }
 
+.orange-400 {
+  color: #fd9843;
+}
+
+.orange-400:hover {
+  color: #fd7e14;
+}
+
 .red-600 {
   color: #b02a37;
 }
@@ -10291,6 +10299,10 @@ body {
 
 .bg-orange {
   background-color: #feb272;
+}
+
+.bg-light-orange {
+  background-color: #FFD280;
 }
 
 .bg-teal {
