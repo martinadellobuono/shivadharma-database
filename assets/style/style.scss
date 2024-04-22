@@ -79,6 +79,14 @@ body {
 }
 
 /* colors */
+.blue-600 {
+    color: $blue-600;
+}
+
+.red-600 {
+    color: $red-600;
+}
+
 .yellow-600 {
     color: $yellow-600;
 }
@@ -131,6 +139,10 @@ body {
     background-color: $indigo-200;
 }
 
+.bg-light-blue {
+    background-color: $blue-100;
+}
+
 .bg-orange {
     background-color: $orange-300;
 }
@@ -156,6 +168,11 @@ body {
 
 .btn-fuchsia {
     background-color: $pink-400;
+    color: $light;
+}
+
+.btn-light-blue {
+    background-color: $blue-700;
     color: $light;
 }
 
@@ -199,6 +216,12 @@ body {
     background-color: $pink-300;
     color: $light;
 }
+
+.btn-light-blue:hover {
+    background-color: $blue-600;
+    color: $light;
+}
+
 
 .btn-orange:hover {
     background-color: $orange;
@@ -339,6 +362,11 @@ body {
 }
 
 /* layout */
+/* margins */
+.m--3 {
+    margin-left: -3px;
+}
+
 /* paragraphs */
 p {
     margin-bottom: 10px !important;
@@ -762,24 +790,24 @@ p {
 /* apparatus */
 span[data-type="annotation-object"][data-subtype="apparatus"] {
     text-decoration: underline;
-    text-decoration-color: $warning;
+    text-decoration-color: $blue-200;
     text-decoration-thickness: 3px;
 }
 
 span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
-    text-decoration-color: #F5D574;
+    text-decoration-color: $blue-300;
 }
 
 .entries {
-    color: $warning;
+    color: $blue-600;
 }
 
 .entries:hover {
-    color: #F5D574;
+    color: $blue-700;
 }
 
 .app-entry {
-    color: #BF920D;
+    color: $blue-700;
 }
 
 /* MOBILE */

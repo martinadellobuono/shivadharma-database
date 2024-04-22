@@ -10221,6 +10221,14 @@ body {
 }
 
 /* colors */
+.blue-600 {
+  color: #0a58ca;
+}
+
+.red-600 {
+  color: #b02a37;
+}
+
 .yellow-600 {
   color: #cc9a06;
 }
@@ -10277,6 +10285,10 @@ body {
   background-color: #c29ffa;
 }
 
+.bg-light-blue {
+  background-color: #cfe2ff;
+}
+
 .bg-orange {
   background-color: #feb272;
 }
@@ -10302,6 +10314,11 @@ body {
 
 .btn-fuchsia {
   background-color: #de5c9d;
+  color: #f8f9fa;
+}
+
+.btn-light-blue {
+  background-color: #084298;
   color: #f8f9fa;
 }
 
@@ -10343,6 +10360,11 @@ body {
 
 .btn-fuchsia:hover {
   background-color: #e685b5;
+  color: #f8f9fa;
+}
+
+.btn-light-blue:hover {
+  background-color: #0a58ca;
   color: #f8f9fa;
 }
 
@@ -10485,6 +10507,11 @@ body {
 }
 
 /* layout */
+/* margins */
+.m--3 {
+  margin-left: -3px;
+}
+
 /* paragraphs */
 p {
   margin-bottom: 10px !important;
@@ -10824,24 +10851,24 @@ p {
 /* apparatus */
 span[data-type=annotation-object][data-subtype=apparatus] {
   text-decoration: underline;
-  text-decoration-color: #ffc107;
+  text-decoration-color: #9ec5fe;
   text-decoration-thickness: 3px;
 }
 
 span[data-type=annotation-object][data-subtype=apparatus]:hover {
-  text-decoration-color: #F5D574;
+  text-decoration-color: #6ea8fe;
 }
 
 .entries {
-  color: #ffc107;
+  color: #0a58ca;
 }
 
 .entries:hover {
-  color: #F5D574;
+  color: #084298;
 }
 
 .app-entry {
-  color: #BF920D;
+  color: #084298;
 }
 
 /* MOBILE */

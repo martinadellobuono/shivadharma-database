@@ -10,7 +10,7 @@ stanzasArray.forEach((stanza) => {
         /* collapse btn */
         var btnCollapse = document.createElement("a");
         btnCollapse.textContent = "app.";
-        btnCollapse.setAttribute("class", "caret-xs yellow-600 fs-xxs p-1");
+        btnCollapse.setAttribute("class", "caret-xs blue-600 fs-xxs p-1");
         btnCollapse.setAttribute("data-bs-toggle", "collapse");
         btnCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
         btnCollapse.setAttribute("aria-expanded", "false");
@@ -18,7 +18,7 @@ stanzasArray.forEach((stanza) => {
 
         /* collapsible div */
         var collapse = document.createElement("div");
-        collapse.setAttribute("class", "collapse p-3 border rounded");
+        collapse.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-blue");
         collapse.setAttribute("id", txtStructure + "-" + txtStructureN);
         collapse.setAttribute("data-type", "inlineApp");
         collapse.setAttribute("data-n", txtStructureN);

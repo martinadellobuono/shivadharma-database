@@ -196,14 +196,14 @@ let fileTextarea = () => {
             "[data-type='milestone'][data-start='start']::before {content: '\u25CF';}" +
             "[data-type='annotation-object'] {display: inline;}" +
             ".hidden-annotation {text-decoration: none !important;}" +
-            "[data-type='milestone'][data-start='start'][data-subtype='apparatus']::before {content: '\u25CF'; color: #FFC107;}" +
+            "[data-type='milestone'][data-start='start'][data-subtype='apparatus']::before {content: '\u25CF'; color: #9EC4FC;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='commentary']::before {content: '\u25CF'; color: #8540F5;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='parallel']::before {content: '\u25CF'; color: #FD9843;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='translation']::before {content: '\u25CF'; color: #79DFC1;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='citation']::before {content: '\u25CF'; color: #DE5C9D;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='note']::before {content: '\u25CF'; color: #087990;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='textStructure']::before {content: '\u25CF'; color: #6C757D;}" +
-            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #FFC107; text-underline-offset: 2px;}" +
+            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #9EC4FC; text-underline-offset: 2px;}" +
             "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 4px;}" +
             "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 6px;}" +
             "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 8px;}" +
@@ -646,6 +646,9 @@ let annotations = () => {
             if (document.getSelection) {
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
+                    /* textual string selected */
+                    var txtSel = tinymce.activeEditor.selection;
+
                     /* OPEN THE BOX */
                     /* close the open box */
                     closeAnnotationBox();
@@ -697,7 +700,7 @@ let annotations = () => {
                     tab.show();
 
                     /* selected fragment form */
-                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = tinymce.activeEditor.selection.getContent({ format: "text" }).trim();
+                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = txtSel.getContent({ format: "text" }).trim();
 
                     /* assign the ID of each annotation to the root ID inputs */
                     var rootInputs = formToShow.querySelectorAll("input.root-id-input");
@@ -715,7 +718,7 @@ let annotations = () => {
                     /* PRINT MILESTONES AND CONTENT IN THE TEXT */
                     let milestoneContent = () => {
                         /* selected string */
-                        var sel = tinymce.activeEditor.selection;
+                        var sel = txtSel;
                         /* selected range */
                         var rng = sel.getRng();
 
