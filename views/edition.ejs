@@ -319,7 +319,7 @@
                     <i class="bi bi-caret-right-fill entries" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
 
                     <!-- location -->
-                    <span data-type="apparatus" data-subtype="stanzaStart"><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
+                    <span data-type="apparatus" data-subtype="stanzaStart" data-n='<%= el["lemma"]["stanzaStart"]; %>'><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
 
                     <!-- lemma -->
                     <% if (el["lemma"]["lemma"].indexOf("lemmaOmission") > -1) { %>

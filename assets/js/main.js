@@ -949,20 +949,24 @@ let annotations = () => {
                     submitBtn.addEventListener("click", (e) => {
                         if (detectEmptyForms()) {
 
-                            /* TRY */
+                            /* add stanza entities */
                             if (submitBtn.classList.contains("btn-txtStr")) {
 
                                 e.preventDefault();
 
                                 /* text structure number / name */
                                 var txtStrInput = document.getElementById("nTxtStr");
-                                var txtStrName = txtStrInput.value;
+                                var txtStrNameInput = document.getElementById("textStructureName");
+                                var txtStrN = txtStrInput.value;
+                                var txtStrName = txtStrNameInput.value
                                 /* create the text structure milestone */
                                 var milestoneTxtStr = document.createElement("span");
                                 milestoneTxtStr.setAttribute("data-type", "printTxtStr");
                                 milestoneTxtStr.setAttribute("data-subtype", annType);
+                                /* assign the type of text structure */
+                                milestoneTxtStr.setAttribute("data-text-structure", txtStrName);
                                 /* assign an id to the annotation */
-                                milestoneTxtStr.setAttribute("data-n", txtStrName);
+                                milestoneTxtStr.setAttribute("data-n", txtStrN);
                                 /* / */
 
                                 /* set the print text structure milestone after the text structure milestone */
@@ -973,7 +977,7 @@ let annotations = () => {
                                     var tempElement = document.createElement("div");
                                     tempElement.innerHTML = content;
                                     /* text structure milestone */
-                                    var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"]');
+                                    var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"][data-annotation="' + "#" + idAnnotation + '"]');
 
                                     /* if the milestone exists */
                                     if (specificElement) {
@@ -993,8 +997,7 @@ let annotations = () => {
                                                                 
                                 /* submit form */
                                 setTimeout(() => {
-                                    var form = submitBtn.closest("form");
-                                    form.submit();
+                                    window.location.href = url;
                                 }, 4000);
                                 
                             } else {

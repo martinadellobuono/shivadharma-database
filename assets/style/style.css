@@ -10212,8 +10212,17 @@ body {
   font-size: 15px;
 }
 
+.fs-xxs {
+  font-size: 15px;
+}
+
 .fw-xs {
   font-weight: 300;
+}
+
+/* colors */
+.yellow-400 {
+  color: #ffcd39;
 }
 
 /* background */

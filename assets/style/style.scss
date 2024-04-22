@@ -11,6 +11,7 @@ $pink-dark: #B0786A;
 $ff-title: "Lily Script One", cursive;
 $ff-edition: "Book Antiqua";
 $fs-xs: 15px;
+$fs-xxs: 15px;
 
 /* html */
 html {
@@ -69,8 +70,17 @@ body {
     font-size: $fs-xs;
 }
 
+.fs-xxs {
+    font-size: $fs-xxs;
+}
+
 .fw-xs {
     font-weight: 300;
+}
+
+/* colors */
+.yellow-400 {
+    color: $yellow-400;
 }
 
 /* background */
@@ -766,5 +776,3 @@ span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
         float: none;
     }
 }
-
-;

@@ -193,7 +193,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         if (!translation_lang.includes(record.get("translation.langTranslation"))) {
                             translation_lang.push(record.get("translation.langTranslation"));
                         };
-                        
+
                     };
 
                     /* commentary */
