@@ -79,7 +79,11 @@ body {
 }
 
 /* colors */
-.yellow-500 {
+.yellow-600 {
+    color: $yellow-600;
+}
+
+.yellow-600:hover {
     color: $yellow-500;
 }
 
@@ -312,6 +316,16 @@ body {
 .caret[aria-expanded="true"]::after {
     content: " \25B2";
     font-size: 10px;
+}
+
+.caret-xs[aria-expanded="false"]::after {
+    content: " \25BC";
+    font-size: 8px;
+}
+
+.caret-xs[aria-expanded="true"]::after {
+    content: " \25B2";
+    font-size: 8px;
 }
 
 /* cursor */

@@ -10221,7 +10221,11 @@ body {
 }
 
 /* colors */
-.yellow-500 {
+.yellow-600 {
+  color: #cc9a06;
+}
+
+.yellow-600:hover {
   color: #ffc107;
 }
 
@@ -10458,6 +10462,16 @@ body {
 .caret[aria-expanded=true]::after {
   content: " ▲";
   font-size: 10px;
+}
+
+.caret-xs[aria-expanded=false]::after {
+  content: " ▼";
+  font-size: 8px;
+}
+
+.caret-xs[aria-expanded=true]::after {
+  content: " ▲";
+  font-size: 8px;
 }
 
 /* cursor */

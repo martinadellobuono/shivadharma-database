@@ -1,35 +1,34 @@
 var stanzas = document.querySelectorAll("span[data-type='printTxtStr'][data-text-structure='Stanza']");
+var stanzasArray = Array.from(stanzas);
 
-/* create a collapsible card to print inline apparatus */
-for (var i = 0; i < stanzas.length; i++) {
+stanzasArray.forEach((stanza) => {
+    var txtStructure = stanza.getAttribute("data-text-structure");
+    var txtStructureN = stanza.getAttribute("data-n");
+    var appEntryStanza = document.querySelector("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
+    
+    if (appEntryStanza) {
+        /* collapse btn */
+        var btnCollapse = document.createElement("a");
+        btnCollapse.textContent = "app.";
+        btnCollapse.setAttribute("class", "caret-xs yellow-600 fs-xxs p-1");
+        btnCollapse.setAttribute("data-bs-toggle", "collapse");
+        btnCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
+        btnCollapse.setAttribute("aria-expanded", "false");
+        stanza.append(btnCollapse);
 
-    console.log(stanzas[i]);
+        /* collapsible div */
+        var collapse = document.createElement("div");
+        collapse.setAttribute("class", "collapse p-3 border rounded");
+        collapse.setAttribute("id", txtStructure + "-" + txtStructureN);
+        collapse.setAttribute("data-type", "inlineApp");
+        collapse.setAttribute("data-n", txtStructureN);
 
-    var txtStructure = stanzas[i].getAttribute("data-text-structure");
-    var txtStructureN = stanzas[i].getAttribute("data-n");
+        /* append the card to the stanza */
+        stanza.append(collapse);
 
-    /* collapse btn */
-    var btnCollapse = document.createElement("a");
-    btnCollapse.textContent = "app.";
-    btnCollapse.setAttribute("class", "yellow-500 fs-xxs p-1");
-
-    btnCollapse.setAttribute("data-bs-toggle", "collapse");
-    btnCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
-    btnCollapse.setAttribute("aria-expanded", "false");
-    stanzas[i].append(btnCollapse);
-
-    /* collapsible div */
-    var collapse = document.createElement("div");
-    collapse.setAttribute("class", "collapse p-3 border rounded");
-    collapse.setAttribute("id", txtStructure + "-" + txtStructureN);
-
-    /* append the card to the stanza */
-    stanzas[i].append(collapse);
-
-    /* print data in the card */
-    var appEntries = document.querySelectorAll("div[data-type='apparatus'][data-subtype='entry']");
-    for (var i = 0; i < appEntries.length; i++) {
-        var appEntry = appEntries[i].querySelector("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']").parentElement.innerHTML;
-        collapse.innerHTML = appEntry;
+        /* print data in the card */
+        var appEntry = appEntryStanza.parentElement.innerHTML;
+        var inlineApp = document.querySelector("div[data-type='inlineApp'][data-n='" + txtStructureN + "']");
+        inlineApp.innerHTML = appEntry;
     };
-};
+});
