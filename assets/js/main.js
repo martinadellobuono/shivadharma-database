@@ -997,12 +997,12 @@ let annotations = () => {
                                     idEditor: idEditor,
                                     contentFile: contentFile
                                 }
-                                                                
+
                                 /* submit form */
                                 setTimeout(() => {
                                     window.location.href = url;
                                 }, 4000);
-                                
+
                             } else {
                                 /* send the file new content to the server */
                                 var contentFile = tinymce.get("fileBaseTxt").getContent();
@@ -1516,17 +1516,14 @@ let deleteAnnotationModal = () => {
                             });
                         };
 
-                        let deleteAnnotationDb = () => {
-                            /* send to the db the translation data to delete */
+                        /* let deleteAnnotationDb = () => {
                             var type = modal.getAttribute("data-annotation-type");
                             var dataContainer = document.querySelector(".container-" + type);
 
-                            /* edition / editor id */
                             var url = window.location.href;
                             var idEdition = url.split("/").pop().split("-")[0];
                             var idEditor = url.split("/").pop().split("-")[1];
 
-                            /* data to delete */
                             var data = dataContainer.querySelectorAll("[data-name='idAnnotation']");
 
                             data.forEach((el) => {
@@ -1537,14 +1534,12 @@ let deleteAnnotationModal = () => {
                                     idAnnotation: el.getAttribute("data-fill")
                                 }
 
-                                /* fetch data */
                                 fetch("/deleteTranslation", {
                                     method: "POST",
                                     body: JSON.stringify(data),
                                     headers: { "Content-type": "application/json; charset=UTF-8" }
                                 })
                                     .then((response) => {
-                                        /* send response */
                                         response.json();
                                     })
                                     .then(() => {
@@ -1553,8 +1548,9 @@ let deleteAnnotationModal = () => {
                                     .catch(err => console.log(err));
                             });
                         };
-
+                        */
                         /* close the modal */
+
                         let closeModal = () => {
                             let modalToClose = bootstrap.Modal.getInstance(modal);
                             modalToClose.hide();
@@ -1586,7 +1582,7 @@ let deleteAnnotationModal = () => {
                         };
 
                         /* DELETE THE ANNOTATION */
-                        deleteAnnotationDb();
+                        /* deleteAnnotationDb(); */
                         cancelAnnotationColor();
                         closeModal();
                         resetLayout();
