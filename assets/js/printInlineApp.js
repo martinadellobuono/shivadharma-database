@@ -61,7 +61,7 @@ stanzasArray.forEach((stanza) => {
         var inlinePar = document.querySelector("div[data-type='inlinePar'][data-n='" + txtStructureN + "']");
         parStanzas.forEach((parStanza) => {
             var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
-            inlinePar.innerHTML += "<div>" + parallel + "</div>";
+            inlinePar.innerHTML += "<div class='ff-edition-app'>" + parallel + "</div>";
         });
     };
 });
