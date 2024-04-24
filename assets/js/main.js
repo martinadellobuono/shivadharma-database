@@ -172,7 +172,7 @@ let fileTextarea = () => {
         selector: ".file-container textarea",
         resize: "both",
         width: "100%",
-        plugins: "preview searchreplace autolink directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
+        plugins: "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime lists wordcount help charmap quickbars",
         menubar: "file edit view insert format tools table help",
         menu: {
             format: { title: "Format", items: "bold italic underline strikethrough | superscript subscript | codeformat | formats blockformats fontsizes align | backcolor | removeformat" },

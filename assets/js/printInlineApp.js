@@ -4,11 +4,10 @@ var stanzasArray = Array.from(stanzas);
 stanzasArray.forEach((stanza) => {
     var txtStructure = stanza.getAttribute("data-text-structure");
     var txtStructureN = stanza.getAttribute("data-n");
-    var appEntryStanza = document.querySelector("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
-    var parStanza = document.querySelector(".par-stanza[data-n='" + txtStructureN + "']");
 
     /* INLINE APPARATUS */
-    if (appEntryStanza) {
+    var appStanzas = document.querySelectorAll("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
+    if (appStanzas.length > 0) {
         /* collapse app btn */
         var btnAppCollapse = document.createElement("a");
         btnAppCollapse.textContent = "app.";
@@ -29,13 +28,16 @@ stanzasArray.forEach((stanza) => {
         stanza.append(collapseApp);
 
         /* print data in the card */
-        var appEntry = appEntryStanza.parentElement.innerHTML;
         var inlineApp = document.querySelector("div[data-type='inlineApp'][data-n='" + txtStructureN + "']");
-        inlineApp.innerHTML = appEntry;
+        for (let i = appStanzas.length - 1; i >= 0; i--) {
+            var appEntry = appStanzas[i].parentElement.innerHTML;
+            inlineApp.innerHTML += "<div>" + appEntry + "</div>";
+        };
     };
 
     /* INLINE PARALLELS */
-    if (parStanza) {
+    var parStanzas = document.querySelectorAll(".par-stanza[data-n='" + txtStructureN + "']");
+    if (parStanzas.length > 0) {
         /* collapse parallel btn */
         var btnParCollapse = document.createElement("a");
         btnParCollapse.textContent = "par.";
@@ -56,9 +58,10 @@ stanzasArray.forEach((stanza) => {
         stanza.append(collapsePar);
 
         /* print data in the card */
-        var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
         var inlinePar = document.querySelector("div[data-type='inlinePar'][data-n='" + txtStructureN + "']");
-        inlinePar.innerHTML = parallel;
+        parStanzas.forEach((parStanza) => {
+            var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
+            inlinePar.innerHTML += "<div>" + parallel + "</div>";
+        });
     };
-
 });

@@ -27,7 +27,11 @@
                     <div class="d-none" data-type="apparatus" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["lemma"]["selectedFragment"]; %>' data-input="text"><%= el["lemma"]["selectedFragment"]; %></div>
 
                     <!-- lemma -->
-                    <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]["lemma"]; %>' data-input="text"><%= el["lemma"]["lemma"]; %></span>
+                    <% if (el["lemma"]["lemma"].indexOf("lemmaOmission") > -1) { %>
+                        <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]["lemma"]; %>' data-input="text">om.</span>
+                    <% } else { %>
+                        <span data-type="apparatus" data-subtype="lemma" data-name="lemma" data-fill='<%= el["lemma"]["lemma"]; %>' data-input="text"><%= el["lemma"]["lemma"]; %></span>
+                    <% }; %>
 
                     <!-- hidden lemmaID -->
                     <span class="d-none" data-type="apparatus" data-subtype="idAnnotation" data-name="idLemma" data-fill='<%= el["lemma"]["idAnnotation"]; %>' data-input="text"><%= el["lemma"]["idAnnotation"]; %></span>
@@ -51,9 +55,12 @@
 
                     <!-- variants -->
                     <% el["variants"].forEach((variant) => { %>
-
                         <!-- variant -->
-                        <span class="ms-4 fst-italic" data-type="apparatus" data-subtype="variant" data-name='variant<%= variant["variant"]["number"]; %>' data-fill='<%= variant["variant"]["variant"]; %>' data-input="text"><%= variant["variant"]["variant"]; %></span>
+                        <% if (variant["variant"]["value"].indexOf("variantOmission") > -1) { %>
+                            <span class="ms-4 fst-italic" data-type="apparatus" data-subtype="variant" data-name='variant<%= variant["variant"]["number"]; %>' data-fill='<%= variant["variant"]["variant"]; %>' data-input="text">om.</span>
+                        <% } else { %>
+                            <span class="ms-4 fst-italic" data-type="apparatus" data-subtype="variant" data-name='variant<%= variant["variant"]["number"]; %>' data-fill='<%= variant["variant"]["variant"]; %>' data-input="text"><%= variant["variant"]["variant"]; %></span>
+                        <% }; %>
                         
                         <!-- hidden variantID -->
                         <span class="d-none text-primary" data-type="apparatus" data-subtype="id-variant" data-name='idVariant<%= variant["variant"]["number"] %>' data-fill='<%= variant["variant"]["idAnnotation"]; %>' data-input="text"></span>

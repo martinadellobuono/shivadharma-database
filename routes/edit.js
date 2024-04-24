@@ -555,6 +555,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                                                 var variantDict = JSON.stringify({
                                                     idAnnotation: segment["start"]["properties"]["idVariant"],
                                                     variant: variant,
+                                                    value: segment["start"]["properties"]["value"],
                                                     number: segment["start"]["properties"]["number"],
                                                     notes: segment["start"]["properties"]["notes"]
                                                 })
