@@ -954,7 +954,6 @@ let annotations = () => {
 
                             /* add stanza entities */
                             if (submitBtn.classList.contains("btn-txtStr")) {
-
                                 /* do not submit the form */
                                 e.preventDefault();
 
@@ -1000,6 +999,8 @@ let annotations = () => {
                                         idEditor: idEditor,
                                         contentFile: contentFile
                                     }
+                                    /* save file */
+                                    saveFile();
                                 } catch (err) {
                                     console.log(err);
                                 } finally {
