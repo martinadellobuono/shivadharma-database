@@ -955,62 +955,81 @@ let annotations = () => {
                             /* add stanza entities */
                             if (submitBtn.classList.contains("btn-txtStr")) {
 
+                                /* do not submit the form */
                                 e.preventDefault();
 
-                                /* text structure number / name */
-                                var txtStrInput = document.getElementById("nTxtStr");
-                                var txtStrNameInput = document.getElementById("textStructureName");
-                                var txtStrN = txtStrInput.value;
-                                var txtStrName = txtStrNameInput.value
-                                /* create the text structure milestone */
-                                var milestoneTxtStr = document.createElement("span");
-                                milestoneTxtStr.setAttribute("data-type", "printTxtStr");
-                                milestoneTxtStr.setAttribute("data-subtype", annType);
-                                /* assign the type of text structure */
-                                milestoneTxtStr.setAttribute("data-text-structure", txtStrName);
-                                /* assign an id to the annotation */
-                                milestoneTxtStr.setAttribute("data-n", txtStrN);
-                                /* / */
+                                /* send data to the db */
+                                try {
+                                    /* text structure number / name */
+                                    var txtStrInput = document.getElementById("nTxtStr");
+                                    var txtStrNameInput = document.getElementById("textStructureName");
+                                    var txtStrN = txtStrInput.value;
+                                    var txtStrName = txtStrNameInput.value
+                                    /* create the text structure milestone */
+                                    var milestoneTxtStr = document.createElement("span");
+                                    milestoneTxtStr.setAttribute("data-type", "printTxtStr");
+                                    milestoneTxtStr.setAttribute("data-subtype", annType);
+                                    /* assign the type of text structure */
+                                    milestoneTxtStr.setAttribute("data-text-structure", txtStrName);
+                                    /* assign an id to the annotation */
+                                    milestoneTxtStr.setAttribute("data-n", txtStrN);
+                                    /* / */
 
-                                /* set the print text structure milestone after the text structure milestone */
-                                var editor = tinymce.get("fileBaseTxt");
-                                if (editor) {
-                                    var content = editor.getContent();
-                                    /* create a fake element to extract the html */
-                                    var tempElement = document.createElement("div");
-                                    tempElement.innerHTML = content;
-                                    /* text structure milestone */
-                                    var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"][data-annotation="' + "#" + idAnnotation + '"]');
+                                    /* set the print text structure milestone after the text structure milestone */
+                                    var editor = tinymce.get("fileBaseTxt");
+                                    if (editor) {
+                                        var content = editor.getContent();
+                                        /* create a fake element to extract the html */
+                                        var tempElement = document.createElement("div");
+                                        tempElement.innerHTML = content;
+                                        /* text structure milestone */
+                                        var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"][data-annotation="' + "#" + idAnnotation + '"]');
 
-                                    /* if the milestone exists */
-                                    if (specificElement) {
-                                        specificElement.insertAdjacentElement("afterend", milestoneTxtStr);
-                                        /* add the print text structure milestone */
-                                        editor.setContent(tempElement.innerHTML);
+                                        /* if the milestone exists */
+                                        if (specificElement) {
+                                            specificElement.insertAdjacentElement("afterend", milestoneTxtStr);
+                                            /* add the print text structure milestone */
+                                            editor.setContent(tempElement.innerHTML);
+                                        };
                                     };
-                                };
 
-                                /* send the file new content to the server */
-                                var contentFile = tinymce.get("fileBaseTxt").getContent();
-                                data = {
-                                    idEdition: idEdition,
-                                    idEditor: idEditor,
-                                    contentFile: contentFile
-                                }
-
-                                /* submit form */
-                                setTimeout(() => {
+                                    /* send the file new content to the server */
+                                    var contentFile = tinymce.get("fileBaseTxt").getContent();
+                                    data = {
+                                        idEdition: idEdition,
+                                        idEditor: idEditor,
+                                        contentFile: contentFile
+                                    }
+                                } catch (err) {
+                                    console.log(err);
+                                } finally {
+                                    /* submit form */
                                     window.location.href = url;
-                                }, 4000);
-
+                                    alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                };
                             } else {
-                                /* send the file new content to the server */
-                                var contentFile = tinymce.get("fileBaseTxt").getContent();
-                                data = {
-                                    idEdition: idEdition,
-                                    idEditor: idEditor,
-                                    contentFile: contentFile
-                                }
+                                /* do not submit the form */
+                                e.preventDefault();
+
+                                /* send the data to the db */
+                                try {
+                                    /* send the file new content to the server */
+                                    var contentFile = tinymce.get("fileBaseTxt").getContent();
+                                    data = {
+                                        idEdition: idEdition,
+                                        idEditor: idEditor,
+                                        contentFile: contentFile
+                                    }
+
+                                    /* save file */
+                                    saveFile();
+                                } catch (err) {
+                                    console.log(err);
+                                } finally {
+                                    /* reaload the page */
+                                    window.location.href = url;
+                                    alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                };
                             };
 
                             /* unblock all the buttons */
@@ -1125,13 +1144,13 @@ let publishEdition = () => {
 let stopLoading = () => {
 
     /* submit buttons */
-    var submitBtn = document.querySelectorAll("button[type='submit']");
+    /* var submitBtn = document.querySelectorAll("button[type='submit']");
     for (var i = 0; i < submitBtn.length; i++) {
         submitBtn[i].addEventListener("click", () => {
             saveFile();
             window.stop();
         });
-    };
+    }; */
 
     /* nav links */
     var navLink = document.querySelectorAll(".nav-link");
