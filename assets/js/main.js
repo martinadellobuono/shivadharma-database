@@ -956,6 +956,9 @@ let annotations = () => {
                             if (submitBtn.classList.contains("btn-txtStr")) {
                                 /* send data to the db */
                                 try {
+                                    /* do not submit the form */
+                                    e.preventDefault();
+
                                     /* text structure number / name */
                                     var txtStrInput = document.getElementById("nTxtStr");
                                     var txtStrNameInput = document.getElementById("textStructureName");
@@ -996,30 +999,15 @@ let annotations = () => {
                                         idEditor: idEditor,
                                         contentFile: contentFile
                                     }
+
+                                    /* save file */
+                                    saveFile();
                                 } catch (err) {
                                     console.log(err);
                                 } finally {
-                                    const saveEdition = new Promise((resolve, reject) => {
-                                        setTimeout(() => {
-                                            /* save file */
-                                            saveFile((err, result) => {
-                                                if (err) {
-                                                    reject(err);
-                                                } else {
-                                                    resolve(result);
-                                                }
-                                            });
-                                        }, 300);
-                                    });
-
-                                    saveEdition
-                                        .then(() => {
-                                            alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
-                                            window.location.href = url;
-                                        })
-                                        .catch(error => {
-                                            console.error("Error saving file: ", error);
-                                        });
+                                    /* submit form */
+                                    alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                    window.location.href = url;
                                 };
                             } else {
                                 /* send the data to the db */
