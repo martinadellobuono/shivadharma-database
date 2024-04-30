@@ -954,9 +954,6 @@ let annotations = () => {
 
                             /* add stanza entities */
                             if (submitBtn.classList.contains("btn-txtStr")) {
-                                /* do not submit the form */
-                                e.preventDefault();
-
                                 /* send data to the db */
                                 try {
                                     /* text structure number / name */
@@ -999,19 +996,32 @@ let annotations = () => {
                                         idEditor: idEditor,
                                         contentFile: contentFile
                                     }
-                                    /* save file */
-                                    saveFile();
                                 } catch (err) {
                                     console.log(err);
                                 } finally {
-                                    /* submit form */
-                                    window.location.href = url;
-                                    alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                    const saveEdition = new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            /* save file */
+                                            saveFile((err, result) => {
+                                                if (err) {
+                                                    reject(err);
+                                                } else {
+                                                    resolve(result);
+                                                }
+                                            });
+                                        }, 300);
+                                    });
+
+                                    saveEdition
+                                        .then(() => {
+                                            alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                            window.location.href = url;
+                                        })
+                                        .catch(error => {
+                                            console.error("Error saving file: ", error);
+                                        });
                                 };
                             } else {
-                                /* do not submit the form */
-                                e.preventDefault();
-
                                 /* send the data to the db */
                                 try {
                                     /* send the file new content to the server */
@@ -1021,15 +1031,30 @@ let annotations = () => {
                                         idEditor: idEditor,
                                         contentFile: contentFile
                                     }
-
-                                    /* save file */
-                                    saveFile();
                                 } catch (err) {
                                     console.log(err);
                                 } finally {
-                                    /* reaload the page */
-                                    window.location.href = url;
-                                    alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                    const saveEdition = new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            /* save file */
+                                            saveFile((err, result) => {
+                                                if (err) {
+                                                    reject(err);
+                                                } else {
+                                                    resolve(result);
+                                                }
+                                            });
+                                        }, 300);
+                                    });
+
+                                    saveEdition
+                                        .then(() => {
+                                            alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                            window.location.href = url;
+                                        })
+                                        .catch(error => {
+                                            console.error("Error saving file: ", error);
+                                        });
                                 };
                             };
 
