@@ -9,30 +9,31 @@
     <div class="row">
       <!-- title -->
       <div class="col-md-8">
-        <a href="<%= prevUrl; %>" type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>
+        <a href="<%= prevUrl; %>" type="button" class="btn btn-sm btn-light border"><i class="bi bi-arrow-left"></i></a>        
         <% if (typeof title !== "undefined") { %>
-          <h1 class="h4 d-inline">
-            <%= title %>
-            <!--<% authors.forEach((author) => { %>
-              <%= author; %>
-            <% }); %>-->
-          </h1>
-          <h2 class="d-inline h5 text-secondary">
-            <span data-type="header" data-subtype="curated-by">curated by</span>
-            <span class="after-coma">
-              <% if (editors) { %>
-                <% editors.forEach((editor) => { %>
-                  <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
-                <% }); %>
-              <% }; %>
-              <% if (secondaryEditors) { %>
-                <% secondaryEditors.forEach((secondaryEditor) => { %>
-                  <span class="after-coma-content" data-type="header" data-subtype="editor"><%= secondaryEditor; %></span>
-                <% }); %>
-              <% }; %>
-            </span>
-          </h2>
-
+          <div class="d-inline" id="header">
+            <h1 class="h4 d-inline">
+              <%= title %>
+              <!--<% authors.forEach((author) => { %>
+                <%= author; %>
+              <% }); %>-->
+            </h1>
+            <h2 class="d-inline h5 text-secondary">
+              <span data-type="header" data-subtype="curated-by">curated by</span>
+              <span class="after-coma">
+                <% if (editors) { %>
+                  <% editors.forEach((editor) => { %>
+                    <span class="after-coma-content" data-type="header" data-subtype="editor"><%= editor; %></span>
+                  <% }); %>
+                <% }; %>
+                <% if (secondaryEditors) { %>
+                  <% secondaryEditors.forEach((secondaryEditor) => { %>
+                    <span class="after-coma-content" data-type="header" data-subtype="editor"><%= secondaryEditor; %></span>
+                  <% }); %>
+                <% }; %>
+              </span>
+            </h2>
+          </div>
           <!-- credits -->
           <div class="d-inline">
             <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#credits-modal">

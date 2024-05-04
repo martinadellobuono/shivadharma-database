@@ -23,9 +23,20 @@ let expandAllCollapsibles = () => {
 
 let generatePDF = () => {
     var url = window.location.href.split("/");
+
+    /* avoid # in url */
+    var oldUrl = window.location.href;
+
     var fileName = url[url.length - 1].replace("html", "txt");
     expandAllCollapsibles().then(() => {
-        const element = document.getElementById("textus");
+        const header = document.getElementById("header");
+        const txt = document.getElementById("textus");
+
+        /* title editors and textus */
+        const container = document.createElement("div");
+        container.appendChild(header);
+        container.appendChild(txt);
+
         var opt = {
             margin: 1,
             filename: fileName,
@@ -36,7 +47,7 @@ let generatePDF = () => {
         };
 
         /* generate pdf */
-        html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+        html2pdf().set(opt).from(container).toPdf().get('pdf').then(function (pdf) {
             var totalPages = pdf.internal.getNumberOfPages();
             for (var i = 1; i <= totalPages; i++) {
                 pdf.setPage(i);
@@ -46,8 +57,8 @@ let generatePDF = () => {
             };
             pdf.save();
 
-        /* back to the edition page */
-        window.location.href = "/edition/" + encodeURIComponent(fileName);
+            /* back to the edition page */
+            window.location.href = oldUrl.replace("#", "");
         }).catch(error => {
             console.error("Failed to generate PDF: ", error);
         });
