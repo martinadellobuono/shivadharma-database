@@ -629,7 +629,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         return a[0]["lemma"]["padaEnd"].localeCompare( b[0]["lemma"]["padaEnd"]);
                     }
                     apparatus.sort(compare);
-                                        
+                    
                     /* PAGE RENDERING */
                     if (fs.existsSync(path)) {
                         res.render("edition", {

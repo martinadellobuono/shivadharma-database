@@ -378,6 +378,10 @@ app.use("/", edition, checkAuthenticated);
 const txt = require("./routes/txt");
 app.use("/", txt, checkAuthenticated);
 
+/* get the edition in txt */
+const tei = require("./routes/tei");
+app.use("/", tei, checkAuthenticated);
+
 /* get the list of editions */
 const editions = require("./routes/editions");
 const { Console } = require("console");
