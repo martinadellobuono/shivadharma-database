@@ -613,22 +613,23 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                     });
 
                     /* order the apparatus */
-                    apparatus.sort((a, b) => {
-                        return a[0]["lemma"]["chapter"] - b[0]["lemma"]["chapter"];
-                    });
-                    apparatus.sort((a, b) => {
-                        return a[0]["lemma"]["stanzaStart"] - b[0]["lemma"]["stanzaStart"];
-                    });
-                    apparatus.sort((a, b) => {
-                        return a[0]["lemma"]["padaStart"] - b[0]["lemma"]["padaStart"];
-                    });
-                    apparatus.sort((a, b) => {
-                        return a[0]["lemma"]["stanzaEnd"] - b[0]["lemma"]["stanzaEnd"];
-                    });
-                    apparatus.sort((a, b) => {
-                        return a[0]["lemma"]["padaEnd"] - b[0]["lemma"]["padaEnd"];
-                    });
-
+                    function compare(a, b) {
+                        if (a[0]["lemma"]["chapter"] !== b[0]["lemma"]["chapter"]) {
+                            return a[0]["lemma"]["chapter"].localeCompare(b[0]["lemma"]["chapter"]);
+                        }
+                        if (a[0]["lemma"]["stanzaStart"] !== b[0]["lemma"]["stanzaStart"]) {
+                            return a[0]["lemma"]["stanzaStart"].localeCompare(b[0]["lemma"]["stanzaStart"]);
+                        }
+                        if (a[0]["lemma"]["padaStart"] !== b[0]["lemma"]["padaStart"]) {
+                            return a[0]["lemma"]["padaStart"].localeCompare(b[0]["lemma"]["padaStart"]);
+                        }
+                        if (a[0]["lemma"]["stanzaEnd"] !== b[0]["lemma"]["stanzaEnd"]) {
+                            return a[0]["lemma"]["stanzaEnd"].localeCompare(b[0]["lemma"]["stanzaEnd"]);
+                        }
+                        return a[0]["lemma"]["padaEnd"].localeCompare( b[0]["lemma"]["padaEnd"]);
+                    }
+                    apparatus.sort(compare);
+                                        
                     /* PAGE RENDERING */
                     if (fs.existsSync(path)) {
                         res.render("edition", {

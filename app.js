@@ -374,6 +374,10 @@ app.use("/", publish);
 const edition = require("./routes/edition");
 app.use("/", edition, checkAuthenticated);
 
+/* get the edition in txt */
+const txt = require("./routes/txt");
+app.use("/", txt, checkAuthenticated);
+
 /* get the list of editions */
 const editions = require("./routes/editions");
 const { Console } = require("console");

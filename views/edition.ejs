@@ -93,11 +93,11 @@
             Download
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">LateX</a></li>
+            <li><a class="dropdown-item" href="#" onclick="downloadFile();">.txt <i>Textus</i></a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#">PDF</a></li>
+            <li><a class="dropdown-item" href="#" onclick="generatePDF();">PDF</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -125,7 +125,7 @@
         <% if (file) { %>
           
           <!-- roman text -->
-          <div class="ff-edition text-to-convert" data-script="roman"><%- include (`../uploads/${file}`) %></div>
+          <div class="ff-edition text-to-convert" data-script="roman" id="textus"><%- include (`../uploads/${file}`) %></div>
 
           <!-- devanagari text -->
           <div class="ff-edition text-to-convert" data-script="devanagari"></div>
@@ -245,7 +245,7 @@
                 </span>
 
                 <!-- full-text -->
-                <div class="collapse" id="collapse-parallel-<%= key; %>">
+                <div class="collapse inlineAppDiv" id="collapse-parallel-<%= key; %>">
                   <div class="card card-body">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
@@ -262,7 +262,7 @@
                       </div>
                       <% if (el["note"] !== "") { %>
                         <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
-                        <div class="collapse mb-3" id="collapse-parallel-note-<%= el['id']; %>">
+                        <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
                           <div class="card card-body">
                             <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
                           </div>

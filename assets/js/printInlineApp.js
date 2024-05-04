@@ -19,7 +19,7 @@ stanzasArray.forEach((stanza) => {
 
         /* collapsible app div */
         var collapseApp = document.createElement("div");
-        collapseApp.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-blue");
+        collapseApp.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-blue inlineAppDiv");
         collapseApp.setAttribute("id", txtStructure + "-" + txtStructureN);
         collapseApp.setAttribute("data-type", "inlineApp");
         collapseApp.setAttribute("data-n", txtStructureN);
@@ -29,7 +29,7 @@ stanzasArray.forEach((stanza) => {
 
         /* print data in the card */
         var inlineApp = document.querySelector("div[data-type='inlineApp'][data-n='" + txtStructureN + "']");
-        for (let i = appStanzas.length - 1; i >= 0; i--) {
+        for (var i = 0; i < appStanzas.length; i++) {
             var appEntry = appStanzas[i].parentElement.innerHTML;
             inlineApp.innerHTML += "<div>" + appEntry + "</div>";
         };
@@ -49,7 +49,7 @@ stanzasArray.forEach((stanza) => {
 
         /* collapsible parallel div */
         var collapsePar = document.createElement("div");
-        collapsePar.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-orange");
+        collapsePar.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-orange inlineAppDiv");
         collapsePar.setAttribute("id", "par-" + txtStructure + "-" + txtStructureN);
         collapsePar.setAttribute("data-type", "inlinePar");
         collapsePar.setAttribute("data-n", txtStructureN);
