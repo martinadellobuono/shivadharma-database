@@ -26,8 +26,8 @@ let generatePDF = () => {
 
     /* avoid # in url */
     var oldUrl = window.location.href;
-
     var fileName = url[url.length - 1].replace("html", "txt");
+    
     expandAllCollapsibles().then(() => {
         const header = document.getElementById("header");
         const txt = document.getElementById("textus");
@@ -55,7 +55,7 @@ let generatePDF = () => {
                 pdf.setTextColor(150);
                 pdf.text(String(i), (pdf.internal.pageSize.getWidth() / 2), pdf.internal.pageSize.getHeight() - 0.5, { align: "center" });
             };
-            pdf.save();
+            pdf.save(fileName);
 
             /* back to the edition page */
             window.location.href = oldUrl.replace("#", "");
