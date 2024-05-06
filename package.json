@@ -29,6 +29,7 @@
     "mammoth": "^1.5.1",
     "method-override": "^3.0.0",
     "neo4j-driver": "*",
+    "node-html-parser": "^6.1.13",
     "npm": "^8.13.1",
     "npm-local": "^0.0.1",
     "passport": "^0.6.0",

@@ -29,8 +29,7 @@ router.get(process.env.URL_PATH + "/txt/:id", (req, res) => {
         const txtFilePath = path.join(__dirname, "..", "txt", `${idEdition}-${idEditor}.txt`);
         fs.writeFile(txtFilePath, plainText, "utf8", (err) => {
             if (err) {
-                console.error('Errore nella scrittura del file:', err);
-                res.status(500).send('Errore nella scrittura del file');
+                console.error(err);
                 return;
             };
 

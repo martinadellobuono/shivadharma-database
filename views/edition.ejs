@@ -94,15 +94,16 @@
             Download
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" onclick="downloadFile();">.txt <i>Textus</i></a></li>
+            <li><a class="dropdown-item disabled">Roman</a></li>
+            <li><a class="dropdown-item" onclick="downloadTxt();">.txt <i>Textus</i></a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#" onclick="generatePDF();">PDF <i>Textus, Apparatus and Parallels</i></a></li>
+            <li><a class="dropdown-item" onclick="generatePDF();">PDF <i>Textus, Apparatus and Parallels</i></a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href="#">XML/TEI</a></li>
+            <li><a class="dropdown-item" onclick="downloadTei();">XML/TEI</a></li>
           </ul>
         </div>
         <!-- tutorial -->

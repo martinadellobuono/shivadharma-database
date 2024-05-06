@@ -34,8 +34,85 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
         const dom = new JSDOM(data);
         const document = dom.window.document;
 
-        /* get paragraphs */
-        const paragraphs = Array.from(document.querySelectorAll("body > p")).map(p => p.textContent);
+        /* remove all spans with data-type="annotation-object" from the html */
+        /* hidden div to upload the html */
+        const div = document.createElement('div');
+        div.style.display = 'none';
+        div.innerHTML = data;
+
+        /* find all the annotation-object spans */
+        const annotationObjects = div.querySelectorAll('span[data-type="annotation-object"]');
+
+        /* remove all the annotation-objects spans but their content */
+        annotationObjects.forEach(span => {
+            const parent = span.parentNode;
+            while (span.firstChild) {
+                parent.insertBefore(span.firstChild, span);
+            }
+            parent.removeChild(span);
+        });
+
+        /* paragraphs to replace with div */
+        const paragraphs = div.querySelectorAll("p");
+
+        paragraphs.forEach(p => {
+            const divElement = document.createElement("div");
+            while (p.firstChild) {
+                divElement.appendChild(p.firstChild);
+            }
+            p.parentNode.replaceChild(divElement, p);
+        });
+
+        /* span to replace with milestone */
+        const milestones = div.querySelectorAll('span[data-type="milestone"]');
+
+        milestones.forEach(span => {
+            const milestoneElement = document.createElement("milestone");
+            const annotationValue = span.getAttribute("data-annotation").replace("#", "");
+            milestoneElement.setAttribute("xml:id", annotationValue);
+            const typeValue = span.getAttribute("data-type");
+            milestoneElement.setAttribute("type", typeValue);
+            span.parentNode.replaceChild(milestoneElement, span);
+        });
+
+        /* html with milestones */
+        const htmlWithMilestones = div.innerHTML;
+
+        /* html > xml */
+        const { parse } = require("node-html-parser");
+        const htmlRoot = parse(htmlWithMilestones);
+
+        function htmlToXml(node) {
+            const xmlElement = {
+                type: "element",
+                name: node.tagName,
+                elements: []
+            };
+
+            if (node.attributes) {
+                xmlElement.attributes = node.attributes;
+            };
+
+            if (node.childNodes.length === 1 && node.childNodes[0].nodeType === 3) {
+                xmlElement.elements.push({
+                    type: "text",
+                    text: node.childNodes[0].text
+                });
+            } else {
+                node.childNodes.forEach(child => {
+                    if (child.nodeType === 1) {
+                        xmlElement.elements.push(htmlToXml(child));
+                    } else if (child.nodeType === 3) {
+                        xmlElement.elements.push({
+                            type: "text",
+                            text: child.text
+                        });
+                    }
+                });
+            }
+
+            return xmlElement;
+        };
 
         /* build tei */
         const teiDocument = {
@@ -68,7 +145,7 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
                                                     elements: [
                                                         {
                                                             type: "text",
-                                                            text: "...",
+                                                            text: "Title of your TEI document",
                                                         },
                                                     ],
                                                 },
@@ -85,16 +162,12 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
                                 {
                                     type: "element",
                                     name: "body",
-                                    elements: paragraphs.map(text => ({
-                                        type: "element",
-                                        name: "p",
-                                        elements: [
-                                            {
-                                                type: "text",
-                                                text: text,
-                                            },
-                                        ],
-                                    })),
+                                    elements: [
+                                        {
+                                            type: "text",
+                                            text: htmlWithMilestones,
+                                        },
+                                    ],
                                 },
                             ],
                         },
@@ -103,11 +176,38 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
             ],
         };
 
-        /* tei to xml conversion */
-        const xmlString = xmlJs.js2xml(teiDocument, { compact: false, spaces: 2 });
+        const bodyElements = htmlRoot.childNodes.map(node => htmlToXml(node));
+        const bodyElement = teiDocument.elements[0].elements[1].elements[0];
+        bodyElement.elements = bodyElements;
 
-        /* send the file */
-        res.type("application/xml").send(xmlString);
+        /* tei to xml conversion */
+        const xmlTei = xmlJs.js2xml(teiDocument, { compact: false, spaces: 2 });
+
+        /* create a txt file */
+        const txtFilePath = path.join(__dirname, "..", "tei", `${idEdition}-${idEditor}.xml`);
+        fs.writeFile(txtFilePath, xmlTei, "utf8", (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            };
+
+            /* set Content-Disposition header to decode escaped characters */
+            res.setHeader('Content-Disposition', `attachment; filename="${idEdition}-${idEditor}.xml"`);
+
+            /* download the txt file as response */
+            res.download(txtFilePath, (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    /* delete the file after download */
+                    fs.unlink(txtFilePath, (err) => {
+                        if (err) {
+                            console.error(err);
+                        };
+                    });
+                };
+            });
+        });
     });
 });
 

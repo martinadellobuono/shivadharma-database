@@ -35,6 +35,9 @@ let generatePDF = () => {
         /* title editors and textus */
         const container = document.createElement("div");
         container.appendChild(header);
+        const spacer = document.createElement("div");
+        spacer.style.marginBottom = "20px";
+        container.appendChild(spacer);
         container.appendChild(txt);
 
         var opt = {
@@ -47,7 +50,7 @@ let generatePDF = () => {
         };
 
         /* generate pdf */
-        html2pdf().set(opt).from(container).toPdf().get('pdf').then(function (pdf) {
+        html2pdf().set(opt).from(container).toPdf().get("pdf").then(function (pdf) {
             var totalPages = pdf.internal.getNumberOfPages();
             for (var i = 1; i <= totalPages; i++) {
                 pdf.setPage(i);
