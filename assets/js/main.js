@@ -2219,9 +2219,7 @@ let devanagariConverter = () => {
             // CHANGE IAST LETTERS TO DEVANAGARI
             // this is the Roman script input point
 
-            /* TRY */
-
-
+            /* html contents */
             var editionText = containerRoman.innerHTML;
 
             roman_elem = editionText.toLowerCase().split('\n');

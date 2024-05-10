@@ -239,7 +239,7 @@
                 <% for (const [key, value] of Object.entries(parallel)) { %>
 
                 <!-- title -->
-                <span class="fw-bold title-subsection" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
+                <span class="fw-bold title-subsection fs-xs" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
                   <!-- title with tooltip -->
                   <%= key.split("___")[0]; %>
                   <!-- collapse the parallel full-text -->
@@ -248,15 +248,14 @@
 
                 <!-- full-text -->
                 <div class="collapse inlineAppDiv" id="collapse-parallel-<%= key; %>">
-                  <div class="card card-body">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
-                      <div class="bg-light fs-6 mb-3">
+                      <div class="bg-light fs-6 mb-3 d-none">
                       <% if (typeof title !== "undefined") { %>
                         <span>Parallel to <%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n="<%= el["stanzaStart"] %>"><%= el["stanzaStart"] %></span>
                       <% }; %>
                       </div>
-                      <div data-type="parallel" data-subtype="parallel">
+                      <div class="fs-xs" data-type="parallel" data-subtype="parallel">
                         <span data-type="parallel" data-subtype="full-text"><%- el["value"]; %></span>
                         <span class="me-2" data-type="location" data-subtype="location-bottom">
                           <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
@@ -271,7 +270,6 @@
                         </div>
                       <% }; %>
                     <% }); %>
-                  </div>
                 </div>
                 <% }; %>
               </div>
