@@ -1,19 +1,17 @@
+<% var idNode; %>
 <% if (apparatus) { %>
     <% if (apparatus.length > 0) { %>
         <% apparatus.forEach((entry) => { %>
             <div class="p-3 mt-3 bg-white container-apparatus" data-type="apparatus" data-subtype="apparatus-entry">
                 <% entry.forEach((el) => { %>
-                    
                     <!-- location -->
                     <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="number"><%= el["lemma"]["stanzaStart"]; %></span>
                     <span data-type="apparatus" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["lemma"]["padaStart"]; %>' data-input="checkbox"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
-                    
                     <span data-type="apparatus" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["lemma"]["stanzaEnd"]; %>' data-input="number">
                         <% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %>
                             <span data-type="separator" data-subtype="enDash">&#x2013;</span><%= el["lemma"]["stanzaEnd"]; %>
                         <% }; %>
                     </span>
-
                     <span data-type="apparatus" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["lemma"]["padaEnd"]; %>' data-input="checkbox">
                         <% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %>
                             <%= el["lemma"]["padaEnd"]; %>
@@ -24,6 +22,7 @@
                     <span class="d-none" data-type="apparatus" data-subtype="chapter" data-name="chapter" data-fill='<%= el["lemma"]["chapter"]; %>' data-input="number"></span>
 
                     <!-- hidden fragment -->
+                    <% idNode = el["lemma"]["selectedFragment"]; %>
                     <div class="d-none" data-type="apparatus" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["lemma"]["selectedFragment"]; %>' data-input="text"><%= el["lemma"]["selectedFragment"]; %></div>
 
                     <!-- lemma -->
@@ -81,13 +80,14 @@
                         <% if (variant["variant"]["notes"] !== "") { %>
                             <span class="note" data-type="apparatus" data-subtype="variantNotes" data-name="variant<%= variant['variant']['number'] %>Omission" data-fill='<%= variant["variant"]["notes"]; %>' data-input="textarea"><%- variant["variant"]["notes"]; %></span>
                         <% }; %>
-
                     <% }); %>
-
                 <% }); %>
                 
-                <!-- modify button -->
+                <!-- delete / modify button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                    <!-- delete -->
+                    <button class="btn btn-sm btn-secondary btn-delete" type="button" data-delete="apparatus" data-node-id='<%= idNode; %>'><i class="bi bi-trash-fill"></i></button>
+                    <!-- modify -->
                     <button class="btn btn-sm btn-light-blue modify-btn" type="button" data-type="apparatus">Modify</button>
                 </div>
             </div>

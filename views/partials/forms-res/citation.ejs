@@ -23,8 +23,11 @@
                 <span class="d-none" data-type="citations" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
                 <span class="d-none" data-type="citations" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
 
-                <!-- modify button -->
+                <!-- delete / modify button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                    <!-- delete -->
+                    <button class="btn btn-sm btn-secondary btn-delete" type="button" data-delete="citation" data-node-id='<%= el["idAnnotation"]; %>'><i class="bi bi-trash-fill"></i></button>
+                    <!-- modify -->
                     <button class="btn btn-sm btn-fuchsia modify-btn" type="button" data-type="citation">Modify</button>
                 </div>
             </div>

@@ -50,8 +50,11 @@
                     </div>
                 <% }; %>
 
-                <!-- modify button -->
+                <!-- delete / modify button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+                    <!-- delete -->
+                    <button class="btn btn-sm btn-secondary btn-delete" type="button" data-delete="commentary" data-node-id='<%= el["idAnnotation"]; %>'><i class="bi bi-trash-fill"></i></button>
+                    <!-- modify -->
                     <button class="btn btn-sm btn-indigo modify-btn" type="button" data-type="commentary">Modify</button>
                 </div>
             </div>

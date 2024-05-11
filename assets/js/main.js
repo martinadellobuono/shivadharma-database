@@ -1549,41 +1549,7 @@ let deleteAnnotationModal = () => {
                             });
                         };
 
-                        /* let deleteAnnotationDb = () => {
-                            var type = modal.getAttribute("data-annotation-type");
-                            var dataContainer = document.querySelector(".container-" + type);
-
-                            var url = window.location.href;
-                            var idEdition = url.split("/").pop().split("-")[0];
-                            var idEditor = url.split("/").pop().split("-")[1];
-
-                            var data = dataContainer.querySelectorAll("[data-name='idAnnotation']");
-
-                            data.forEach((el) => {
-
-                                var data = {
-                                    idEdition: idEdition,
-                                    idEditor: idEditor,
-                                    idAnnotation: el.getAttribute("data-fill")
-                                }
-
-                                fetch("/deleteTranslation", {
-                                    method: "POST",
-                                    body: JSON.stringify(data),
-                                    headers: { "Content-type": "application/json; charset=UTF-8" }
-                                })
-                                    .then((response) => {
-                                        response.json();
-                                    })
-                                    .then(() => {
-                                        window.location.reload();
-                                    })
-                                    .catch(err => console.log(err));
-                            });
-                        };
-                        */
                         /* close the modal */
-
                         let closeModal = () => {
                             let modalToClose = bootstrap.Modal.getInstance(modal);
                             modalToClose.hide();

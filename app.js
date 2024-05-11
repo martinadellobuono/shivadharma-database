@@ -342,10 +342,6 @@ app.use("/", addApparatus);
 const addTranslation = require("./routes/forms/translation/addTranslation");
 app.use("/", addTranslation);
 
-/* delete translation */
-const deleteTranslation = require("./routes/forms/translation/deleteTranslation");
-app.use("/", deleteTranslation);
-
 /* add parallel */
 const addParallel = require("./routes/forms/parallel/addParallel");
 app.use("/", addParallel);
@@ -361,6 +357,10 @@ app.use("/", addCitation);
 /* add note */
 const addNote = require("./routes/forms/note/addNote");
 app.use("/", addNote);
+
+/* delete any entity */
+const deleteEntity = require("./routes/delete");
+app.use("/", deleteEntity);
 
 /* save file */
 const saveFile = require("./routes/saveFile");
