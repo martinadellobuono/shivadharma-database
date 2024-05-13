@@ -10869,6 +10869,10 @@ p {
   .specific-cols.col-md-2 {
     width: 100% !important;
   }
+  /* list */
+  .btn-list {
+    float: none;
+  }
 }
 /* apparatus */
 span[data-type=annotation-object][data-subtype=apparatus] {
@@ -10893,10 +10897,7 @@ span[data-type=annotation-object][data-subtype=apparatus]:hover {
   color: #084298;
 }
 
-/* MOBILE */
-@media (max-width: 991px) {
-  /* list */
-  .btn-list {
-    float: none;
-  }
+/* citations */
+span[data-type=annotation-object][data-subtype=citation] {
+  background-color: #efadce;
 }/*# sourceMappingURL=style.css.map */
