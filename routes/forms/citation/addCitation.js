@@ -14,7 +14,6 @@ router.post(process.env.URL_PATH + "/addCitation/:id", async (req, res) => {
     var entity = req.body.citationType.filter(item => item !== "");
     entity = entity.join("");
     entity = entity.replace("other", "");
-    var value = entity;
     entity = entity.replace(" ", "");
     var Entity = entity.charAt(0).toUpperCase() + entity.slice(1).toLowerCase();
     
@@ -33,9 +32,9 @@ router.post(process.env.URL_PATH + "/addCitation/:id", async (req, res) => {
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${value}', citation.note = '${req.body.noteCitation}'
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${Entity}', citation.note = '${req.body.noteCitation}'
                 ON MATCH
-                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${value}', citation.note = '${req.body.noteCitation}'
+                    SET citation.stanzaStart = "${req.body.stanzaStart}", citation.value = '${Entity}', citation.note = '${req.body.noteCitation}'
                 RETURN *
                 `
             )
