@@ -428,7 +428,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
                     citations.sort((a, b) => {
-                        return a.padaStart - b.padaStart;
+                        return a.padaStart.localeCompare(b.padaStart);
                     });
 
                     /* NOTES */
