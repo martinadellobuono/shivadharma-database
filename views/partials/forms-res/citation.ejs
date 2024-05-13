@@ -14,7 +14,8 @@
                     <span class="me-1" data-type="location" data-subtype="location-top">
                         <span data-type="citation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                     </span>
-                    <span data-type="citations" data-subtype="full-text" data-name="citation" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+                    <span class="fw-l" data-type="citations" data-subtype="type" data-name="citationType" data-fill='<%= el["value"]; %>' data-input="radio"><%- el["value"]; %></span>
+                    <div data-type="citations" data-subtype="note" data-name="noteCitation" data-fill='<%- el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
                 </div>
 
                 <!-- hidden location -->
