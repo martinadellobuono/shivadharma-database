@@ -22,7 +22,7 @@
                     <span class="d-none" data-type="apparatus" data-subtype="chapter" data-name="chapter" data-fill='<%= el["lemma"]["chapter"]; %>' data-input="number"></span>
 
                     <!-- hidden fragment -->
-                    <% idNode = el["lemma"]["selectedFragment"]; %>
+                    <% idNode = el["lemma"]["idAnnotation"]; %>
                     <div class="d-none" data-type="apparatus" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["lemma"]["selectedFragment"]; %>' data-input="text"><%= el["lemma"]["selectedFragment"]; %></div>
 
                     <!-- lemma -->
@@ -82,7 +82,7 @@
                         <% }; %>
                     <% }); %>
                 <% }); %>
-                
+
                 <!-- delete / modify button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
                     <!-- delete -->

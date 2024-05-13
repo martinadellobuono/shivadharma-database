@@ -36,8 +36,8 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
 
         /* remove all spans with data-type="annotation-object" from the html */
         /* hidden div to upload the html */
-        const div = document.createElement('div');
-        div.style.display = 'none';
+        const div = document.createElement("div");
+        div.style.display = "none";
         div.innerHTML = data;
 
         /* find all the annotation-object spans */
@@ -56,11 +56,11 @@ router.get(process.env.URL_PATH + "/tei/:id", (req, res) => {
         const paragraphs = div.querySelectorAll("p");
 
         paragraphs.forEach(p => {
-            const divElement = document.createElement("div");
+            const lElement = document.createElement("l");
             while (p.firstChild) {
-                divElement.appendChild(p.firstChild);
+                lElement.appendChild(p.firstChild);
             }
-            p.parentNode.replaceChild(divElement, p);
+            p.parentNode.replaceChild(lElement, p);
         });
 
         /* span to replace with milestone */

@@ -19,6 +19,7 @@ router.post(process.env.URL_PATH + "/delete/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 WITH edition
                 MATCH (n {idAnnotation: "${nodeToDeleteID}"})-[r]-()
+                WHERE NOT (n)-[:HAS_TYPE]->(:Witness)
                 DELETE n, r;
                 `
             )

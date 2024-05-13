@@ -10226,6 +10226,10 @@ body {
   font-weight: 300;
 }
 
+.fw-l {
+  font-weight: 600;
+}
+
 /* colors */
 .blue-600 {
   color: #0a58ca;

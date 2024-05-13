@@ -1,20 +1,3 @@
-/*
-    File edition.js
-    Author: Martina Dello Buono
-    Author's address: martinadellobuono1@gmail.com
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -25,7 +8,6 @@ router.use(bodyParser.json({ limit: "50mb" }));
 router.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 
 router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
-
     /* previous url */
     var prevUrl;
 
@@ -103,7 +85,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, allEditors.name, contributor.name, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.langTranslation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, allEditors.name, contributor.name, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.langTranslation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditors.name
                 `
             )
             .subscribe({
@@ -265,7 +247,8 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             padaStart: record.get("selectedFragment.padaStart"),
                             padaEnd: record.get("selectedFragment.padaEnd"),
                             fragment: record.get("selectedFragment.value"),
-                            value: record.get("citation.value")
+                            value: record.get("citation.value"),
+                            note: record.get("citation.note"),
                         });
 
                         /* array of citation entries */
@@ -511,7 +494,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
 
                     /* create a lemma / witnesses dict */
                     lemmas.forEach((el) => {
-
                         el = JSON.parse(el);
                         var lemma = el["lemma"];
                         var lemmaDict = el;
@@ -574,7 +556,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         });
 
                         variants_arr.forEach((el) => {
-
                             el = JSON.parse(el);
                             var variant = el["variant"];
                             var variantDict = el;
@@ -615,18 +596,18 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                     /* order the apparatus */
                     function compare(a, b) {
                         if (a[0]["lemma"]["chapter"] !== b[0]["lemma"]["chapter"]) {
-                            return a[0]["lemma"]["chapter"].localeCompare(b[0]["lemma"]["chapter"]);
-                        }
+                            return a[0]["lemma"]["chapter"] - b[0]["lemma"]["chapter"];
+                        };
                         if (a[0]["lemma"]["stanzaStart"] !== b[0]["lemma"]["stanzaStart"]) {
-                            return a[0]["lemma"]["stanzaStart"].localeCompare(b[0]["lemma"]["stanzaStart"]);
+                            return a[0]["lemma"]["stanzaStart"] - b[0]["lemma"]["stanzaStart"];
                         }
                         if (a[0]["lemma"]["padaStart"] !== b[0]["lemma"]["padaStart"]) {
                             return a[0]["lemma"]["padaStart"].localeCompare(b[0]["lemma"]["padaStart"]);
-                        }
+                        };
                         if (a[0]["lemma"]["stanzaEnd"] !== b[0]["lemma"]["stanzaEnd"]) {
-                            return a[0]["lemma"]["stanzaEnd"].localeCompare(b[0]["lemma"]["stanzaEnd"]);
-                        }
-                        return a[0]["lemma"]["padaEnd"].localeCompare( b[0]["lemma"]["padaEnd"]);
+                            return a[0]["lemma"]["stanzaEnd"] - b[0]["lemma"]["stanzaEnd"];
+                        };
+                        return a[0]["lemma"]["padaEnd"].localeCompare(b[0]["lemma"]["padaEnd"]);
                     }
                     apparatus.sort(compare);
                     

@@ -102,13 +102,56 @@
           </div>
         </div>
       </div>
+      <!-- type of citation -->
+      <div class="mb-3">
+        <label class="form-label">Type of citation</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="deity" name="citationType" checked>
+          <label class="form-check-label">
+            Date
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="deity" name="citationType">
+          <label class="form-check-label">
+            Deity
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="person" name="citationType">
+          <label class="form-check-label">
+            Person
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="place" name="citationType">
+          <label class="form-check-label">
+            Place
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="text" name="citationType">
+          <label class="form-check-label">
+            Text
+          </label>
+        </div>
+        <div class="form-check">
+          <div class="col-auto">
+            <input class="form-check-input" type="radio" value="other" name="citationType">
+            <label class="form-check-label">Other</label>
+          </div>
+          <div class="col-auto">
+            <input type="text" class="form-control" name="citationType">
+          </div>
+        </div>
+      </div>
       <!-- citation -->
       <div class="mb-3">
-        <label class="form-label">Citation</label>
+        <label class="form-label">Note on citation</label>
         <div class="mb-3">
           <div class="form-text">Please, do not insert the number of chapter and number of stanza/paragraph at the beginning of the citation. They will be added automatically.</div>
         </div>
-        <textarea placeholder="Insert the citation..." name="citation"></textarea>
+        <textarea placeholder="Insert the note on the citation..." name="noteCitation"></textarea>
       </div>
       <!-- submit -->
       <div>
