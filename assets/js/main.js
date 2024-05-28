@@ -1468,7 +1468,6 @@ let deleteAnnotationModal = () => {
                         };
 
                         /* DELETE THE ANNOTATION */
-                        /* deleteAnnotationDb(); */
                         cancelAnnotationColor();
                         closeModal();
                         resetLayout();
