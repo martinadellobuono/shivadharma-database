@@ -1,0 +1,452 @@
+[
+    {
+        "name": "sumānikā",
+        "structure": [
+            {
+                "syllables": "7",
+                "xml-notation": "+-+-+-=",
+                "conventional-notation": "-⏑-⏑-⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "pramāṇikā",
+        "structure": [
+            {
+                "syllables": "8",
+                "xml-notation": "-+-+-+-=",
+                "conventional-notation": "-⏑-⏑-⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "anuṣṭubh",
+        "structure": [
+            {
+                "syllables": "8",
+                "xml-notation": "====-++=",
+                "conventional-notation": "⏓⏓⏓⏓⏑––⏓"
+            },
+            {
+                "syllables": "8",
+                "xml-notation": "====-+-=",
+                "conventional-notation": "⏓⏓⏓⏓⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "vegavatī",
+        "structure": [
+            {
+                "syllables": "10",
+                "xml-notation": "--+--+--+=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑⏑–⏓"
+            },
+            {
+                "syllables": "11",
+                "xml-notation": "+--+--+--+=",
+                "conventional-notation": "–⏑⏑–⏑⏑–⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "viyoginī",
+        "structure": [
+            {
+                "syllables": "10",
+                "xml-notation": "--+--+-+-=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑–⏑⏓"
+            },
+            {
+                "syllables": "11",
+                "xml-notation": "--++--+-+-=",
+                "conventional-notation": "⏑⏑––⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "triṣṭubh",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "",
+                "conventional-notation": ""
+            }
+        ]
+    },
+    {
+        "name": "bhramaravilasita",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "++++||------=",
+                "conventional-notation": "––––||⏑⏑⏑⏑⏑⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "dodhaka",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "+--+--+--+=",
+                "conventional-notation": "–⏑⏑–⏑⏑–⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "indravajrā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "++-++--+-+=",
+                "conventional-notation": "––⏑––⏑⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "rathoddhatā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "+-+---+-+-=",
+                "conventional-notation": "–⏑–⏑⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "śālinī",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "++++||+-++-+=",
+                "conventional-notation": "––––||–⏑––⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "svāgatā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "+-+---+--+=",
+                "conventional-notation": "–⏑–⏑⏑⏑–⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "upajāti",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "=+-++--+-+=",
+                "conventional-notation": "⏓–⏑––⏑⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "upendravajrā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "-+-++--+-+=",
+                "conventional-notation": "⏑–⏑––⏑⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "vātormī",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "++++--++-+=",
+                "conventional-notation": "––––⏑⏑––⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "vidhvaṅkamālā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "++-++-++-++",
+                "conventional-notation": "––⏑––⏑––⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "upacitra",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "--+--+--+-=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑⏑–⏑⏓"
+            },
+            {
+                "syllables": "11",
+                "xml-notation": "+--+--+--+=",
+                "conventional-notation": "–⏑⏑–⏑⏑–⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "aparavaktra",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "------+-+-=",
+                "conventional-notation": "⏑⏑⏑⏑⏑⏑–⏑–⏑⏓"
+            },
+            {
+                "syllables": "12",
+                "xml-notation": "----+--+-+-=",
+                "conventional-notation": "⏑⏑⏑⏑–⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "hariṇaplutā",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "--+--+--+-=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑⏑–⏑⏓"
+            },
+            {
+                "syllables": "12",
+                "xml-notation": "---+--+--+-=",
+                "conventional-notation": "⏑⏑⏑–⏑⏑–⏑⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "mālabhāriṇī",
+        "structure": [
+            {
+                "syllables": "11",
+                "xml-notation": "--+--+-+-+=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑–⏑–⏓"
+            },
+            {
+                "syllables": "12",
+                "xml-notation": "--++--+-+-+=",
+                "conventional-notation": "⏑⏑––⏑⏑–⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "candravartma",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "+-+-||--+----=",
+                "conventional-notation": "-⏑-⏑||⏑⏑-⏑⏑⏑⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "indravaṁśā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "++-++--+-+-=",
+                "conventional-notation": "--⏑--⏑⏑-⏑-⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "jagatī",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "",
+                "conventional-notation": ""
+            }
+        ]
+    },
+    {
+        "name": "kusumavicitrā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "----++----+=",
+                "conventional-notation": "⏑⏑⏑⏑––⏑⏑⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "bhujaṅgaprayāta",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "-++-++-++-+=",
+                "conventional-notation": "⏑––⏑––⏑––⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "maṇimālā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "++--++||++--+=",
+                "conventional-notation": "––⏑⏑––||––⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "maṇimālā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "++--++||++--+=",
+                "conventional-notation": "––⏑⏑––||––⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "drutavilambita",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "---+--+--+-=",
+                "conventional-notation": "⏑⏑⏑–⏑⏑–⏑⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "jaloddhatagati",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "-+---+||-+---=",
+                "conventional-notation": "⏑-⏑⏑⏑-||⏑-⏑⏑⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "pramitākṣarā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "--+-+---+--=",
+                "conventional-notation": "⏑⏑–⏑–⏑⏑⏑–⏑⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "toṭaka",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "--+--+--+--=",
+                "conventional-notation": "⏑⏑–⏑⏑–⏑⏑–⏑⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "vaṁśamālā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "=+-++--+-+-=",
+                "conventional-notation": "⏓–⏑––⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "vaṁśastha",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "-+-++--+-+-=",
+                "conventional-notation": "⏑–⏑––⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "vaiśvadevī",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "+++++||+-++-+=",
+                "conventional-notation": "–––––||–⏑––⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "tāmarasa",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "----+||--+--+=",
+                "conventional-notation": "⏑⏑⏑⏑–||⏑⏑–⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "puṣpitāgrā",
+        "structure": [
+            {
+                "syllables": "12",
+                "xml-notation": "------+-+-+=",
+                "conventional-notation": "⏑⏑⏑⏑⏑⏑–⏑–⏑–⏓"
+            },
+            {
+                "syllables": "13",
+                "xml-notation": "----+--+-+-+=",
+                "conventional-notation": "⏑⏑⏑⏑–⏑⏑–⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "mañjubhāṣiṇī",
+        "structure": [
+            {
+                "syllables": "13",
+                "xml-notation": "--+-+---+-+-=",
+                "conventional-notation": "⏑⏑–⏑–⏑⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "mattamayūra",
+        "structure": [
+            {
+                "syllables": "13",
+                "xml-notation": "++++||+--++--+=",
+                "conventional-notation": "––––||–⏑⏑––⏑⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "praharṣiṇī",
+        "structure": [
+            {
+                "syllables": "13",
+                "xml-notation": "+++||----+-+-+=",
+                "conventional-notation": "–––||⏑⏑⏑⏑–⏑–⏑–⏓"
+            }
+        ]
+    },
+    {
+        "name": "rucirā",
+        "structure": [
+            {
+                "syllables": "13",
+                "xml-notation": "-+-+||----+-+-=",
+                "conventional-notation": "⏑–⏑–||⏑⏑⏑⏑–⏑–⏑⏓"
+            }
+        ]
+    },
+    {
+        "name": "asaṁbādhā",
+        "structure": [
+            {
+                "syllables": "14",
+                "xml-notation": "+++++||------++=",
+                "conventional-notation": "–––––||⏑⏑⏑⏑⏑⏑––⏓"
+            }
+        ]
+    }
+]

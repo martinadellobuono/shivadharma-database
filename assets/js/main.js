@@ -1,21 +1,21 @@
-/*
-    File main.js except the function devanagariConverter();
-    Author: Martina Dello Buono
-    Author's address: martinadellobuono1@gmail.com
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
+/* ui modules */
+import { alerts, currentDate, currentTime, navbarBg, navbarActive, popovers, tabs, tooltips} from "./modules/ui.js";
+/* validation modules */
+import { preventEnter } from "./modules/validation.js";
+/* edition visualisation modules */
+import { appTxtScroll, printInlineApp, txtAppScroll} from "./modules/edition-vis.js";
+/* edition editing modules */
+import { deleteEntries } from "./modules/edition-edit.js";
+/* edition metadata modules */
+import { witnessDimensions } from "./modules/edition-metadata.js";
+/* edition export modules */
+import { downloadTei, downloadTxt, generatePDF } from "./modules/export.js";
+/* sanskrit features modules */
+import { devanagariConverter } from "./modules/sanskrit-features.js";
 
+/* document ready */
 document.addEventListener("DOMContentLoaded", () => {
+    /* every path */
     navbarBg();
     navbarActive();
     alerts();
@@ -24,143 +24,44 @@ document.addEventListener("DOMContentLoaded", () => {
     tabs();
     currentDate();
     currentTime();
+    /* specific paths */
+    const path = window.location.pathname;
+    /* create an edition */
+    if (path.includes("/apikey")) {
+        preventEnter();
+    };
+    /* edit */
+    if (path.includes("/edit/")) {
+        fileTextarea();
+        metadataTextareas();
+        setInterval(saveFile, 5000);
+        stopLoading();
+        annotations();
+        previewAnnotations();
+        closeBtn();
+        modifyAnnotations();
+        hideAnnotations();
+        deleteEntries();
+        publishEdition();
+    };
+    /* edition */
+    if (path.includes("/edition/")) {
+        appTxtScroll();
+        txtAppScroll();
+        printInlineApp();
+        downloadTei();
+        downloadTxt();
+        generatePDF();
+        devanagariConverter();
+    };
     autocomplete();
     dependingForms();
     cloneEl();
-    annotations();
-    previewAnnotations();
-    closeBtn();
-    modifyAnnotations();
-    hideAnnotations();
     truncation();
     lemmaVariantPresence();
     witnessDimensions();
     inlineLocation();
 });
-
-/* navbar */
-/* add /remove navbar background */
-let navbarBg = () => {
-    var path = window.location.pathname;
-    var page = path.split("/").pop();
-    if (page == "" || page == "apikey") {
-        document.querySelector(".navbar").classList.remove("navbar-bg");
-    } else {
-        document.querySelector(".navbar").classList.add("navbar-bg");
-    };
-};
-
-/* make navbar li active */
-let navbarActive = () => {
-    var path = window.location.pathname;
-    var page = path.split("/").pop();
-    [].forEach.call(document.querySelectorAll(".navbar-a a"), (el) => {
-        var item = el.getAttribute("href").replace("/", "");
-        if (item == page) {
-            el.classList.add("navbar-a-active");
-        } else {
-            el.classList.remove("navbar-a-active");
-        };
-    });
-};
-
-/* prevent submitting forms by pressing enter */
-let preventEnter = () => {
-    /* remove effect from button */
-    document.getElementById("btn-apikey").classList.remove("heartbeat");
-
-    /* event pressing enter */
-    var form = document.getElementById("form-apikey");
-    form.addEventListener("keypress", (e) => {
-        var key = e.charCode || e.keyCode || 0;
-        if (key == 13) {
-            /* prevent submitting data */
-            e.preventDefault();
-            /* animate the get started button */
-            document.getElementById("btn-apikey").classList.add("heartbeat");
-        };
-    });
-};
-
-/* alerts */
-let alerts = () => {
-    let showAlert = () => {
-        [].forEach.call(document.querySelectorAll(".alert"), (el) => {
-            el.classList.add("show");
-        });
-    };
-    setTimeout(showAlert, 300);
-};
-
-/* popovers */
-let popovers = () => {
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl)
-    });
-};
-
-/* tooltips */
-let tooltips = () => {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('*[data-bs-toggle="tooltip"]'))
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    })
-};
-
-/* tabs */
-let tabs = () => {
-    var triggerTabList = [].slice.call(document.querySelectorAll("ul[role='tablist'] a"))
-    triggerTabList.forEach(function (triggerEl) {
-        var tabTrigger = new bootstrap.Tab(triggerEl);
-
-        triggerEl.addEventListener("click", function (event) {
-            event.preventDefault();
-            tabTrigger.show();
-        });
-    });
-};
-
-/* current date */
-let currentDate = () => {
-    /* full date */
-    const date = new Date();
-    const month = date.toLocaleString("default", { month: "long" });
-    const weekday = date.toLocaleString("default", { weekday: "long" });
-    const day = date.getDate();
-    const year = date.getFullYear();
-    /* year */
-    var years = document.querySelectorAll(".current-year");
-    years.forEach((el) => {
-        el.innerHTML = year;
-    });
-    /* complete date */
-    var currentDate = weekday.charAt(0).toUpperCase() + weekday.slice(1) + " " + day + " " + month.charAt(0).toUpperCase() + month.slice(1) + " " + year;
-    var currentDates = document.querySelectorAll(".current-date");
-    currentDates.forEach((el) => {
-        el.innerHTML = currentDate;
-    });
-};
-
-/* current time */
-let currentTime = () => {
-    function time() {
-        var date = new Date();
-        var hour = date.getHours();
-        var minutes = date.getMinutes();
-        if (minutes < 10) {
-            minutes = "0" + minutes
-        } else {
-            minutes = date.getMinutes();
-        };
-        var currentTimes = document.querySelectorAll(".current-time");
-        currentTimes.forEach((el) => {
-            el.innerHTML = hour + ":" + minutes;
-        });
-    };
-    time();
-    window.setInterval(time, 1000);
-}
 
 /* SAVE DATA TO PASS TO BACKEND */
 /* save file json to send to the database */
@@ -1087,15 +988,32 @@ let saveFile = () => {
         headers: { "Content-type": "application/json; charset=UTF-8" }
     })
         .then((response) => {
-            response.json();
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
         })
-        .catch(err => console.log(err));
+        .then((data) => {
+            /* saved message */
+            document.getElementById("autosaved-message").classList.remove("d-none");
+            setTimeout(() => {
+                document.getElementById("autosaved-message").classList.add("d-none");
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('There was a problem with the save operation:', err);
+        });
+};
 
-    /* saved message */
-    document.getElementById("autosaved-message").classList.remove("d-none");
-    setTimeout(() => {
-        document.getElementById("autosaved-message").classList.add("d-none");
-    }, 2000);
+/* stop loading the page when submitting data */
+let stopLoading = () => {
+    /* remove window.stop() to allow page reload */
+    var navLink = document.querySelectorAll(".nav-link");
+    for (var i = 0; i < navLink.length; i++) {
+        navLink[i].addEventListener("click", () => {
+            saveFile();
+        });
+    }
 };
 
 /* metadata textareas */
@@ -1152,37 +1070,6 @@ let publishEdition = () => {
 
         });
     };
-};
-
-/* stop loading the page when submitting data */
-let stopLoading = () => {
-
-    /* submit buttons */
-    /* var submitBtn = document.querySelectorAll("button[type='submit']");
-    for (var i = 0; i < submitBtn.length; i++) {
-        submitBtn[i].addEventListener("click", () => {
-            saveFile();
-            window.stop();
-        });
-    }; */
-
-    /* nav links */
-    var navLink = document.querySelectorAll(".nav-link");
-    for (var i = 0; i < navLink.length; i++) {
-        navLink[i].addEventListener("click", () => {
-            saveFile();
-            window.stop();
-        });
-    };
-};
-
-/* ONLOAD EDIT PAGE */
-let onloadEdit = () => {
-    fileTextarea();
-    metadataTextareas();
-    setInterval(saveFile, 5000);
-    stopLoading();
-    publishEdition();
 };
 
 /* preview annotations */
@@ -2030,31 +1917,6 @@ let lemmaVariantPresence = () => {
     };
 };
 
-/* dimensions of witnesses */
-let witnessDimensions = () => {
-    /* on change the area unit */
-    var unitsList = document.querySelectorAll(".dimensions-unit");
-    unitsList.forEach((unit) => {
-        unit.addEventListener("change", (e) => {
-            /* print the area unit */
-            var selectedUnit = unit.options[unit.options.selectedIndex];
-            /* convert width height */
-            var numericValues = document.querySelectorAll("[data-ref=" + e.target.getAttribute("name") + "]");
-            numericValues.forEach((val) => {
-                if (selectedUnit.value == "cm") {
-                    var x = val.value;
-                    var y = 2.54;
-                    val.value = x * y;
-                } else {
-                    var x = val.value;
-                    var y = 2.54;
-                    val.value = x / y;
-                };
-            });
-        });
-    });
-};
-
 /* preview check */
 let previewCheck = () => {
     var previewCheck = document.querySelectorAll("input.previewCheck");
@@ -2096,288 +1958,4 @@ let inlineLocation = () => {
             location.remove();
         };
     };
-};
-
-/*
-    JS function: devanagariConverter
-    Author: Csaba Kiss
-    Author's address: csaba.kiss.email@gmail.com
-    Last change on: 08/05/2023
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-let devanagariConverter = () => {
-    var btnConverter = document.querySelectorAll(".btn-converter");
-
-    btnConverter.forEach((btn) => {
-        btn.addEventListener("click", () => {
-
-            var containerDevanagari = document.querySelector(".text-to-convert[data-script='devanagari']");
-            var containerRoman = document.querySelector(".text-to-convert[data-script='roman']");
-
-            // convert the text
-            let dic = [
-                // space:
-                [' ', ' '],
-                // initial vowels:
-                ['A', 'अ'],
-                ['Ā', 'आ'],
-                ['I', 'इ'],
-                ['Ī', 'ई'],
-                ['U', 'उ'],
-                ['Ū', 'ऊ'],
-                ['Ṛ', 'ऋ'],
-                ['Ṝ', 'ॠ'],
-                ['E', 'ए'],
-                ['O', 'ओ'],
-                ['Đ', 'ऐ'],
-                ['Ő', 'औ'],
-                ["’", 'ऽ'],
-                ['Ó', 'ॐ'],
-                //  conjunct vowels:
-                ['a', ''], ['ā', 'ा'], ['i', 'ि'], ['ī', 'ी'], ['u', 'ु'],
-                ['ū', 'ू'], ['ṛ', 'ृ'], ['ṝ', 'ॄ'], ['ḷ', 'ॢ'], ['ḹ', 'ॣ'],
-                ['e', 'े'], ['o', 'ो'], ['đ', 'ै'], ['ő', 'ौ'], ['ṃ', 'ं'], ['ḥ', 'ः'],
-                // virāma:
-                ['V', '्'],
-                // consonants: 	 		 	
-                ['k', 'क'], ['Ɋ', 'ख'], ['g', 'ग'], ['G', 'घ'], ['ṅ', 'ङ'],
-                //
-                ['c', 'च'], ['Ȼ', 'छ'], ['j', 'ज'], ['J', 'झ'], ['ñ', 'ञ'],
-                //	 	 	 	
-                ['ṭ', 'ट'], ['Ṭ', 'ठ'], ['ḍ', 'ड'], ['Ḍ', 'ढ'], ['ṇ', 'ण'],
-                // 
-                ['t', 'त'], ['T', 'थ'], ['d', 'द'], ['D', 'ध'], ['n', 'न'],
-                // 
-                ['p', 'प'], ['P', 'फ'], ['b', 'ब'], ['B', 'भ'], ['m', 'म'],
-                //
-                ['y', 'य'], ['r', 'र'], ['l', 'ल'], ['v', 'व'], ['ś', 'श'], ['ṣ', 'ष'],
-                ['s', 'स'], ['h', 'ह']]
-
-            // , ['0', '०'],
-            //['1', '१'], ['2', '२'], ['3', '३'], ['4', '४'], ['5', '५'], ['6', '६'],
-            //['7', '७'], ['8', '८'], ['9', '९']]
-
-            let dnnumbers = [['0', '0'], ['1', '1'], ['2', '2'], ['3', '3'], ['4', '4'], ['5', '5'], ['6', '6'], ['7', '7'], ['8', '8'], ['9', '9']]
-
-            // \n added only in this version of the script
-
-            let vowels = ["ṃ", "ḥ", 'a', 'i', 'u', 'ṛ', 'ḷ', 'ā', 'ī', 'ū', 'ṝ', 'ḹ', 'e', 'ai', 'o', 'au', 'đ', 'ő']
-
-            let consonants = ["k", "Ɋ", "g", "G", "ṅ", "c", "Ȼ", "j", "J", "ñ", "ṭ", "Ṭ", "ḍ", "Ḍ", "ṇ", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h"] //, "<", ">"]
-
-            //let preprocessing = [['ai', 'đ'], ['au', 'ő'], ['kh', 'Ɋ'], ['gh', 'G'], ['ṭh', 'Ṭ'], ['ḍh', 'Ḍ'], ['th', 'T'], ['dh', 'D'], ['ph', 'P'], ['bh', 'B'], ['ch', 'Ȼ'], ['jh', 'J'], ['\|\|', ' ।।'], ['\|', ' ।'], ['{ }', ''], ['\n', ' \n'], [',', ' ,'],]
-
-            let preprocessing = { 'ai': 'đ', 'au': 'ő', 'kh': 'Ɋ', 'gh': 'G', 'ṭh': 'Ṭ', 'ḍh': 'Ḍ', 'th': 'T', 'dh': 'D', 'ph': 'P', 'bh': 'B', 'ch': 'Ȼ', 'jh': 'J' }
-
-            let cosmetics = [['\|\|', ' ।। '], ['\|', ' ।'], ['{ }', ''], ['\n', ' \n'], [',', ' ,'], ['{', '{ '], ['}', ' }'], ['-', ' - '], ['/', ' / ']];
-            // the last but one produces viraamas at the end of line; the last one is for <br/>, somehow the / is lost
-
-            // CHANGE IAST LETTERS TO DEVANAGARI
-            // this is the Roman script input point
-
-            /* html contents */
-            var editionText = containerRoman.innerHTML;
-
-            roman_elem = editionText.toLowerCase().split('\n');
-
-            // these will trigger the stopping of conversion after \ and <
-            let commandflag = false;
-            let tagflag = false;
-
-            let results = "";
-            let roman_prep = [];
-
-            // preprocess
-            let preproc_keys = Object.keys(preprocessing);
-
-            // going through the lines
-            for (let a = 0; a < roman_elem.length; a++) {
-                roman_elem[a] = roman_elem[a] + ' ';
-
-                // applying minor changes from the array 'cosmetics'
-                for (let b = 0; b < cosmetics.length; b++) {
-                    roman_elem[a] = roman_elem[a].split(cosmetics[b][0]).join(cosmetics[b][1]);
-                }
-
-
-                let preprocessed_line = roman_elem[a].split('');
-                let c = 0;
-                let doubleChar = '';
-
-                while (c < preprocessed_line.length) {
-
-                    // flags
-                    if (preprocessed_line[c] === '\\' || Number.isInteger(parseInt(preprocessed_line[c]))) { commandflag = true; }
-                    if (preprocessed_line[c] === '<') { tagflag = true; commandflag = true; }
-                    if (preprocessed_line[c] === '>') { tagflag = false; commandflag = false; }
-                    if (preprocessed_line[c] === ' ' && tagflag === false) { commandflag = false; }
-
-                    // if indeed the section should be changed to Devanagari
-                    if (commandflag === false) {
-
-                        // preprocess double characters such as th and ai
-                        doubleChar = preprocessed_line[c] + preprocessed_line[c + 1];
-
-                        if (preproc_keys.includes(doubleChar)) {
-                            preprocessed_line[c] = preprocessing[doubleChar];
-                            preprocessed_line[c + 1] = '';
-                        }
-
-                    }
-                    c = c + 1;
-                }
-
-                roman_prep[a] = preprocessed_line.join('') + " ";
-
-            } // end of preprocessing double characters such as th and ai
-
-            // change
-            for (let d = 0; d < roman_prep.length; d++) {
-                let rsplit = roman_prep[d].split('');
-                let conjunct = false;
-                // go through this line letter by letter
-                for (let l = 0; l < rsplit.length; l++) {
-                    if (rsplit[l] === '\\' || Number.isInteger(parseInt(rsplit[l]))) { commandflag = true; }
-                    if (rsplit[l] === '<') { tagflag = true; commandflag = true }
-                    if (rsplit[l] === ' ' && tagflag === false) { commandflag = false; }
-
-
-                    if (commandflag === false) {  // big if
-                        if (l < rsplit.length && consonants.includes(rsplit[l]) && consonants.includes(rsplit[l + 1])) {
-                            rsplit[l] = rsplit[l] + 'V';
-                        }
-
-                        // space
-                        if (rsplit[l] === " " || rsplit[l] === "-") {
-                            conjunct = false;
-                        }
-
-                        // sandhi C + V
-                        if (l < rsplit.length - 2 && consonants.includes(rsplit[l]) && rsplit[l + 1] === " " && vowels.includes(rsplit[l + 2])) {
-                            rsplit[l + 1] = '';
-                        }
-
-                        // sandhi C + C
-                        if (l < rsplit.length - 2 && consonants.includes(rsplit[l]) && rsplit[l + 1] === " " && consonants.includes(rsplit[l + 2])) {
-                            rsplit[l + 1] = 'V';
-                        }
-
-                        // if it is an initial consonant
-                        if (conjunct === false && consonants.includes(rsplit[l])) {
-                            rsplit[l] = rsplit[l];
-                            conjunct = true;
-                        }
-
-                        // if it is an initial vowel
-                        if (conjunct === false && vowels.includes(rsplit[l])) {
-                            rsplit[l] = rsplit[l].toUpperCase();
-                            conjunct = true;
-
-                        }
-
-                        // if it is a last consonant: put in virāma
-                        if (l < rsplit.length && consonants.includes(rsplit[l]) && (rsplit[l + 1] === " " || rsplit[l + 1] === "<")) {
-                            rsplit[l] = rsplit[l] + 'V';
-                        }
-
-                    } // end of big if
-                    else {
-                        for (let b = 0; b < preprocessing.length; b++) {
-                            // a nice trick to change all occurences in line
-                            if (rsplit[l] === preprocessing[b][1]) {
-                                rsplit[l] = preprocessing[b][0];
-                            }
-                        }
-
-                    }
-                    // change all into Devanagari
-                    for (let rmchar = 0; rmchar < dic.length; rmchar++) {
-                        if (rsplit[l] === dic[rmchar][0] && commandflag === false) {
-                            rsplit[l] = dic[rmchar][1];
-                        }
-                        if (rsplit[l].length === 2 && rsplit[l][0] === dic[rmchar][0] && commandflag === false) {
-                            rsplit[l] = dic[rmchar][1] + '्';
-                        }
-                    }
-                    if (rsplit[l] === '>') { tagflag = false; commandflag = false; }
-
-                } // end of go through this line letter by letter
-
-                rjoin = rsplit.join('');
-                // change numbers to Devanagari anyway
-                for (n = 0; n < dnnumbers.length; n++) {
-                    rjoin = rjoin.split(dnnumbers[n][0]).join(dnnumbers[n][1]);
-                }
-                // delete spaces after {s, and before }s
-                rjoin = rjoin.split('{ ').join('{');
-                rjoin = rjoin.split(' }').join('}');
-                rjoin = rjoin.split(' - ').join('-');
-                rjoin = rjoin.split(' / ').join('/');
-                results = results + rjoin + '\n';
-            } // end of for 
-
-
-            /*
-                JS function: this last part of devanagariConverter
-                Author: Martina Dello Buono
-                Author's address: martinadellobuono1@gmail.com
-                Last change on: 09/05/2023
-                Copyright (c) 2023 by the author
-                Permission to use, copy, modify, and/or distribute this software for any
-                purpose with or without fee is hereby granted, provided that the above
-                copyright notice and this permission notice appear in all copies.
-                THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-                WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-                MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-                SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-                WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-                OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-                CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-            */
-            const romanTxt = editionText;
-            const devanagariTxt = results;
-
-            /* print the devanagari text */
-            containerRoman.innerHTML = romanTxt;
-            containerDevanagari.innerHTML = devanagariTxt;
-
-            /* switch from devanagari to sanskrit and vice versa */
-            const expr = btn.getAttribute("data-script");
-            switch (expr) {
-                case "roman":
-                    /* print the roman text */
-                    containerRoman.classList.remove("d-none");
-                    containerDevanagari.classList.add("d-none");
-
-                    /* set the button */
-                    btn.setAttribute("data-script", "devanagari");
-                    btn.querySelector(".scriptLabel").innerHTML = "Devanāgārī";
-
-                    break;
-                case "devanagari":
-                    /* print the roman text */
-                    containerRoman.classList.add("d-none");
-                    containerDevanagari.classList.remove("d-none");
-
-                    /* set the button */
-                    btn.setAttribute("data-script", "roman");
-                    btn.querySelector(".scriptLabel").innerHTML = "Roman";
-
-                    break;
-                default:
-                    console.log(`Sorry, we are out of ${expr}.`);
-            }
-
-        });
-    });
 };

@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body onload="devanagariConverter();">
+<body>
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -95,15 +95,15 @@
           </button>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item disabled">Roman</a></li>
-            <li><a class="dropdown-item" onclick="downloadTxt();">.txt <i>Textus</i></a></li>
+            <li><a class="dropdown-item" id="txt-download">.txt <i>Textus</i></a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" onclick="generatePDF();">PDF <i>Textus, Apparatus and Parallels</i></a></li>
+            <li><a class="dropdown-item" id="pdf-download">PDF <i>Textus, Apparatus and Parallels</i></a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" onclick="downloadTei();">XML/TEI</a></li>
+            <li><a class="dropdown-item" id="xml-tei-download">XML/TEI</a></li>
           </ul>
         </div>
         <!-- tutorial -->
