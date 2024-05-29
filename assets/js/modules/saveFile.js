@@ -52,7 +52,6 @@ export const fileTextarea = () => {
 
         /* OPERATIONS ON THE TEXTUS */
         setup: (ed) => {
-
             /* when the text changes */
             "input keyup mousedown paste".split(" ").forEach((event) => {
                 ed.on(event, async (e) => {
@@ -104,8 +103,21 @@ export const fileTextarea = () => {
     });
 };
 
-/* save file every 5 seconds */
+/* save file */
 export const saveFile = (data, callback) => {
+    /* prepare data to save */
+    var url = window.location.href;
+    var idEdition = url.split("/").pop().split("-")[0];
+    var idEditor = url.split("/").pop().split("-")[1];
+    var contentFile = tinymce.get("fileBaseTxt").getContent();
+    data = {
+        idEdition: idEdition,
+        idEditor: idEditor,
+        contentFile: contentFile
+    }
+    console.log(data);
+
+    /* fetch the data to saveFile in the backend */
     fetch("/saveFile", {
         method: "POST",
         body: JSON.stringify(data),
@@ -114,7 +126,8 @@ export const saveFile = (data, callback) => {
         .then((response) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
-            }
+            };
+            console.log("Saved");
             return response.json();
         })
         .then((data) => {
@@ -128,6 +141,19 @@ export const saveFile = (data, callback) => {
             console.error('There was a problem with the save operation:', err);
             if (callback) callback(err);
         });
+};
+
+/* save file every 5 seconds */
+export const saveFile5sec = () => {
+    setInterval(() => {
+        saveFile((err, data) => {
+            if (err) {
+                console.error("Error saving file: ", err);
+            } else {
+                console.log("File saved successfully: ", data);
+            };
+        });
+    }, 5000);
 };
 
 /* stop loading the page when submitting data */

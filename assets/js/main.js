@@ -7,7 +7,7 @@ import { appTxtScroll, printInlineApp, txtAppScroll } from "./modules/edition-vi
 /* text annotation modules */
 import { annotations, previewAnnotations, modifyAnnotations, hideAnnotations, closeBtn} from "./modules/text-annotation.js";
 /* edition editing modules */
-import { fileTextarea, saveFile, stopLoading } from "./modules/saveFile.js";
+import { fileTextarea, saveFile5sec, stopLoading } from "./modules/saveFile.js";
 import { deleteEntries } from "./modules/edition-edit.js";
 /* edition metadata modules */
 import { metadataTextareas, witnessDimensions } from "./modules/edition-metadata.js";
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fileTextarea();
         metadataTextareas();
         witnessDimensions();
-        setInterval(saveFile, 5000);
+        saveFile5sec();
         stopLoading();
         annotations();
         previewAnnotations();

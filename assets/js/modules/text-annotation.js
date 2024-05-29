@@ -1,6 +1,7 @@
 import { saveFile } from "./saveFile.js";
 
 var data;
+
 /* annotations */
 export const annotations = () => {
     [].forEach.call(document.querySelectorAll(".btn-annotation"), (el) => {
