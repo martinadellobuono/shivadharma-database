@@ -387,7 +387,26 @@ export const annotations = () => {
                                     }
 
                                     /* save file */
-                                    saveFile();
+                                    const saveEdition = new Promise((resolve, reject) => {
+                                        saveFile(data, (err, result) => {
+                                            if (err) {
+                                                console.log("Error in saveFile:", err);
+                                                reject(err);
+                                            } else {
+                                                console.log("Result from saveFile:", result);
+                                                resolve(result);
+                                            }
+                                        });
+                                    });
+
+                                    saveEdition
+                                        .then(() => {
+                                            alert(category.charAt(0).toUpperCase() + category.slice(1) + " saved!");
+                                            window.location.href = url;
+                                        })
+                                        .catch(error => {
+                                            console.error("Error saving file: ", error);
+                                        });
                                 } catch (err) {
                                     console.log(err);
                                 } finally {
