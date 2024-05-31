@@ -821,7 +821,7 @@ const deleteAnnotationModal = () => {
             /* save changes */
             saveChangesBtn.addEventListener("click", () => {
 
-                var id = saveChangesBtn.getAttribute("data-cancel"); 
+                var id = saveChangesBtn.getAttribute("data-cancel");
 
                 /* CANCEL THE ANNOTATION */
                 let cancelAnnotationColor = () => {
@@ -928,21 +928,21 @@ const deleteAnnotationModal = () => {
                                 await response.json();
                                 url = response["url"];
                             };
-                            
-                            /* DELETE THE ANNOTATION */
-                            console.log("Siamo arrivati a delete annotation");
 
-                            cancelAnnotationColor();
-                            closeModal();
-                            resetLayout();
-                            unblockButtons();
-                            emptyInputs();
-    
+                            /* DELETE THE ANNOTATION */
                             /* redirect the page */
-                            /* fetchDelete().then(() => {
-                                url = url.replace("delete", "edit");
-                                window.location.href = url;
-                            }); */
+                            fetchDelete()
+                                .then(() => {
+                                    cancelAnnotationColor();
+                                    closeModal();
+                                    resetLayout();
+                                    unblockButtons();
+                                    emptyInputs();
+                                })
+                                .then(() => {
+                                    url = url.replace("delete", "edit");
+                                    window.location.href = url;
+                                });
                         } catch (err) {
                             console.error(err);
                         };
