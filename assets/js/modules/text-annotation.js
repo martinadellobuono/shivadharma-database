@@ -819,85 +819,96 @@ const deleteAnnotationModal = () => {
             };
 
             /* save changes */
-            saveChangesBtn.addEventListener("click", () => {
-
+            saveChangesBtn.addEventListener("click", async () => {
                 var id = saveChangesBtn.getAttribute("data-cancel");
 
                 /* CANCEL THE ANNOTATION */
                 let cancelAnnotationColor = () => {
-                    /* button to cancel */
-                    var safeCancelBtn;
+                    return new Promise((resolve) => {
+                        /* button to cancel */
+                        var safeCancelBtn;
 
-                    if (id) {
-                        safeCancelBtn = document.querySelector("button[data-type='cancel-annotation'][data-cancel='" + id + "']");
-
-                    } else {
-                        safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
-                    };
-
-                    var annotationId = safeCancelBtn.getAttribute("data-cancel");
-
-                    /* search all elements with the annotation id */
-                    var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
-
-                    console.log(annotationDiv);
-
-                    /* reinsert the original content without annotation tags */
-                    var newContent = "";
-                    annotationDiv.forEach((annotation) => {
-
-                        /* remove milestones */
-                        if (annotation.getAttribute("data-type") == "milestone") {
-                            annotation.remove();
+                        if (id) {
+                            safeCancelBtn = document.querySelector("button[data-type='cancel-annotation'][data-cancel='" + id + "']");
                         } else {
-                            /* remove annotations */
-                            var annotationChildren = annotation.childNodes;
-                            annotationChildren.forEach((el) => {
-                                if (el.tagName == "SPAN") {
+                            safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
+                        }
 
-                                } else if (el.tagName == "P") {
-                                    newContent = newContent + el.outerHTML;
-                                } else {
-                                    var txt = el.textContent
-                                    annotation.outerHTML = "" + txt;
-                                    newContent = "";
+                        var annotationId = safeCancelBtn.getAttribute("data-cancel");
+
+                        /* search all elements with the annotation id */
+                        var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
+
+                        /* reinsert the original content without annotation tags */
+                        var newContent = "";
+                        annotationDiv.forEach((annotation) => {
+                            /* remove milestones */
+                            if (annotation.getAttribute("data-type") == "milestone") {
+                                annotation.remove();
+                            } else {
+                                /* remove annotations */
+                                var annotationChildren = annotation.childNodes;
+                                annotationChildren.forEach((el) => {
+                                    if (el.tagName == "SPAN") {
+                                        // do nothing
+                                    } else if (el.tagName == "P") {
+                                        newContent = newContent + el.outerHTML;
+                                    } else {
+                                        var txt = el.textContent;
+                                        annotation.outerHTML = "" + txt;
+                                        newContent = "";
+                                    };
+                                });
+                                if (newContent !== "") {
+                                    annotation.outerHTML = newContent;
                                 };
-                            });
-                            if (newContent !== "") {
-                                annotation.outerHTML = newContent;
                             };
-                        };
+                        });
+                        saveFile();
+                        resolve();
                     });
                 };
 
                 /* close the modal */
                 let closeModal = () => {
-                    let modalToClose = bootstrap.Modal.getInstance(modal);
-                    modalToClose.hide();
+                    return new Promise((resolve) => {
+                        let modalToClose = bootstrap.Modal.getInstance(modal);
+                        modalToClose.hide();
+                        resolve();
+                    });
                 };
 
                 /* reset the layout */
                 let resetLayout = () => {
-                    closeAnnotationBox();
-                    var defaultSettings = document.querySelector(".default-settings");
-                    defaultSettings.classList.remove("d-none");
+                    return new Promise((resolve) => {
+                        closeAnnotationBox();
+                        var defaultSettings = document.querySelector(".default-settings");
+                        defaultSettings.classList.remove("d-none");
+                        resolve();
+                    });
                 };
 
                 /* unblock the annotation buttons */
                 let unblockButtons = () => {
-                    const btns = document.querySelectorAll(".btn-set-annotation button");
-                    for (var i = 0; i < btns.length; i++) {
-                        btns[i].removeAttribute("disabled");
-                    };
+                    return new Promise((resolve) => {
+                        const btns = document.querySelectorAll(".btn-set-annotation button");
+                        for (var i = 0; i < btns.length; i++) {
+                            btns[i].removeAttribute("disabled");
+                        };
+                        resolve();
+                    });
                 };
 
                 /* when the modal is closed / empty inputs */
                 let emptyInputs = () => {
-                    modal.addEventListener("hidden.bs.modal", () => {
-                        /* disable the button to delete the annotation */
-                        saveChangesBtn.setAttribute("disabled", "disabled");
-                        /* empty the input */
-                        safeDeletionInput.value = "";
+                    return new Promise((resolve) => {
+                        modal.addEventListener("hidden.bs.modal", () => {
+                            /* disable the button to delete the annotation */
+                            saveChangesBtn.setAttribute("disabled", "disabled");
+                            /* empty the input */
+                            safeDeletionInput.value = "";
+                            resolve();
+                        });
                     });
                 };
 
@@ -909,7 +920,7 @@ const deleteAnnotationModal = () => {
                         /* data to send to the post function in the backend */
                         var data = {
                             nodeID: nodeID
-                        }
+                        };
                         var editionID = window.location.href.split("/").pop().split("-")[0];
                         var editorID = window.location.href.split("/").pop().split("-")[1];
                         var url;
@@ -922,38 +933,43 @@ const deleteAnnotationModal = () => {
                                     headers: { "Content-type": "application/json; charset=UTF-8" },
                                     body: JSON.stringify(data)
                                 });
+
                                 if (!response.ok) {
                                     throw new Error("Can't call post to delete data");
                                 };
-                                await response.json();
-                                url = response["url"];
+
+                                const responseData = await response.json();
+                                return responseData["url"];
                             };
 
                             /* DELETE THE ANNOTATION */
                             /* redirect the page */
-                            fetchDelete()
-                                .then(() => {
-                                    cancelAnnotationColor();
-                                    closeModal();
-                                    resetLayout();
-                                    unblockButtons();
-                                    emptyInputs();
-                                })
-                                .then(() => {
-                                    url = url.replace("delete", "edit");
-                                    window.location.href = url;
-                                });
+                            url = await fetchDelete();
+                            console.log("Fetch fatta, adesso devi togliere il colore");
+
+                            await cancelAnnotationColor();
+                            await closeModal();
+                            await resetLayout();
+                            await unblockButtons();
+                            await emptyInputs();
+
+                            if (url) {
+                                url = url.replace("delete", "edit");
+                                window.location.href = url;
+                            } else {
+                                console.error("URL is not defined");
+                            };
                         } catch (err) {
                             console.error(err);
                         };
                     };
                 } else {
                     /* DELETE THE ANNOTATION */
-                    cancelAnnotationColor();
-                    closeModal();
-                    resetLayout();
-                    unblockButtons();
-                    emptyInputs();
+                    await cancelAnnotationColor();
+                    await closeModal();
+                    await resetLayout();
+                    await unblockButtons();
+                    await emptyInputs();
                 };
             });
         });
@@ -1003,6 +1019,7 @@ export const closeBtn = () => {
     var closeBtn = document.querySelectorAll(".btn-close-annotation");
     closeBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
+
             /* add/remove to the modal the delete class / to understand to delete or not the annotation */
             if (btn.classList.contains("btn-delete") == true) {
                 var modalRef = btn.getAttribute("data-bs-target").replace("#", "");
@@ -1021,11 +1038,7 @@ export const closeBtn = () => {
             };
 
             /* remove highlight in the text */
-            if (btn.classList.contains("btn-delete")) {
-                deleteAnnotationModal();
-            } else {
-                deleteAnnotationModal();
-            };
+            deleteAnnotationModal();
         });
     });
 };

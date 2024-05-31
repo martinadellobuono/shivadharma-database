@@ -391,9 +391,6 @@ const liveCheckCloned = () => {
             });
         });
     });
-
-    /* live check autocomplete */
-    /* liveCheckAutocomplete(); */
 };
 
 /* truncation */
