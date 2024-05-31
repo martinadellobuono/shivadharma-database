@@ -806,7 +806,7 @@ const deleteAnnotationModal = () => {
                 /* typing in the input */
                 safeDeletionInput.addEventListener("keyup", () => {
                     /* check the value of the input */
-                    if (safeDeletionInput.value == "cancel-annotation") {
+                    if (safeDeletionInput.value == "delete-annotation") {
                         saveChangesBtn.removeAttribute("disabled");
                     } else {
                         /* disable the save changes button */
@@ -1019,7 +1019,6 @@ export const closeBtn = () => {
     var closeBtn = document.querySelectorAll(".btn-close-annotation");
     closeBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
-
             /* add/remove to the modal the delete class / to understand to delete or not the annotation */
             if (btn.classList.contains("btn-delete") == true) {
                 var modalRef = btn.getAttribute("data-bs-target").replace("#", "");
