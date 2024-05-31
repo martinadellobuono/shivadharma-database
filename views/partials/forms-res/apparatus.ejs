@@ -1,9 +1,13 @@
 <% var idNode; %>
+<% var selectedFragmentID; %>
+
 <% if (apparatus) { %>
     <% if (apparatus.length > 0) { %>
         <% apparatus.forEach((entry) => { %>
             <div class="p-3 mt-3 bg-white container-apparatus" data-type="apparatus" data-subtype="apparatus-entry">
                 <% entry.forEach((el) => { %>
+                    <% selectedFragmentID = el["lemma"]["selectedFragmentID"]; %>
+
                     <!-- location -->
                     <span data-type="apparatus" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["lemma"]["stanzaStart"]; %>' data-input="number"><%= el["lemma"]["stanzaStart"]; %></span>
                     <span data-type="apparatus" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["lemma"]["padaStart"]; %>' data-input="checkbox"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
@@ -86,7 +90,25 @@
                 <!-- delete / modify button -->
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
                     <!-- delete -->
-                    <button class="btn btn-sm btn-secondary btn-delete" type="button" data-delete="apparatus" data-node-id='<%= idNode; %>'><i class="bi bi-trash-fill"></i></button>
+                    <button class="btn btn-sm btn-secondary btn-delete btn-close-annotation" type="button" data-delete="apparatus" data-bs-toggle="modal" data-bs-target="#delete-apparatus" data-type="cancel-annotation"><i class="bi bi-trash-fill"></i></button>
+                    <div class="modal fade delete-modal" id="delete-apparatus" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-apparatus" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Are you sure to close this annotation?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Please type <b>cancel-annotation</b> to confirm.</p>
+                                <input type="text" class="form-control" data-role="safe-deletion">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-delete" data-type="cancel-annotation" data-cancel="#<%= selectedFragmentID; %>" data-role="safe-deletion-btn" data-node-id='<%= idNode; %>' disabled>Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                     <!-- modify -->
                     <button class="btn btn-sm btn-light-blue modify-btn" type="button" data-type="apparatus">Modify</button>
                 </div>

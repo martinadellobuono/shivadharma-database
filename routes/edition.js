@@ -90,7 +90,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
             )
             .subscribe({
                 onNext: record => {
-
                     /* work */
                     if (record.get("work.title") !== null) {
                         workMatrix = record.get("work.title");
@@ -443,7 +442,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                     var lemmas_attested_in_relations = [];
                     lemmaWitness_temp.forEach((el) => {
                         if (el !== null) {
-
                             /* id app entry */
                             var idApp = el["start"]["properties"]["idAnnotation"];
 
@@ -590,7 +588,6 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
 
                         /* array of app entry */
                         apparatus.push(app_entry);
-
                     });
 
                     /* order the apparatus */

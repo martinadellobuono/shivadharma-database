@@ -1,20 +1,3 @@
-/*
-    File edit.js
-    Author: Martina Dello Buono
-    Author's address: martinadellobuono1@gmail.com
-    Copyright (c) 2023 by the author
-    Permission to use, copy, modify, and/or distribute this software for any
-    purpose with or without fee is hereby granted, provided that the above
-    copyright notice and this permission notice appear in all copies.
-    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-    SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-    OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-    CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-*/
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
@@ -107,12 +90,11 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
                 `
             )
             .subscribe({
                 onNext: record => {
-
                     /* work */
                     if (record.get("work.title") !== null) {
                         workMatrix = record.get("work.title");
@@ -467,7 +449,10 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
                             /* selected fragment */
                             var selectedFragment;
+                            var selectedFragmentID;
+
                             if (el["start"]["labels"] == "SelectedFragment") {
+                                selectedFragmentID = el["start"]["properties"]["idAnnotation"];
                                 selectedFragment = el["start"]["properties"]["value"];
                             };
 
@@ -489,6 +474,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                                         id: segment["start"]["identity"]["low"],
                                         idAnnotation: segment["start"]["properties"]["idLemma"],
                                         selectedFragment: selectedFragment,
+                                        selectedFragmentID: selectedFragmentID,
                                         lemma: lemma,
                                         chapter: chapter,
                                         stanzaStart: stanzaStart,
@@ -518,7 +504,6 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
                     /* create a lemma / witnesses dict */
                     lemmas.forEach((el) => {
-
                         el = JSON.parse(el);
                         var lemma = el["lemma"];
                         var lemmaDict = el;
@@ -548,10 +533,10 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                                     if (lv["start"]["properties"]["value"] == lemma) {
                                         lv["segments"].forEach((segment) => {
                                             if (segment["start"]["labels"] == "Variant") {
-    
+
                                                 /* variant */
                                                 var variant = segment["start"]["properties"]["value"];
-    
+
                                                 /* variant dict */
                                                 var variantDict = JSON.stringify({
                                                     idAnnotation: segment["start"]["properties"]["idVariant"],
@@ -560,12 +545,12 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                                                     number: segment["start"]["properties"]["number"],
                                                     notes: segment["start"]["properties"]["notes"]
                                                 })
-    
+
                                                 /* array of variants */
                                                 if (!variants_arr.includes(variantDict)) {
                                                     variants_arr.push(variantDict);
                                                 };
-    
+
                                                 /* array of attested in relation of variant with witnesses */
                                                 if (segment["relationship"]["type"] == "ATTESTED_IN") {
                                                     var witness_relations = JSON.stringify(segment);
@@ -573,7 +558,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                                                         variant_witnesses_data_arr.push(witness_relations);
                                                     };
                                                 };
-    
+
                                             };
                                         });
                                     };
@@ -582,7 +567,6 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         });
 
                         variants_arr.forEach((v) => {
-
                             v = JSON.parse(v);
                             var variant = v["variant"];
                             var variantDict = v;
@@ -617,7 +601,6 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
 
                         /* array of app entry */
                         apparatus.push(app_entry);
-
                     });
 
                     /* order the apparatus */
