@@ -115,7 +115,6 @@ export const saveFile = (data, callback) => {
         idEditor: idEditor,
         contentFile: contentFile
     }
-    console.log(data);
 
     /* fetch the data to saveFile in the backend */
     fetch("/saveFile", {
@@ -127,7 +126,6 @@ export const saveFile = (data, callback) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             };
-            console.log("Saved");
             return response.json();
         })
         .then((data) => {

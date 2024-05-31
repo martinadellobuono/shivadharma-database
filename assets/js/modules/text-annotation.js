@@ -801,91 +801,159 @@ const deleteAnnotationModal = () => {
         var saveChangesBtn = modal.querySelector("button[data-role='safe-deletion-btn']");
         /* open the modal */
         modal.addEventListener("shown.bs.modal", () => {
-            /* typing in the input */
-            safeDeletionInput.addEventListener("keyup", () => {
-                /* check the value of the input */
-                if (safeDeletionInput.value == "cancel-annotation") {
-                    /* enable the save changes button */
-                    saveChangesBtn.removeAttribute("disabled");
-                    /* save changes */
-                    saveChangesBtn.addEventListener("click", () => {
+            /* delete forever */
+            if (modal.classList.contains("delete-modal")) {
+                /* typing in the input */
+                safeDeletionInput.addEventListener("keyup", () => {
+                    /* check the value of the input */
+                    if (safeDeletionInput.value == "cancel-annotation") {
+                        saveChangesBtn.removeAttribute("disabled");
+                    } else {
+                        /* disable the save changes button */
+                        saveChangesBtn.setAttribute("disabled", "disabled");
+                    };
+                });
+            } else {
+                /* only close the panel interrupting the filling in the form */
+                saveChangesBtn.removeAttribute("disabled");
+            };
 
-                        /* CANCEL THE ANNOTATION */
-                        let cancelAnnotationColor = () => {
-                            var safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
-                            var annotationId = safeCancelBtn.getAttribute("data-cancel");
-                            /* search all elements with the annotation id */
-                            var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
+            /* save changes */
+            saveChangesBtn.addEventListener("click", () => {
 
-                            /* reinsert the original content without annotation tags */
-                            var newContent = "";
-                            annotationDiv.forEach((annotation) => {
+                var id = saveChangesBtn.getAttribute("data-cancel"); 
 
-                                /* remove milestones */
-                                if (annotation.getAttribute("data-type") == "milestone") {
-                                    annotation.remove();
+                /* CANCEL THE ANNOTATION */
+                let cancelAnnotationColor = () => {
+                    /* button to cancel */
+                    var safeCancelBtn;
+
+                    if (id) {
+                        safeCancelBtn = document.querySelector("button[data-type='cancel-annotation'][data-cancel='" + id + "']");
+
+                    } else {
+                        safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
+                    };
+
+                    var annotationId = safeCancelBtn.getAttribute("data-cancel");
+
+                    /* search all elements with the annotation id */
+                    var annotationDiv = tinymce.get("fileBaseTxt").dom.select('span[data-annotation="' + annotationId + '"]');
+
+                    console.log(annotationDiv);
+
+                    /* reinsert the original content without annotation tags */
+                    var newContent = "";
+                    annotationDiv.forEach((annotation) => {
+
+                        /* remove milestones */
+                        if (annotation.getAttribute("data-type") == "milestone") {
+                            annotation.remove();
+                        } else {
+                            /* remove annotations */
+                            var annotationChildren = annotation.childNodes;
+                            annotationChildren.forEach((el) => {
+                                if (el.tagName == "SPAN") {
+
+                                } else if (el.tagName == "P") {
+                                    newContent = newContent + el.outerHTML;
                                 } else {
-                                    /* remove annotations */
-                                    var annotationChildren = annotation.childNodes;
-                                    annotationChildren.forEach((el) => {
-                                        if (el.tagName == "SPAN") {
-
-                                        } else if (el.tagName == "P") {
-                                            newContent = newContent + el.outerHTML;
-                                        } else {
-                                            var txt = el.textContent
-                                            annotation.outerHTML = "" + txt;
-                                            newContent = "";
-                                        };
-                                    });
-                                    if (newContent !== "") {
-                                        annotation.outerHTML = newContent;
-                                    };
+                                    var txt = el.textContent
+                                    annotation.outerHTML = "" + txt;
+                                    newContent = "";
                                 };
                             });
-                        };
-
-                        /* close the modal */
-                        let closeModal = () => {
-                            let modalToClose = bootstrap.Modal.getInstance(modal);
-                            modalToClose.hide();
-                        };
-
-                        /* reset the layout */
-                        let resetLayout = () => {
-                            closeAnnotationBox();
-                            var defaultSettings = document.querySelector(".default-settings");
-                            defaultSettings.classList.remove("d-none");
-                        };
-
-                        /* unblock the annotation buttons */
-                        let unblockButtons = () => {
-                            const btns = document.querySelectorAll(".btn-set-annotation button");
-                            for (var i = 0; i < btns.length; i++) {
-                                btns[i].removeAttribute("disabled");
+                            if (newContent !== "") {
+                                annotation.outerHTML = newContent;
                             };
                         };
-
-                        /* when the modal is closed / empty inputs */
-                        let emptyInputs = () => {
-                            modal.addEventListener("hidden.bs.modal", () => {
-                                /* disable the button to delete the annotation */
-                                saveChangesBtn.setAttribute("disabled", "disabled");
-                                /* empty the input */
-                                safeDeletionInput.value = "";
-                            });
-                        };
-
-                        /* DELETE THE ANNOTATION */
-                        cancelAnnotationColor();
-                        closeModal();
-                        resetLayout();
-                        unblockButtons();
-                        emptyInputs();
                     });
+                };
+
+                /* close the modal */
+                let closeModal = () => {
+                    let modalToClose = bootstrap.Modal.getInstance(modal);
+                    modalToClose.hide();
+                };
+
+                /* reset the layout */
+                let resetLayout = () => {
+                    closeAnnotationBox();
+                    var defaultSettings = document.querySelector(".default-settings");
+                    defaultSettings.classList.remove("d-none");
+                };
+
+                /* unblock the annotation buttons */
+                let unblockButtons = () => {
+                    const btns = document.querySelectorAll(".btn-set-annotation button");
+                    for (var i = 0; i < btns.length; i++) {
+                        btns[i].removeAttribute("disabled");
+                    };
+                };
+
+                /* when the modal is closed / empty inputs */
+                let emptyInputs = () => {
+                    modal.addEventListener("hidden.bs.modal", () => {
+                        /* disable the button to delete the annotation */
+                        saveChangesBtn.setAttribute("disabled", "disabled");
+                        /* empty the input */
+                        safeDeletionInput.value = "";
+                    });
+                };
+
+                if (saveChangesBtn.classList.contains("btn-delete")) {
+                    /* delete the annotation from the db */
+                    /* data to delete */
+                    var nodeID = saveChangesBtn.getAttribute("data-node-id");
+                    if (nodeID) {
+                        /* data to send to the post function in the backend */
+                        var data = {
+                            nodeID: nodeID
+                        }
+                        var editionID = window.location.href.split("/").pop().split("-")[0];
+                        var editorID = window.location.href.split("/").pop().split("-")[1];
+                        var url;
+
+                        /* call the post function to delete the entity */
+                        try {
+                            let fetchDelete = async () => {
+                                const response = await fetch("/delete/" + editionID + "-" + editorID, {
+                                    method: "POST",
+                                    headers: { "Content-type": "application/json; charset=UTF-8" },
+                                    body: JSON.stringify(data)
+                                });
+                                if (!response.ok) {
+                                    throw new Error("Can't call post to delete data");
+                                };
+                                await response.json();
+                                url = response["url"];
+                            };
+                            
+                            /* DELETE THE ANNOTATION */
+                            console.log("Siamo arrivati a delete annotation");
+
+                            cancelAnnotationColor();
+                            closeModal();
+                            resetLayout();
+                            unblockButtons();
+                            emptyInputs();
+    
+                            /* redirect the page */
+                            /* fetchDelete().then(() => {
+                                url = url.replace("delete", "edit");
+                                window.location.href = url;
+                            }); */
+                        } catch (err) {
+                            console.error(err);
+                        };
+                    };
                 } else {
-                    /* disable the save changes button */
-                    saveChangesBtn.setAttribute("disabled", "disabled");
+                    /* DELETE THE ANNOTATION */
+                    cancelAnnotationColor();
+                    closeModal();
+                    resetLayout();
+                    unblockButtons();
+                    emptyInputs();
                 };
             });
         });
@@ -935,7 +1003,6 @@ export const closeBtn = () => {
     var closeBtn = document.querySelectorAll(".btn-close-annotation");
     closeBtn.forEach((btn) => {
         btn.addEventListener("click", () => {
-
             /* add/remove to the modal the delete class / to understand to delete or not the annotation */
             if (btn.classList.contains("btn-delete") == true) {
                 var modalRef = btn.getAttribute("data-bs-target").replace("#", "");
@@ -954,7 +1021,11 @@ export const closeBtn = () => {
             };
 
             /* remove highlight in the text */
-            deleteAnnotationModal();
+            if (btn.classList.contains("btn-delete")) {
+                deleteAnnotationModal();
+            } else {
+                deleteAnnotationModal();
+            };
         });
     });
 };
