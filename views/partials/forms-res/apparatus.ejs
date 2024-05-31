@@ -95,16 +95,16 @@
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Are you sure to close this annotation?</h5>
+                                <h5 class="modal-title">Are you sure to delete this annotation?</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <p>Please type <b>cancel-annotation</b> to confirm.</p>
+                                <p>Please type <b>delete-annotation</b> to confirm.</p>
                                 <input type="text" class="form-control" data-role="safe-deletion">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary btn-delete" data-type="cancel-annotation" data-cancel="#<%= selectedFragmentID; %>" data-role="safe-deletion-btn" data-node-id='<%= idNode; %>' disabled>Save changes</button>
+                                <button type="button" class="btn btn-primary btn-delete" data-type="cancel-annotation" data-cancel="#<%= selectedFragmentID; %>" data-role="safe-deletion-btn" data-node-id='<%= selectedFragmentID; %>' disabled>Save changes</button>
                             </div>
                         </div>
                         </div>

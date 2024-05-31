@@ -938,6 +938,8 @@ const deleteAnnotationModal = () => {
                                     throw new Error("Can't call post to delete data");
                                 };
 
+                                console.log(data);
+
                                 const responseData = await response.json();
                                 return responseData["url"];
                             };

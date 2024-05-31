@@ -10,7 +10,7 @@ router.post(process.env.URL_PATH + "/delete/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     var nodeToDeleteID = req.body.nodeID;
-    
+
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
@@ -20,8 +20,10 @@ router.post(process.env.URL_PATH + "/delete/:id", async (req, res) => {
                 WHERE id(edition) = ${idEdition} AND id(editor) = ${idEditor}
                 WITH edition
                 MATCH (n {idAnnotation: "${nodeToDeleteID}"})-[r]-()
-                WHERE NOT (n)-[:HAS_TYPE]->(:Witness)
-                DELETE n, r;
+                OPTIONAL MATCH (n)-[:HAS_TYPE]->(witness:Witness)
+                WITH n, r, witness
+                WHERE witness IS NULL
+                DETACH DELETE n
                 `
             )
             .then(() => {
