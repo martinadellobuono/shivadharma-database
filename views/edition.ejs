@@ -183,9 +183,16 @@
                           <% if (el["langTranslation"] == lang) { %>
                             <!-- translation full-text -->
                             <div data-type="translation" data-subtype="translation">
+                              
+                              <!-- go to textus -->
+                              <i class="bi bi-caret-right-fill entries green-400" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
+
+                              <!-- location  -->
                               <span class="me-1" data-type="location" data-subtype="location-top">
                                 <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
                               </span>
+                              
+                              <!-- full text -->
                               <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                             </div>
                             <!-- translation note -->
@@ -208,9 +215,16 @@
                           <% if (el["langTranslation"] == lang) { %>
                             <!-- translation full-text -->
                             <div data-type="translation" data-subtype="translation">
+
+                              <!-- go to textus -->
+                              <i class="bi bi-caret-right-fill entries green-400" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
+
+                              <!-- location -->
                               <span class="me-1" data-type="location" data-subtype="location-top">
                                 <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
                               </span>
+
+                              <!-- full-text -->
                               <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                             </div>
                             <!-- translation note -->
@@ -344,7 +358,7 @@
                   <% entry.forEach((el) => { %>
 
                     <!-- go to textus -->
-                    <i class="bi bi-caret-right-fill entries" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
+                    <i class="bi bi-caret-right-fill entries blue-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-blue-600" data-bs-title="Check in the <i>textus</i>" data-type="apparatus" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
 
                     <!-- location -->
                     <span data-type="apparatus" data-subtype="stanzaStart" data-n='<%= el["lemma"]["stanzaStart"]; %>'><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>

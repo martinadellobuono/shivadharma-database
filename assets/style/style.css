@@ -10235,6 +10235,10 @@ body {
   color: #0a58ca;
 }
 
+.green-400 {
+  color: #4dd4ac;
+}
+
 .orange-400 {
   color: #fd9843;
 }
@@ -10885,19 +10889,12 @@ span[data-type=annotation-object][data-subtype=apparatus]:hover {
   text-decoration-color: #6ea8fe;
 }
 
-.entries {
-  color: #0a58ca;
-}
-
-.entries:hover {
-  color: #084298;
-}
-
-.app-entry {
-  color: #084298;
-}
-
 /* citations */
 span[data-type=annotation-object][data-subtype=citation] {
   background-color: #efadce;
+}
+
+/* tooltips */
+.tooltip-blue-600 {
+  --bs-tooltip-bg: var(--bs-primary);
 }/*# sourceMappingURL=style.css.map */

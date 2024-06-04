@@ -6,7 +6,8 @@ export const appTxtScroll = () => {
     for (var i = 0; i < appEntries.length; i++) {
         appEntries[i].addEventListener("click", (e) => {
             var idAppEntry = e.target.getAttribute("data-ref");
-            var txtEntries = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='apparatus'][data-annotation='#" + idAppEntry + "']");
+            var category = e.target.getAttribute("data-type");
+            var txtEntries = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='" + category + "'][data-annotation='#" + idAppEntry + "']");
 
             /* remove the underline text-decoration to the not corresponding app entry */
             var entries = document.querySelectorAll(".app-entry");

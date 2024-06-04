@@ -93,6 +93,10 @@ body {
     color: $blue-600;
 }
 
+.green-400 {
+    color: $teal-400;
+}
+
 .orange-400 {
     color: $orange-400;
 }
@@ -582,7 +586,9 @@ p {
 
 .heartbeat::before {
     content: "Click to show you are not a robot | ";
-};
+}
+
+;
 
 /* navbar */
 .navbar-bg {
@@ -790,6 +796,7 @@ p {
 
 /* SM DEVICES */
 @include media-breakpoint-down(md) {
+
     /* logo */
     .logo {
         width: 15%;
@@ -824,19 +831,12 @@ span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
     text-decoration-color: $blue-300;
 }
 
-.entries {
-    color: $blue-600;
-}
-
-.entries:hover {
-    color: $blue-700;
-}
-
-.app-entry {
-    color: $blue-700;
-}
-
 /* citations */
 span[data-type="annotation-object"][data-subtype="citation"] {
     background-color: $pink-200;
+}
+
+/* tooltips */
+.tooltip-blue-600 {
+    --bs-tooltip-bg: var(--bs-primary);
 }
