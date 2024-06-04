@@ -11,12 +11,15 @@ const { render } = require("ejs");
 router.post(process.env.URL_PATH + "/addCitation/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
-    var entity = req.body.citationType.filter(item => item !== "");
-    entity = entity.join("");
-    entity = entity.replace("other", "");
-    entity = entity.replace(" ", "");
-    var Entity = entity.charAt(0).toUpperCase() + entity.slice(1).toLowerCase();
-    
+
+    var cits = req.body.citationType;
+    for (let i = cits.length - 1; i >= 0; i--) {
+        if (cits[i] === "" && cits[i] !== 'other') {
+            cits.splice(i, 1);
+        };
+    };
+    var Entity = cits.join("");
+
     const session = driver.session();
     try {
         await session.writeTransaction(tx => tx
