@@ -183,23 +183,23 @@
                           <% if (el["langTranslation"] == lang) { %>
                             <!-- translation full-text -->
                             <div data-type="translation" data-subtype="translation">
-                              
+
                               <!-- go to textus -->
-                              <i class="bi bi-caret-right-fill entries green-400" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
+                              <span class="no-span-space"><i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
 
                               <!-- location  -->
-                              <span class="me-1" data-type="location" data-subtype="location-top">
-                                <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
+                              <span class="no-span-space me-2" data-type="location" data-subtype="location-top">
+                                <span class="no-span-space" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
                               </span>
                               
                               <!-- full text -->
-                              <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+                              <span class="no-span-space" data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                             </div>
                             <!-- translation note -->
                             <% if (el["note"] !== "") { %>
                               <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']['low']; %>"></span>
                               <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
-                                <div class="card card-body">
+                                <div class="card card-body fs-xxs">
                                   <div data-type="translation" data-subtype="note"><%- el["note"]; %></div>
                                 </div>
                               </div>
@@ -217,7 +217,7 @@
                             <div data-type="translation" data-subtype="translation">
 
                               <!-- go to textus -->
-                              <i class="bi bi-caret-right-fill entries green-400" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
+                              <i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
 
                               <!-- location -->
                               <span class="me-1" data-type="location" data-subtype="location-top">
@@ -264,21 +264,25 @@
                 <div class="collapse inlineAppDiv" id="collapse-parallel-<%= key; %>">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
-                      <div class="bg-light fs-6 mb-3 d-none">
-                      <% if (typeof title !== "undefined") { %>
-                        <span>Parallel to <%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n="<%= el["stanzaStart"] %>"><%= el["stanzaStart"] %></span>
-                      <% }; %>
-                      </div>
-                      <div class="fs-xs" data-type="parallel" data-subtype="parallel">
-                        <span data-type="parallel" data-subtype="full-text"><%- el["value"]; %></span>
+                      <div class="fs-xs mt-2" data-type="parallel" data-subtype="parallel">
+                        <!-- full-text -->
+                        <span data-type="parallel" data-subtype="full-text">
+                          <%- el["value"]; %>
+                        </span>
                         <span class="me-2" data-type="location" data-subtype="location-bottom">
                           <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
                         </span>
                       </div>
+                      <div class="fs-xxs orange-400 mt-2">
+                      <% if (typeof title !== "undefined") { %>
+                        <span><i class="bi bi-caret-right-fill entries orange-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in the <i>textus</i>" data-type="parallel" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                        <span><%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n='<%= el["stanzaStart"] %>'><%= el["stanzaStart"] %></span>
+                      <% }; %>
+                      </div>
                       <% if (el["note"] !== "") { %>
                         <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
                         <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
-                          <div class="card card-body">
+                          <div class="card card-body fs-xxs">
                             <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
                           </div>
                         </div>
@@ -293,12 +297,24 @@
           <!-- citations -->
           <div class="tab-pane fade" id="pills-citations" role="tabpanel">
             <% citations.forEach((el) => { %>
-              <div data-type="citation" data-subtype="citation">
+              <div class="mt-3" data-type="citation" data-subtype="citation">
+                <span><i class="bi bi-caret-right-fill entries fuchsia-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-fuchsia-400" data-bs-title="Check in the <i>textus</i>" data-type="citation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                 <span class="me-1" data-type="location" data-subtype="location-top">
                   <span data-type="citation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                 </span>
+                <!-- citation -->
                 <span class="fw-l" data-type="citations" data-subtype="full-text"><%= el["value"]; %></span>
-                <span data-type="citations" data-subtype="note"><%- el["note"]; %></span>
+                <!-- note on citation -->
+                <% if (el["note"] !== "") { %>
+                  <div>
+                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-citation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-citation-note-<%= el['id']['low']; %>"></span>
+                    <div class="collapse mb-3" id="collapse-citation-note-<%= el['id']; %>">
+                      <div class="card card-body fs-xxs">
+                        <div data-type="citation" data-subtype="note"><%- el["note"]; %></div>
+                      </div>
+                    </div>
+                  </div>
+                <% }; %>
               </div>
             <% }); %>
           </div>
@@ -308,7 +324,8 @@
             <% commentary.forEach((el) => { %>
               <!-- commentary full-text -->
               <div data-type="commentary" data-subtype="commentary">
-                <span data-type="commentary" data-subtype="full-text"><%- el["value"]; %></span>
+                <span class="no-span-space"><i class="bi bi-caret-right-fill entries indigo-200" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-indigo-200" data-bs-title="Check in the <i>textus</i>" data-type="commentary" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                <span class="no-span-space" data-type="commentary" data-subtype="full-text"><%- el["value"]; %></span>
               </div>
               <!-- commentary note -->
               <% if (el["note"] !== "") { %>
@@ -420,10 +437,11 @@
             <div class="card card-body">
               <% notes.forEach((el) => { %>
                 <div class="fs-xs" data-type="note" data-subtype="note">
-                  <span class="me-1" data-type="location" data-subtype="location-top">
-                    <span data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                  <span class="no-span-space"><i class="bi bi-caret-right-fill entries darkslategray" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-darkslategray" data-bs-title="Check in the <i>textus</i>" data-type="note" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                  <span class="no-span-space" data-type="location" data-subtype="location-top">
+                    <span class="no-span-space" data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                   </span>
-                  <span data-type="note" data-subtype="full-text"><%- el["value"]; %></span>
+                  <span class="no-span-space" data-type="note" data-subtype="full-text"><%- el["value"]; %></span>
                 </div>
               <% }); %>
             </div>

@@ -93,8 +93,20 @@ body {
     color: $blue-600;
 }
 
+.darkslategray {
+    color: $cyan-700;
+}
+
+.fuchsia-400 {
+    color: $pink-400;
+}
+
 .green-400 {
     color: $teal-400;
+}
+
+.indigo-200 {
+    color: $indigo-200;
 }
 
 .orange-400 {
@@ -837,6 +849,55 @@ span[data-type="annotation-object"][data-subtype="citation"] {
 }
 
 /* tooltips */
-.tooltip-blue-600 {
-    --bs-tooltip-bg: var(--bs-primary);
+.tooltip-arrow {
+    display: none !important;
+}
+
+.tooltip-blue-600 .tooltip-inner {
+    background-color: $blue-600;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-darkslategray .tooltip-inner {
+    background-color: $cyan-700;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-fuchsia-400 .tooltip-inner {
+    background-color: $pink-400;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-indigo-200 .tooltip-inner {
+    background-color: $indigo-200;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-green-400 .tooltip-inner {
+    background-color: $green-400;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-orange-400 .tooltip-inner {
+    background-color: $orange-400;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+/* span */
+.no-span-space {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
 }
