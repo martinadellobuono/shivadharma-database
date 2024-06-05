@@ -10894,20 +10894,29 @@ p {
     float: none;
   }
 }
-/* apparatus */
-span[data-type=annotation-object][data-subtype=apparatus] {
-  text-decoration: underline;
-  text-decoration-color: #9ec5fe;
-  text-decoration-thickness: 3px;
+/* entries colors */
+.apparatus-color {
+  background-color: #cfe2ff;
 }
 
-span[data-type=annotation-object][data-subtype=apparatus]:hover {
-  text-decoration-color: #6ea8fe;
+.citation-color {
+  background-color: #f7d6e6;
 }
 
-/* citations */
-span[data-type=annotation-object][data-subtype=citation] {
-  background-color: #efadce;
+.commentary-color {
+  background-color: #e0cffc;
+}
+
+.note-color {
+  background-color: #0dcaf0;
+}
+
+.parallel-color {
+  background-color: #ffe5d0;
+}
+
+.translation-color {
+  background-color: #d1e7dd;
 }
 
 /* tooltips */

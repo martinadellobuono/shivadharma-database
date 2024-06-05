@@ -836,20 +836,29 @@ p {
     }
 }
 
-/* apparatus */
-span[data-type="annotation-object"][data-subtype="apparatus"] {
-    text-decoration: underline;
-    text-decoration-color: $blue-200;
-    text-decoration-thickness: 3px;
+/* entries colors */
+.apparatus-color {
+    background-color: $blue-100;
 }
 
-span[data-type="annotation-object"][data-subtype="apparatus"]:hover {
-    text-decoration-color: $blue-300;
+.citation-color {
+    background-color: $pink-100;
 }
 
-/* citations */
-span[data-type="annotation-object"][data-subtype="citation"] {
-    background-color: $pink-200;
+.commentary-color {
+    background-color: $indigo-100;
+}
+
+.note-color {
+    background-color: $cyan-500;
+}
+
+.parallel-color {
+    background-color: $orange-100;
+}
+
+.translation-color {
+    background-color: $green-100;
 }
 
 /* tooltips */
