@@ -10705,9 +10705,13 @@ p {
 }
 
 /* read layout */
-.edition-container-vis,
+.edition-container-vis {
+  height: 76vh;
+  overflow-y: hidden;
+}
+
 .edition-container-vis .row {
-  height: 67vh;
+  height: -webkit-fill-available;
 }
 
 .edition-container-vis > .row > div {

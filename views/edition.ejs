@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body>
+<body class="bg-light">
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -366,87 +366,89 @@
       <div class="col-md-12">
 
         <!-- apparatus -->
-        <% if (apparatus.length > 0) { %>
-          <button type="button" class="btn btn-sm btn-light-blue caret" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="collapse-apparatus">Apparatus</button>
-          <div class="collapse" id="collapse-apparatus">
-            <div class="card card-body">
-              <% apparatus.forEach((entry) => { %>
-                <div class="fs-xs" data-type="apparatus" data-subtype="entry">
-                  <% entry.forEach((el) => { %>
+        <div class="d-flex">
+          <% if (apparatus.length > 0) { %>
+            <button type="button" class="btn btn-sm btn-light-blue caret" data-bs-toggle="collapse" href="#collapse-apparatus" role="button" aria-expanded="false" aria-controls="collapse-apparatus">Apparatus</button>
+            <div class="collapse w-100" id="collapse-apparatus">
+              <div class="card card-body">
+                <% apparatus.forEach((entry) => { %>
+                  <div class="fs-xs" data-type="apparatus" data-subtype="entry">
+                    <% entry.forEach((el) => { %>
 
-                    <!-- go to textus -->
-                    <i class="bi bi-caret-right-fill entries blue-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-blue-600" data-bs-title="Check in the <i>textus</i>" data-type="apparatus" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
+                      <!-- go to textus -->
+                      <i class="bi bi-caret-right-fill entries blue-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-blue-600" data-bs-title="Check in the <i>textus</i>" data-type="apparatus" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
 
-                    <!-- location -->
-                    <span data-type="apparatus" data-subtype="stanzaStart" data-n='<%= el["lemma"]["stanzaStart"]; %>'><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
+                      <!-- location -->
+                      <span data-type="apparatus" data-subtype="stanzaStart" data-n='<%= el["lemma"]["stanzaStart"]; %>'><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
 
-                    <!-- lemma -->
-                    <% if (el["lemma"]["lemma"].indexOf("lemmaOmission") > -1) { %>
-                      <span class="fst-italic" data-type="apparatus" data-subtype="lemma">om.</span>
-                    <% } else { %>
-                      <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
-                    <% }; %>
-
-                    <!-- square bracket -->
-                    <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
-                    <!-- witnesses -->
-                    <% el["witnessesLemma"].forEach((witness) => { %>
-                      <span class="red-600" data-type="apparatus" data-subtype="witnessesLemma"><%- witness["siglum"]; %></span>
-                    <% }); %>
-
-                    <!-- notes -->
-                    <% if (el["lemma"]["notes"] !== "") { %>
-                      <span class="note" data-type="apparatus" data-subtype="lemmaNotes"><%- el["lemma"]["notes"]; %></span>
-                    <% }; %>
-
-                    <!-- coma -->
-                    <span class="m--3">, </span>
-
-                    <!-- variants -->
-                    <% el["variants"].forEach((variant) => { %>
-                      <!-- variant -->
-                      
-                      <!-- variant -->
-                      <% if (variant["variant"]["value"].indexOf("variantOmission") > -1) { %>
-                        <span class="fst-italic" data-type="apparatus" data-subtype="variant">om.</span>
+                      <!-- lemma -->
+                      <% if (el["lemma"]["lemma"].indexOf("lemmaOmission") > -1) { %>
+                        <span class="fst-italic" data-type="apparatus" data-subtype="lemma">om.</span>
                       <% } else { %>
-                        <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= variant["variant"]["variant"]; %></span>
+                        <span class="fst-italic" data-type="apparatus" data-subtype="lemma"><%= el["lemma"]["lemma"]; %></span>
                       <% }; %>
-                      
-                      <!-- witnesses-->
-                      <% variant["witnessesVariant"].forEach((witness) => { %>
-                        <span class="red-600" data-type="apparatus" data-subtype="witnessesVariant"><%- witness["siglum"]; %></span>
+
+                      <!-- square bracket -->
+                      <span data-type="separator" data-subtype="squareBracket"> &#x5d; </span>
+                      <!-- witnesses -->
+                      <% el["witnessesLemma"].forEach((witness) => { %>
+                        <span class="red-600" data-type="apparatus" data-subtype="witnessesLemma"><%- witness["siglum"]; %></span>
                       <% }); %>
+
                       <!-- notes -->
-                      <% if (variant["variant"]["notes"] !== "") { %>
-                        <span class="note" data-type="apparatus" data-subtype="variantNotes"><%- variant["variant"]["notes"]; %></span>
+                      <% if (el["lemma"]["notes"] !== "") { %>
+                        <span class="note" data-type="apparatus" data-subtype="lemmaNotes"><%- el["lemma"]["notes"]; %></span>
                       <% }; %>
+
+                      <!-- coma -->
+                      <span class="m--3">, </span>
+
+                      <!-- variants -->
+                      <% el["variants"].forEach((variant) => { %>
+                        <!-- variant -->
+                        
+                        <!-- variant -->
+                        <% if (variant["variant"]["value"].indexOf("variantOmission") > -1) { %>
+                          <span class="fst-italic" data-type="apparatus" data-subtype="variant">om.</span>
+                        <% } else { %>
+                          <span class="fst-italic" data-type="apparatus" data-subtype="variant"><%= variant["variant"]["variant"]; %></span>
+                        <% }; %>
+                        
+                        <!-- witnesses-->
+                        <% variant["witnessesVariant"].forEach((witness) => { %>
+                          <span class="red-600" data-type="apparatus" data-subtype="witnessesVariant"><%- witness["siglum"]; %></span>
+                        <% }); %>
+                        <!-- notes -->
+                        <% if (variant["variant"]["notes"] !== "") { %>
+                          <span class="note" data-type="apparatus" data-subtype="variantNotes"><%- variant["variant"]["notes"]; %></span>
+                        <% }; %>
+                      <% }); %>
+                      
                     <% }); %>
-                    
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+          <% }; %>
+
+          <!-- notes -->
+          <% if (notes.length > 0) { %>
+              <button type="button" class="btn btn-sm btn-blue caret" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="collapse-notes">Notes</button>
+              <div class="collapse w-100" id="collapse-notes">
+                <div class="card card-body">
+                  <% notes.forEach((el) => { %>
+                    <div class="fs-xs" data-type="note" data-subtype="note">
+                      <span class="no-span-space"><i class="bi bi-caret-right-fill entries darkslategray" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-darkslategray" data-bs-title="Check in the <i>textus</i>" data-type="note" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                      <span class="no-span-space" data-type="location" data-subtype="location-top">
+                        <span class="no-span-space" data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                      </span>
+                      <span class="no-span-space" data-type="note" data-subtype="full-text"><%- el["value"]; %></span>
+                    </div>
                   <% }); %>
                 </div>
-              <% }); %>
-            </div>
-          </div>
-        <% }; %>
-
-        <!-- notes -->
-        <% if (notes.length > 0) { %>
-          <button type="button" class="btn btn-sm btn-blue caret" data-bs-toggle="collapse" href="#collapse-notes" role="button" aria-expanded="false" aria-controls="collapse-notes">Notes</button>
-          <div class="collapse" id="collapse-notes">
-            <div class="card card-body">
-              <% notes.forEach((el) => { %>
-                <div class="fs-xs" data-type="note" data-subtype="note">
-                  <span class="no-span-space"><i class="bi bi-caret-right-fill entries darkslategray" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-darkslategray" data-bs-title="Check in the <i>textus</i>" data-type="note" data-ref='<%= el["idAnnotation"]; %>'></i></span>
-                  <span class="no-span-space" data-type="location" data-subtype="location-top">
-                    <span class="no-span-space" data-type="note" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="note" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
-                  </span>
-                  <span class="no-span-space" data-type="note" data-subtype="full-text"><%- el["value"]; %></span>
-                </div>
-              <% }); %>
-            </div>
-          </div>
-        <% }; %>
+              </div>
+          <% }; %>
+        </div>
         
       </div>
     </div>
