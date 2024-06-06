@@ -96,9 +96,30 @@ export const printInlineApp = () => {
                 inlinePar.innerHTML += "<div class='ff-edition-app'>" + parallel + "</div>";
             });
 
-            /* hide tooltips */
+            /* modify printed parallels */
             var inlineParallels = document.querySelectorAll(".ff-edition-app");
             for (var i = 0; i < inlineParallels.length; i++) {
+                /* modify data-bs-target */
+                var collapsibleTitle = inlineParallels[i].querySelector(".caret");
+                var collapsibleTitleVal = collapsibleTitle.getAttribute("data-bs-target");
+                collapsibleTitle.setAttribute("data-bs-target", collapsibleTitleVal + "___" + i);
+
+                /* modify collapsible div */
+                var collapsibleDiv = inlineParallels[i].querySelector(".inlineAppDiv");
+                var collapsibleDivVal = collapsibleDiv.getAttribute("id");
+                collapsibleDiv.setAttribute("id", collapsibleDivVal + "___" + i);
+
+                /* modify note title */
+                var collapsibleNoteTitle = inlineParallels[i].querySelector(".btn-note");
+                var collapsibleNoteTitleVal = collapsibleNoteTitle.getAttribute("data-bs-target");
+                collapsibleNoteTitle.setAttribute("data-bs-target", collapsibleNoteTitleVal + "___" + i);
+
+                /* modify note body */
+                var collapsibleNoteBody = inlineParallels[i].querySelector(collapsibleNoteTitleVal);
+                
+                collapsibleNoteBody.setAttribute("id", collapsibleNoteTitleVal.split("#")[1] + "___" + i);
+
+                /* hide tooltips */
                 var tooltipLink = inlineParallels[i].querySelector(".tooltip-link");
                 tooltipLink.classList.add("d-none");
             };
@@ -116,18 +137,18 @@ export const txtAppScroll = () => {
             var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
             var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])"); */
 
-            /* remove the underline text-decoration the not corresponding app entry */
-            /* for (var i = 0; i < oldAppEntries.length; i++) {
-                var txtEntry = oldAppEntries[i];
-                txtEntry.classList.remove("app-entry");
-            }; */
-
-            /* add the underline text-decoration the corresponding app entry and scroll */
-            /* for (var i = 0; i < appEntries.length; i++) {
-                var txtEntry = appEntries[i];
-                txtEntry.classList.add("app-entry");
-                txtEntry.scrollIntoView();
-            };
-        });
+    /* remove the underline text-decoration the not corresponding app entry */
+    /* for (var i = 0; i < oldAppEntries.length; i++) {
+        var txtEntry = oldAppEntries[i];
+        txtEntry.classList.remove("app-entry");
     }; */
+
+    /* add the underline text-decoration the corresponding app entry and scroll */
+    /* for (var i = 0; i < appEntries.length; i++) {
+        var txtEntry = appEntries[i];
+        txtEntry.classList.add("app-entry");
+        txtEntry.scrollIntoView();
+    };
+});
+}; */
 };
