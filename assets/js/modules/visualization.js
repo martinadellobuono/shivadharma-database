@@ -95,32 +95,39 @@ export const printInlineApp = () => {
                 var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
                 inlinePar.innerHTML += "<div class='ff-edition-app'>" + parallel + "</div>";
             });
+
+            /* hide tooltips */
+            var inlineParallels = document.querySelectorAll(".ff-edition-app");
+            for (var i = 0; i < inlineParallels.length; i++) {
+                var tooltipLink = inlineParallels[i].querySelector(".tooltip-link");
+                tooltipLink.classList.add("d-none");
+            };
         };
     });
 };
 
 /* scroll to the apparatus lemma in the apparatus starting from the textus */
 export const txtAppScroll = () => {
-    var appEntries = document.querySelectorAll("span[data-type='annotation-object']");
+    /* var appEntries = document.querySelectorAll("span[data-type='annotation-object']");
 
     for (var i = 0; i < appEntries.length; i++) {
         appEntries[i].addEventListener("click", (e) => {
             var idTxtEntry = e.target.getAttribute("data-annotation").split("#")[1];
             var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
-            var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])");
+            var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])"); */
 
             /* remove the underline text-decoration the not corresponding app entry */
-            for (var i = 0; i < oldAppEntries.length; i++) {
+            /* for (var i = 0; i < oldAppEntries.length; i++) {
                 var txtEntry = oldAppEntries[i];
                 txtEntry.classList.remove("app-entry");
-            };
+            }; */
 
             /* add the underline text-decoration the corresponding app entry and scroll */
-            for (var i = 0; i < appEntries.length; i++) {
+            /* for (var i = 0; i < appEntries.length; i++) {
                 var txtEntry = appEntries[i];
                 txtEntry.classList.add("app-entry");
                 txtEntry.scrollIntoView();
             };
         });
-    };
+    }; */
 };

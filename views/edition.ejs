@@ -120,7 +120,7 @@
 
         <!-- roman / devanagari converter -->
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button type="button" class="btn btn-sm btn-primary btn-converter" data-script="devanagari">Convert to <span class="scriptLabel">Devanāgārī</span></button>
+          <button type="button" class="btn btn-sm btn-primary btn-converter p-f" data-script="devanagari">Convert to <span class="scriptLabel">Devanāgārī</span></button>
         </div>
 
         <!-- textus constitutus -->
@@ -273,7 +273,7 @@
                           <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
                         </span>
                       </div>
-                      <div class="fs-xxs orange-400 mt-2">
+                      <div class="fs-xxs orange-400 tooltip-link mt-2">
                       <% if (typeof title !== "undefined") { %>
                         <span><i class="bi bi-caret-right-fill entries orange-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in the <i>textus</i>" data-type="parallel" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                         <span><%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n='<%= el["stanzaStart"] %>'><%= el["stanzaStart"] %></span>
