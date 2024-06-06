@@ -193,7 +193,7 @@
                               </span>
                               
                               <!-- full text -->
-                              <span class="no-span-space" data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+                              <span class="no-span-space fs-xxs" data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                             </div>
                             <!-- translation note -->
                             <% if (el["note"] !== "") { %>
@@ -217,21 +217,21 @@
                             <div data-type="translation" data-subtype="translation">
 
                               <!-- go to textus -->
-                              <i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref="<%= el["idAnnotation"]; %>"></i>
+                              <span class="no-span-space"><i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
 
                               <!-- location -->
-                              <span class="me-1" data-type="location" data-subtype="location-top">
+                              <span class="no-span-space me-1" data-type="location" data-subtype="location-top">
                                 <span data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
                               </span>
 
                               <!-- full-text -->
-                              <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+                              <span class="no-span-space fs-xxs" data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
                             </div>
                             <!-- translation note -->
                             <% if (el["note"] !== "") { %>
                               <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']['low']; %>"></span>
                               <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
-                                <div class="card card-body">
+                                <div class="card card-body fs-xxs">
                                   <div data-type="translation" data-subtype="note"><%- el["note"]; %></div>
                                 </div>
                               </div>
@@ -264,7 +264,7 @@
                 <div class="collapse inlineAppDiv" id="collapse-parallel-<%= key; %>">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
-                      <div class="fs-xs mt-2" data-type="parallel" data-subtype="parallel">
+                      <div class="fs-xxs mt-2" data-type="parallel" data-subtype="parallel">
                         <!-- full-text -->
                         <span data-type="parallel" data-subtype="full-text">
                           <%- el["value"]; %>
@@ -299,11 +299,12 @@
             <% citations.forEach((el) => { %>
               <div class="mt-3" data-type="citation" data-subtype="citation">
                 <span><i class="bi bi-caret-right-fill entries fuchsia-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-fuchsia-400" data-bs-title="Check in the <i>textus</i>" data-type="citation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
-                <span class="me-1" data-type="location" data-subtype="location-top">
+                <!-- location -->
+                <span class="fs-xxs me-1" data-type="location" data-subtype="location-top">
                   <span data-type="citation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                 </span>
                 <!-- citation -->
-                <span class="fw-l" data-type="citations" data-subtype="full-text"><%= el["value"]; %></span>
+                <span class="fs-xxs fw-l" data-type="citations" data-subtype="full-text"><%= el["value"]; %></span>
                 <!-- note on citation -->
                 <% if (el["note"] !== "") { %>
                   <div>
@@ -322,38 +323,47 @@
           <!-- commentary -->
           <div class="tab-pane fade" id="pills-commentary" role="tabpanel">
             <% commentary.forEach((el) => { %>
-              <!-- commentary full-text -->
-              <div data-type="commentary" data-subtype="commentary">
+              <div>
+                <!-- link -->
                 <span class="no-span-space"><i class="bi bi-caret-right-fill entries indigo-200" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-indigo-200" data-bs-title="Check in the <i>textus</i>" data-type="commentary" data-ref='<%= el["idAnnotation"]; %>'></i></span>
-                <span class="no-span-space" data-type="commentary" data-subtype="full-text"><%- el["value"]; %></span>
-              </div>
-              <!-- commentary note -->
-              <% if (el["note"] !== "") { %>
-                <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-note-<%= el['id']; %>"></span>
-                <div class="collapse mb-3" id="collapse-commentary-note-<%= el['id']; %>">
-                  <div class="card card-body">
-                    <div data-type="commentary" data-subtype="note"><%- el["note"]; %></div>
-                  </div>
-                </div>
-              <% }; %>
-              <!-- commentary translation -->
-              <% if (el["translation"] !== "") { %>
-                <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= el['id']; %>"></span>
-                <div class="collapse mb-3" id="collapse-commentary-translation-<%= el['id']; %>">
-                  <div class="card card-body">
-                    <div class="mb-2" data-type="commentary" data-subtype="translation">
-                      <h5 class="h6">Translation</h5>
-                      <%- el["translation"]; %>
-                    </div>
-                    <% if (el["translationNote"] !== "") { %>
-                      <div data-type="commentary" data-subtype="translationNote">
-                        <h5 class="h6">Notes on the translation</h5>
-                        <%- el["translationNote"]; %>
+                <!-- location -->
+                <span class="no-space-span fs-xxs me-1" data-type="location" data-subtype="location-top">
+                  <span data-type="commentary" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="citation" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                </span>
+                <!-- commentary full-text -->
+                <span data-type="no-span-space commentary" data-subtype="commentary">
+                  <span class="no-span-space fs-xxs" data-type="commentary" data-subtype="full-text"><%- el["value"]; %></span>
+                </span>
+                <!-- commentary note -->
+                <div>
+                  <% if (el["note"] !== "") { %>
+                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-note-<%= el['id']; %>"></span>
+                    <div class="collapse mb-3" id="collapse-commentary-note-<%= el['id']; %>">
+                      <div class="card card-body fs-xxs">
+                        <div data-type="commentary" data-subtype="note"><%- el["note"]; %></div>
                       </div>
-                    <% }; %>
-                  </div>
+                    </div>
+                  <% }; %>
+                  <!-- commentary translation -->
+                  <% if (el["translation"] !== "") { %>
+                    <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-commentary-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-commentary-translation-<%= el['id']; %>"></span>
+                    <div class="collapse mb-3" id="collapse-commentary-translation-<%= el['id']; %>">
+                      <div class="card card-body fs-xxs">
+                        <div class="mb-2" data-type="commentary" data-subtype="translation">
+                          <h5 class="h6">Translation</h5>
+                          <%- el["translation"]; %>
+                        </div>
+                        <% if (el["translationNote"] !== "") { %>
+                          <div data-type="commentary" data-subtype="translationNote">
+                            <h5 class="h6">Note on the translation</h5>
+                            <div class="fs-xxs"><%- el["translationNote"]; %></div>
+                          </div>
+                        <% }; %>
+                      </div>
+                    </div>
+                  <% }; %>
                 </div>
-              <% }; %>
+              </div>
             <% }); %>
           </div>
 

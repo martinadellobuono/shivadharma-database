@@ -10967,6 +10967,10 @@ p {
 }
 
 /* span */
+span[data-type=annotation-object]:hover {
+  cursor: pointer;
+}
+
 .no-span-space {
   display: inline-block;
   margin: 0;

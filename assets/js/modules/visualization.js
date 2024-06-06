@@ -116,7 +116,6 @@ export const printInlineApp = () => {
 
                 /* modify note body */
                 var collapsibleNoteBody = inlineParallels[i].querySelector(collapsibleNoteTitleVal);
-                
                 collapsibleNoteBody.setAttribute("id", collapsibleNoteTitleVal.split("#")[1] + "___" + i);
 
                 /* hide tooltips */
@@ -151,4 +150,54 @@ export const txtAppScroll = () => {
     };
 });
 }; */
+};
+
+/* highlight all the annotation objects when hovering only one */
+export const hoverAll = () => {
+    var annotations = document.querySelectorAll('span[data-type="annotation-object"]');
+    annotations.forEach((annotation) => {
+        /* type of annotation */
+        var category = annotation.getAttribute("data-subtype");
+        /* ID of the annotation */
+        var annotationValue = annotation.getAttribute("data-annotation");
+        /* annotations with the same ID */
+        var matchingAnnotations = document.querySelectorAll(`span[data-type="annotation-object"][data-subtype="${category}"][data-annotation="${annotationValue}"]`);
+
+        /* mouseover > add bg-color */
+        annotation.addEventListener("mouseover", (e) => {
+            e.stopPropagation();
+            matchingAnnotations.forEach((match) => {
+                match.classList.add(category + "-color");
+            });
+        });
+
+        /* mouseout > remove bg-color if not clicked */
+        annotation.addEventListener("mouseout", (e) => {
+            e.stopPropagation();
+            matchingAnnotations.forEach((match) => {
+                if (!match.classList.contains("clicked")) {
+                    match.classList.remove(category + "-color");
+                }
+            });
+        });
+
+        /* click > go to the entity and keep bg-color */
+        annotation.addEventListener("click", (e) => {
+            e.stopPropagation();
+            var annotationID = e.target.getAttribute("data-annotation").split("#")[1];
+            var entity = document.querySelector(".entries[data-ref='" + annotationID + "']");
+
+            /* remove previous clicked */
+            var prevClicked = document.querySelectorAll(".clicked");
+            prevClicked.forEach((el) => {
+                el.className = "";
+            });
+
+            /* highlight the entities in the textus and mark as clicked */
+            matchingAnnotations.forEach((match) => {
+                match.classList.add(category + "-color");
+                match.classList.add("clicked");
+            });
+        });
+    });
 };
