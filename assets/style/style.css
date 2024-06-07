@@ -10919,6 +10919,36 @@ p {
   background-color: #d1e7dd;
 }
 
+span[data-type=annotation-object][data-subtype=apparatus] {
+  -webkit-text-decoration: 2px #cfe2ff underline;
+          text-decoration: 2px #cfe2ff underline;
+}
+
+span[data-type=annotation-object][data-subtype=citation] {
+  -webkit-text-decoration: 2px #f7d6e6 underline;
+          text-decoration: 2px #f7d6e6 underline;
+}
+
+span[data-type=annotation-object][data-subtype=commentary] {
+  -webkit-text-decoration: 2px #e0cffc underline;
+          text-decoration: 2px #e0cffc underline;
+}
+
+span[data-type=annotation-object][data-subtype=note] {
+  -webkit-text-decoration: 2px #0dcaf0 underline;
+          text-decoration: 2px #0dcaf0 underline;
+}
+
+span[data-type=annotation-object][data-subtype=parallel] {
+  -webkit-text-decoration: 2px #ffe5d0 underline;
+          text-decoration: 2px #ffe5d0 underline;
+}
+
+span[data-type=annotation-object][data-subtype=translation] {
+  -webkit-text-decoration: 2px #d1e7dd underline;
+          text-decoration: 2px #d1e7dd underline;
+}
+
 /* tooltips */
 .tooltip-arrow {
   display: none !important;

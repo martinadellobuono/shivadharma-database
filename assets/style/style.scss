@@ -861,6 +861,30 @@ p {
     background-color: $green-100;
 }
 
+span[data-type="annotation-object"][data-subtype="apparatus"] {
+    text-decoration: 2px $blue-100 underline;
+}
+
+span[data-type="annotation-object"][data-subtype="citation"] {
+    text-decoration: 2px $pink-100 underline;
+}
+
+span[data-type="annotation-object"][data-subtype="commentary"] {
+    text-decoration: 2px $indigo-100 underline;
+}
+
+span[data-type="annotation-object"][data-subtype="note"] {
+    text-decoration: 2px $cyan-500 underline;
+}
+
+span[data-type="annotation-object"][data-subtype="parallel"] {
+    text-decoration: 2px $orange-100 underline;
+}
+
+span[data-type="annotation-object"][data-subtype="translation"] {
+    text-decoration: 2px $green-100 underline;
+}
+
 /* tooltips */
 .tooltip-arrow {
     display: none !important;
