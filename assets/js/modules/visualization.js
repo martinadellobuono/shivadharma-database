@@ -156,57 +156,76 @@ export const txtAppScroll = () => {
 export const hoverAll = () => {
     var annotations = document.querySelectorAll('span[data-type="annotation-object"]');
     annotations.forEach((annotation) => {
-        annotation.addEventListener("click", (e) => {
-            e.stopPropagation();
-            var category = e.target.getAttribute("data-subtype");
+        /* click / mouseover */
+        "click mouseover".split(" ").forEach((event) => {
+            annotation.addEventListener(event, (e) => {
+                e.stopPropagation();
+                var category = e.target.getAttribute("data-subtype");
 
-            /* remove all the prev clicked */
-            var prevClicked = document.querySelectorAll(".clicked");
-            prevClicked.forEach((el) => {
-                el.className = "";
-            });
-            
-            /* avoid highlighting textstructure but the parent annotation */
-            if (category == "textStructure") {
-                if (category == "textStructure") {
-                    var annotationParent = e.target.parentElement;
-
-                    /* continue to traverse up until you find a parent that does not have the attribute data-subtype with textStructure value */
-                    while (annotationParent && annotationParent.getAttribute('data-subtype') === "textStructure") {
-                        annotationParent = annotationParent.parentElement;
-                    };
-
-                    /* at this point, annotationParent is the first parent that does not have the attribute data-subtype with textStructure value */
-                    if (annotationParent) {
-                        /* highlight the parent */
-                        category = annotationParent.getAttribute("data-subtype");
-                        annotationParent.classList.add(category + "-color");
-                        annotationParent.classList.add("clicked");
-
-                        /* other annotations sharing the same data-annotation value */
-                        var annotationID = annotationParent.getAttribute("data-annotation");
-                        var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
-                        otherAnnotations.forEach((otherAnnotation) => {
-                            otherAnnotation.classList.add(category + "-color");
-                            otherAnnotation.classList.add("clicked");
-                        });
-                    } else {
-                        console.log("No parents.");
-                    };
-                };
-            } else {
-                /* highlight the e.target annotation */
-                e.target.classList.add(category + "-color");
-                e.target.classList.add("clicked");
-
-                /* other annotations sharing the same data-annotation value */
-                var annotationID = e.target.getAttribute("data-annotation");
-                var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
-                otherAnnotations.forEach((otherAnnotation) => {
-                    otherAnnotation.classList.add(category + "-color");
-                    otherAnnotation.classList.add("clicked");
+                /* remove all the prev clicked */
+                var prevClicked = document.querySelectorAll(".clicked");
+                prevClicked.forEach((el) => {
+                    el.className = "";
                 });
-            };
+
+                /* avoid highlighting textstructure but the parent annotation */
+                if (category == "textStructure") {
+                    if (category == "textStructure") {
+                        var annotationParent = e.target.parentElement;
+
+                        /* continue to traverse up until you find a parent that does not have the attribute data-subtype with textStructure value */
+                        while (annotationParent && annotationParent.getAttribute('data-subtype') === "textStructure") {
+                            annotationParent = annotationParent.parentElement;
+                        };
+
+                        /* at this point, annotationParent is the first parent that does not have the attribute data-subtype with textStructure value */
+                        if (annotationParent) {
+                            /* highlight the parent */
+                            category = annotationParent.getAttribute("data-subtype");
+                            annotationParent.classList.add(category + "-color");
+
+                            /* if clicked, add clicked class to add/remove color when clicking a new annotation */
+                            if (event == "click") {
+                                annotationParent.classList.add("clicked");
+                            };
+
+                            /* other annotations sharing the same data-annotation value */
+                            var annotationID = annotationParent.getAttribute("data-annotation");
+                            var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
+                            otherAnnotations.forEach((otherAnnotation) => {
+                                otherAnnotation.classList.add(category + "-color");
+
+                                /* if clicked, add clicked class to add/remove color when clicking a new annotation */
+                                if (event == "click") {
+                                    otherAnnotation.classList.add("clicked");
+                                };
+                            });
+                        } else {
+                            console.log("No parents.");
+                        };
+                    };
+                } else {
+                    /* highlight the e.target annotation */
+                    e.target.classList.add(category + "-color");
+
+                    /* if clicked, add clicked class to add/remove color when clicking a new annotation */
+                    if (event == "click") {
+                        e.target.classList.add("clicked");
+                    };
+
+                    /* other annotations sharing the same data-annotation value */
+                    var annotationID = e.target.getAttribute("data-annotation");
+                    var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
+                    otherAnnotations.forEach((otherAnnotation) => {
+                        otherAnnotation.classList.add(category + "-color");
+
+                        /* if clicked, add clicked class to add/remove color when clicking a new annotation */
+                        if (event == "click") {
+                            otherAnnotation.classList.add("clicked");
+                        };
+                    });
+                };
+            });
         });
     });
 
