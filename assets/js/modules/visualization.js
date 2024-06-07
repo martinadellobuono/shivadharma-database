@@ -189,11 +189,12 @@ export const hoverAll = () => {
 
                             /* if clicked, add clicked class to add/remove color when clicking a new annotation */
                             if (event == "click") {
-                                annotationParent.classList.add("clicked");                                
+                                annotationParent.classList.add("clicked");
+                                annotationParent.classList.add(category + "-color");                             
                             };
 
                             /* if mouseout */
-                            if (event == "mouseout") {
+                            if (event == "mouseout" && !annotationParent.classList.contains("clicked")) {
                                 annotationParent.classList.remove(category + "-color");
                             };
 
@@ -210,7 +211,7 @@ export const hoverAll = () => {
                                 };
 
                                 /* if mouseout */
-                                if (event == "mouseout") {
+                                if (event == "mouseout" && !otherAnnotation.classList.contains("clicked")) {
                                     otherAnnotation.classList.remove(category + "-color");
                                 };
                             });
@@ -229,7 +230,7 @@ export const hoverAll = () => {
                     };
 
                     /* if mouseout */
-                    if (event == "mouseout") {
+                    if (event == "mouseout" && !e.target.classList.contains("clicked")) {
                         e.target.classList.remove(category + "-color");
                     };
 
@@ -246,7 +247,7 @@ export const hoverAll = () => {
                         };
 
                         /* if mouseout */
-                        if (event == "mouseout") {
+                        if (event == "mouseout" && !otherAnnotation.classList.contains("clicked")) {
                             otherAnnotation.classList.remove(category + "-color");
                         };
                     });
