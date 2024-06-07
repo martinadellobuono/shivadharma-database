@@ -157,16 +157,18 @@ export const hoverAll = () => {
     var annotations = document.querySelectorAll('span[data-type="annotation-object"]');
     annotations.forEach((annotation) => {
         /* click / mouseover */
-        "click mouseover".split(" ").forEach((event) => {
+        "click mouseover mouseout".split(" ").forEach((event) => {
             annotation.addEventListener(event, (e) => {
                 e.stopPropagation();
                 var category = e.target.getAttribute("data-subtype");
 
                 /* remove all the prev clicked */
-                var prevClicked = document.querySelectorAll(".clicked");
-                prevClicked.forEach((el) => {
-                    el.className = "";
-                });
+                if (event == "click") {
+                    var prevClicked = document.querySelectorAll(".clicked");
+                    prevClicked.forEach((el) => {
+                        el.className = "";
+                    });
+                };
 
                 /* avoid highlighting textstructure but the parent annotation */
                 if (category == "textStructure") {
@@ -182,22 +184,34 @@ export const hoverAll = () => {
                         if (annotationParent) {
                             /* highlight the parent */
                             category = annotationParent.getAttribute("data-subtype");
+                            /* if click / mouseover */
                             annotationParent.classList.add(category + "-color");
 
                             /* if clicked, add clicked class to add/remove color when clicking a new annotation */
                             if (event == "click") {
-                                annotationParent.classList.add("clicked");
+                                annotationParent.classList.add("clicked");                                
+                            };
+
+                            /* if mouseout */
+                            if (event == "mouseout") {
+                                annotationParent.classList.remove(category + "-color");
                             };
 
                             /* other annotations sharing the same data-annotation value */
                             var annotationID = annotationParent.getAttribute("data-annotation");
                             var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
                             otherAnnotations.forEach((otherAnnotation) => {
+                                /* if click / mouseover */
                                 otherAnnotation.classList.add(category + "-color");
 
                                 /* if clicked, add clicked class to add/remove color when clicking a new annotation */
                                 if (event == "click") {
                                     otherAnnotation.classList.add("clicked");
+                                };
+
+                                /* if mouseout */
+                                if (event == "mouseout") {
+                                    otherAnnotation.classList.remove(category + "-color");
                                 };
                             });
                         } else {
@@ -206,6 +220,7 @@ export const hoverAll = () => {
                     };
                 } else {
                     /* highlight the e.target annotation */
+                    /* if click / mouseover */
                     e.target.classList.add(category + "-color");
 
                     /* if clicked, add clicked class to add/remove color when clicking a new annotation */
@@ -213,75 +228,30 @@ export const hoverAll = () => {
                         e.target.classList.add("clicked");
                     };
 
+                    /* if mouseout */
+                    if (event == "mouseout") {
+                        e.target.classList.remove(category + "-color");
+                    };
+
                     /* other annotations sharing the same data-annotation value */
                     var annotationID = e.target.getAttribute("data-annotation");
                     var otherAnnotations = document.querySelectorAll('span[data-type="annotation-object"][data-subtype="' + category + '"][data-annotation="' + annotationID + '"]');
                     otherAnnotations.forEach((otherAnnotation) => {
+                        /* if click / mouseover */
                         otherAnnotation.classList.add(category + "-color");
 
                         /* if clicked, add clicked class to add/remove color when clicking a new annotation */
                         if (event == "click") {
                             otherAnnotation.classList.add("clicked");
                         };
+
+                        /* if mouseout */
+                        if (event == "mouseout") {
+                            otherAnnotation.classList.remove(category + "-color");
+                        };
                     });
                 };
             });
         });
     });
-
-    /* var annotations = document.querySelectorAll('span[data-type="annotation-object"]');
-    annotations.forEach((annotation) => {
-        var category = annotation.getAttribute("data-subtype");
-        var annotationValue = annotation.getAttribute("data-annotation");
-        var matchingAnnotations = document.querySelectorAll(`span[data-type="annotation-object"][data-subtype="${category}"][data-annotation="${annotationValue}"]`);
-
-        annotation.addEventListener("mouseover", (e) => {
-            e.stopPropagation();
-            matchingAnnotations.forEach((match) => {
-                if (match.getAttribute("data-subtype") == "textStructure") {
-                    match = match.parentElement;
-                    category = match.getAttribute("data-subtype");
-                    match.classList.add(category + "-color");
-                } else {
-                    match.classList.add(category + "-color");
-                };
-            });
-        });
-
-        annotation.addEventListener("mouseout", (e) => {
-            e.stopPropagation();
-            matchingAnnotations.forEach((match) => {
-                if (!match.classList.contains("clicked")) {
-                    if (match.getAttribute("data-subtype") == "textStructure") {
-                        match = match.parentElement;
-                        category = match.getAttribute("data-subtype");
-                        match.classList.remove(category + "-color");
-                    } else {
-                        match.classList.remove(category + "-color");
-                    };
-                }
-            });
-        });
-
-        annotation.addEventListener("click", (e) => {
-            e.stopPropagation();
-            var annotationID = e.target.getAttribute("data-annotation").split("#")[1];
-            var entity = document.querySelector(".entries[data-ref='" + annotationID + "']");
-
-            var prevClicked = document.querySelectorAll(".clicked");
-            prevClicked.forEach((el) => {
-                el.className = "";
-            });
-
-            matchingAnnotations.forEach((match) => {
-                if (match.getAttribute("data-subtype") == "textStructure") {
-                    match.classList.add(category + "-color");
-                    match.classList.add("clicked");
-                } else {
-                    match.classList.add(category + "-color");
-                    match.classList.add("clicked");
-                };
-            });
-        });
-    }); */
 };
