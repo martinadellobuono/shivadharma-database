@@ -10,6 +10,12 @@ export const appTxtScroll = () => {
             var milestoneEntry = document.querySelector("span[data-type='milestone'][data-start='start'][data-subtype='" + category + "'][data-annotation='#" + idAppEntry + "']");
             var txtToColor = document.querySelectorAll("span[data-type='annotation-object'][data-subtype='" + category + "'][data-annotation='#" + idAppEntry + "']");
 
+            /* remove the prev clicked entities */
+            var prevClicked = document.querySelectorAll(".clicked");
+            for (var i = 0; i < prevClicked.length; i++) {
+                prevClicked[i].className = "";
+            };
+
             /* remove the underline text-decoration to the not corresponding app entry */
             var entries = document.querySelectorAll(".app-entry");
             for (var i = 0; i < entries.length; i++) {
@@ -19,6 +25,7 @@ export const appTxtScroll = () => {
             /* add the underline text-decoration to the corresponding app entry */
             for (var i = 0; i < txtToColor.length; i++) {
                 txtToColor[i].classList.add("app-entry");
+                txtToColor[i].classList.add("clicked");
                 txtToColor[i].classList.add(category + "-color");
             };
 
