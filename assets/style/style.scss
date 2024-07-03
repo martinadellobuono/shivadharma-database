@@ -836,7 +836,7 @@ p {
     }
 }
 
-/* entries colors */
+/* entries */
 .apparatus-color {
     background-color: $blue-100;
 }
@@ -883,6 +883,12 @@ span[data-type="annotation-object"][data-subtype="parallel"] {
 
 span[data-type="annotation-object"][data-subtype="translation"] {
     text-decoration: 2px $green-100 underline;
+}
+
+.entries-block {
+    height: -webkit-fill-available;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 /* tooltips */

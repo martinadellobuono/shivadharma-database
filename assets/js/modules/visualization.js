@@ -38,53 +38,24 @@ export const appTxtScroll = () => {
 /* print inline apparatus */
 export const printInlineApp = () => {
     var stanzas = document.querySelectorAll("span[data-type='printTxtStr'][data-text-structure='Stanza']");
-    var stanzasArray = Array.from(stanzas);
 
-    stanzasArray.forEach((stanza) => {
-        var txtStructure = stanza.getAttribute("data-text-structure");
-        var txtStructureN = stanza.getAttribute("data-n");
+    for (var i = 0; i < stanzas.length; i++) {
 
-        /* INLINE APPARATUS */
-        var appStanzas = document.querySelectorAll("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
-        if (appStanzas.length > 0) {
-            /* collapse app btn */
-            var btnAppCollapse = document.createElement("a");
-            btnAppCollapse.textContent = "app.";
-            btnAppCollapse.setAttribute("class", "caret-xs blue-600 fs-xxs p-1");
-            btnAppCollapse.setAttribute("data-bs-toggle", "collapse");
-            btnAppCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
-            btnAppCollapse.setAttribute("aria-expanded", "false");
-            stanza.append(btnAppCollapse);
+        var txtStructure = stanzas[i].getAttribute("data-text-structure");
+        var txtStructureN = stanzas[i].getAttribute("data-n");
 
-            /* collapsible app div */
-            var collapseApp = document.createElement("div");
-            collapseApp.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-blue inlineAppDiv");
-            collapseApp.setAttribute("id", txtStructure + "-" + txtStructureN);
-            collapseApp.setAttribute("data-type", "inlineApp");
-            collapseApp.setAttribute("data-n", txtStructureN);
-
-            /* append the app card to the stanza */
-            stanza.append(collapseApp);
-
-            /* print data in the card */
-            var inlineApp = document.querySelector("div[data-type='inlineApp'][data-n='" + txtStructureN + "']");
-            for (var i = 0; i < appStanzas.length; i++) {
-                var appEntry = appStanzas[i].parentElement.innerHTML;
-                inlineApp.innerHTML += "<div>" + appEntry + "</div>";
-            };
-        };
-
-        /* INLINE PARALLELS */
+        /* PARALLELS */
         var parStanzas = document.querySelectorAll(".par-stanza[data-n='" + txtStructureN + "']");
         if (parStanzas.length > 0) {
-            /* collapse parallel btn */
+            console.log(parStanzas);
+
             var btnParCollapse = document.createElement("a");
             btnParCollapse.textContent = "par.";
             btnParCollapse.setAttribute("class", "caret-xs orange-400 fs-xxs p-1");
             btnParCollapse.setAttribute("data-bs-toggle", "collapse");
             btnParCollapse.setAttribute("data-bs-target", "#par-" + txtStructure + "-" + txtStructureN);
             btnParCollapse.setAttribute("aria-expanded", "false");
-            stanza.append(btnParCollapse);
+            stanzas[i].append(btnParCollapse);
 
             /* collapsible parallel div */
             var collapsePar = document.createElement("div");
@@ -94,50 +65,24 @@ export const printInlineApp = () => {
             collapsePar.setAttribute("data-n", txtStructureN);
 
             /* append the app card to the stanza */
-            stanza.append(collapsePar);
+            stanzas[i].append(collapsePar);
 
             /* print data in the card */
-            var inlinePar = document.querySelector("div[data-type='inlinePar'][data-n='" + txtStructureN + "']");
+            /* var inlinePar = document.querySelector("div[data-type='inlinePar'][data-n='" + txtStructureN + "']");
             parStanzas.forEach((parStanza) => {
                 var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
                 inlinePar.innerHTML += "<div class='ff-edition-app'>" + parallel + "</div>";
-            });
+            }); */
 
-            /* modify printed parallels */
-            var inlineParallels = document.querySelectorAll(".ff-edition-app");
-            for (var i = 0; i < inlineParallels.length; i++) {
-                /* modify data-bs-target */
-                var collapsibleTitle = inlineParallels[i].querySelector(".caret");
-                var collapsibleTitleVal = collapsibleTitle.getAttribute("data-bs-target");
-                collapsibleTitle.setAttribute("data-bs-target", collapsibleTitleVal + "___" + i);
-
-                /* modify collapsible div */
-                var collapsibleDiv = inlineParallels[i].querySelector(".inlineAppDiv");
-                var collapsibleDivVal = collapsibleDiv.getAttribute("id");
-                collapsibleDiv.setAttribute("id", collapsibleDivVal + "___" + i);
-
-                /* modify note title */
-                var collapsibleNoteTitle = inlineParallels[i].querySelector(".btn-note");
-                var collapsibleNoteTitleVal = collapsibleNoteTitle.getAttribute("data-bs-target");
-                collapsibleNoteTitle.setAttribute("data-bs-target", collapsibleNoteTitleVal + "___" + i);
-
-                /* modify note body */
-                var collapsibleNoteBody = inlineParallels[i].querySelector(collapsibleNoteTitleVal);
-                collapsibleNoteBody.setAttribute("id", collapsibleNoteTitleVal.split("#")[1] + "___" + i);
-
-                /* hide tooltips */
-                var tooltipLink = inlineParallels[i].querySelector(".tooltip-link");
-                tooltipLink.classList.add("d-none");
-            };
         };
-    });
+    };
 };
 
 /* scroll to the apparatus lemma in the apparatus starting from the textus */
 export const txtAppScroll = () => {
-    /* var appEntries = document.querySelectorAll("span[data-type='annotation-object']");
+    /* var appEntries = document.querySelectorAll("span[data-type='annotation-object']"); */
 
-    for (var i = 0; i < appEntries.length; i++) {
+    /* for (var i = 0; i < appEntries.length; i++) {
         appEntries[i].addEventListener("click", (e) => {
             var idTxtEntry = e.target.getAttribute("data-annotation").split("#")[1];
             var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
@@ -197,7 +142,11 @@ export const hoverAll = () => {
                             /* if clicked, add clicked class to add/remove color when clicking a new annotation */
                             if (event == "click") {
                                 annotationParent.classList.add("clicked");
-                                annotationParent.classList.add(category + "-color");                             
+                                annotationParent.classList.add(category + "-color");
+
+                                /* go to the entry */
+                                var entryBtn = document.querySelector("[data-bs-target='#pills" + category + "']");
+                                console.log(entryBtn);
                             };
 
                             /* if mouseout */

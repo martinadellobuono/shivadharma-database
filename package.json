@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@tarekraafat/autocomplete.js": "^10.2.7",
+    "async-lock": "^1.4.1",
     "bcrypt": "^5.1.0",
     "body-parser": "*",
     "bootstrap": "^5.1.3",

@@ -2,7 +2,7 @@
 <html>
 <%- include ("partials/head") %>
 
-<body class="bg-light">
+<body class="bg-light overflow-hidden">
   <%- include ("partials/navbar") %>
   <!-- header -->
   <div class="container-fluid bg-light p-2">
@@ -149,13 +149,13 @@
 
           <% if (parallels.length > 0) { %>
             <li class="nav-item" role="presentation">
-              <button class="btn btn-sm btn-orange me-1" data-bs-toggle="pill" data-bs-target="#pills-parallels" type="button" role="tab" aria-controls="pills-parallels" aria-selected="false">Parallels</button>
+              <button class="btn btn-sm btn-orange me-1" data-bs-toggle="pill" data-bs-target="#pills-parallel" type="button" role="tab" aria-controls="pills-parallels" aria-selected="false">Parallels</button>
             </li>
           <% }; %>
 
           <% if (citations.length > 0) { %>
             <li class="nav-item" role="presentation">
-              <button class="btn btn-sm btn-fuchsia me-1" data-bs-toggle="pill" data-bs-target="#pills-citations" type="button" role="tab" aria-controls="pills-citations" aria-selected="false">Citations</button>
+              <button class="btn btn-sm btn-fuchsia me-1" data-bs-toggle="pill" data-bs-target="#pills-citation" type="button" role="tab" aria-controls="pills-citations" aria-selected="false">Citations</button>
             </li>
           <% }; %>
 
@@ -165,10 +165,11 @@
             </li>
           <% }; %>
         </ul>
+
         <div class="tab-content" id="pills-tabContent">
 
           <!-- translation -->
-          <div class="tab-pane fade show active" id="pills-translation" role="tabpanel">
+          <div class="tab-pane entries-block fade show active" id="pills-translation" role="tabpanel">
             <% if (translation) { %>
               <!-- languages -->
               <% if (langTranslation) { %>
@@ -247,7 +248,7 @@
           </div>
 
           <!-- parallels -->
-          <div class="tab-pane fade" id="pills-parallels" role="tabpanel">
+          <div class="tab-pane entries-block fade" id="pills-parallel" role="tabpanel">
             <% parallels.forEach((parallel) => { %>
               <div class="mb-3" data-type="parallel" data-subtype="parallel">
                 <% for (const [key, value] of Object.entries(parallel)) { %>
@@ -257,11 +258,11 @@
                   <!-- title with tooltip -->
                   <%= key.split("___")[0]; %>
                   <!-- collapse the parallel full-text -->
-                  <span class="caret" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= key; %>" aria-expanded="false" aria-controls="collapse-parallel-<%= key; %>"></span>
+                  <span class="caret" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= key; %>" aria-expanded="true" aria-controls="collapse-parallel-<%= key; %>"></span>
                 </span>
 
                 <!-- full-text -->
-                <div class="collapse inlineAppDiv" id="collapse-parallel-<%= key; %>">
+                <div class="collapse show inlineAppDiv" id="collapse-parallel-<%= key; %>">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
                       <div class="fs-xxs mt-2" data-type="parallel" data-subtype="parallel">
@@ -295,7 +296,7 @@
           </div>
 
           <!-- citations -->
-          <div class="tab-pane fade" id="pills-citations" role="tabpanel">
+          <div class="tab-pane entries-block fade" id="pills-citation" role="tabpanel">
             <% citations.forEach((el) => { %>
               <div class="mt-3" data-type="citation" data-subtype="citation">
                 <span><i class="bi bi-caret-right-fill entries fuchsia-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-fuchsia-400" data-bs-title="Check in the <i>textus</i>" data-type="citation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
@@ -321,7 +322,7 @@
           </div>
 
           <!-- commentary -->
-          <div class="tab-pane fade" id="pills-commentary" role="tabpanel">
+          <div class="tab-pane entries-block fade" id="pills-commentary" role="tabpanel">
             <% commentary.forEach((el) => { %>
               <div>
                 <!-- link -->

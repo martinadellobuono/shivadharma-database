@@ -10894,7 +10894,7 @@ p {
     float: none;
   }
 }
-/* entries colors */
+/* entries */
 .apparatus-color {
   background-color: #cfe2ff;
 }
@@ -10947,6 +10947,12 @@ span[data-type=annotation-object][data-subtype=parallel] {
 span[data-type=annotation-object][data-subtype=translation] {
   -webkit-text-decoration: 2px #d1e7dd underline;
           text-decoration: 2px #d1e7dd underline;
+}
+
+.entries-block {
+  height: -webkit-fill-available;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 /* tooltips */
