@@ -1,3 +1,6 @@
+/* ui modules */
+import { tooltips } from "../modules/ui.js";
+
 /* edition visualisation */
 /* apparatus/textus scroll */
 /* scroll to the apparatus lemma in the textus */
@@ -38,17 +41,15 @@ export const appTxtScroll = () => {
 /* print inline apparatus */
 export const printInlineApp = () => {
     var stanzas = document.querySelectorAll("span[data-type='printTxtStr'][data-text-structure='Stanza']");
-
     for (var i = 0; i < stanzas.length; i++) {
-
         var txtStructure = stanzas[i].getAttribute("data-text-structure");
         var txtStructureN = stanzas[i].getAttribute("data-n");
 
         /* PARALLELS */
         var parStanzas = document.querySelectorAll(".par-stanza[data-n='" + txtStructureN + "']");
         if (parStanzas.length > 0) {
-            console.log(parStanzas);
 
+            /* collapsible btn */
             var btnParCollapse = document.createElement("a");
             btnParCollapse.textContent = "par.";
             btnParCollapse.setAttribute("class", "caret-xs orange-400 fs-xxs p-1");
@@ -67,41 +68,59 @@ export const printInlineApp = () => {
             /* append the app card to the stanza */
             stanzas[i].append(collapsePar);
 
-            /* print data in the card */
-            /* var inlinePar = document.querySelector("div[data-type='inlinePar'][data-n='" + txtStructureN + "']");
-            parStanzas.forEach((parStanza) => {
-                var parallel = parStanza.closest("div[data-type='parallel'][data-subtype='parallel']").innerHTML;
-                inlinePar.innerHTML += "<div class='ff-edition-app'>" + parallel + "</div>";
-            }); */
+            /* print parallel */
+            var parallels = document.querySelectorAll(".parallel-txt");
+            for (var k = 0; k < parallels.length; k++) {
+                var txt = parallels[k];
+                var stanza = txt.getAttribute("data-n");
+                var title = txt.getAttribute("data-title");
+                var parallelID = txt.getAttribute("data-ref");
 
+                if (txtStructureN == stanza) {
+                    collapsePar.innerHTML += '<span data-ref="#pills-parallel"><i class="bi bi-caret-right-fill entries orange-400 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in <i>Parallels</i>" data-bs-placement="top" data-type="parallel" data-ref="' + parallelID + '" data-bs-original-title="" title=""></i>' + '<span class="fw-bold">' + title + '</span></span>' + txt.innerHTML;
+                };
+            };
+
+            /* activate tooltips */
+            tooltips();
         };
     };
+
+    /* scroll from the stanza to the app */
+    txtAppScroll();
 };
 
 /* scroll to the apparatus lemma in the apparatus starting from the textus */
 export const txtAppScroll = () => {
-    /* var appEntries = document.querySelectorAll("span[data-type='annotation-object']"); */
+    var txtToAppBtn = document.querySelectorAll(".txtApp-scroll");
+    for (var i = 0; i < txtToAppBtn.length; i++) {
+        var btn = txtToAppBtn[i];
 
-    /* for (var i = 0; i < appEntries.length; i++) {
-        appEntries[i].addEventListener("click", (e) => {
-            var idTxtEntry = e.target.getAttribute("data-annotation").split("#")[1];
-            var appEntries = document.querySelectorAll(".entries[data-ref='" + idTxtEntry + "']");
-            var oldAppEntries = document.querySelectorAll(".entries:not([data-ref='" + idTxtEntry + "'])"); */
+        /* click on button to pass from txt to app */
+        btn.addEventListener("click", (e) => {
+            var txtID = e.target.getAttribute("data-ref");
+            var category = e.target.parentElement.getAttribute("data-ref");
+            var pill = document.querySelector("button[data-bs-target='" + category + "']");
 
-    /* remove the underline text-decoration the not corresponding app entry */
-    /* for (var i = 0; i < oldAppEntries.length; i++) {
-        var txtEntry = oldAppEntries[i];
-        txtEntry.classList.remove("app-entry");
-    }; */
+            /* open the tab */
+            pill.click();
 
-    /* add the underline text-decoration the corresponding app entry and scroll */
-    /* for (var i = 0; i < appEntries.length; i++) {
-        var txtEntry = appEntries[i];
-        txtEntry.classList.add("app-entry");
-        txtEntry.scrollIntoView();
+            /* scroll to the full txt in app */
+            var txt = document.querySelector("div[data-ref='" + txtID + "']");
+            txt.scrollIntoView();
+
+            /* remove prev clicked elements */
+            var prevEl = document.querySelectorAll(".remove-bg");
+            for (var k = 0; k < prevEl.length; k++) {
+                prevEl[k].classList.remove("bg-orange");
+                prevEl[k].classList.remove("remove-bg");
+            };
+
+            /* change bg color to the full txt in app */
+            txt.classList.add("bg-orange");
+            txt.classList.add("remove-bg");
+        });
     };
-});
-}; */
 };
 
 /* highlight all the annotation objects when hovering only one */

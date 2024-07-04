@@ -365,9 +365,11 @@ export const annotations = () => {
                                     var editor = tinymce.get("fileBaseTxt");
                                     if (editor) {
                                         var content = editor.getContent();
+                                        
                                         /* create a fake element to extract the html */
                                         var tempElement = document.createElement("div");
                                         tempElement.innerHTML = content;
+                                        
                                         /* text structure milestone */
                                         var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"][data-annotation="' + "#" + idAnnotation + '"]');
 

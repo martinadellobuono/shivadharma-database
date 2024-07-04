@@ -262,10 +262,10 @@
                 </span>
 
                 <!-- full-text -->
-                <div class="collapse show inlineAppDiv" id="collapse-parallel-<%= key; %>">
+                <div class="collapse show inlineAppDiv parallel-layout" id="collapse-parallel-<%= key; %>">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
-                      <div class="fs-xxs mt-2" data-type="parallel" data-subtype="parallel">
+                      <div class="fs-xxs mt-2 parallel-txt" data-type="parallel" data-subtype="parallel" data-n='<%= el["stanzaStart"] %>' data-title='<%= key.split("___")[0]; %>' data-ref='txt-<%= el["idAnnotation"]; %>'>
                         <!-- full-text -->
                         <span data-type="parallel" data-subtype="full-text">
                           <%- el["value"]; %>

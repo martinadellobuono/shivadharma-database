@@ -10720,6 +10720,12 @@ p {
   overflow-y: scroll;
 }
 
+.parallel-layout {
+  height: 10vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 /* tabs */
 .scroll-tab {
   height: 60vh;

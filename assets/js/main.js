@@ -5,7 +5,7 @@ import { autocomplete, dependingForms, cloneEl, truncation, lemmaVariantPresence
 /* forms */
 import { preventEnter } from "./modules/validation.js";
 /* edition visualisation modules */
-import { appTxtScroll, printInlineApp, txtAppScroll, hoverAll } from "./modules/visualization.js";
+import { appTxtScroll, printInlineApp, hoverAll } from "./modules/visualization.js";
 /* text annotation modules */
 import { annotations, previewAnnotations, modifyAnnotations, hideAnnotations, closeBtn} from "./modules/text-annotation.js";
 /* edition editing modules */
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* edition */
     if (path.includes("/edition/")) {
         appTxtScroll();
-        txtAppScroll();
         printInlineApp();
         hoverAll();
         downloadTei();
