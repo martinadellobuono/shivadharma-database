@@ -38,12 +38,50 @@ export const appTxtScroll = () => {
     };
 };
 
-/* print inline apparatus */
+/* print inline apparatus and parallels */
 export const printInlineApp = () => {
     var stanzas = document.querySelectorAll("span[data-type='printTxtStr'][data-text-structure='Stanza']");
     for (var i = 0; i < stanzas.length; i++) {
         var txtStructure = stanzas[i].getAttribute("data-text-structure");
         var txtStructureN = stanzas[i].getAttribute("data-n");
+
+        /* APPARATUS */
+        var appStanzas = document.querySelectorAll("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
+        if (appStanzas.length > 0) {
+            /* collapse app btn */
+            var btnAppCollapse = document.createElement("a");
+            btnAppCollapse.textContent = "app.";
+            btnAppCollapse.setAttribute("class", "caret-xs blue-600 fs-xxs p-1");
+            btnAppCollapse.setAttribute("data-bs-toggle", "collapse");
+            btnAppCollapse.setAttribute("data-bs-target", "#" + txtStructure + "-" + txtStructureN);
+            btnAppCollapse.setAttribute("aria-expanded", "false");
+            
+            /* append the app. btn to the stanza */
+            stanzas[i].append(btnAppCollapse);
+
+            /* collapsible app div */
+            var collapseApp = document.createElement("div");
+            collapseApp.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-blue inlineAppDiv");
+            collapseApp.setAttribute("id", txtStructure + "-" + txtStructureN);
+            collapseApp.setAttribute("data-type", "inlineApp");
+            collapseApp.setAttribute("data-n", txtStructureN);
+
+            /* append the app card to the stanza */
+            stanzas[i].append(collapseApp);
+
+            /* print data in the card */
+            var appEntries = document.querySelectorAll(".app-txt");
+
+            for (var k = 0; k < appEntries.length; k++) {
+                var txt = appEntries[k];
+                var stanza = txt.getAttribute("data-n");
+                var appID = txt.getAttribute("data-ref");
+                
+                if (txtStructureN == stanza) {
+                    collapseApp.innerHTML += '<div>' + '<span data-ref="#pills-apparatus">' + '<i class="bi bi-caret-right-fill entries blue-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-blue-600" data-bs-title="Check in <i>Apparatus</i>" data-bs-placement="top" data-type="apparatus" data-ref="' + appID + '" data-bs-original-title="" title=""></i>' + txt.innerHTML + '</span>'+ '</div>';
+                };
+            };
+        };
 
         /* PARALLELS */
         var parStanzas = document.querySelectorAll(".par-stanza[data-n='" + txtStructureN + "']");
@@ -56,6 +94,8 @@ export const printInlineApp = () => {
             btnParCollapse.setAttribute("data-bs-toggle", "collapse");
             btnParCollapse.setAttribute("data-bs-target", "#par-" + txtStructure + "-" + txtStructureN);
             btnParCollapse.setAttribute("aria-expanded", "false");
+            
+            /* append the par. btn to the stanza */
             stanzas[i].append(btnParCollapse);
 
             /* collapsible parallel div */
@@ -100,7 +140,7 @@ export const txtAppScroll = () => {
         btn.addEventListener("click", (e) => {
             var txtID = e.target.getAttribute("data-ref");
             var category = e.target.parentElement.getAttribute("data-ref");
-            var pill = document.querySelector("button[data-bs-target='" + category + "']");
+            var pill = document.querySelector("button[data-pill='" + category + "']");
 
             /* open the tab */
             pill.click();
@@ -112,12 +152,12 @@ export const txtAppScroll = () => {
             /* remove prev clicked elements */
             var prevEl = document.querySelectorAll(".remove-bg");
             for (var k = 0; k < prevEl.length; k++) {
-                prevEl[k].classList.remove("bg-orange");
+                prevEl[k].classList.remove("parallel-color");
                 prevEl[k].classList.remove("remove-bg");
             };
 
             /* change bg color to the full txt in app */
-            txt.classList.add("bg-orange");
+            txt.classList.add("parallel-color");
             txt.classList.add("remove-bg");
         });
     };
