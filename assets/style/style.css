@@ -10448,7 +10448,7 @@ body {
 
 /* btn captions */
 .btn-commentary::after {
-  content: "● Comment";
+  content: "● Commentary";
   color: #c29ffa;
   font-size: 12px;
   vertical-align: top;
@@ -10463,6 +10463,13 @@ body {
 
 .btn-translation::after {
   content: "● Translation";
+  color: #ffc107;
+  font-size: 12px;
+  vertical-align: top;
+}
+
+.btn-tamil-translation::after {
+  content: "● Note on the translation";
   color: #ffc107;
   font-size: 12px;
   vertical-align: top;
@@ -10956,6 +10963,11 @@ span[data-type=annotation-object][data-subtype=translation] {
           text-decoration: 2px #d1e7dd underline;
 }
 
+span[data-type=annotation-object][data-subtype=tamil] {
+  -webkit-text-decoration: 2px #ffda6a underline;
+          text-decoration: 2px #ffda6a underline;
+}
+
 .entries-block {
   height: -webkit-fill-available;
   overflow-x: hidden;
@@ -11004,6 +11016,13 @@ span[data-type=annotation-object][data-subtype=translation] {
 
 .tooltip-orange-400 .tooltip-inner {
   background-color: #fd9843;
+  color: #FFF;
+  border-radius: 0.25rem;
+  padding: 0.1rem;
+}
+
+.tooltip-yellow-600 .tooltip-inner {
+  background-color: #cc9a06;
   color: #FFF;
   border-radius: 0.25rem;
   padding: 0.1rem;

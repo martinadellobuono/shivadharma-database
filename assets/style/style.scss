@@ -303,7 +303,7 @@ body {
 
 /* btn captions */
 .btn-commentary::after {
-    content: "\25CF  Comment";
+    content: "\25CF  Commentary";
     color: $indigo-200;
     font-size: 12px;
     vertical-align: top;
@@ -318,6 +318,13 @@ body {
 
 .btn-translation::after {
     content: "\25CF  Translation";
+    color: $yellow;
+    font-size: 12px;
+    vertical-align: top;
+}
+
+.btn-tamil-translation::after {
+    content: "\25CF  Note on the translation";
     color: $yellow;
     font-size: 12px;
     vertical-align: top;
@@ -892,6 +899,10 @@ span[data-type="annotation-object"][data-subtype="translation"] {
     text-decoration: 2px $green-100 underline;
 }
 
+span[data-type="annotation-object"][data-subtype="tamil"] {
+    text-decoration: 2px $yellow-300 underline;
+}
+
 .entries-block {
     height: -webkit-fill-available;
     overflow-x: hidden;
@@ -940,6 +951,13 @@ span[data-type="annotation-object"][data-subtype="translation"] {
 
 .tooltip-orange-400 .tooltip-inner {
     background-color: $orange-400;
+    color: #FFF;
+    border-radius: 0.25rem;
+    padding: 0.1rem;
+}
+
+.tooltip-yellow-600 .tooltip-inner {
+    background-color: $yellow-600;
     color: #FFF;
     border-radius: 0.25rem;
     padding: 0.1rem;

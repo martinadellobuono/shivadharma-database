@@ -55,6 +55,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
     var parallels_temp = [];
     var citations_temp = [];
     var notes_temp = [];
+    var tamil_temp = [];
     var witnesses_temp = [];
 
     /* APPARATUS */
@@ -82,10 +83,11 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_TAMIL_TRANSLATION]->(tamilTranslation:tamilTranslation)
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, allEditors.name, contributor.name, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.langTranslation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditors.name
+                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, allEditors.name, contributor.name, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.langTranslation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, ID(tamilTranslation), tamilTranslation.idAnnotation, tamilTranslation.value, tamilTranslation.note, tamilTranslation.translationNote, tamilTranslation.intro, tamilTranslation.commentary, tamilTranslation.commentaryTranslation, witness, lemmaWitness, lemmaVariantWitness, secondaryEditors.name
                 `
             )
             .subscribe({
@@ -277,6 +279,32 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         };
                     };
 
+                    /* tamil */
+                    if (record.get("tamilTranslation.value") !== null) {
+                        /* notes entry */
+                        var tamil_entry = JSON.stringify({
+                            id: record.get("ID(tamilTranslation)")["low"],
+                            idAnnotation: record.get("tamilTranslation.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("tamilTranslation.value"),
+                            note: record.get("tamilTranslation.note"),
+                            translationNote: record.get("tamilTranslation.translationNote"), 
+                            intro: record.get("tamilTranslation.intro"),
+                            commentary: record.get("tamilTranslation.commentary"),
+                            commentaryTranslation: record.get("tamilTranslation.commentaryTranslation")
+                        });
+
+                        /* array of citation entries */
+                        if (!tamil_temp.includes(tamil_entry)) {
+                            tamil_temp.push(tamil_entry);
+                        };
+                    };
+
                     /* witnesses */
                     if (!witnesses_temp.includes(record.get("witness"))) {
                         if (record.get("witness") !== null) {
@@ -422,6 +450,21 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
                     notes.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
+
+                    /* TAMIL */
+                    /* parse each tamil text in the array / string > JSON */
+                    var tamil = [];
+                    tamil_temp.forEach((el) => {
+                        tamil.push(JSON.parse(el));
+                    });
+
+                    /* order notes */
+                    tamil.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    tamil.sort((a, b) => {
                         return a.padaStart - b.padaStart;
                     });
 
@@ -631,6 +674,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             parallels: parallels,
                             citations: citations,
                             notes: notes,
+                            tamil: tamil,
                             witnesses: witnesses,
                             apparatus: apparatus
                         });
@@ -656,6 +700,7 @@ router.get(process.env.URL_PATH + "/edition/:id", async (req, res) => {
                             parallels: parallels,
                             citations: citations,
                             notes: notes,
+                            tamil: tamil,
                             witnesses: witnesses,
                             apparatus: apparatus
                         });
