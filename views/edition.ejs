@@ -265,7 +265,7 @@
                 <div class="collapse show inlineAppDiv parallel-layout" id="collapse-parallel-<%= key; %>">
                     <!-- full-text -->
                     <% value.forEach((el) => { %>
-                      <div class="fs-xxs mt-2 parallel-txt" data-type="parallel" data-subtype="parallel" data-n='<%= el["stanzaStart"] %>' data-title='<%= key.split("___")[0]; %>' data-ref='txt-<%= el["idAnnotation"]; %>'>
+                      <div class="fs-xxs mt-2 parallel-txt" data-type="parallel" data-subtype="parallel" data-n='<%= el["stanzaStart"] %>' data-title='<%= key.split("___")[0]; %>' data-ref='txt-<%= el["idAnnotation"]; %>' data-book='<%= el["book"]; %>' data-book-chapter='<%= el["bookChapter"]; %>' data-book-stanza='<%= el["bookStanza"]; %>'>
                         <!-- full-text -->
                         <span data-type="parallel" data-subtype="full-text">
                           <%- el["value"]; %>
@@ -390,7 +390,7 @@
                       <i class="bi bi-caret-right-fill entries blue-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-blue-600" data-bs-title="Check in the <i>textus</i>" data-type="apparatus" data-ref='<%= el["lemma"]["idApp"]; %>'></i>
 
                       <!-- actual app entry -->
-                      <span class="app-txt" data-type="apparatus" data-subtype="apparatus" data-n='<%= el["lemma"]["stanzaStart"]; %>' data-ref='<%= el["lemma"]["idApp"]; %>'>
+                      <div class="d-inline app-txt" data-type="apparatus" data-subtype="apparatus" data-n='<%= el["lemma"]["stanzaStart"]; %>' data-ref='<%= el["lemma"]["idApp"]; %>'>
                         <!-- location -->
                         <span data-type="apparatus" data-subtype="stanzaStart" data-n='<%= el["lemma"]["stanzaStart"]; %>'><%= el["lemma"]["stanzaStart"]; %></span><span data-type="apparatus" data-subtype="padaStart"><%= el["lemma"]["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span><% if (el["lemma"]["stanzaEnd"] !== el["lemma"]["stanzaStart"]) { %><span data-type="apparatus" data-subtype="stanzaEnd"><%= el["lemma"]["stanzaEnd"]; %></span><% };%><% if (el["lemma"]["stanzaEnd"] + el["lemma"]["padaEnd"] !== el["lemma"]["stanzaStart"] + el["lemma"]["padaStart"]) { %><span data-type="apparatus" data-subtype="padaEnd"><%= el["lemma"]["padaEnd"]; %></span><% };%>
 
@@ -436,7 +436,7 @@
                             <span class="note" data-type="apparatus" data-subtype="variantNotes"><%- variant["variant"]["notes"]; %></span>
                           <% }; %>
                         <% }); %>
-                      </span>
+                      </div>
                       
                     <% }); %>
                   </div>

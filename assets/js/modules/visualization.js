@@ -115,9 +115,12 @@ export const printInlineApp = () => {
                 var stanza = txt.getAttribute("data-n");
                 var title = txt.getAttribute("data-title");
                 var parallelID = txt.getAttribute("data-ref");
+                var book = txt.getAttribute("data-book");
+                var bookChapter = txt.getAttribute("data-book-chapter");
+                var bookStanza = txt.getAttribute("data-book-stanza");
 
                 if (txtStructureN == stanza) {
-                    collapsePar.innerHTML += '<span data-ref="#pills-parallel"><i class="bi bi-caret-right-fill entries orange-400 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in <i>Parallels</i>" data-bs-placement="top" data-type="parallel" data-ref="' + parallelID + '" data-bs-original-title="" title=""></i>' + '<span class="fw-bold">' + title + '</span></span>' + txt.innerHTML;
+                    collapsePar.innerHTML += '<span data-ref="#pills-parallel"><i class="bi bi-caret-right-fill entries orange-400 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in <i>Parallels</i>" data-bs-placement="top" data-type="parallel" data-ref="' + parallelID + '" data-bs-original-title="" title=""></i>' + '<span>' + title + " " + book + "." + bookChapter + "." + bookStanza + '</span></span>' + txt.innerHTML;
                 };
             };
 
@@ -141,6 +144,7 @@ export const txtAppScroll = () => {
             var txtID = e.target.getAttribute("data-ref");
             var category = e.target.parentElement.getAttribute("data-ref");
             var pill = document.querySelector("button[data-pill='" + category + "']");
+            var color = category.split("#pills-")[1];
 
             /* open the tab */
             pill.click();
@@ -152,12 +156,12 @@ export const txtAppScroll = () => {
             /* remove prev clicked elements */
             var prevEl = document.querySelectorAll(".remove-bg");
             for (var k = 0; k < prevEl.length; k++) {
-                prevEl[k].classList.remove("parallel-color");
+                prevEl[k].classList.remove(color + "-color");
                 prevEl[k].classList.remove("remove-bg");
             };
 
             /* change bg color to the full txt in app */
-            txt.classList.add("parallel-color");
+            txt.classList.add(color + "-color");
             txt.classList.add("remove-bg");
         });
     };
