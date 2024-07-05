@@ -10387,7 +10387,7 @@ body {
 
 .btn-yellow {
   background-color: #ffcd39;
-  color: #212529;
+  color: #f8f9fa;
 }
 
 /* btn hover */
@@ -10443,6 +10443,7 @@ body {
 
 .btn-yellow:hover {
   background-color: #ffda6a;
+  color: #f8f9fa;
 }
 
 /* btn captions */
@@ -10565,11 +10566,11 @@ p {
 }
 
 .specific-cols.col-md-2 {
-  width: 38% !important;
+  width: 35% !important;
 }
 
 .specific-cols.col-md-4 {
-  width: 38% !important;
+  width: 35% !important;
 }
 
 .specific-cols.col-md-1 h3, .specific-cols.col-md-1 .h3 {

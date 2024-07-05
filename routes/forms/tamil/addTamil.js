@@ -3,14 +3,12 @@ const bodyParser = require("body-parser");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver(process.env.NEO4J_URL, neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PW));
 const router = express.Router();
-
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
-
 const { body, validationResult } = require("express-validator");
 const { render } = require("ejs");
 
-router.post(process.env.URL_PATH + "/addCommentary/:id", async (req, res) => {
+router.post(process.env.URL_PATH + "/addTamil/:id", async (req, res) => {
     var idEdition = req.params.id.split("/").pop().split("-")[0];
     var idEditor = req.params.id.split("/").pop().split("-")[1];
     const session = driver.session();
@@ -26,17 +24,21 @@ router.post(process.env.URL_PATH + "/addCommentary/:id", async (req, res) => {
                 ON MATCH
                     SET selectedFragment.value = "${req.body.selectedFragment}", selectedFragment.chapter = "${req.body.chapter}", selectedFragment.stanzaStart = "${req.body.stanzaStart}", selectedFragment.padaStart = "${req.body.padaStart}", selectedFragment.stanzaEnd = "${req.body.stanzaEnd}", selectedFragment.padaEnd = "${req.body.padaEnd}"
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
-                MERGE (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary {idAnnotation: "${req.body.idAnnotation}"})
+                MERGE (selectedFragment)-[:HAS_TAMIL_TRANSLATION]->(tamilTranslation:tamilTranslation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET commentary.value = '${req.body.commentary}', commentary.translation = '${req.body.commentaryTranslation}', commentary.note = '${req.body.commentaryNote}', commentary.translationNote = '${req.body.commentaryTranslationNote}'
+                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}'
                 ON MATCH
-                    SET commentary.value = '${req.body.commentary}', commentary.translation = '${req.body.commentaryTranslation}', commentary.note = '${req.body.commentaryNote}', commentary.translationNote = '${req.body.commentaryTranslationNote}'
+                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}'
+                
+                MERGE (tamilTranslation)-[:HAS_INTRO]->(tamilIntro:tamilIntro {value: "${req.body.tamilIntro}"})
+                MERGE (tamilTranslation)-[:IS_COMMENTED_IN]->(tamilCommentary:tamilCommentary {value: "${req.body.tamilCommentary}"})
+                MERGE (tamilCommentary)-[:HAS_TRANSLATION]->(tamilCommentaryTranslation:tamilCommentaryTranslation {value: "${req.body.tamilCommentaryTranslation}"})
                 RETURN *
                 `
             )
             .subscribe({
                 onCompleted: () => {
-                    console.log("Commentary added to the graph");
+                    console.log("Tamil added to the graph");
                 },
                 onError: err => {
                     console.log(err)

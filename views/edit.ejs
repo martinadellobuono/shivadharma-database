@@ -220,8 +220,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-role="safe-deletion-btn" disabled>Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" data-role="safe-deletion-btn" disabled>Yes</button>
               </div>
             </div>
           </div>
@@ -235,6 +235,36 @@
         </div>
         <div class="annotation-form citation d-none">
           <%- include ("partials/forms-req/citation") %>
+        </div>
+      </div>
+
+      <!-- tamil -->
+      <div class="col-md-1 border p-3 enlarge-col specific-cols">
+      <!-- cancel annotation -->
+        <button type="button" class="btn-close-annotation btn-close float-end d-none" aria-label="Close" data-bs-toggle="modal" data-bs-target="#cancel-tamil" data-type="cancel-annotation"></button>
+        <div class="modal fade" id="cancel-tamil" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-tamil" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Are you sure to close the box?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" data-role="safe-deletion-btn" disabled>Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- tamil buttons -->
+        <h3 class="h6">Tamil</h3>
+        <div class="btn-group-vertical btn-vertical btn-set-annotation">
+          <button type="button" class="btn btn-sm btn-preview btn-yellow" data-value="tamil" title="Preview Tamil"><i class="bi bi-clipboard-check-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-hide btn-yellow" data-value="tamil" title="Hide Tamil"><i class="bi bi-eye-fill icon-show d-none"></i><i class="bi bi-eye-slash-fill icon-hide"></i></button>
+          <button type="button" class="btn btn-sm btn-yellow btn-annotation mb-2" data-value="tamil" title="Insert/check Tamil"><i class="bi bi-pencil-fill"></i></button>
+        </div>
+        <div class="annotation-form tamil d-none">
+          <%- include ("partials/forms-req/tamil") %>
         </div>
       </div>
     </div>
