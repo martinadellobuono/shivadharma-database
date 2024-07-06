@@ -382,7 +382,7 @@
             <% tamil.forEach((el) => { %>
               <div>
                 <!-- link -->
-                <span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in the <i>textus</i>" data-type="commentary" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                <span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in the <i>textus</i>" data-type="tamil" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                 <!-- location -->
                 <span class="no-space-span fs-xxs me-1" data-type="location" data-subtype="location-top">
                   <span class="no-span-space" data-type="tamil" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="tamil" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="tamil" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
@@ -433,8 +433,6 @@
                     </div>
                   <% }; %>
                 </div>
-
-
               </div>
             <% }); %>
           </div>

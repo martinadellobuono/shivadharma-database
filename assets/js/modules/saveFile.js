@@ -42,14 +42,15 @@ export const fileTextarea = () => {
             "[data-type='milestone'][data-start='start'][data-subtype='note']::before {content: '\u25CF'; color: #087990;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='textStructure']::before {content: '\u25CF'; color: #6C757D;}" +
             "[data-type='milestone'][data-start='start'][data-subtype='tamil']::before {content: '\u25CF'; color: #FFCD39;}" +
-            "[data-type='annotation-object'][data-subtype='apparatus'] {text-decoration: underline 3px solid #9EC4FC; text-underline-offset: 2px;}" +
-            "[data-type='annotation-object'][data-subtype='commentary'] {text-decoration: underline 3px solid #8540F5; text-underline-offset: 4px;}" +
-            "[data-type='annotation-object'][data-subtype='parallel'] {text-decoration: underline 3px solid #FD9843; text-underline-offset: 6px;}" +
-            "[data-type='annotation-object'][data-subtype='translation'] {text-decoration: underline 3px solid #79DFC1; text-underline-offset: 8px;}" +
-            "[data-type='annotation-object'][data-subtype='citation'] {text-decoration: underline 3px solid #DE5C9D; text-underline-offset: 10px;}" +
-            "[data-type='annotation-object'][data-subtype='note'] {text-decoration: underline 3px solid #087990; text-underline-offset: 12px;}" +
-            "[data-type='annotation-object'][data-subtype='textStructure'] {text-decoration: underline 3px solid #6C757D; text-underline-offset: 14px;}" +
-            "[data-type='annotation-object'][data-subtype='tamil'] {text-decoration: underline 3px solid #FFCD39; text-underline-offset: 16px;}",
+            "[data-type='annotation-object'] { border-bottom: 2px solid; display: inline-block; padding-bottom: 2px;}" +
+            "[data-type='annotation-object'][data-subtype='apparatus'] {border-bottom-color: #9EC4FC;}" +
+            "[data-type='annotation-object'][data-subtype='commentary'] {border-bottom-color: underline 3px solid #8540F5;}" +
+            "[data-type='annotation-object'][data-subtype='parallel'] {border-bottom-color: #FD9843;}" +
+            "[data-type='annotation-object'][data-subtype='translation'] {border-bottom-color: #79DFC1;}" +
+            "[data-type='annotation-object'][data-subtype='citation'] {border-bottom-color: #DE5C9D;}" +
+            "[data-type='annotation-object'][data-subtype='note'] {border-bottom-color: #087990;}" +
+            "[data-type='annotation-object'][data-subtype='textStructure'] {border-bottom-color: #6C757D;}" +
+            "[data-type='annotation-object'][data-subtype='tamil'] {border-bottom-color: #FFCD39;}",
         verify_html: false,
 
         /* OPERATIONS ON THE TEXTUS */
