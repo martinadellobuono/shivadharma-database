@@ -45,8 +45,6 @@ export const printInlineApp = () => {
         var txtStructure = stanzas[i].getAttribute("data-text-structure");
         var txtStructureN = stanzas[i].getAttribute("data-n");
 
-        console.log(txtStructureN);
-
         /* APPARATUS */
         var appStanzas = document.querySelectorAll("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
         if (appStanzas.length > 0) {
@@ -159,7 +157,7 @@ export const printInlineApp = () => {
                 var tamilID = txt.getAttribute("data-ref");
 
                 if (txtStructureN == stanza) {
-                    collapsePar.innerHTML += '<span data-ref="#pills-tamil"><span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in <i>Tamil</i>" data-bs-placement="top" data-type="tamil" data-ref="' + tamilID + '" data-bs-original-title="" title=""></i></span>' + txt.innerHTML;
+                    collapsePar.innerHTML += '<span data-ref="#pills-tamil"><i class="bi bi-caret-right-fill entries yellow-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in <i>Tamil</i>" data-bs-placement="top" data-type="tamil" data-ref="' + tamilID + '" data-bs-original-title="" title=""></i>' + txt.innerHTML;
                 };
             };
 
@@ -183,6 +181,9 @@ export const txtAppScroll = () => {
         btn.addEventListener("click", (e) => {
             var txtID = e.target.getAttribute("data-ref");
             var category = e.target.parentElement.getAttribute("data-ref");
+
+            console.log(e.target.parentElement);
+
             var pill = document.querySelector("button[data-pill='" + category + "']");
             var color = category.split("#pills-")[1];
 
