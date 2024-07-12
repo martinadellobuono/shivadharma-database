@@ -185,6 +185,10 @@ body {
     background-color: #FFD280;
 }
 
+.bg-light-yellow {
+    background-color: $yellow-100;
+}
+
 .bg-teal {
     background-color: $teal-200;
 }
@@ -405,6 +409,10 @@ body {
 /* display */
 .inline-children>span {
     display: inline;
+}
+
+.inline-grid {
+    display: inline-grid;
 }
 
 /* layout */
@@ -880,37 +888,52 @@ p {
 }
 
 /* multiple underline */
-span[data-type="annotation-object"] {
+span[data-type="annotation-object"][data-subtype="apparatus"] {
     border-bottom: 2px solid;
     display: inline-block;
     padding-bottom: 2px;
-}
-
-span[data-type="annotation-object"][data-subtype="apparatus"] {
     border-bottom-color: $blue-100;
 }
 
 span[data-type="annotation-object"][data-subtype="citation"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $pink-100;
 }
 
 span[data-type="annotation-object"][data-subtype="commentary"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $indigo-100;
 }
 
 span[data-type="annotation-object"][data-subtype="note"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $cyan-500;
 }
 
 span[data-type="annotation-object"][data-subtype="parallel"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $orange-100;
 }
 
 span[data-type="annotation-object"][data-subtype="translation"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $green-100;
 }
 
 span[data-type="annotation-object"][data-subtype="tamil"] {
+    border-bottom: 2px solid;
+    display: inline-block;
+    padding-bottom: 2px;
     border-bottom-color: $yellow-300;
 }
 

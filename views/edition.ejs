@@ -384,54 +384,59 @@
                 <!-- link -->
                 <span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in the <i>textus</i>" data-type="tamil" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                 <!-- location -->
-                <span class="no-space-span fs-xxs me-1" data-type="location" data-subtype="location-top">
-                  <span class="no-span-space" data-type="tamil" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="tamil" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span><span data-type="tamil" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
+                <span class="no-span-space fs-xxs me-1" data-type="location" data-subtype="location-top">
+                  <span class="no-span-space" data-type="tamil" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span class="tamil-stanza" data-type="tamil" data-subtype="stanzaStart" data-n='<%= el["stanzaStart"]; %>'><%= el["stanzaStart"]; %></span><span data-type="tamil" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                 </span>
                 <!-- tamil intro -->
-                <% if (el["intro"] !== "") { %>
-                  <span class="no-span-space fs-xxs" data-type="tamil" data-subtype="intro"><%- el["intro"]; %></span>
-                  <br/>
-                <% }; %>
-                <!-- tamil full-text -->
-                <span class="no-span-space fs-xxs" data-type="tamil" data-subtype="full-text"><%- el["value"]; %></span>
-                <div>
-                  <!-- note -->
-                  <% if (el["note"] !== "") { %>
-                    <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-note-<%= el['id']; %>"></span>
-                    <div class="collapse mb-3" id="collapse-tamil-note-<%= el['id']; %>">
-                      <div class="card card-body fs-xxs">
-                        <div data-type="tamil" data-subtype="note"><%- el["note"]; %></div>
-                      </div>
+                <div class="inline-grid tamil-txt" data-type="tamil" data-subtype="tamil" data-n='<%= el["stanzaStart"] %>' data-ref='txt-<%= el["idAnnotation"]; %>'>
+                  <% if (el["intro"] !== "") { %>
+                    <div class="no-span-space">
+                      <span class="no-span-space fs-xxs" data-type="tamil" data-subtype="intro"><%- el["intro"]; %></span>
                     </div>
                   <% }; %>
-                  <!-- note on the translation -->
-                  <% if (el["translationNote"] !== "") { %>
-                    <span class="btn-tamil-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-translationNote-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-translationNote-<%= el['id']; %>"></span>
-                    <div class="collapse mb-3" id="collapse-tamil-translationNote-<%= el['id']; %>">
-                      <div class="card card-body fs-xxs">
-                        <div class="mb-2" data-type="tamil" data-subtype="translationNote">
-                          <%- el["translationNote"]; %>
+                  <!-- tamil full-text -->
+                  <div>
+                    <span class="no-span-space fs-xxs" data-type="tamil" data-subtype="full-text"><%- el["value"]; %></span>
+                  </div>
+                  <div>
+                    <!-- note -->
+                    <% if (el["note"] !== "") { %>
+                      <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-note-<%= el['id']; %>"></span>
+                      <div class="collapse mb-3" id="collapse-tamil-note-<%= el['id']; %>">
+                        <div class="card card-body fs-xxs">
+                          <div data-type="tamil" data-subtype="note"><%- el["note"]; %></div>
                         </div>
                       </div>
-                    </div>
-                  <% }; %>
-                  <!-- commentary -->
-                  <% if (el["commentary"] !== "") { %>
-                    <span class="btn-commentary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-commentary-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-commentary-<%= el['id']; %>"></span>
-                    <div class="collapse mb-3" id="collapse-tamil-commentary-<%= el['id']; %>">
-                      <div class="card card-body fs-xxs">
-                        <div class="mb-2" data-type="tamil" data-subtype="commentary">
-                          <%- el["commentary"]; %>
-                        </div>
-                        <% if (el["commentaryTranslation"] !== "") { %>
-                          <div data-type="tamil" data-subtype="commentaryTranslation">
-                            <h5 class="h6">Commentary translation</h5>
-                            <div class="fs-xxs"><%- el["commentaryTranslation"]; %></div>
+                    <% }; %>
+                    <!-- note on the translation -->
+                    <% if (el["translationNote"] !== "") { %>
+                      <span class="btn-tamil-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-translationNote-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-translationNote-<%= el['id']; %>"></span>
+                      <div class="collapse mb-3" id="collapse-tamil-translationNote-<%= el['id']; %>">
+                        <div class="card card-body fs-xxs">
+                          <div class="mb-2" data-type="tamil" data-subtype="translationNote">
+                            <%- el["translationNote"]; %>
                           </div>
-                        <% }; %>
+                        </div>
                       </div>
-                    </div>
-                  <% }; %>
+                    <% }; %>
+                    <!-- commentary -->
+                    <% if (el["commentary"] !== "") { %>
+                      <span class="btn-commentary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-commentary-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-commentary-<%= el['id']; %>"></span>
+                      <div class="collapse mb-3" id="collapse-tamil-commentary-<%= el['id']; %>">
+                        <div class="card card-body fs-xxs">
+                          <div class="mb-2" data-type="tamil" data-subtype="commentary">
+                            <%- el["commentary"]; %>
+                          </div>
+                          <% if (el["commentaryTranslation"] !== "") { %>
+                            <div data-type="tamil" data-subtype="commentaryTranslation">
+                              <h5 class="h6">Commentary translation</h5>
+                              <div class="fs-xxs"><%- el["commentaryTranslation"]; %></div>
+                            </div>
+                          <% }; %>
+                        </div>
+                      </div>
+                    <% }; %>
+                  </div>
                 </div>
               </div>
             <% }); %>

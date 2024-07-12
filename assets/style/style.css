@@ -10331,6 +10331,10 @@ body {
   background-color: #FFD280;
 }
 
+.bg-light-yellow {
+  background-color: #fff3cd;
+}
+
 .bg-teal {
   background-color: #a6e9d5;
 }
@@ -10550,6 +10554,10 @@ body {
 /* display */
 .inline-children > span {
   display: inline;
+}
+
+.inline-grid {
+  display: inline-grid;
 }
 
 /* layout */
@@ -10938,37 +10946,52 @@ p {
 }
 
 /* multiple underline */
-span[data-type=annotation-object] {
+span[data-type=annotation-object][data-subtype=apparatus] {
   border-bottom: 2px solid;
   display: inline-block;
   padding-bottom: 2px;
-}
-
-span[data-type=annotation-object][data-subtype=apparatus] {
   border-bottom-color: #cfe2ff;
 }
 
 span[data-type=annotation-object][data-subtype=citation] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #f7d6e6;
 }
 
 span[data-type=annotation-object][data-subtype=commentary] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #e0cffc;
 }
 
 span[data-type=annotation-object][data-subtype=note] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #0dcaf0;
 }
 
 span[data-type=annotation-object][data-subtype=parallel] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #ffe5d0;
 }
 
 span[data-type=annotation-object][data-subtype=translation] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #d1e7dd;
 }
 
 span[data-type=annotation-object][data-subtype=tamil] {
+  border-bottom: 2px solid;
+  display: inline-block;
+  padding-bottom: 2px;
   border-bottom-color: #ffda6a;
 }
 

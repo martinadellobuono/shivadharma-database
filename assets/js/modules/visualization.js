@@ -45,6 +45,8 @@ export const printInlineApp = () => {
         var txtStructure = stanzas[i].getAttribute("data-text-structure");
         var txtStructureN = stanzas[i].getAttribute("data-n");
 
+        console.log(txtStructureN);
+
         /* APPARATUS */
         var appStanzas = document.querySelectorAll("span[data-type='apparatus'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
         if (appStanzas.length > 0) {
@@ -86,7 +88,6 @@ export const printInlineApp = () => {
         /* PARALLELS */
         var parStanzas = document.querySelectorAll(".par-stanza[data-n='" + txtStructureN + "']");
         if (parStanzas.length > 0) {
-
             /* collapsible btn */
             var btnParCollapse = document.createElement("a");
             btnParCollapse.textContent = "par.";
@@ -123,11 +124,50 @@ export const printInlineApp = () => {
                     collapsePar.innerHTML += '<span data-ref="#pills-parallel"><i class="bi bi-caret-right-fill entries orange-400 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in <i>Parallels</i>" data-bs-placement="top" data-type="parallel" data-ref="' + parallelID + '" data-bs-original-title="" title=""></i>' + '<span>' + title + " " + book + "." + bookChapter + "." + bookStanza + '</span></span>' + txt.innerHTML;
                 };
             };
+        };
 
-            /* activate tooltips */
-            tooltips();
+        /* TAMIL */
+        var tamStanzas = document.querySelectorAll("span[data-type='tamil'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
+        if (tamStanzas.length > 0) {
+            /* collapsible btn */
+            var btnParCollapse = document.createElement("a");
+            btnParCollapse.textContent = "tam.";
+            btnParCollapse.setAttribute("class", "caret-xs yellow-600 fs-xxs p-1");
+            btnParCollapse.setAttribute("data-bs-toggle", "collapse");
+            btnParCollapse.setAttribute("data-bs-target", "#tam-" + txtStructure + "-" + txtStructureN);
+            btnParCollapse.setAttribute("aria-expanded", "false");
+            
+            /* append the tam. btn to the stanza */
+            stanzas[i].append(btnParCollapse);
+
+            /* collapsible parallel div */
+            var collapsePar = document.createElement("div");
+            collapsePar.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-yellow inlineAppDiv");
+            collapsePar.setAttribute("id", "tam-" + txtStructure + "-" + txtStructureN);
+            collapsePar.setAttribute("data-type", "inlineTam");
+            collapsePar.setAttribute("data-n", txtStructureN);
+
+            /* append the app card to the stanza */
+            stanzas[i].append(collapsePar);
+
+            /* print tamil */
+            var tamil = document.querySelectorAll(".tamil-txt");
+            for (var k = 0; k < tamil.length; k++) {
+                var txt = tamil[k];
+                var stanza = txt.getAttribute("data-n");
+                var title = txt.getAttribute("data-title");
+                var tamilID = txt.getAttribute("data-ref");
+
+                if (txtStructureN == stanza) {
+                    collapsePar.innerHTML += '<span data-ref="#pills-tamil"><span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in <i>Tamil</i>" data-bs-placement="top" data-type="tamil" data-ref="' + tamilID + '" data-bs-original-title="" title=""></i></span>' + txt.innerHTML;
+                };
+            };
+
         };
     };
+
+    /* activate tooltips */
+    tooltips();
 
     /* scroll from the stanza to the app */
     txtAppScroll();
