@@ -12,6 +12,7 @@ $ff-title: "Lily Script One", cursive;
 $ff-edition: "Book Antiqua";
 $fs-xs: 15px;
 $fs-xxs: 15px;
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 /* html */
 html {
@@ -86,6 +87,10 @@ body {
 
 .fw-l {
     font-weight: 600;
+}
+
+.ff-default {
+    font-family: $font-family-sans-serif;
 }
 
 /* colors */

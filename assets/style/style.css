@@ -10230,6 +10230,10 @@ body {
   font-weight: 600;
 }
 
+.ff-default {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
 /* colors */
 .blue-600 {
   color: #0a58ca;

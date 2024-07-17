@@ -284,21 +284,25 @@
                         <span class="me-2" data-type="location" data-subtype="location-bottom">
                           <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
                         </span>
+                        <!-- notes -->
+                        <div class="ff-default">
+                          <% if (el["note"] !== "") { %>
+                            <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
+                            <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
+                              <div class="card card-body fs-xxs">
+                                <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
+                              </div>
+                            </div>
+                          <% }; %>
+                        </div>
                       </div>
+                      <!-- source txt -->
                       <div class="fs-xxs orange-400 tooltip-link mt-2">
                       <% if (typeof title !== "undefined") { %>
                         <span><i class="bi bi-caret-right-fill entries orange-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in the <i>textus</i>" data-type="parallel" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                         <span><%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n='<%= el["stanzaStart"] %>'><%= el["stanzaStart"] %></span>
                       <% }; %>
                       </div>
-                      <% if (el["note"] !== "") { %>
-                        <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
-                        <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
-                          <div class="card card-body fs-xxs">
-                            <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
-                          </div>
-                        </div>
-                      <% }; %>
                     <% }); %>
                 </div>
                 <% }; %>
@@ -384,7 +388,7 @@
                 <!-- link -->
                 <span class="no-span-space"><i class="bi bi-caret-right-fill entries yellow-600" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in the <i>textus</i>" data-type="tamil" data-ref='<%= el["idAnnotation"]; %>'></i></span>
                 <!-- location -->
-                <span class="no-span-space fs-xxs me-1" data-type="location" data-subtype="location-top">
+                <span class="no-span-space fs-xxs me-1 yellow-600" data-type="location" data-subtype="location-top">
                   <span class="no-span-space" data-type="tamil" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span class="tamil-stanza" data-type="tamil" data-subtype="stanzaStart" data-n='<%= el["stanzaStart"]; %>'><%= el["stanzaStart"]; %></span><span data-type="tamil" data-subtype="padaStart"><%= el["padaStart"].replace(/,|a\,b\,c\,d\,e\,f|a\,b\,c\,d/g, ""); %></span>
                 </span>
                 <!-- tamil intro -->
@@ -398,10 +402,10 @@
                   <div>
                     <span class="no-span-space fs-xxs" data-type="tamil" data-subtype="full-text"><%- el["value"]; %></span>
                   </div>
-                  <div>
-                    <!-- note -->
+                  <!-- note -->
+                  <div class="ff-default">
                     <% if (el["note"] !== "") { %>
-                      <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-note-<%= el['id']; %>"></span>
+                      <span class="btn-notes btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-note-<%= el['id']; %>"></span>
                       <div class="collapse mb-3" id="collapse-tamil-note-<%= el['id']; %>">
                         <div class="card card-body fs-xxs">
                           <div data-type="tamil" data-subtype="note"><%- el["note"]; %></div>
@@ -410,7 +414,7 @@
                     <% }; %>
                     <!-- note on the translation -->
                     <% if (el["translationNote"] !== "") { %>
-                      <span class="btn-tamil-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-translationNote-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-translationNote-<%= el['id']; %>"></span>
+                      <span class="btn-notes btn-tamil-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-translationNote-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-translationNote-<%= el['id']; %>"></span>
                       <div class="collapse mb-3" id="collapse-tamil-translationNote-<%= el['id']; %>">
                         <div class="card card-body fs-xxs">
                           <div class="mb-2" data-type="tamil" data-subtype="translationNote">
@@ -421,7 +425,7 @@
                     <% }; %>
                     <!-- commentary -->
                     <% if (el["commentary"] !== "") { %>
-                      <span class="btn-commentary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-commentary-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-commentary-<%= el['id']; %>"></span>
+                      <span class="btn-notes btn-commentary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-tamil-commentary-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-tamil-commentary-<%= el['id']; %>"></span>
                       <div class="collapse mb-3" id="collapse-tamil-commentary-<%= el['id']; %>">
                         <div class="card card-body fs-xxs">
                           <div class="mb-2" data-type="tamil" data-subtype="commentary">

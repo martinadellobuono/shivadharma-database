@@ -128,25 +128,25 @@ export const printInlineApp = () => {
         var tamStanzas = document.querySelectorAll("span[data-type='tamil'][data-subtype='stanzaStart'][data-n='" + txtStructureN + "']");
         if (tamStanzas.length > 0) {
             /* collapsible btn */
-            var btnParCollapse = document.createElement("a");
-            btnParCollapse.textContent = "tam.";
-            btnParCollapse.setAttribute("class", "caret-xs yellow-600 fs-xxs p-1");
-            btnParCollapse.setAttribute("data-bs-toggle", "collapse");
-            btnParCollapse.setAttribute("data-bs-target", "#tam-" + txtStructure + "-" + txtStructureN);
-            btnParCollapse.setAttribute("aria-expanded", "false");
+            var btnTamCollapse = document.createElement("a");
+            btnTamCollapse.textContent = "tam.";
+            btnTamCollapse.setAttribute("class", "caret-xs yellow-600 fs-xxs p-1");
+            btnTamCollapse.setAttribute("data-bs-toggle", "collapse");
+            btnTamCollapse.setAttribute("data-bs-target", "#tam-" + txtStructure + "-" + txtStructureN);
+            btnTamCollapse.setAttribute("aria-expanded", "false");
             
             /* append the tam. btn to the stanza */
-            stanzas[i].append(btnParCollapse);
+            stanzas[i].append(btnTamCollapse);
 
             /* collapsible parallel div */
-            var collapsePar = document.createElement("div");
-            collapsePar.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-yellow inlineAppDiv");
-            collapsePar.setAttribute("id", "tam-" + txtStructure + "-" + txtStructureN);
-            collapsePar.setAttribute("data-type", "inlineTam");
-            collapsePar.setAttribute("data-n", txtStructureN);
+            var collapseTam = document.createElement("div");
+            collapseTam.setAttribute("class", "collapse fs-xs p-3 border rounded bg-light-yellow inlineAppDiv");
+            collapseTam.setAttribute("id", "tam-" + txtStructure + "-" + txtStructureN);
+            collapseTam.setAttribute("data-type", "inlineTam");
+            collapseTam.setAttribute("data-n", txtStructureN);
 
             /* append the app card to the stanza */
-            stanzas[i].append(collapsePar);
+            stanzas[i].append(collapseTam);
 
             /* print tamil */
             var tamil = document.querySelectorAll(".tamil-txt");
@@ -157,7 +157,26 @@ export const printInlineApp = () => {
                 var tamilID = txt.getAttribute("data-ref");
 
                 if (txtStructureN == stanza) {
-                    collapsePar.innerHTML += '<span data-ref="#pills-tamil"><i class="bi bi-caret-right-fill entries yellow-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in <i>Tamil</i>" data-bs-placement="top" data-type="tamil" data-ref="' + tamilID + '" data-bs-original-title="" title=""></i>' + txt.innerHTML;
+                    /* print the tamil content */
+                    collapseTam.innerHTML += '<span data-ref="#pills-tamil"><i class="bi bi-caret-right-fill entries yellow-600 txtApp-scroll" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-yellow-600" data-bs-title="Check in <i>Tamil</i>" data-bs-placement="top" data-type="tamil" data-ref="' + tamilID + '" data-bs-original-title="" title=""></i>' + txt.innerHTML;
+
+                    /* change btn-notes #id to avoid opening notes in app */
+                    var btnNotes = collapseTam.querySelectorAll(".btn-notes");
+                    for (var j = 0; j < btnNotes.length; j++) {
+                        var prevTarget = btnNotes[j].getAttribute("data-bs-target");
+                        var newTarget = prevTarget + "-" + j;
+                        btnNotes[j].setAttribute("data-bs-target", newTarget);
+                        btnNotes[j].nextElementSibling.setAttribute("id", newTarget.split("#")[1]);
+                    };
+
+                    /* var btnNotes = inlineTam.querySelector(".btn-notes");
+                    var newTarget;
+                    for (var j = 0; j < btnNotes.length; j++) {
+                        var prevTarget = btnNotes[i].getAttribute("data-bs-target");
+                        newTarget = prevTarget + "___" + j;
+                        btnNotes[i].setAttribute("data-bs-target", newTarget);
+                        btnNotes[i].nextElementSibling.setAttribute("id", newTarget.split("#")[1]);
+                    }; */
                 };
             };
 
@@ -181,9 +200,6 @@ export const txtAppScroll = () => {
         btn.addEventListener("click", (e) => {
             var txtID = e.target.getAttribute("data-ref");
             var category = e.target.parentElement.getAttribute("data-ref");
-
-            console.log(e.target.parentElement);
-
             var pill = document.querySelector("button[data-pill='" + category + "']");
             var color = category.split("#pills-")[1];
 
