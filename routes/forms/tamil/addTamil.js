@@ -26,9 +26,9 @@ router.post(process.env.URL_PATH + "/addTamil/:id", async (req, res) => {
                 MERGE (edition)-[:HAS_FRAGMENT]->(selectedFragment)
                 MERGE (selectedFragment)-[:HAS_TAMIL_TRANSLATION]->(tamilTranslation:tamilTranslation {idAnnotation: "${req.body.idAnnotation}"})
                 ON CREATE
-                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}', tamilTranslation.intro = "${req.body.tamilIntro}", tamilTranslation.commentary = "${req.body.tamilCommentary}", tamilTranslation.commentaryTranslation = "${req.body.tamilCommentaryTranslation}"
+                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translation = '${req.body.tamilTranslation}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}', tamilTranslation.intro = "${req.body.tamilIntro}", tamilTranslation.commentary = "${req.body.tamilCommentary}", tamilTranslation.commentaryTranslation = "${req.body.tamilCommentaryTranslation}"
                 ON MATCH
-                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}', tamilTranslation.intro = "${req.body.tamilIntro}", tamilTranslation.commentary = "${req.body.tamilCommentary}", tamilTranslation.commentaryTranslation = "${req.body.tamilCommentaryTranslation}"                
+                    SET tamilTranslation.value = '${req.body.tamilText}', tamilTranslation.note = '${req.body.tamilTextNote}', tamilTranslation.translation = '${req.body.tamilTranslation}', tamilTranslation.translationNote = '${req.body.tamilTranslationNote}', tamilTranslation.intro = "${req.body.tamilIntro}", tamilTranslation.commentary = "${req.body.tamilCommentary}", tamilTranslation.commentaryTranslation = "${req.body.tamilCommentaryTranslation}"                
                 RETURN *
                 `
             )

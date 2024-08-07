@@ -332,13 +332,6 @@ body {
     vertical-align: top;
 }
 
-.btn-tamil-translation::after {
-    content: "\25CF  Note on the translation";
-    color: $yellow;
-    font-size: 12px;
-    vertical-align: top;
-}
-
 /* list */
 .btn-list {
     float: right;
@@ -414,10 +407,6 @@ body {
 /* display */
 .inline-children>span {
     display: inline;
-}
-
-.inline-grid {
-    display: inline-grid;
 }
 
 /* layout */

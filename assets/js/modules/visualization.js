@@ -168,15 +168,6 @@ export const printInlineApp = () => {
                         btnNotes[j].setAttribute("data-bs-target", newTarget);
                         btnNotes[j].nextElementSibling.setAttribute("id", newTarget.split("#")[1]);
                     };
-
-                    /* var btnNotes = inlineTam.querySelector(".btn-notes");
-                    var newTarget;
-                    for (var j = 0; j < btnNotes.length; j++) {
-                        var prevTarget = btnNotes[i].getAttribute("data-bs-target");
-                        newTarget = prevTarget + "___" + j;
-                        btnNotes[i].setAttribute("data-bs-target", newTarget);
-                        btnNotes[i].nextElementSibling.setAttribute("id", newTarget.split("#")[1]);
-                    }; */
                 };
             };
 
@@ -208,6 +199,8 @@ export const txtAppScroll = () => {
 
             /* scroll to the full txt in app */
             var txt = document.querySelector("div[data-ref='" + txtID + "']");
+
+            
             txt.scrollIntoView();
 
             /* remove prev clicked elements */
