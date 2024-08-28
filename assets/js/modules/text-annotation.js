@@ -174,39 +174,45 @@ export const annotations = () => {
                         startAnnotation.innerHTML = startContent;
                         startSibling.replaceWith(startAnnotation);
 
-                        //////////////////////////////////////////
-                        //////////////////////////////////////////
-                        //////////////////////////////////////////
-                        /* QUI */
-                        /* automatically select stanzas */
-                        /* const findAncestorByType = (element, dataType, dataSubtype) => {
-                            while (element && element.nodeType === 1) {
-                                if (
-                                    element.getAttribute("data-type") === dataType &&
-                                    element.getAttribute("data-subtype") === dataSubtype
-                                ) {
-                                    return element;
-                                };
-                                element = element.parentNode;
-                            }
-                            return null;
-                        }; */
-
                         /* selected element and its ancestor = stanza */
-                        /* var selectedEl = txtSel.getNode();
-                        var ancestor = findAncestorByType(selectedEl, "annotation-object", "textStructure"); */
-
-                        /* if (ancestor) {
-                            console.log("Ancestor: ", ancestor);
-                        } else {
-                            console.log("No ancestor");
-                        }; */
-                        /* / QUI */
-                        //////////////////////////////////////////
-                        //////////////////////////////////////////
-                        //////////////////////////////////////////
-
-
+                        function findPreviousMilestone(element) {
+                            let previousElement = element.previousElementSibling;
+                        
+                            while (previousElement) {
+                                if (previousElement.getAttribute("data-type") === "milestone" &&
+                                    previousElement.getAttribute("data-subtype") === "textStructure" &&
+                                    previousElement.getAttribute("data-start") === "start") {
+                                    return previousElement;
+                                };
+                                previousElement = previousElement.previousElementSibling;
+                            };
+                        
+                            let parent = element.parentElement;
+                            while (parent) {
+                                previousElement = parent.previousElementSibling;
+                                while (previousElement) {
+                                    if (previousElement.getAttribute("data-type") === "milestone" &&
+                                        previousElement.getAttribute("data-subtype") === "textStructure" &&
+                                        previousElement.getAttribute("data-start") === "start") {
+                                        return previousElement;
+                                    }
+                                    previousElement = previousElement.previousElementSibling;
+                                }
+                                parent = parent.parentElement;
+                            }
+                        
+                            return null;
+                        };
+                        
+                        const givenElement = startAnnotation;
+                        const previousMilestone = findPreviousMilestone(givenElement);
+                        
+                        if (previousMilestone) {
+                            var stanzaN = previousMilestone.getAttribute("data-stanza");
+                            formToShow.querySelector('input[name="stanzaStart"]').value = stanzaN;
+                        };
+                        /* / */
+            
                         if (startAnnotation.parentNode.nodeName == "SPAN") {
                             startAnnotation = startAnnotation.parentNode;
                             while (startAnnotation = startAnnotation.nextSibling) {
