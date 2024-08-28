@@ -1,6 +1,7 @@
 import { saveFile } from "./saveFile.js";
 
 var data;
+var stanza;
 
 /* annotations */
 export const annotations = () => {
@@ -10,7 +11,9 @@ export const annotations = () => {
         var annType = el.getAttribute("data-value");
 
         /* CLICK ON THE BUTTON TO ADD ANNOTATIONS */
+
         el.addEventListener("click", () => {
+
             /* block all the buttons */
             const btns = document.querySelectorAll(".btn-set-annotation button");
             for (var i = 0; i < btns.length; i++) {
@@ -116,7 +119,6 @@ export const annotations = () => {
                         milestoneStart.setAttribute("data-start", "start");
                         /* assign an id to the annotation */
                         milestoneStart.setAttribute("data-annotation", "#" + idAnnotation);
-                        /* / */
 
                         /* create the end milestone */
                         var milestoneEnd = document.createElement("span");
@@ -125,6 +127,27 @@ export const annotations = () => {
                         milestoneEnd.setAttribute("data-end", "end");
                         /* assign an id to the annotation */
                         milestoneEnd.setAttribute("data-annotation", "#" + idAnnotation);
+                        /* / */
+
+                        /* N STANZA */
+                        /* on change stanza input */
+                        let changeStanza = () => {
+                            var stanzaInput = document.getElementById("nTxtStr");
+                            stanzaInput.addEventListener("input", (e) => {
+                                stanza = e.target.value;
+                                setStanza(stanza);
+                            });
+                        };
+                        let setStanza = (stanza) => {
+                            if (el.getAttribute("data-value") == "textStructure") {
+                                milestoneStart.setAttribute("data-stanza", stanza);
+                                milestoneEnd.setAttribute("data-stanza", stanza);
+                            };
+                        };
+                        if (el.getAttribute("data-value") == "textStructure") {
+                            changeStanza();
+                            setStanza();
+                        };
                         /* / */
 
                         /* insert the start milestone */
@@ -150,6 +173,39 @@ export const annotations = () => {
                         /* / */
                         startAnnotation.innerHTML = startContent;
                         startSibling.replaceWith(startAnnotation);
+
+                        //////////////////////////////////////////
+                        //////////////////////////////////////////
+                        //////////////////////////////////////////
+                        /* QUI */
+                        /* automatically select stanzas */
+                        /* const findAncestorByType = (element, dataType, dataSubtype) => {
+                            while (element && element.nodeType === 1) {
+                                if (
+                                    element.getAttribute("data-type") === dataType &&
+                                    element.getAttribute("data-subtype") === dataSubtype
+                                ) {
+                                    return element;
+                                };
+                                element = element.parentNode;
+                            }
+                            return null;
+                        }; */
+
+                        /* selected element and its ancestor = stanza */
+                        /* var selectedEl = txtSel.getNode();
+                        var ancestor = findAncestorByType(selectedEl, "annotation-object", "textStructure"); */
+
+                        /* if (ancestor) {
+                            console.log("Ancestor: ", ancestor);
+                        } else {
+                            console.log("No ancestor");
+                        }; */
+                        /* / QUI */
+                        //////////////////////////////////////////
+                        //////////////////////////////////////////
+                        //////////////////////////////////////////
+
 
                         if (startAnnotation.parentNode.nodeName == "SPAN") {
                             startAnnotation = startAnnotation.parentNode;
@@ -365,11 +421,11 @@ export const annotations = () => {
                                     var editor = tinymce.get("fileBaseTxt");
                                     if (editor) {
                                         var content = editor.getContent();
-                                        
+
                                         /* create a fake element to extract the html */
                                         var tempElement = document.createElement("div");
                                         tempElement.innerHTML = content;
-                                        
+
                                         /* text structure milestone */
                                         var specificElement = tempElement.querySelector('span[data-type="milestone"][data-subtype="textStructure"][data-end="end"][data-annotation="' + "#" + idAnnotation + '"]');
 
