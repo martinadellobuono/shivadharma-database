@@ -174,10 +174,11 @@ export const annotations = () => {
                         startAnnotation.innerHTML = startContent;
                         startSibling.replaceWith(startAnnotation);
 
+                        /* automatically set the stanza */
                         /* selected element and its ancestor = stanza */
                         function findPreviousMilestone(element) {
                             let previousElement = element.previousElementSibling;
-                        
+
                             while (previousElement) {
                                 if (previousElement.getAttribute("data-type") === "milestone" &&
                                     previousElement.getAttribute("data-subtype") === "textStructure" &&
@@ -186,7 +187,7 @@ export const annotations = () => {
                                 };
                                 previousElement = previousElement.previousElementSibling;
                             };
-                        
+
                             let parent = element.parentElement;
                             while (parent) {
                                 previousElement = parent.previousElementSibling;
@@ -195,24 +196,24 @@ export const annotations = () => {
                                         previousElement.getAttribute("data-subtype") === "textStructure" &&
                                         previousElement.getAttribute("data-start") === "start") {
                                         return previousElement;
-                                    }
+                                    };
                                     previousElement = previousElement.previousElementSibling;
-                                }
+                                };
                                 parent = parent.parentElement;
-                            }
-                        
+                            };
+
                             return null;
                         };
-                        
+
                         const givenElement = startAnnotation;
                         const previousMilestone = findPreviousMilestone(givenElement);
-                        
+
                         if (previousMilestone) {
                             var stanzaN = previousMilestone.getAttribute("data-stanza");
                             formToShow.querySelector('input[name="stanzaStart"]').value = stanzaN;
                         };
                         /* / */
-            
+
                         if (startAnnotation.parentNode.nodeName == "SPAN") {
                             startAnnotation = startAnnotation.parentNode;
                             while (startAnnotation = startAnnotation.nextSibling) {
@@ -292,6 +293,73 @@ export const annotations = () => {
                         /* / */
                         endAnnotation.innerHTML = endContent;
                         endSibling.replaceWith(endAnnotation);
+
+                        /* TRYING */
+                        function findNextMilestone(element) {
+                            let nextElement = element.nextElementSibling;
+
+                            function searchInDescendants(parentElement) {
+                                if (!parentElement) return null;
+
+                                let descendants = parentElement.querySelectorAll('*');
+                                for (let i = 0; i < descendants.length; i++) {
+                                    let desc = descendants[i];
+                                    if (desc.getAttribute("data-type") === "milestone" &&
+                                        desc.getAttribute("data-subtype") === "textStructure" &&
+                                        desc.getAttribute("data-end") === "end") {
+                                        return desc;
+                                    };
+                                };
+
+                                return null;
+                            };
+
+                            while (nextElement) {
+                                if (nextElement.getAttribute("data-type") === "milestone" &&
+                                    nextElement.getAttribute("data-subtype") === "textStructure" &&
+                                    nextElement.getAttribute("data-end") === "end") {
+                                    return nextElement;
+                                };
+
+                                let foundInDescendants = searchInDescendants(nextElement);
+                                if (foundInDescendants) {
+                                    return foundInDescendants;
+                                };
+
+                                nextElement = nextElement.nextElementSibling;
+                            };
+
+                            let parent = element.parentElement;
+                            while (parent) {
+                                nextElement = parent.nextElementSibling;
+                                while (nextElement) {
+                                    if (nextElement.getAttribute("data-type") === "milestone" &&
+                                        nextElement.getAttribute("data-subtype") === "textStructure" &&
+                                        nextElement.getAttribute("data-end") === "end") {
+                                        return nextElement;
+                                    };
+
+                                    let foundInDescendants = searchInDescendants(nextElement);
+                                    if (foundInDescendants) {
+                                        return foundInDescendants;
+                                    };
+
+                                    nextElement = nextElement.nextElementSibling;
+                                };
+                                parent = parent.parentElement;
+                            };
+
+                            return null;
+                        };
+
+                        const givenEndElement = endAnnotation;
+                        const nextMilestone = findNextMilestone(givenEndElement);
+
+                        if (nextMilestone) {
+                            var stanzaN = nextMilestone.getAttribute("data-stanza");
+                            formToShow.querySelector('input[name="stanzaEnd"]').value = stanzaN;
+                        };
+                        /* / */
 
                         /* END LINE OF A BLOCK */
                         /* color other siblings if any */
