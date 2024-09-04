@@ -197,12 +197,10 @@
                             <div data-type="translation" data-subtype="translation">
 
                               <!-- go to textus -->
-                              <span class="no-span-space"><i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                              <span class="no-span-space fs-xxs"><i class="bi bi-caret-right-fill entries green-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-green-400" data-bs-title="Check in the <i>textus</i>" data-type="translation" data-ref='<%= el["idAnnotation"]; %>'></i></span>
 
                               <!-- location  -->
-                              <span class="no-span-space green-400 me-2" data-type="location" data-subtype="location-top">
-                                <span class="no-span-space" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
-                              </span>
+                              <span class="no-span-space green-400 fs-xxs" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span><span class="green-400 fs-xxs" data-type="location" data-subtype="pointSeparator">.</span><span class="green-400 fs-xxs" data-type="translation" data-subtype="stanzaStart"><%= el["stanzaStart"]; %></span>
                               
                               <!-- full text -->
                               <span class="no-span-space fs-xxs" data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
