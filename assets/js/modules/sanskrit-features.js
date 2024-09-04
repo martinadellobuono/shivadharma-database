@@ -1,6 +1,8 @@
 /* devanagari conversion */
 export const devanagariConverter = () => {
     function conversion(text) {
+        const vowels = ['a', 'ā', 'i', 'ī', 'u', 'ū', 'ṛ', 'ṝ', 'ḷ', 'ḹ', 'e', 'o', 'đ', 'ő'];
+        const consonants = ['k', 'kh', 'g', 'gh', 'ṅ', 'c', 'ch', 'j', 'jh', 'ñ', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'ṇ', 't', 'th', 'd', 'dh', 'n', 'p', 'ph', 'b', 'bh', 'm', 'y', 'r', 'l', 'v', 'ś', 'ṣ', 's', 'h', 'ḻ', 'kṣ', 'jñ'];
         const stoppers = [" ", "°", "<", "\\", "("];
 
         function checkIfTagOrCommand(char, tagFlagOn, commandFlagOn, englishFlagOn) {
@@ -33,17 +35,54 @@ export const devanagariConverter = () => {
                 ['dh', 'ध'], ['n', 'न'], ['p', 'प'], ['ph', 'फ'], ['b', 'ब'],
                 ['bh', 'भ'], ['m', 'म'], ['y', 'य'], ['r', 'र'], ['l', 'ल'],
                 ['v', 'व'], ['ś', 'श'], ['ṣ', 'ष'], ['s', 'स'], ['h', 'ह'],
-                ['ḻ', 'ळ'], ['kṣ', 'क्ष'], ['jñ', 'ज्ञ'], ['rū', 'रू']
+                ['ḻ', 'ळ'], ['kṣ', 'क्ष'], ['jñ', 'ज्ञ'], ['rū', 'रू'],
+                ['Ś', 'श'], ['ṃ', 'ं'] // Aggiunte le mappature per Ś e ṃ
             ];
             let lineout = "";
             let tagFlagOn = false;
             let commandFlagOn = false;
             let englishFlagOn = false;
+            let conj = false;
 
-            for (let i = 0; i < line.length; i++) {
-                let letter = line[i];
-                lineout += line[i];
-            };
+            let i = 0;
+            while (i < line.length) {
+                ({ tagFlagOn, commandFlagOn, englishFlagOn } = checkIfTagOrCommand(line[i], tagFlagOn, commandFlagOn, englishFlagOn));
+                if (tagFlagOn || commandFlagOn || englishFlagOn) {
+                    lineout += line[i];
+                    i++;
+                    continue;
+                }
+
+                // init vowel
+                if (!conj && vowels.includes(line[i])) {
+                    lineout += line[i].toUpperCase();
+                }
+                // last consonant, put in virāma
+                else if (i < line.length - 2 && consonants.includes(line[i]) && stoppers.includes(line[i + 1])) {
+                    lineout += line[i] + "V";
+                }
+                // syllable initial consonant, nothing special to do
+                else if (!conj && consonants.includes(line[i])) {
+                    conj = true;
+                    lineout += line[i];
+                }
+                // half consonant: put in a virāma
+                else if (conj && consonants.includes(line[i])) {
+                    lineout += "V" + line[i];
+                }
+                // non-initial vowel: nothing special to do
+                else if (conj && vowels.includes(line[i])) {
+                    conj = false;
+                    lineout += line[i];
+                }
+                // anything else:
+                else {
+                    lineout += line[i];
+                    conj = false;
+                }
+
+                i++;
+            }
 
             let returnLine = "";
             for (let character of lineout) {
@@ -63,7 +102,7 @@ export const devanagariConverter = () => {
                 if (!found) {
                     returnLine += character;
                 };
-            };
+            }
 
             returnLine = returnLine.replace(/¸/g, 'dh');
             returnLine = returnLine.replace(/ł/g, 'th');
@@ -75,10 +114,10 @@ export const devanagariConverter = () => {
             returnLine = returnLine.replace(/ ;/g, ';');
             returnLine = returnLine.replace(/रृ/g, '\\char"0930\\char"094D\\char"090B');
             return returnLine;
-        };
+        }
 
         return toDevanagariExceptTagsAndCommands(text);
-    };
+    }
 
     var btnConverter = document.querySelectorAll(".btn-converter");
     btnConverter.forEach((btn) => {
@@ -100,7 +139,6 @@ export const devanagariConverter = () => {
                     /* set the button */
                     btn.setAttribute("data-script", "devanagari");
                     btn.querySelector(".scriptLabel").innerHTML = "Devanāgārī";
-
                     break;
                 case "devanagari":
                     /* print the roman text */
@@ -110,11 +148,10 @@ export const devanagariConverter = () => {
                     /* set the button */
                     btn.setAttribute("data-script", "roman");
                     btn.querySelector(".scriptLabel").innerHTML = "Roman";
-
                     break;
                 default:
                     console.log(`Sorry, we are out of ${expr}.`);
-            };
+            }
         });
     });
 };
