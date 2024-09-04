@@ -266,42 +266,40 @@
                 <span class="fw-bold title-subsection fs-xs" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true" title="Author: <b><%= key.split('___')[1]; %></b>">
                   <!-- title with tooltip -->
                   <%= key.split("___")[0]; %>
-                  <!-- collapse the parallel full-text -->
-                  <span class="caret" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-<%= key; %>" aria-expanded="true" aria-controls="collapse-parallel-<%= key; %>"></span>
                 </span>
 
                 <!-- full-text -->
-                <div class="collapse show inlineAppDiv parallel-layout" id="collapse-parallel-<%= key; %>">
-                    <!-- full-text -->
-                    <% value.forEach((el) => { %>
-                      <div class="fs-xxs mt-2 parallel-txt" data-type="parallel" data-subtype="parallel" data-n='<%= el["stanzaStart"] %>' data-title='<%= key.split("___")[0]; %>' data-ref='txt-<%= el["idAnnotation"]; %>' data-book='<%= el["book"]; %>' data-book-chapter='<%= el["bookChapter"]; %>' data-book-stanza='<%= el["bookStanza"]; %>'>
-                        <!-- full-text -->
-                        <span data-type="parallel" data-subtype="full-text">
-                          <%- el["value"]; %>
-                        </span>
-                        <span class="me-2" data-type="location" data-subtype="location-bottom">
-                          <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
-                        </span>
-                        <!-- notes -->
-                        <div class="ff-default">
-                          <% if (el["note"] !== "") { %>
-                            <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
-                            <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
-                              <div class="card card-body fs-xxs">
-                                <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
-                              </div>
+                <div>
+                  <!-- full-text -->
+                  <% value.forEach((el) => { %>
+                    <div class="fs-xxs mt-2 parallel-txt" data-type="parallel" data-subtype="parallel" data-n='<%= el["stanzaStart"] %>' data-title='<%= key.split("___")[0]; %>' data-ref='txt-<%= el["idAnnotation"]; %>' data-book='<%= el["book"]; %>' data-book-chapter='<%= el["bookChapter"]; %>' data-book-stanza='<%= el["bookStanza"]; %>'>
+                      <!-- full-text -->
+                      <span data-type="parallel" data-subtype="full-text">
+                        <%- el["value"]; %>
+                      </span>
+                      <span class="me-2" data-type="location" data-subtype="location-bottom">
+                        <span data-type="location" data-subtype="doubleDandas">||</span><% if (el["book"] !== "") { %><span data-type="location" data-subtype="book"><%= el["book"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><% }; %><span data-type="location" data-subtype="bookChapter"><%= el["bookChapter"]; %></span><% if (el["bookStanza"] !== "") { %><span data-type="separator" data-subtype="pointSeparator">.</span><span data-type="location" data-subtype="bookStanza"><%= el["bookStanza"]; %></span><% }; %><span data-type="location" data-subtype="doubleDandas">||</span>
+                      </span>
+                      <!-- notes -->
+                      <div class="ff-default">
+                        <% if (el["note"] !== "") { %>
+                          <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-parallel-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-parallel-note-<%= el['id']; %>"></span>
+                          <div class="collapse inlineAppDiv mb-3" id="collapse-parallel-note-<%= el['id']; %>">
+                            <div class="card card-body fs-xxs">
+                              <div data-type="parallel" data-subtype="note"><%- el["note"]; %></div>
                             </div>
-                          <% }; %>
-                        </div>
+                          </div>
+                        <% }; %>
                       </div>
-                      <!-- source txt -->
-                      <div class="fs-xxs orange-400 tooltip-link mt-2">
-                      <% if (typeof title !== "undefined") { %>
-                        <span><i class="bi bi-caret-right-fill entries orange-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in the <i>textus</i>" data-type="parallel" data-ref='<%= el["idAnnotation"]; %>'></i></span>
-                        <span><%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n='<%= el["stanzaStart"] %>'><%= el["stanzaStart"] %></span>
-                      <% }; %>
-                      </div>
-                    <% }); %>
+                    </div>
+                    <!-- source txt -->
+                    <div class="fs-xxs orange-400 tooltip-link mt-2">
+                    <% if (typeof title !== "undefined") { %>
+                      <span><i class="bi bi-caret-right-fill entries orange-400" data-bs-toggle="tooltip" data-bs-html="true" data-bs-custom-class="tooltip-orange-400" data-bs-title="Check in the <i>textus</i>" data-type="parallel" data-ref='<%= el["idAnnotation"]; %>'></i></span>
+                      <span><%= title %>: </span><%= el["chapter"]%>.<span class="par-stanza" data-n='<%= el["stanzaStart"] %>'><%= el["stanzaStart"] %></span>
+                    <% }; %>
+                    </div>
+                  <% }); %>
                 </div>
                 <% }; %>
               </div>
