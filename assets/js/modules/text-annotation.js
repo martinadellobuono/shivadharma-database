@@ -129,7 +129,7 @@ export const annotations = () => {
                         milestoneEnd.setAttribute("data-annotation", "#" + idAnnotation);
                         /* / */
 
-                        /* N STANZA */
+                        /* N STANZA / CHAPTER */
                         /* on change stanza input */
                         let changeStanza = () => {
                             var stanzaInput = document.getElementById("nTxtStr");
@@ -140,8 +140,9 @@ export const annotations = () => {
                         };
                         let setStanza = (stanza) => {
                             if (el.getAttribute("data-value") == "textStructure") {
-                                milestoneStart.setAttribute("data-stanza", stanza);
-                                milestoneEnd.setAttribute("data-stanza", stanza);
+                                var structureType = document.getElementById("textStructureName").value;
+                                milestoneStart.setAttribute("data-" + structureType, stanza);
+                                milestoneEnd.setAttribute("data-" + structureType, stanza);
                             };
                         };
                         if (el.getAttribute("data-value") == "textStructure") {
@@ -176,7 +177,8 @@ export const annotations = () => {
 
                         /* automatically set the stanza */
                         /* selected element and its ancestor = stanza */
-                        function findPreviousMilestone(element) {
+                        /* STANZA N TO START MILESTONES */
+                        let findPreviousMilestone = (element) => {
                             let previousElement = element.previousElementSibling;
 
                             while (previousElement) {
@@ -209,8 +211,13 @@ export const annotations = () => {
                         const previousMilestone = findPreviousMilestone(givenElement);
 
                         if (previousMilestone) {
+                            /* stanza assignment */
                             var stanzaN = previousMilestone.getAttribute("data-stanza");
-                            formToShow.querySelector('input[name="stanzaStart"]').value = stanzaN;
+                            
+                            var stanzaForm = formToShow.querySelector('input[name="stanzaStart"]');
+                            if (stanzaForm) {
+                                stanzaForm.value = stanzaN;
+                            };
                         };
                         /* / */
 
@@ -294,7 +301,7 @@ export const annotations = () => {
                         endAnnotation.innerHTML = endContent;
                         endSibling.replaceWith(endAnnotation);
 
-                        /* TRYING */
+                        /* STANZA / CHAPTER N TO END MILESTONES */
                         function findNextMilestone(element) {
                             let nextElement = element.nextElementSibling;
 
