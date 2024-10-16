@@ -50,6 +50,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var editionOf;
     var authors = [];
     var date;
+    var language;
     var editors = [];
     var secondaryEditors = [];
     var secondaryEditorsEmail = [];
@@ -80,6 +81,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (secondaryEditor:Editor)-[:IS_SECONDARY_EDITOR_OF]->(edition)
                 OPTIONAL MATCH (contributor:Editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                 OPTIONAL MATCH (edition)-[:PUBLISHED_ON]->(date:Date)
+                OPTIONAL MATCH (edition)-[:WRITTEN_IN]->(language:Language)
                 OPTIONAL MATCH (edition)-[:HAS_FRAGMENT]->(selectedFragment:SelectedFragment)
                 OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(translation:Translation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_COMMENTED_IN]->(commentary:Commentary)
@@ -90,7 +92,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
+                RETURN work.title, edition.title, edition.editionOf, language.name, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
                 `
             )
             .subscribe({
@@ -125,6 +127,11 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                     /* date */
                     if (record.get("date.on") !== null) {
                         date = record.get("date.on");
+                    };
+
+                    /* language */
+                    if (record.get("language.name") !== null) {
+                        language = record.get("language.name");
                     };
 
                     /* editor(s) */
@@ -650,6 +657,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         authors: authors,
                         authorCommentary: authorCommentary,
                         date: date,
+                        language: language,
                         editors: editors,
                         secondaryEditors: secondaryEditors,
                         secondaryEditorsEmail: secondaryEditorsEmail,

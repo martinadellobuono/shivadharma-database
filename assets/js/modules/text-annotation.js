@@ -22,6 +22,7 @@ export const annotations = () => {
 
             /* type of annotation */
             var category = el.getAttribute("data-value");
+            console.log("Categoria: " + category);
 
             /* live check if apparatus */
             if (category == "apparatus") {
@@ -31,13 +32,18 @@ export const annotations = () => {
 
             /* root ID of annotation */
             var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
+            console.log("ID annotazione: " + idAnnotation);
 
             /* get selected text */
             if (document.getSelection) {
+
+                console.log("C'è una selezione.")
+
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
                     /* textual string selected */
                     var txtSel = tinymce.activeEditor.selection;
+                    console.dir(txtSel);
 
                     /* OPEN THE BOX */
                     /* close the open box */
@@ -90,7 +96,12 @@ export const annotations = () => {
                     tab.show();
 
                     /* selected fragment form */
-                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = txtSel.getContent({ format: "text" }).trim();
+                    console.log("La stringa selezionata è: " + txtSel.getContent({ format: "text" }).trim());
+                    var string = txtSel.getContent({ format: "text" }).trim();
+                    
+                    /* cambia il valore al form selected fragment */
+                    document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = string;
+                    console.log(document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value);
 
                     /* assign the ID of each annotation to the root ID inputs */
                     var rootInputs = formToShow.querySelectorAll("input.root-id-input");

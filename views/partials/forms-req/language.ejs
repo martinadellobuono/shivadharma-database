@@ -1,0 +1,154 @@
+<ul class="nav nav-tabs fs-xs" role="tablist">
+  <!-- annotate -->
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotate-language" type="button" role="tab" aria-controls="annotate" aria-selected="true">Annotate</button>
+  </li>
+  <!-- check -->
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#check-language" type="button" role="tab" aria-controls="check" aria-selected="false">Check all</button>
+  </li>
+</ul>
+<div class="tab-content fs-xs">
+  <!-- ANNOTATE -->
+  <div class="tab-pane fade show active scroll-tab" id="annotate-language" role="tabpanel" aria-labelledby="annotate-tab">
+    <!-- no selected fragment alert -->
+    <div class="alert alert-warning fade show mt-3 d-none" role="alert">
+      <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
+    </div>
+    <!-- form to add a tamil -->
+    <form class="form-annotations tamil-container" id="tamil-req" method="post" action="<%= process.env.URL_PATH %>/addTamil/<%= id %>">
+      <!-- ID -->
+      <div class="d-none">
+        <label class="form-label">ID of annotation</label>
+        <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="tamil" name="idAnnotation">
+      </div>
+      <!-- selected fragment -->
+      <div class="mb-3 mt-3">
+        <label class="form-label">Selected fragment</label>
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="tamil" name="selectedFragment">
+      </div>
+      <!-- location -->
+      <div class="location bg-white p-3 mb-3">
+        <!-- chapter -->
+        <div class="mb-3">
+          <label class="form-label">Chapter</label>
+          <input class="form-control" type="number" aria-describedby="Chapter" placeholder="Insert the number of chapter" name="chapter" required>
+        </div>
+        <!-- stanza / pada -->
+        <label class="form-label">Stanza/paragraph</label>
+        <div class="mb-3">
+          <div class="form-text">If you refer to only one stanza/paragraph, fill the starting stanza/paragraph and pāda&#x28;s&#x29; form, then the ending stanza/paragraph and pāda&#x28;s&#x29; with the values of the starting ones.</div>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Starting stanza/paragraph</span>
+          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaStart" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Pāda</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="a" name="padaStart">
+            <label class="form-check-label">a</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="b" name="padaStart">
+            <label class="form-check-label">b</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="c" name="padaStart">
+            <label class="form-check-label">c</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="d" name="padaStart">
+            <label class="form-check-label">d</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="e" name="padaStart">
+            <label class="form-check-label">e</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="f" name="padaStart">
+            <label class="form-check-label">f</label>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Ending stanza/paragraph</span>
+          <input type="number" min="1" class="form-control live-check" placeholder="Insert stanza/paragraph" aria-describedby="Insert stanza/paragraph" name="stanzaEnd" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Pāda</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="a" name="padaEnd">
+            <label class="form-check-label">a</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="b" name="padaEnd">
+            <label class="form-check-label">b</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="c" name="padaEnd">
+            <label class="form-check-label">c</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="d" name="padaEnd">
+            <label class="form-check-label">d</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="e" name="padaEnd">
+            <label class="form-check-label">e</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input live-check" type="checkbox" value="f" name="padaEnd">
+            <label class="form-check-label">f</label>
+          </div>
+        </div>
+      </div>
+      <!-- tamil intro -->
+      <div class="mb-3">
+        <label class="form-label">Intro</label>
+        <textarea placeholder="Insert the intro..." name="tamilIntro"></textarea>
+      </div>
+      <!-- tamil text -->
+      <div class="mb-3">
+        <label class="form-label">Text</label>
+        <textarea placeholder="Insert the text..." name="tamilText"></textarea>
+      </div>
+      <!-- tamil text note -->
+      <div class="mb-3">
+        <label class="form-label">Note on the text</label>
+        <textarea placeholder="Insert the note on the text..." name="tamilTextNote"></textarea>
+      </div>
+      <!-- tamil translation -->
+      <div class="mb-3">
+        <label class="form-label">Translation</label>
+        <textarea placeholder="Insert the translation..." name="tamilTranslation"></textarea>
+      </div>
+      <!-- tamil translation note -->
+      <div class="mb-3">
+        <label class="form-label">Note on the translation</label>
+        <textarea placeholder="Insert the note on the translation..." name="tamilTranslationNote"></textarea>
+      </div>
+      <!-- tamil commentary -->
+      <div class="mb-3">
+        <label class="form-label">Commentary</label>
+        <textarea placeholder="Insert the commentary..." name="tamilCommentary"></textarea>
+      </div>
+      <!-- tamil commentary translation -->
+      <div class="mb-3">
+        <label class="form-label">Translation of the commentary</label>
+        <textarea placeholder="Insert the translation of the commentary..." name="tamilCommentaryTranslation"></textarea>
+      </div>
+      <!-- submit -->
+      <div>
+        <button type="submit" class="btn btn-yellow">Save</button>
+      </div>
+    </form>
+  </div>
+  <!-- CHECK -->
+  <div class="tab-pane fade" id="check-language" role="tabpanel" aria-labelledby="check-tab">
+    <h2 class="mt-3 h5" id="check-annotation"></h2>
+    <!-- results tamil -->
+    <div class="scroll-tab" id="tamil-res">
+      <%- include ("partials/forms-res/language") %>
+    </div>
+  </div>
+</div>

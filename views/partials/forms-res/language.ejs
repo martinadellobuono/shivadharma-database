@@ -1,0 +1,73 @@
+<% if (translation) { %>
+  <% if (translation.length > 0) { %>
+    <% translation.forEach((el) => { %>
+      <div class="p-3 mt-3 bg-white container-translation" data-type="translation" data-subtype="translation-entry">
+
+        <!-- hidden ID -->
+        <span class="d-none" data-type="translation" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+        
+        <!-- chapter -->
+        <div class="mb-3" data-type="translation" data-subtype="chapter">
+          <span class="fw-bold">Chapter</span>
+          <span class="fw-bold" data-type="translation" data-subtype="chapter"><%= el["chapter"]; %></span>
+        </div>
+
+        <!-- fragment -->
+        <div class="bg-teal mb-3 p-2" data-type="translation" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
+
+        <!-- location / translation -->
+        <div data-type="translation" data-subtype="translation" data-name="translation" data-fill='<%= el["value"]; %>' data-input="textarea">
+          <span class="me-1" data-type="location" data-subtype="location-top">
+            <span data-type="translation" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"><%= el["chapter"]; %></span><span data-type="location" data-subtype="pointSeparator">.</span><span data-type="translation" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"><%= el["stanzaStart"]; %></span>        
+          </span>
+          <span data-type="translation" data-subtype="full-text"><%- el["value"]; %></span>
+        </div>
+
+        <!-- hidden location -->
+        <span class="d-none" data-type="translation" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+        <span class="d-none" data-type="translation" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+        <span class="d-none" data-type="translation" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
+
+        <!-- note -->
+        <% if (el["note"] !== "") { %>
+          <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-translation-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-translation-note-<%= el['id']; %>"></span>
+          <div class="collapse mb-3" id="collapse-translation-note-<%= el['id']; %>">
+            <div class="card card-body">
+              <div data-type="translation" data-subtype="note" data-name="noteTranslation" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+            </div>
+          </div>
+        <% }; %>
+
+        <!-- modify / delete button -->
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-1">
+          <!-- delete -->
+          <button class="btn btn-sm btn-secondary btn-delete btn-close-annotation" type="button" data-delete="translation" data-bs-toggle="modal" data-bs-target="#delete-translation" data-type="cancel-annotation" data-cancel='#<%= el["idAnnotation"]; %>' data-node-id='<%= el["idAnnotation"]; %>'><i class="bi bi-trash-fill"></i></button>
+          <div class="modal fade delete-modal" id="delete-translation" data-role="cancel-annotation" tabindex="-1" aria-labelledby="cancel-translation" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Are you sure to delete this annotation?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <p>Please type <b>delete-annotation</b> to confirm.</p>
+                      <input type="text" class="form-control" data-role="safe-deletion">
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary btn-delete" data-type="cancel-annotation" data-cancel='#<%= el["idAnnotation"]; %>' data-role="safe-deletion-btn" data-node-id='<%= el["idAnnotation"]; %>' disabled>Save changes</button>
+                  </div>
+              </div>
+              </div>
+          </div>
+          <!-- modify -->
+          <button class="btn btn-sm btn-teal modify-btn" type="button" data-type="translation">Modify</button>
+        </div>
+
+      </div>
+    <% }); %>
+  <% } else { %>
+    <!-- no translation -->
+    <div class="alert alert-warning fs-xs" role="alert">No texts for now. Let's add a new text!</div>
+  <% }; %>
+<% }; %>

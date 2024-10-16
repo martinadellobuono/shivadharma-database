@@ -257,14 +257,18 @@
           </div>
         </div>
         <!-- tamil buttons -->
-        <h3 class="h6">Tamil</h3>
+        <% if (language == "Sanskrit") { %>
+          <h3 class="h6">Tamil</h3>
+        <% } else { %>
+          <h3 class="h6">Sanskrit</h3>
+        <% }; %>
         <div class="btn-group-vertical btn-vertical btn-set-annotation">
-          <button type="button" class="btn btn-sm btn-preview btn-yellow" data-value="tamil" title="Preview Tamil"><i class="bi bi-clipboard-check-fill"></i></button>
-          <button type="button" class="btn btn-sm btn-hide btn-yellow" data-value="tamil" title="Hide Tamil"><i class="bi bi-eye-fill icon-show d-none"></i><i class="bi bi-eye-slash-fill icon-hide"></i></button>
-          <button type="button" class="btn btn-sm btn-yellow btn-annotation mb-2" data-value="tamil" title="Insert/check Tamil"><i class="bi bi-pencil-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-preview btn-yellow" data-value="language" title="Preview language"><i class="bi bi-clipboard-check-fill"></i></button>
+          <button type="button" class="btn btn-sm btn-hide btn-yellow" data-value="language" title="Hide language"><i class="bi bi-eye-fill icon-show d-none"></i><i class="bi bi-eye-slash-fill icon-hide"></i></button>
+          <button type="button" class="btn btn-sm btn-yellow btn-annotation mb-2" data-value="language" title="Insert/check language"><i class="bi bi-pencil-fill"></i></button>
         </div>
-        <div class="annotation-form tamil d-none">
-          <%- include ("partials/forms-req/tamil") %>
+        <div class="annotation-form language d-none">
+          <%- include ("partials/forms-req/language") %>
         </div>
       </div>
     </div>
