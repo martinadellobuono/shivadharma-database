@@ -123,6 +123,8 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                         MERGE (work)-[:HAS_MANIFESTATION]->(edition)
                         MERGE (work)-[:WRITTEN_BY]->(author)
                         MERGE (editor)-[:IS_EDITOR_OF]->(edition)
+                        MERGE (language:Language {name: "${req.body.editionLanguage}"})
+                        MERGE (edition)-[:WRITTEN_IN]->(language)
                         ON CREATE SET edition.publishType = "Save as draft"
 
                         FOREACH (email IN split("${otherEditorsArr}", ",") | 
@@ -140,7 +142,7 @@ router.post(process.env.URL_PATH + "/getStarted", async (req, res) => {
                                 MERGE (editor)-[:IS_CONTRIBUTOR_OF]->(edition)
                             )
                         )
-                        
+
                         RETURN ID(edition), ID(editor)
                         `
                     )

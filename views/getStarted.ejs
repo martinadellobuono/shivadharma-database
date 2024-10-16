@@ -50,6 +50,13 @@
               <label>Title of the edition</label>
               <input type="text" class="form-control" value="<% if (typeof inputValues != 'undefined') { %><%= inputValues.title %><% } %>" name="title" required>
             </div>
+            <div class="border bg-light bg-gradient p-3 mb-3">
+              <label>Language of the edition</label>
+              <select class="form-select" aria-label="Edition language" name="editionLanguage" required>
+                <option value="Sanskrit" selected>Sanskrit</option>
+                <option value="Tamil">Tamil</option>
+              </select>
+            </div>
             <div class="mb-3">
               <label>Editor</label>
               <input type="text" class="form-control" readonly="true" value="<%- name %>" name="editor" required>
