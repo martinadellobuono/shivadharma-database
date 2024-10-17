@@ -22,7 +22,6 @@ export const annotations = () => {
 
             /* type of annotation */
             var category = el.getAttribute("data-value");
-            console.log("Categoria: " + category);
 
             /* live check if apparatus */
             if (category == "apparatus") {
@@ -32,13 +31,9 @@ export const annotations = () => {
 
             /* root ID of annotation */
             var idAnnotation = category + Math.random().toString(16).slice(2) + (new Date()).getTime();
-            console.log("ID annotazione: " + idAnnotation);
 
             /* get selected text */
             if (document.getSelection) {
-
-                console.log("C'è una selezione.")
-
                 if (tinymce.activeEditor.selection.getContent() !== "") {
 
                     /* textual string selected */
@@ -96,12 +91,8 @@ export const annotations = () => {
                     tab.show();
 
                     /* selected fragment form */
-                    console.log("La stringa selezionata è: " + txtSel.getContent({ format: "text" }).trim());
-                    var string = txtSel.getContent({ format: "text" }).trim();
-                    
-                    /* cambia il valore al form selected fragment */
+                    var string = txtSel.getContent({ format: "text" }).trim();                    
                     document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value = string;
-                    console.log(document.querySelector("[name='selectedFragment'][data-value='" + category + "']").value);
 
                     /* assign the ID of each annotation to the root ID inputs */
                     var rootInputs = formToShow.querySelectorAll("input.root-id-input");
@@ -1097,8 +1088,6 @@ const deleteAnnotationModal = () => {
                             /* DELETE THE ANNOTATION */
                             /* redirect the page */
                             url = await fetchDelete();
-                            console.log("Fetch fatta, adesso devi togliere il colore");
-
                             await cancelAnnotationColor();
                             await closeModal();
                             await resetLayout();

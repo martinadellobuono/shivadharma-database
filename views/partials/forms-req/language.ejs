@@ -16,16 +16,16 @@
       <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
     </div>
     <!-- form to add a tamil -->
-    <form class="form-annotations tamil-container" id="tamil-req" method="post" action="<%= process.env.URL_PATH %>/addTamil/<%= id %>">
+    <form class="form-annotations language-container" id="language-req" method="post" action="<%= process.env.URL_PATH %>/addTamil/<%= id %>">
       <!-- ID -->
       <div class="d-none">
         <label class="form-label">ID of annotation</label>
-        <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="tamil" name="idAnnotation">
+        <input class="form-control cursor-not-allowed root-id-input" type="text" aria-describedby="ID of annotation" readonly="true" data-value="language" name="idAnnotation">
       </div>
       <!-- selected fragment -->
       <div class="mb-3 mt-3">
         <label class="form-label">Selected fragment</label>
-        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="tamil" name="selectedFragment">
+        <input class="form-control cursor-not-allowed" type="text" aria-describedby="Selected fragment" readonly="true" data-value="language" name="selectedFragment">
       </div>
       <!-- location -->
       <div class="location bg-white p-3 mb-3">
@@ -147,7 +147,7 @@
   <div class="tab-pane fade" id="check-language" role="tabpanel" aria-labelledby="check-tab">
     <h2 class="mt-3 h5" id="check-annotation"></h2>
     <!-- results tamil -->
-    <div class="scroll-tab" id="tamil-res">
+    <div class="scroll-tab" id="language-res">
       <%- include ("partials/forms-res/language") %>
     </div>
   </div>
