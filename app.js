@@ -341,9 +341,9 @@ app.use("/", addCitation);
 const addNote = require("./routes/forms/note/addNote");
 app.use("/", addNote);
 
-/* add tamil */
-const addTamil = require("./routes/forms/tamil/addTamil");
-app.use("/", addTamil);
+/* add language */
+const addLanguage = require("./routes/forms/language/addLanguage");
+app.use("/", addLanguage);
 
 /* delete any entity */
 const deleteEntity = require("./routes/delete");

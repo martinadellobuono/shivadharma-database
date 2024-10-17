@@ -15,8 +15,8 @@
     <div class="alert alert-warning fade show mt-3 d-none" role="alert">
       <p><b>No selected fragment</b>. Highlight the fragment in the text you want to annotate, then click.</p>
     </div>
-    <!-- form to add a tamil -->
-    <form class="form-annotations language-container" id="language-req" method="post" action="<%= process.env.URL_PATH %>/addTamil/<%= id %>">
+    <!-- form to add a language text -->
+    <form class="form-annotations language-container" id="language-req" method="post" action="<%= process.env.URL_PATH %>/addLanguage/<%= id %>">
       <!-- ID -->
       <div class="d-none">
         <label class="form-label">ID of annotation</label>
@@ -102,40 +102,40 @@
           </div>
         </div>
       </div>
-      <!-- tamil intro -->
+      <!-- language intro -->
       <div class="mb-3">
         <label class="form-label">Intro</label>
-        <textarea placeholder="Insert the intro..." name="tamilIntro"></textarea>
+        <textarea placeholder="Insert the intro..." name="languageIntro"></textarea>
       </div>
-      <!-- tamil text -->
+      <!-- language text -->
       <div class="mb-3">
         <label class="form-label">Text</label>
-        <textarea placeholder="Insert the text..." name="tamilText"></textarea>
+        <textarea placeholder="Insert the text..." name="languageText"></textarea>
       </div>
-      <!-- tamil text note -->
+      <!-- language text note -->
       <div class="mb-3">
         <label class="form-label">Note on the text</label>
-        <textarea placeholder="Insert the note on the text..." name="tamilTextNote"></textarea>
+        <textarea placeholder="Insert the note on the text..." name="languageTextNote"></textarea>
       </div>
-      <!-- tamil translation -->
+      <!-- language translation -->
       <div class="mb-3">
         <label class="form-label">Translation</label>
-        <textarea placeholder="Insert the translation..." name="tamilTranslation"></textarea>
+        <textarea placeholder="Insert the translation..." name="languageTranslation"></textarea>
       </div>
-      <!-- tamil translation note -->
+      <!-- language translation note -->
       <div class="mb-3">
         <label class="form-label">Note on the translation</label>
-        <textarea placeholder="Insert the note on the translation..." name="tamilTranslationNote"></textarea>
+        <textarea placeholder="Insert the note on the translation..." name="languageTranslationNote"></textarea>
       </div>
-      <!-- tamil commentary -->
+      <!-- language commentary -->
       <div class="mb-3">
         <label class="form-label">Commentary</label>
-        <textarea placeholder="Insert the commentary..." name="tamilCommentary"></textarea>
+        <textarea placeholder="Insert the commentary..." name="languageCommentary"></textarea>
       </div>
-      <!-- tamil commentary translation -->
+      <!-- language commentary translation -->
       <div class="mb-3">
         <label class="form-label">Translation of the commentary</label>
-        <textarea placeholder="Insert the translation of the commentary..." name="tamilCommentaryTranslation"></textarea>
+        <textarea placeholder="Insert the translation of the commentary..." name="languageCommentaryTranslation"></textarea>
       </div>
       <!-- submit -->
       <div>
@@ -146,7 +146,7 @@
   <!-- CHECK -->
   <div class="tab-pane fade" id="check-language" role="tabpanel" aria-labelledby="check-tab">
     <h2 class="mt-3 h5" id="check-annotation"></h2>
-    <!-- results tamil -->
+    <!-- results language -->
     <div class="scroll-tab" id="language-res">
       <%- include ("partials/forms-res/language") %>
     </div>
