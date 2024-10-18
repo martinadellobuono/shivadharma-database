@@ -1,3 +1,83 @@
 <% if (language) { %>
-  <%= JSON.stringify(language); %>
+  <% if (language.length > 0) { %>
+    <% language.forEach((el) => { %>
+      <div class="p-3 mt-3 bg-white container-language" data-type="language" data-subtype="language-entry">
+
+        <!-- hidden ID -->
+        <span class="d-none" data-type="language" data-subtype="idAnnotation" data-name="idAnnotation" data-fill='<%= el["idAnnotation"]; %>' data-input="text"><%= el["idAnnotation"]; %></span>
+        
+        <!-- fragment -->
+        <div class="bg-yellow p-2 mb-3" data-type="language" data-subtype="selectedFragment" data-name="selectedFragment" data-fill='<%= el["fragment"]; %>' data-input="text"><%- el["fragment"]; %></div>
+
+        <!-- hidden location -->
+        <span class="d-none" data-type="language" data-subtype="chapter" data-name="chapter" data-fill='<%= el["chapter"]; %>' data-input="number"></span>
+        <span class="d-none" data-type="language" data-subtype="stanzaStart" data-name="stanzaStart" data-fill='<%= el["stanzaStart"]; %>' data-input="number"></span>
+        <span class="d-none" data-type="language" data-subtype="stanzaEnd" data-name="stanzaEnd" data-fill='<%= el["stanzaEnd"]; %>' data-input="number"></span>
+        <span class="d-none" data-type="language" data-subtype="padaStart" data-name="padaStart" data-fill='<%= el["padaStart"]; %>' data-input="checkbox"></span>
+        <span class="d-none" data-type="language" data-subtype="padaEnd" data-name="padaEnd" data-fill='<%= el["padaEnd"]; %>' data-input="checkbox"></span>
+
+        <!-- intro -->
+        <div class="mb-3" data-type="language" data-subtype="language">
+            <span data-type="language" data-subtype="full-text" data-name="languageIntro" data-fill='<%= el["intro"]; %>' data-input="textarea"><%- el["intro"]; %></span>
+        </div>
+
+        <!-- text -->
+        <div class="mb-3" data-type="language" data-subtype="language">
+            <span data-type="language" data-subtype="full-text" data-name="languageText" data-fill='<%= el["value"]; %>' data-input="textarea"><%- el["value"]; %></span>
+        </div>
+
+        <!-- note -->
+        <% if (el["note"] !== "") { %>
+          <span class="btn-note" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-language-note-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-language-note-<%= el['id']; %>"></span>
+          <div class="collapse mb-3" id="collapse-language-note-<%= el['id']; %>">
+            <div class="card card-body">
+                <div data-type="language" data-subtype="note" data-name="languageTextNote" data-fill='<%= el["note"]; %>' data-input="textarea"><%- el["note"]; %></div>
+            </div>
+          </div>
+        <% }; %>
+
+        <!-- translation -->
+        <% if (el["translation"] !== "") { %>
+          <span class="btn-translation" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-language-translation-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-language-translation-<%= el['id']; %>"></span>
+          <div class="collapse mb-3" id="collapse-language-translation-<%= el['id']; %>">
+              <div class="card card-body">
+                  <div class="mb-2" data-type="language" data-subtype="translation" data-name="languageTranslation" data-fill='<%= el["translation"]; %>' data-input="textarea">
+                      <h5 class="h6">Translation</h5>
+                      <%- el["translation"]; %>
+                  </div>
+                  <% if (el["translationNote"] !== "") { %>
+                  <div data-type="language" data-subtype="translationNote" data-name="languageTranslationNote" data-fill='<%= el["translationNote"]; %>' data-input="textarea">
+                      <h5 class="h6">Notes on the translation</h5>
+                      <%- el["translationNote"]; %>
+                  </div>
+                  <% }; %>
+              </div>
+          </div>
+        <% }; %>
+
+        <!-- commentary -->
+        <% if (el["commentary"] !== "") { %>
+          <span class="btn-commentary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-language-commentary-<%= el['id']; %>" aria-expanded="false" aria-controls="collapse-language-commentary-<%= el['id']; %>"></span>
+          <div class="collapse mb-3" id="collapse-language-commentary-<%= el['id']; %>">
+              <div class="card card-body">
+                  <div class="mb-2" data-type="language" data-subtype="commentary" data-name="languageCommentary" data-fill='<%= el["commentary"]; %>' data-input="textarea">
+                      <h5 class="h6">Commentary</h5>
+                      <%- el["commentary"]; %>
+                  </div>
+                  <% if (el["commentaryTranslation"] !== "") { %>
+                  <div data-type="language" data-subtype="commentaryTranslation" data-name="languageCommentaryTranslation" data-fill='<%= el["languageCommentaryTranslation"]; %>' data-input="textarea">
+                      <h5 class="h6">Translation of the commentary</h5>
+                      <%- el["commentaryTranslation"]; %>
+                  </div>
+                  <% }; %>
+              </div>
+          </div>
+        <% }; %>
+
+      </div>
+    <% }); %>
+  <% } else { %>
+    <!-- no language text -->
+    <div class="alert alert-warning fs-xs" role="alert">No text for now. Let's add a new text!</div>
+  <% }; %>
 <% }; %>
