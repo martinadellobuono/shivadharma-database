@@ -50,7 +50,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var editionOf;
     var authors = [];
     var date;
-    var language;
+    var editionLanguage;
     var editors = [];
     var secondaryEditors = [];
     var secondaryEditorsEmail = [];
@@ -61,6 +61,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
     var parallels_temp = [];
     var citations_temp = [];
     var notes_temp = [];
+    var language_temp = [];
     var witnesses_temp = [];
 
     /* APPARATUS */
@@ -89,10 +90,11 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                 OPTIONAL MATCH (parallel)<-[:HAS_FRAGMENT]-(parallelWork:Work)-[:WRITTEN_BY]->(parallelAuthor:Author)
                 OPTIONAL MATCH (selectedFragment)-[:IS_A_CITATION_OF]->(citation:Citation)
                 OPTIONAL MATCH (selectedFragment)-[:IS_DESCRIBED_IN]->(note:Note)
+                OPTIONAL MATCH (selectedFragment)-[:HAS_TRANSLATION]->(languageTranslation:languageTranslation)
                 OPTIONAL MATCH (edition)<-[:USED_IN]-(witness:Witness)
                 OPTIONAL MATCH lemmaWitness = (selectedFragment)-[:HAS_LEMMA]->(lemma:Lemma)-[:ATTESTED_IN]->(lw:Witness)
                 OPTIONAL MATCH lemmaVariantWitness = (lemma)-[:HAS_VARIANT]->(variant:Variant)-[:ATTESTED_IN]->(vw:Witness)
-                RETURN work.title, edition.title, edition.editionOf, language.name, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
+                RETURN work.title, edition.title, edition.editionOf, language.name, edition.authorCommentary, date.on, author.name, editor.name, selectedFragment.idAnnotation, selectedFragment.chapter, selectedFragment.stanzaStart, selectedFragment.stanzaEnd, selectedFragment.padaStart, selectedFragment.padaEnd, selectedFragment.value, ID(translation), translation.idAnnotation, translation.value, translation.note, ID(commentary), commentary.idAnnotation, commentary.value, commentary.note, commentary.translation, commentary.translationNote, ID(parallel), parallel.idAnnotation, parallel.book, parallel.bookChapter, parallel.bookStanza, parallel.note, parallel.value, parallelWork.title, parallelAuthor.name, ID(citation), citation.idAnnotation, citation.value, citation.note, ID(note), note.idAnnotation, note.value, ID(languageTranslation), languageTranslation.idAnnotation, languageTranslation.value, languageTranslation.note, languageTranslation.translation, languageTranslation.translationNote, languageTranslation.intro, languageTranslation.commentary, languageTranslation.commentaryTranslation, witness, lemmaWitness, lemmaVariantWitness, secondaryEditor.name, secondaryEditor.email, contributor.name
                 `
             )
             .subscribe({
@@ -129,9 +131,9 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         date = record.get("date.on");
                     };
 
-                    /* language */
+                    /* edition language */
                     if (record.get("language.name") !== null) {
-                        language = record.get("language.name");
+                        editionLanguage = record.get("language.name");
                     };
 
                     /* editor(s) */
@@ -287,6 +289,33 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         };
                     };
 
+                    /* language */
+                    if (record.get("languageTranslation.value") !== null) {
+                        /* notes entry */
+                        var language_entry = JSON.stringify({
+                            id: record.get("ID(languageTranslation)")["low"],
+                            idAnnotation: record.get("languageTranslation.idAnnotation"),
+                            chapter: chapter,
+                            stanzaStart: record.get("selectedFragment.stanzaStart"),
+                            stanzaEnd: record.get("selectedFragment.stanzaEnd"),
+                            padaStart: record.get("selectedFragment.padaStart"),
+                            padaEnd: record.get("selectedFragment.padaEnd"),
+                            fragment: record.get("selectedFragment.value"),
+                            value: record.get("languageTranslation.value"),
+                            translation: record.get("languageTranslation.translation"),
+                            note: record.get("languageTranslation.note"),
+                            translationNote: record.get("languageTranslation.translationNote"), 
+                            intro: record.get("languageTranslation.intro"),
+                            commentary: record.get("languageTranslation.commentary"),
+                            commentaryTranslation: record.get("languageTranslation.commentaryTranslation")
+                        });
+
+                        /* array of language entries */
+                        if (!language_temp.includes(language_entry)) {
+                            language_temp.push(language_entry);
+                        };
+                    };
+
                     /* witnesses */
                     if (!witnesses_temp.includes(record.get("witness"))) {
                         if (record.get("witness") !== null) {
@@ -432,6 +461,21 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         return a.stanzaStart - b.stanzaStart;
                     });
                     notes.sort((a, b) => {
+                        return a.padaStart - b.padaStart;
+                    });
+
+                    /* LANGUAGE */
+                    /* parse each language text in the array / string > JSON */
+                    var language = [];
+                    language_temp.forEach((el) => {
+                        language.push(JSON.parse(el));
+                    });
+
+                    /* order language */
+                    language.sort((a, b) => {
+                        return a.stanzaStart - b.stanzaStart;
+                    });
+                    language.sort((a, b) => {
                         return a.padaStart - b.padaStart;
                     });
 
@@ -657,7 +701,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         authors: authors,
                         authorCommentary: authorCommentary,
                         date: date,
-                        language: language,
+                        editionLanguage: editionLanguage,
                         editors: editors,
                         secondaryEditors: secondaryEditors,
                         secondaryEditorsEmail: secondaryEditorsEmail,
@@ -670,6 +714,7 @@ router.get(process.env.URL_PATH + "/edit/:id", async (req, res) => {
                         parallels: parallels,
                         citations: citations,
                         notes: notes,
+                        language: language,
                         witnesses: witnesses,
                         apparatus: apparatus
                     });
