@@ -852,6 +852,10 @@ export const modifyAnnotations = () => {
                     let textareas = () => {
                         var textareas = form.querySelectorAll("textarea[name='" + name + "']");
                         textareas.forEach((textarea) => {
+                            
+                            /* TRYING */
+                            console.log("Il valore da inserire è: " + val);
+                            /* /TRYING */
 
                             /* fill the textarea */
                             let printTxt = () => {
