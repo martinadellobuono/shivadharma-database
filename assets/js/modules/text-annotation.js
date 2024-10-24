@@ -977,7 +977,7 @@ const deleteAnnotationModal = () => {
                             safeCancelBtn = document.querySelector("button[data-type='cancel-annotation'][data-cancel='" + id + "']");
                         } else {
                             safeCancelBtn = document.querySelector("button[data-type='cancel-annotation']");
-                        }
+                        };
 
                         var annotationId = safeCancelBtn.getAttribute("data-cancel");
 
